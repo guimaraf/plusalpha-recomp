@@ -1,0 +1,62 @@
+# Conteúdo protegido fornecido localmente pelo usuário
+/PlusAlphaProject/disc-a/*
+!/PlusAlphaProject/disc-a/README.md
+/PlusAlphaProject/local/
+/PlusAlphaProject/generated/
+/PlusAlphaProject/saves/
+/PlusAlphaProject/cache/
+
+# Builds e pacotes locais
+/PlusAlphaProject/build*/
+/PlusAlphaProject/dist/
+/PlusAlphaProject/release-stage/
+**/CMakeFiles/
+**/CMakeCache.txt
+**/cmake_install.cmake
+**/compile_commands.json
+**/.ninja_deps
+**/.ninja_log
+**/build.ninja
+*.exe
+*.dll
+*.pdb
+*.obj
+*.o
+*.a
+*.lib
+
+# Imagens, BIOS, executáveis extraídos e saves
+*.bin
+*.cue
+*.iso
+*.img
+*.sub
+*.ccd
+*.chd
+*.mcd
+*.mcr
+*.sav
+*.state
+
+# Diagnósticos e preferências locais
+*.log
+*.jsonl
+psx_crash.txt
+psx_diag.txt
+psx_dispatch_misses.txt
+psx_err.txt
+psx_out.txt
+settings.toml
+game_options.toml
+keybinds.ini
+input.ini
+
+# Editores e caches
+/.agents/
+/.vscode/
+/.idea/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+Thumbs.db
+.DS_Store
