@@ -1,7 +1,6 @@
 # Builds e saídas regeneráveis
 /build/
 /build-*/
-/generated/
 /dist/
 /release-stage/
 /CMakeFiles/
