@@ -20,8 +20,8 @@ window_title = "EX Plus Alpha"
 controller = "digital"
 memcard_dir = "saves"
 disc_speed = "1x"
-turbo_loads = false
-bios_hle = false
+turbo_loads = true
+bios_hle = true
 overlay_cache = true
 
 [controller]

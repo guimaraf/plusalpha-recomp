@@ -42,14 +42,14 @@ jobs:
     - name: Configure and Build Game Runtime (Linux)
       if: runner.os == 'Linux'
       run: |
-        cmake -S PlusAlphaProject -B PlusAlphaProject/build -G Ninja -DCMAKE_BUILD_TYPE=Release
+        cmake -S PlusAlphaProject -B PlusAlphaProject/build -G Ninja -DCMAKE_BUILD_TYPE=Release -DPSX_LAUNCHER=ON
         cmake --build PlusAlphaProject/build --config Release --target psx-runtime
 
     - name: Configure and Build Game Runtime (Windows)
       if: runner.os == 'Windows'
       shell: msys2 {0}
       run: |
-        cmake -S PlusAlphaProject -B PlusAlphaProject/build-ucrt -G Ninja -DCMAKE_BUILD_TYPE=Release
+        cmake -S PlusAlphaProject -B PlusAlphaProject/build-ucrt -G Ninja -DCMAKE_BUILD_TYPE=Release -DPSX_LAUNCHER=ON
         cmake --build PlusAlphaProject/build-ucrt --target psx-runtime
 
     - name: Prepare Release Artifact (Linux)
