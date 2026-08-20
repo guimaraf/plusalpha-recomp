@@ -22,7 +22,7 @@ memcard_dir = "saves"
 disc_speed = "1x"
 turbo_loads = true
 bios_hle = true
-overlay_cache = true
+overlay_cache = false
 
 [controller]
 default_mode = "digital"

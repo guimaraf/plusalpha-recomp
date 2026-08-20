@@ -61,6 +61,9 @@ jobs:
       run: |
         mkdir -p release
         cp PlusAlphaProject/build/StreetFighterEXPlusAlphaRecomp release/ || true
+        cp -r PlusAlphaProject/build/fonts release/ || true
+        cp -r PlusAlphaProject/build/img release/ || true
+        cp PlusAlphaProject/build/launcher.rml release/ || true
         cp PlusAlphaProject/game.toml release/ || true
         cp PlusAlphaProject/README.md release/ || true
         cd release
@@ -72,6 +75,9 @@ jobs:
       run: |
         mkdir -p release
         cp PlusAlphaProject/build-ucrt/StreetFighterEXPlusAlphaRecomp.exe release/ || true
+        cp -r PlusAlphaProject/build-ucrt/fonts release/ || true
+        cp -r PlusAlphaProject/build-ucrt/img release/ || true
+        cp PlusAlphaProject/build-ucrt/launcher.rml release/ || true
         cp PlusAlphaProject/game.toml release/ || true
         cp PlusAlphaProject/README.md release/ || true
 
