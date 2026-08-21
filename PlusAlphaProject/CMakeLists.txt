@@ -64,4 +64,12 @@ if(CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
         set_property(SOURCE ${ASSET_FILE} PROPERTY VS_DEPLOYMENT_CONTENT 1)
         set_property(SOURCE ${ASSET_FILE} PROPERTY VS_DEPLOYMENT_LOCATION "Assets")
     endforeach()
+
+    # Add SDL2.dll to the package
+    file(GLOB SDL2_DLL "${PSXRECOMP_ROOT}/../sdl2-msvc/SDL2-*/lib/x64/SDL2.dll")
+    if(SDL2_DLL)
+        target_sources(psx-runtime PRIVATE ${SDL2_DLL})
+        set_property(SOURCE ${SDL2_DLL} PROPERTY VS_DEPLOYMENT_CONTENT 1)
+        set_property(SOURCE ${SDL2_DLL} PROPERTY VS_DEPLOYMENT_LOCATION ".")
+    endif()
 endif()
