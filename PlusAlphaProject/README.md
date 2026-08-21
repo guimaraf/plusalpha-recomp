@@ -1,26 +1,41 @@
 # Street Fighter EX Plus Alpha Recomp
 
+Port-specific configuration of **Street Fighter EX Plus Alpha**, USA edition `SLUS-00548`, for the PSXRecomp framework.
+
+## Included Content
+
+- `game.toml`: game identity and configuration;
+- `StreetFighterEXPlusAlphaRecomp.exe`: the statically recompiled executable;
+- `launcher.rml`, `fonts/`, `img/`: frontend UI files.
+
+## Exclusively Local Content (Required for play)
+
+- CUE/BIN image of the game provided by the user;
+- SCPH1001.BIN BIOS provided by the user;
+- `saves/`: memory cards and saves (created automatically on run).
+
+These files are protected by copyright and are not part of the distribution.
+The framework used by the port is located in `guimaraf/psxrecomp-plusalpha`.
+
+---
+## Português do Brasil
+
+# Street Fighter EX Plus Alpha Recomp
+
 Configuração específica do port de **Street Fighter EX Plus Alpha**, edição USA
 `SLUS-00548`, para o framework PSXRecomp.
 
-## Conteúdo versionado
+## Conteúdo Incluso
 
 - `game.toml`: identidade e configuração do jogo;
-- `seeds/entry_funcs.txt`: entradas estáticas aprovadas da baseline;
-- `tools/extract_psx_exe.py`: extração local do executável principal;
-- `tools/generate_game.ps1`: geração validada dos fontes do jogo;
-- `tools/configure_runtime.ps1`: configuração do runtime com MSYS2 UCRT64;
-- `DISC.md` e `BIOS.md`: hashes das únicas entradas aceitas.
+- `StreetFighterEXPlusAlphaRecomp.exe`: o executável recompilado do jogo;
+- `launcher.rml`, `fonts/`, `img/`: arquivos de interface do frontend.
 
-## Conteúdo exclusivamente local
+## Conteúdo exclusivamente local (Necessário para jogar)
 
-- `disc-a/`: imagem CUE/BIN fornecida pelo usuário;
-- `local/`: executável `SLUS_005.48` extraído pelo usuário;
-- `generated/`: fontes produzidos pelo recompiler;
-- `build*/`: artefatos de compilação;
-- `saves/`: cartões de memória e saves.
+- Imagem CUE/BIN do jogo fornecida pelo usuário;
+- BIOS SCPH1001.BIN fornecida pelo usuário;
+- `saves/`: cartões de memória e saves (criados automaticamente ao rodar).
 
-Esses diretórios são ignorados pelo Git e não fazem parte da distribuição.
-
-O framework usado pelo port fica em `../psxrecomp/` como submódulo fixado. Veja
-`BUILD_LOCAL.md` para preparar uma cópia local.
+Esses arquivos são protegidos por direitos autorais e não fazem parte da distribuição.
+O framework usado pelo port está localizado em `guimaraf/psxrecomp-plusalpha`.
