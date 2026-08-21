@@ -25,7 +25,7 @@
 
   <Applications>
     <Application Id="App"
-                 Executable="psx-runtime.exe"
+                 Executable="StreetFighterEXPlusAlphaRecomp.exe"
                  EntryPoint="StreetFighterEXPlusAlphaRecomp.App">
       <uap:VisualElements DisplayName="Street Fighter EX Plus Alpha Recomp"
                           Description="Street Fighter EX Plus Alpha Recomp for UWP"

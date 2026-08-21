@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.20)
 project(StreetFighterEXPlusAlphaRecomp C CXX)
 
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
+if(MSVC)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /std:c11 /experimental:c11atomics")
+endif()
 
 set(PSXRECOMP_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../psxrecomp" CACHE PATH
     "Caminho para o snapshot independente do PSXRecomp")
