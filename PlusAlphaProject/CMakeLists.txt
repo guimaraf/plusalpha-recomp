@@ -27,3 +27,38 @@ psxrecomp_add_runtime_target(psx-runtime
     WINDOW_TITLE "StreetFighterEXPlusAlphaRecomp"
     DEFAULT_GAME_CONFIG_PATH "game.toml"
 )
+
+if(CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+    message(STATUS "Configuring UWP AppX properties for psx-runtime")
+    
+    # Enable WinRT component property so VS packages it properly
+    set_property(TARGET psx-runtime PROPERTY VS_WINRT_COMPONENT TRUE)
+    
+    # Add Package.appxmanifest to the project
+    target_sources(psx-runtime PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/Package.appxmanifest")
+    set_property(SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/Package.appxmanifest" PROPERTY VS_DEPLOYMENT_CONTENT 1)
+
+    # Copy and bundle configuration files
+    file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/game.toml" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/")
+    file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/input.ini" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/")
+
+    target_sources(psx-runtime PRIVATE 
+        "${CMAKE_CURRENT_BINARY_DIR}/game.toml"
+        "${CMAKE_CURRENT_BINARY_DIR}/input.ini"
+    )
+
+    set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/game.toml" PROPERTY VS_DEPLOYMENT_CONTENT 1)
+    set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/input.ini" PROPERTY VS_DEPLOYMENT_CONTENT 1)
+
+    # Set the deployment location relative to Appx
+    set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/game.toml" PROPERTY VS_DEPLOYMENT_LOCATION ".")
+    set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/input.ini" PROPERTY VS_DEPLOYMENT_LOCATION ".")
+
+    # Add Assets
+    file(GLOB_RECURSE UWP_ASSETS "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/Assets/*.*")
+    target_sources(psx-runtime PRIVATE ${UWP_ASSETS})
+    foreach(ASSET_FILE ${UWP_ASSETS})
+        set_property(SOURCE ${ASSET_FILE} PROPERTY VS_DEPLOYMENT_CONTENT 1)
+        set_property(SOURCE ${ASSET_FILE} PROPERTY VS_DEPLOYMENT_LOCATION "Assets")
+    endforeach()
+endif()
