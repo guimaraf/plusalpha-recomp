@@ -110,9 +110,20 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Setup MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        uwp: true
+
+    - name: Download SDL2 MSVC
+      shell: pwsh
+      run: |
+        Invoke-WebRequest -Uri "https://github.com/libsdl-org/SDL/releases/download/release-2.30.2/SDL2-devel-2.30.2-VC.zip" -OutFile "SDL2-devel.zip"
+        Expand-Archive -Path "SDL2-devel.zip" -DestinationPath "sdl2-msvc"
+
     - name: Configure CMake for UWP
       run: |
-        cmake -S PlusAlphaProject -B PlusAlphaProject/build-uwp -G "Visual Studio 17 2022" -A x64 -DCMAKE_SYSTEM_NAME=WindowsStore -DCMAKE_SYSTEM_VERSION="10.0"
+        cmake -S PlusAlphaProject -B PlusAlphaProject/build-uwp -A x64 -DCMAKE_SYSTEM_NAME=WindowsStore -DCMAKE_SYSTEM_VERSION="10.0"
 
     - name: Build UWP App
       run: |
