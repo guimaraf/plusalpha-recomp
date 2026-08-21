@@ -49,6 +49,7 @@ settings.toml
 game_options.toml
 keybinds.ini
 input.ini
+!UWP/input.ini
 
 # Editores e caches
 /.agents/
