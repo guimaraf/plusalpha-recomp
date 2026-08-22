@@ -3369,3 +3369,180 @@
 0x8010FAEC
 0x80160480
 0x80160FB4
+
+# Micro-lote S1-214 aprovado em p1-run-235: cinco raizes formais alcancam
+# 14 corpos, dos quais dois ja eram estaticos. Os 12 corpos novos somam
+# 7.280 bytes/1.820 palavras de corpo e acrescentam 1.702 palavras efetivamente
+# novas ao manifesto. As 34 referencias externas para interiores sao apenas
+# DATA das tabelas limitadas de 17 entradas em 0x801AB6E4 e 0x801AB774.
+# Os jr v0 em 0x8010F0B8 e 0x8010F4B0 possuem limite local comprovado, dois
+# destinos internos cada e default CPS. O jalr v0 em 0x801956AC preserva latch,
+# link guest 0x801956B4, delay slot e fallback generico. Mult/HI-LO e as 43
+# operacoes COP2/GTE de 0x8013051C foram auditados; nao ha SYSCALL, BREAK,
+# divisao, COP0 ou acesso desalinhado. SHA-256 dos 12 corpos novos:
+# 94b379d5fac4002f162d05373c83c7c45e67a5021000634aa07f9dc1991a795e.
+# P1-run-235 confirmou 14 pares F/R, vet com 275 ACCEPT, 114 WARN conhecidos
+# e zero REJECT, e manifesto de 77.347/195.584 palavras (39,5467%), 11.070
+# blocos, 2.423 calls, 569 alvos, 4.497 branches, 8.924 delay slots e 93
+# indiretas. D.Dark teve 279/318 PCs modified e Ken 268/347, com paginas finais
+# vazias e nenhum corpo novo nos misses. Zero aborto, bloqueio, divergencia,
+# mismatch, invalidacao, revalidacao ou dispatch nativo. Com OBS aberto, agua
+# correta, 60 FPS cravados nas duas rotas e nenhuma regressao manual percebida.
+0x8013051C
+0x8015932C
+0x801600E0
+0x8012DD70
+0x8012DE74
+
+# Micro-lote S1-215 aprovado em p1-run-236: oito raizes formais promovem dez
+# corpos novos, 7.852 bytes/1.963 palavras. Todos possuem fronteira exata,
+# retorno unico e zero referencia externa para interior ou literal alinhado para interior;
+# o unico literal encontrado, em 0x801B1B78, aponta exatamente para a entrada
+# 0x80144AD8. Nao ha fluxo computado, SYSCALL, BREAK, divisao ou COP0. Os seis
+# pares mult/mflo, as 142 operacoes COP2/GTE e todos os pares LWL/LWR e
+# SWL/SWR foram auditados. SHA-256 concatenado dos dez corpos:
+# 0b1e2ddd97e64d66390a64bfe38ad6a5f41e9f65abd1b03f3dab542cbef0226f.
+# P1-run-236 confirmou os dez pares F/R, vet com 283 ACCEPT, 114 WARN
+# conhecidos e zero REJECT, e manifesto de 79.310/195.584 palavras
+# (40,5504%), 11.207 blocos, 2.461 calls, 572 alvos, 4.548 branches, 9.035
+# delay slots e as mesmas 93 indiretas de p1-run-235. D.Dark teve 288/316 PCs
+# modified e Ken 268/318, com paginas finais vazias e nenhum corpo promovido
+# nos misses. Zero aborto, bloqueio, divergencia, mismatch, invalidacao,
+# revalidacao ou dispatch nativo. Com OBS aberto, agua correta, 60 FPS cravados
+# nas duas rotas e nenhuma regressao manual percebida.
+0x80140DF8
+0x801411D8
+0x80141454
+0x80142500
+0x801426D8
+0x801427EC
+0x8014299C
+0x80144AD8
+
+# Micro-lote S1-216 aprovado em p1-run-237: a raiz formal 0x80125E64 promove
+# nove corpos, 4.440 bytes/1.110 palavras de corpo e 1.093 palavras novas no
+# manifesto. As 35 referencias externas para interiores sao exclusivamente
+# DATA da tabela limitada 0x801AB7C4. O jr v0 em 0x80122D94 usa indice guardado
+# menor que 35, quatro destinos internos e default CPS. O jalr v0 em 0x801262A0
+# preserva latch, link guest 0x801262A8, delay slot NOP e fallback generico para
+# a tabela 0x801B037C, com 35 entradas e 24 callbacks unicos. Divisoes, oito
+# BREAK defensivos, HI/LO e COP2/GTE foram auditados; nao ha SYSCALL, COP0 ou
+# acesso desalinhado. SHA-256 concatenado dos nove corpos:
+# 421a1b56335c4ad4a2f00218bab3ffce87581b93973d29db116ad1a804263b9b.
+# P1-run-237 confirmou nove pares F/R, vet com 284 ACCEPT, 114 WARN conhecidos
+# e zero REJECT, e manifesto de 80.403/195.584 palavras (41,1092%), 11.361
+# blocos, 2.503 calls, 586 alvos, 4.607 branches, 9.152 delay slots e 95
+# indiretas. D.Dark teve 272/305 PCs modified e Ken 257/307, com paginas finais
+# vazias e nenhum corpo promovido nos misses. Zero aborto, bloqueio, divergencia,
+# mismatch, invalidacao, revalidacao ou dispatch nativo. Com OBS aberto, agua
+# correta, 60 FPS cravados nas duas rotas e nenhuma regressao manual percebida.
+0x80125E64
+
+# Micro-lote S1-217 aprovado em p1-run-238: a raiz formal 0x80104D10 promove
+# 20 corpos, 23.304 bytes/5.826 palavras de corpo e 2.420 palavras novas no
+# manifesto. As 19 referencias externas para interiores sao exclusivamente DATA
+# das tabelas 0x801AD894, 0x801AD8B4 e 0x801AD8CC; os tres switches internos de
+# 0x8018919C tem guardas e default CPS. Sete jalr v0 genericos preservam link e
+# delay slot, e o stub BIOS 0x8019324C preserva CPS. Nao ha SYSCALL, BREAK,
+# divisao, COP0, COP2 ou acesso desalinhado; os seis pares mult/mfhi sao magic
+# divisions corretas. SHA-256 concatenado dos 20 corpos:
+# 746bfae980829ef978e258364f60a210e3895f5760bc387bc6985719cf307831.
+# P1-run-238 confirmou 20 pares F/R, vet com 285 ACCEPT, 114 WARN conhecidos e
+# zero REJECT, e manifesto de 82.823/195.584 palavras (42,3465%), 11.704
+# blocos, 2.611 calls, 611 alvos, 4.749 branches, 9.448 delay slots e 103
+# indiretas. Paginas finais vazias, nenhum corpo promovido nos misses e zero
+# aborto, bloqueio, divergencia, mismatch, invalidacao, revalidacao ou dispatch
+# nativo. Com OBS aberto, agua correta, 60 FPS cravados nas duas rotas e nenhuma
+# regressao manual percebida.
+0x80104D10
+
+# Micro-lote S1-218 aprovado em p1-run-239: tres raizes formais contiguas,
+# 0x80105A80, 0x80105D20 e 0x801060FC, promovem seis corpos e 3.920 bytes/980
+# palavras. A closure direta contem 0x8012C7B0, 0x80125E1C e 0x8012C9D4. As
+# referencias externas alcancam somente entradas formais; a tabela 0x801AF9A0
+# contem 0x80104D10 e as tres novas entradas. O jalr v0 em 0x80125E4C usa a
+# tabela ja auditada 0x801B037C e preserva link, delay NOP e fallback CPS. Ha
+# dez operacoes COP2/GTE em 0x8012C9D4, mas nao ha BREAK, SYSCALL, divisao,
+# HI/LO, COP0 ou acesso desalinhado. SHA-256 concatenado dos seis corpos:
+# bc4ad7aaa82a31d1cd42acc5950d9752428d9f04403c63e4846331ae9e73f3f9.
+# P1-run-239 confirmou seis pares F/R, vet com 288 ACCEPT, 114 WARN conhecidos
+# e zero REJECT, e manifesto de 83.803/195.584 palavras (42,8476%), 11.856
+# blocos, 2.651 calls, 618 alvos, 4.821 branches, 9.583 delay slots e 104
+# indiretas. Paginas finais vazias, nenhum corpo promovido nos misses e zero
+# aborto, bloqueio, divergencia, mismatch, invalidacao, revalidacao ou dispatch
+# nativo. Com OBS aberto, agua correta, 60 FPS cravados nas duas rotas e nenhuma
+# regressao manual percebida.
+0x80105A80
+0x80105D20
+0x801060FC
+
+# Micro-lote S1-219 aprovado em p1-run-240: a raiz formal 0x80117AC4 fecha
+# tres corpos contiguos, 0x80117AC4, 0x80117BB4 e 0x80117A44, totalizando
+# 1.388 bytes/347 palavras. A closure e 0x80117AC4 -> 0x80117BB4 ->
+# 0x80117A44. O Ghidra confirmou fronteiras exatas e nenhuma referencia
+# externa para interior; a unica referencia DATA externa e 0x801AFC78 para a
+# entrada 0x80117AC4. O jalr v0 em 0x80117A94 usa uma tabela de callbacks
+# indexada em RAM, preservando latch, link, delay slot e fallback CPS. Ha 54
+# operacoes COP2/GTE, incluindo cinco comandos GTE, e dois pares MULT/MFHI;
+# nao ha BREAK, SYSCALL, divisao, COP0 ou acesso desalinhado. SHA-256
+# concatenado dos tres corpos:
+# bb604c22f064223564204d01a5bf1e519e880d856982311ee5bb40bdec09372f.
+# P1-run-240 confirmou 84.150/195.584 palavras (43,0250%), 11.885 blocos,
+# 2.662 calls, 626 alvos, 4.831 branches, 9.609 delay slots e 105 indiretas;
+# vet com 289 ACCEPT, 114 WARN conhecidos e zero REJECT. As 104 indiretas
+# anteriores permaneceram identicas, os tres corpos nao apareceram nos misses
+# em nenhuma rota e nao houve evento de seguranca. Com OBS aberto, agua
+# correta, 60 FPS cravados nas duas rotas e nenhuma regressao manual percebida.
+0x80117AC4
+
+# Micro-lote S1-220 aprovado em p1-run-241: as cinco raizes formais abaixo
+# fecham 14 corpos, 3.796 bytes/949 palavras. O Ghidra confirmou fronteiras
+# exatas, nenhuma referencia externa para interior e somente referencias DATA
+# alinhadas as entradas. Ha dois callbacks CPS (0x80103E38 e 0x8018CFF8), com
+# alvo, link e delay slot preservados, e um vetor BIOS B0/0F provado em
+# 0x80193250. Foram emitidos 15 opcodes COP2/GTE; nao ha BREAK, SYSCALL,
+# divisao, COP0 ou acesso desalinhado. SHA-256 concatenado dos 14 corpos:
+# d6f906419d6ab5c764c922129017b00e6f3125bf528eea02fdc69f9ddae3bbac.
+# P1-run-241 confirmou 85.099/195.584 palavras (43,5102%), 12.048 blocos,
+# 2.719 calls, 645 alvos, 4.884 branches, 9.750 delay slots e 108 indiretas;
+# vet com 294 ACCEPT, 114 WARN conhecidos e zero REJECT. As 105 indiretas
+# anteriores permaneceram identicas, os 14 corpos nao apareceram nos misses
+# em nenhuma rota e nao houve evento de seguranca. Com OBS aberto, agua correta,
+# 60 FPS cravados nas duas rotas e nenhuma regressao manual percebida.
+0x80103D58
+0x80104938
+0x8015A730
+0x80162C4C
+0x8018CEB0
+
+# Micro-lote S1-221 aprovado em p1-run-242: as 16 raizes formais abaixo fecham
+# 19 corpos, 5.732 bytes/1.433 palavras. O Ghidra confirmou fronteiras exatas,
+# nenhuma referencia externa para interior e seis referencias DATA alinhadas as
+# entradas. Os callbacks CPS em 0x80103358, 0x801317CC e 0x8019FE2C preservam
+# alvo, link e delay slot; as 108 indiretas anteriores ficaram identicas. Ha um
+# DIV com os dois traps BREAK canonicos e oito opcodes COP2/GTE, todos emitidos
+# pelo recompiler. SHA-256 concatenado dos 19 corpos:
+# e4c02431814f07be5480603d58e7ab63eb203c886e8197a6a3a33611f80cdd58.
+# P1-run-242 confirmou 86.532/195.584 palavras (44,2429%), 12.300 blocos,
+# 2.769 calls, 657 alvos, 5.004 branches, 9.971 delay slots e 111 indiretas;
+# vet com 302 ACCEPT, 122 WARN conhecidos e zero REJECT. Os 19 corpos nao
+# apareceram nos misses em nenhuma rota e nao houve evento de seguranca. A rota
+# D.Dark mudou para perfil de 78,73% estatico e 6,88% interpretador; Ken
+# confirmou perfil estatico alto. Com OBS aberto, agua correta, 60 FPS cravados
+# nas duas rotas e nenhuma regressao manual percebida.
+0x80103300
+0x801065DC
+0x801109A8
+0x801199D8
+0x80123CA8
+0x80128D74
+0x8012DCA0
+0x801315AC
+0x8014E3C4
+0x80150318
+0x8015D040
+0x8015D3A8
+0x8015D718
+0x8019370C
+0x8019FD8C
+0x8019FF10
