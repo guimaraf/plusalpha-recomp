@@ -3609,3 +3609,29 @@
 0x8019DBE8
 0x80142440
 0x80150310
+
+# Micro-lote S1-224 aprovado em p1-run-245: as 13 raizes formais abaixo fecham
+# 15 corpos, 5.192 bytes/1.298 palavras. O Ghidra confirmou fronteiras exatas,
+# zero referencias externas para interior e zero fluxo computado. Os literais
+# DATA 0x801B03BC -> 0x80128014 e 0x801B1B90 -> 0x80147F98 chegam exatamente
+# a entradas. Os corpos incluem 17 operacoes COP2/GTE, seis mult, quatro mflo,
+# quatro lwc2 e tres swc2, todos emitidos integralmente. SHA-256 concatenado:
+# 30563bc45435ce2c9fd9c3a537a1d079f31cc7e1bbb0d711a79e356b59db3191.
+# P1-run-245 confirmou 90.517/195.584 palavras (46,2804%), 12.841 blocos,
+# 2.923 calls, 681 alvos, 5.193 branches, 10.421 delay slots e 111 indiretas;
+# vet com 341 ACCEPT, 132 WARN conhecidos e zero REJECT. Os 15 corpos nao
+# apareceram nos misses em nenhuma rota. Com OBS aberto, agua correta, 60 FPS
+# cravados nas duas rotas e nenhuma regressao manual percebida.
+0x80128014
+0x801280AC
+0x801281AC
+0x80140858
+0x80140938
+0x80140A8C
+0x80140B6C
+0x80147F98
+0x80148040
+0x80148184
+0x80168EEC
+0x8016CD84
+0x8016E964

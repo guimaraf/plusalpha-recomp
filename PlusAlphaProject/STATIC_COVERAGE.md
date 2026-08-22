@@ -12,10 +12,11 @@ históricos S1-214 a S1-222.
 | S1-221 validado | 424 | 86.532 / 195.584 | 44,2429% | 12.300 | 111 |
 | S1-222 validado | 457 | 89.157 / 195.584 | 45,5850% | 12.711 | 111 |
 | S1-223 validado | 460 | 89.219 / 195.584 | 45,6167% | 12.729 | 111 |
+| S1-224 validado | 473 | 90.517 / 195.584 | 46,2804% | 12.841 | 111 |
 
-O S1-223 acrescentou 62 palavras únicas e 3 seeds à baseline anterior. A origem
-histórica registrou 329 `ACCEPT`, 131 `WARN` estruturais conhecidos e zero
-`REJECT`.
+O S1-224 acrescentou 1.298 palavras únicas e 13 seeds à baseline anterior. A
+origem histórica registrou 341 `ACCEPT`, 132 `WARN` estruturais conhecidos e
+zero `REJECT`.
 
 ## Situação da validação
 
@@ -41,6 +42,11 @@ baseline estável para os cenários testados.
 O S1-223 foi revalidado em build limpa UCRT64 (`buildClean-ucrt-s1-223`), por
 aproximadamente 20 minutos de gameplay, sem lag percebido e com FPS e frametime
 estáveis. Assim, 45,6167% passa a ser a baseline estável para os cenários
+testados.
+
+O S1-224 foi revalidado em build limpa UCRT64 (`buildClean-ucrt-s1-224`), por
+aproximadamente 20 minutos de gameplay, sem lag percebido e com FPS e frametime
+estáveis. Assim, 46,2804% passa a ser a baseline estável para os cenários
 testados.
 
 Os próximos testes de desempenho devem usar uma build limpa, sem observadores,
