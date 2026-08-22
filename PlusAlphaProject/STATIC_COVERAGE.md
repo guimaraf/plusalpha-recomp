@@ -2,17 +2,18 @@
 
 ## Estado desta revisão
 
-Esta revisão reaplica, sobre a baseline estável `f0c5753`, somente os
-micro-lotes históricos S1-214 a S1-220 do checkpoint `a4e8913`.
+Esta revisão reaplica, sobre a baseline estável `f0c5753`, os micro-lotes
+históricos S1-214 a S1-222.
 
 | Estado | Seeds | Palavras únicas | Cobertura | Blocos | Indiretas |
 |---|---:|---:|---:|---:|---:|
 | Baseline `f0c5753` | 384 | 75.645 / 195.584 | 38,6765% | 10.809 | 90 |
 | S1-220 validado | 408 | 85.099 / 195.584 | 43,5102% | 12.048 | 108 |
-| Candidato S1-221 | 424 | 86.532 / 195.584 | 44,2429% | 12.300 | 111 |
+| S1-221 validado | 424 | 86.532 / 195.584 | 44,2429% | 12.300 | 111 |
+| S1-222 validado | 457 | 89.157 / 195.584 | 45,5850% | 12.711 | 111 |
 
-O S1-221 acrescenta 1.433 palavras únicas e 16 seeds à baseline aprovada. A
-origem histórica registrou 302 `ACCEPT`, 122 `WARN` estruturais conhecidos e
+O S1-222 acrescenta 2.625 palavras únicas e 33 seeds à baseline aprovada. A
+origem histórica registrou 328 `ACCEPT`, 129 `WARN` estruturais conhecidos e
 zero `REJECT`.
 
 ## Situação da validação
@@ -26,9 +27,15 @@ Assim, 43,5102% passa a ser a baseline estável para os cenários testados. A
 aprovação não equivale a cobertura total de personagens, cenários, modos e
 transições: cada novo lote continuará exigindo contraprova no projeto atual.
 
-O S1-221 está aplicado somente como **candidato**. Ele ainda exige geração,
-auditoria do novo generated e validação local antes de substituir a baseline
-de 43,5102%.
+O S1-221 foi revalidado em build limpa UCRT64 (`buildClean-ucrt-s1-221`), por
+aproximadamente 20 minutos de gameplay, sem lag percebido e com FPS e frametime
+estáveis sob observação externa pelo RivaTuner. Assim, 44,2429% passa a ser a
+baseline estável para os cenários testados.
+
+O S1-222 foi revalidado em build limpa UCRT64 (`buildClean-ucrt-s1-222`), por
+aproximadamente 20 minutos de gameplay, sem lag percebido e com FPS e frametime
+estáveis sob observação externa pelo RivaTuner. Assim, 45,5850% passa a ser a
+baseline estável para os cenários testados.
 
 Os próximos testes de desempenho devem usar uma build limpa, sem observadores,
 sem autocaptura/autocompilação de overlays e com cache somente para leitura.

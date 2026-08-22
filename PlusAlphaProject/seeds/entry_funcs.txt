@@ -3546,3 +3546,50 @@
 0x8019370C
 0x8019FD8C
 0x8019FF10
+
+# Micro-lote S1-222 aprovado em p1-run-243: as 33 raizes formais abaixo fecham
+# 35 corpos, 10.500 bytes/2.625 palavras. O Ghidra confirmou fronteiras exatas,
+# nenhuma referencia externa para interior, zero fluxo computado e uma unica
+# referencia DATA alinhada a entrada 0x8019F890. Nao ha CPS, COP2/GTE, BREAK,
+# SYSCALL, DIV ou HI/LO; ha 76 acessos desalinhados integralmente emitidos.
+# SHA-256 concatenado dos 35 corpos:
+# f3f4d4cdb4a161077cb7390a4e69831e9c77ecfa62b98d86c0ba0793c59b231a.
+# P1-run-243 confirmou 89.157/195.584 palavras (45,5850%), 12.711 blocos,
+# 2.881 calls, 671 alvos, 5.155 branches, 10.305 delay slots e 111 indiretas;
+# vet com 328 ACCEPT, 129 WARN conhecidos e zero REJECT. As 111 indiretas
+# anteriores permaneceram identicas, os 35 corpos nao apareceram nos misses
+# em nenhuma rota e nao houve evento de seguranca. Com OBS aberto, agua
+# correta, 60 FPS cravados nas duas rotas e nenhuma regressao manual percebida.
+0x80175F60
+0x8017B734
+0x8016345C
+0x8017D454
+0x8016F1B0
+0x8017DBC0
+0x801A43FC
+0x801A432C
+0x8019F890
+0x80169364
+0x801693A4
+0x80111AB4
+0x80163348
+0x80111AD4
+0x8013CA24
+0x801698C4
+0x80111AFC
+0x801A7AAC
+0x8018ECF8
+0x801A3B70
+0x801A8BA4
+0x80123668
+0x8019FC14
+0x8019FD3C
+0x80101D68
+0x801AB0B8
+0x8010F624
+0x8018C850
+0x8019FB18
+0x8019FD10
+0x8019FFB8
+0x801A6668
+0x801682D8
