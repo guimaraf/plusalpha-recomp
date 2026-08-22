@@ -3593,3 +3593,19 @@
 0x8019FFB8
 0x801A6668
 0x801682D8
+
+# Micro-lote S1-223 aprovado em p1-run-244: as tres raizes formais abaixo
+# fecham tres corpos, 248 bytes/62 palavras. O Ghidra confirmou fronteiras
+# exatas, zero referencias externas para interior e zero fluxo computado; o
+# literal DATA em 0x801B1B68 chega exatamente a 0x80142440. O corpo 0x8019DBE8
+# contem nove operacoes COP2/GTE e seis lwc2 integralmente emitidas. O thunk
+# BIOS 0x8019FB64 foi auditado, mas permaneceu excluido como entrada interior.
+# SHA-256 concatenado: 1caa26cd91d60fb6279d3f330a190264c5612b178a657c4fbbcac72c8ba4c717.
+# P1-run-244 confirmou 89.219/195.584 palavras (45,6167%), 12.729 blocos,
+# 2.885 calls, 674 alvos, 5.162 branches, 10.323 delay slots e 111 indiretas;
+# vet com 329 ACCEPT, 131 WARN conhecidos e zero REJECT. Os tres corpos nao
+# apareceram nos misses em nenhuma rota. Com OBS aberto, agua correta, 60 FPS
+# cravados nas duas rotas e nenhuma regressao manual percebida.
+0x8019DBE8
+0x80142440
+0x80150310
