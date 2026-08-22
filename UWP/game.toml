@@ -2,7 +2,7 @@
 name = "Street Fighter EX Plus Alpha"
 id = "SLUS-00548"
 exe = "local/SLUS_005.48"
-disc = "disc/game.cue"
+disc = "../disc/game.cue"
 load_address = "0x80101000"
 entry_pc = "0x80101008"
 text_size = "0x000BF000"
@@ -18,7 +18,7 @@ discovery = "reachable"
 debug_port = 4531
 window_title = "EX Plus Alpha"
 controller = "digital"
-memcard_dir = "saves"
+memcard_dir = "../saves"
 disc_speed = "1x"
 turbo_loads = true
 bios_hle = true

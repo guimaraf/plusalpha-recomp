@@ -1,77 +1,95 @@
-# Plano de Implementação: Port UWP (Xbox One)
+# Port UWP para Xbox One
 
-Este documento descreve a estratégia técnica passo-a-passo para exportar o projeto **Street Fighter EX Plus Alpha Recomp** para a plataforma UWP (Universal Windows Platform), focada em rodar nativamente no Xbox One via Dev Mode.
+O alvo UWP deste projeto é exclusivo para Xbox (x64, Dev Mode). Os ports desktop permanecem independentes: Windows usa MSYS2 UCRT64/MinGW e Linux usa SDL2 do sistema; ambos mantêm o launcher e seus caminhos atuais.
 
-O plano foi elaborado para garantir que o código permaneça 100% compatível com a versão de PC (Windows/Linux) e que o pacote UWP seja gerado automaticamente pelo GitHub Actions.
+## Contrato de inicialização
 
----
+O Xbox não compila nem exibe o launcher RmlUi. O runtime usa `SDL_GetPrefPath("PSXRecomp", "SLUS-00548")` e trabalha somente dentro da área gravável do pacote:
 
-## Fase 1: Arquitetura Cross-Platform e Sandbox de Arquivos
-
-Aplicativos UWP rodam dentro de uma *Sandbox*. O jogo não tem permissão para ler arquivos arbitrários no sistema ou exibir janelas de diálogo do Windows. Toda a lógica de descoberta de arquivos precisa ser alterada **apenas para UWP**.
-
-### Estratégia de Diretivas
-Toda alteração de código voltada para o UWP no repositório base (`psxrecomp`) deverá ser protegida por macros nativas da Microsoft:
-```cpp
-#if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)
-    // Código exclusivo UWP / Xbox
-#else
-    // Código atual para PC/Linux
-#endif
+```text
+LocalState/
+└── PSXRecomp/
+    └── SLUS-00548/
+        ├── bios/
+        │   └── SCPH1001.BIN
+        ├── config/
+        │   ├── game.toml
+        │   ├── settings.toml
+        │   ├── input.ini
+        │   └── keybinds.ini
+        ├── disc/
+        │   └── game.cue
+        ├── logs/
+        │   └── debug_log.txt
+        └── saves/
+            ├── card1.mcd
+            ├── card2.mcd
+            ├── SLUS-00548.options
+            └── states/
 ```
 
-### O Fluxo do Sistema de Arquivos (`main.cpp`)
-Modificar as funções `resolve_bios_for_runtime` e `resolve_disc_for_runtime` para aplicar o seguinte fluxo no UWP:
-1. Usar a função `SDL_GetPrefPath("psxrecomp", "alphaPlus")` para obter o caminho garantido de leitura/escrita do UWP (a pasta oculta `LocalState` do aplicativo).
-2. Tentar criar a seguinte estrutura de pastas dentro do caminho obtido:
-   - `bios/`
-   - `disc/`
-   - `memoryCard/`
-3. Verificar se os arquivos `SCPH1001.BIN` (na pasta `bios`) e `.cue` (na pasta `disc`) existem.
-4. **Exit Silencioso:** Se os arquivos não existirem, o jogo simplesmente dá um `return 0` (fecha). O jogador usará esse primeiro *boot* para gerar as pastas.
-5. **Carregamento Automático:** Se existirem, a função retorna o caminho completo deles, ignorando qualquer chamada para o Launcher Frontend ou janelas de escolha.
+Na primeira execução, a ausência de `config/game.toml` funciona como sentinela. O jogo cria todos os diretórios, copia os quatro templates editáveis do pacote para `config/`, registra `CREATE_FOLDERS_SUCCESS` em `logs/debug_log.txt` e encerra com sucesso.
 
----
+Depois disso, envie pelo Xbox Device Portal ou FTP:
 
-## Fase 2: Configuração Inicial e Gráficos
+- BIOS: `bios/SCPH1001.BIN` (524288 bytes, CRC32 `37157331`);
+- disco: `disc/game.cue`, com os arquivos referenciados pelo CUE no mesmo diretório.
 
-O UWP no Xbox não suporta OpenGL para Desktop. O jogo deve ser forçado a usar renderização por software, e não depender do frontend gráfico.
+Na execução seguinte o runtime valida os nomes e o conteúdo, abre diretamente o jogo e não chama seletores de arquivo. Ausência ou invalidez é registrada no log e provoca encerramento limpo.
 
-1. **Pulo do Launcher:** Garantir que no UWP a variável que pula o launcher seja verdadeira por padrão (equivalente ao `--no-launcher`), forçando o boot direto.
-2. **Software Renderer:** Forçar o `g_video_renderer = 0` (Modo Software), que é processado pela CPU e renderizado pelo SDL2 nativamente sobre o DirectX 11.
-3. **Controles (Inputs):** Garantir que os slots 1 e 2 do PS1 sejam atrelados ao Gamepad (SDL GameController) por padrão em ambientes UWP, eliminando a dependência do teclado. As configurações ficarão em cópias de `game.toml` e `input.ini` copiadas para o `LocalState` no primeiro boot.
+## Dados modificáveis
 
----
+No UWP, `game.toml`, `settings.toml`, `input.ini`, `keybinds.ini`, memory cards, options, save states e logs ficam em LocalState. Atualizar o AppX não sobrescreve automaticamente arquivos que já foram copiados: para testar um novo template, edite a cópia via Portal/FTP ou remova somente o arquivo correspondente de `config/` antes da próxima inicialização.
 
-## Fase 3: Automação da Build via GitHub Actions
+No Windows e Linux nada disso muda: configurações e saves continuam sob controle do launcher e podem permanecer ao lado do executável.
 
-Atualmente, o Windows usa MSYS2 e MinGW, que **não geram pacotes UWP**. O GitHub Actions deverá usar a toolchain oficial da Microsoft (MSVC).
+## Controles
 
-### Configuração do Workflow (`build.yml`)
-Adicionar um novo *job* de compilação específico para UWP (ou adaptar o de Windows). O ambiente `windows-latest` do GitHub já possui o Visual Studio 2022 e as cargas de trabalho UWP instaladas.
+O `settings.toml` padrão configura P1 e P2 como `auto` e `digital`. O slot 2 permanece conectado no SIO mesmo quando não há segundo controle físico; quando um controle é conectado, o evento `SDL_CONTROLLERDEVICEADDED` atualiza a atribuição. No Xbox, o modo de desenvolvimento que mistura todos os controles no P1 fica desativado por padrão.
 
-**Exemplo do script CMake para UWP:**
-```yaml
-- name: Configure CMake for UWP
-  run: |
-    cmake -S PlusAlphaProject -B PlusAlphaProject/build-uwp `
-          -G "Visual Studio 17 2022" -A x64 `
-          -DCMAKE_SYSTEM_NAME=WindowsStore `
-          -DCMAKE_SYSTEM_VERSION="10.0"
-          
-- name: Build UWP Appx
-  run: |
-    cmake --build PlusAlphaProject/build-uwp --config Release
+## Renderização e SDL2
+
+O perfil Xbox usa SDL2 compilado para `WindowsStore`, linkado estaticamente. O renderer do jogo é forçado para software e o backend OpenGL desktop é substituído por um stub inerte somente nesse perfil. Não é empacotada nenhuma `SDL2.dll` de desktop.
+
+A entrada `SDL_winrt_main_NonXAML.cpp` é compilada isoladamente com `/ZW` e chama `SDL_WinRTRunApp(SDL_main, ...)`. O runtime mantém uma única função `main`, renomeada pelo cabeçalho SDL para o alvo WinRT.
+
+## Fibers
+
+O backend UWP preserva a troca cooperativa no mesmo thread com `ConvertThreadToFiberEx`, `CreateFiberEx`, `SwitchToFiber` e `DeleteFiber`, usando `FIBER_FLAG_FLOAT_SWITCH`. Ele não simula fibers com threads, eventos ou TLS.
+
+## Geração local com Visual Studio 2019
+
+O script `UWP/Generate-UWP-VS2019.ps1` mantém toda a geração local dentro de `UWP-Build/`. Na primeira execução ele baixa o SDL2 2.30.2 oficial, compila e instala somente a dependência WindowsStore em `UWP-Build/_deps/` e gera a solução UWP x64 do jogo com o gerador `Visual Studio 16 2019`.
+
+Pré-requisitos:
+
+- Visual Studio 2019 com **Desenvolvimento para Plataforma Universal do Windows**, ferramentas C++ UWP x64 e Windows 10 SDK;
+- CMake disponível no `PATH` e com o gerador do Visual Studio 2019;
+- acesso à internet na primeira execução para obter o SDL2.
+
+Execute no PowerShell, partindo da raiz do repositório:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\UWP\Generate-UWP-VS2019.ps1
 ```
 
-*Nota: Será necessário ajustar o CMakeLists para criar corretamente o manifesto do pacote (`Package.appxmanifest`) exigido pela Microsoft, ou empacotar manualmente o `.exe` e seus assets com a ferramenta `MakeAppx.exe`.*
+O comando padrão não compila o jogo. Ele gera `UWP-Build/StreetFighterEXPlusAlphaRecomp.sln`, que pode ser aberta no Visual Studio 2019. Para gerar e abrir a solução automaticamente:
 
----
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\UWP\Generate-UWP-VS2019.ps1 -Open
+```
 
-## Fase 4: Experiência do Usuário (Xbox Dev Mode)
+Para compilar ou solicitar o pacote local explicitamente:
 
-Uma vez gerado o `.appx` (ou `.msix`) pelo GitHub Actions, o roteiro do usuário será:
-1. **Instalação:** Instalar o `.appx` no Xbox pelo Device Portal (pelo PC).
-2. **Primeiro Boot:** Iniciar o jogo pelo menu do Xbox. O jogo será aberto e fechado instantaneamente (criando as pastas `bios` e `disc` na Sandbox).
-3. **Transferência de Arquivos:** O jogador abre o recurso de FTP do Xbox Dev Mode (ou a aba File Explorer no Portal), entra na pasta `LocalState/alphaPlus` do aplicativo e copia a BIOS e a ISO (e configura o `game.toml` se quiser).
-4. **Gameplay:** Ao abrir o jogo novamente, ele acha os arquivos e inicia a emulação nativa em 60 FPS sem engasgos.
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\UWP\Generate-UWP-VS2019.ps1 -Build -Configuration Release
+powershell -NoProfile -ExecutionPolicy Bypass -File .\UWP\Generate-UWP-VS2019.ps1 -Package -Configuration Release
+```
+
+`-Package` também compila o alvo `psx-runtime` e direciona a saída sem assinatura para `UWP-Build/AppPackages/`. A instalação no Xbox pode exigir que o Visual Studio ou o processo de distribuição configure certificado e assinatura compatíveis com o console.
+
+Para selecionar explicitamente outro Windows 10 SDK instalado, use `-WindowsSdkVersion`, por exemplo `-WindowsSdkVersion 10.0.19041.0`. O script não apaga uma configuração existente: se `UWP-Build/` pertencer a outro gerador ou não for WindowsStore, ele para e solicita remoção manual do diretório.
+
+## CI e artefato
+
+O job desktop Windows continua exclusivamente em MSYS2 UCRT64/MinGW. O job UWP baixa o código-fonte SDL2, compila uma instalação WindowsStore separada no diretório temporário do runner e gera somente o artefato `EXPlusAlpha-Recomp-UWP-Xbox-x64.zip`.

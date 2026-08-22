@@ -1,0 +1,14 @@
+# Xbox/UWP defaults. This writable copy lives in LocalState/config.
+[video]
+renderer = "software"
+fullscreen = true
+
+[launcher]
+skip_launcher = true
+
+[controller]
+p1_device = "auto"
+p1_mode = "digital"
+p2_device = "auto"
+p2_mode = "digital"
+deadzone = 13106

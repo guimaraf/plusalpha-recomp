@@ -9,6 +9,7 @@
 /PlusAlphaProject/build*/
 /PlusAlphaProject/dist/
 /PlusAlphaProject/release-stage/
+/UWP-Build/
 **/CMakeFiles/
 **/CMakeCache.txt
 **/cmake_install.cmake
@@ -50,6 +51,8 @@ game_options.toml
 keybinds.ini
 input.ini
 !UWP/input.ini
+!UWP/settings.toml
+!UWP/keybinds.ini
 
 # Editores e caches
 /.agents/

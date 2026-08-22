@@ -3,9 +3,6 @@ project(StreetFighterEXPlusAlphaRecomp C CXX)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
-if(MSVC)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /std:c11 /experimental:c11atomics")
-endif()
 
 set(PSXRECOMP_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../psxrecomp" CACHE PATH
     "Caminho para o snapshot independente do PSXRecomp")
@@ -32,44 +29,37 @@ psxrecomp_add_runtime_target(psx-runtime
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
-    message(STATUS "Configuring UWP AppX properties for psx-runtime")
-    
-    # Enable WinRT component property so VS packages it properly
-    set_property(TARGET psx-runtime PROPERTY VS_WINRT_COMPONENT TRUE)
-    
-    # Add Package.appxmanifest to the project
-    target_sources(psx-runtime PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/Package.appxmanifest")
-    set_property(SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/Package.appxmanifest" PROPERTY VS_DEPLOYMENT_CONTENT 1)
+    message(STATUS "Configuring Xbox-only UWP AppX properties for psx-runtime")
 
-    # Copy and bundle configuration files
-    file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/game.toml" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/")
-    file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/input.ini" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/")
-
-    target_sources(psx-runtime PRIVATE 
-        "${CMAKE_CURRENT_BINARY_DIR}/game.toml"
-        "${CMAKE_CURRENT_BINARY_DIR}/input.ini"
+    set_property(TARGET psx-runtime PROPERTY VS_WINRT_APPLICATION TRUE)
+    set_property(TARGET psx-runtime PROPERTY WIN32_EXECUTABLE TRUE)
+    target_sources(psx-runtime PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/Package.appxmanifest"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/SDL_winrt_main_NonXAML.cpp"
     )
+    set_property(SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/SDL_winrt_main_NonXAML.cpp"
+                 PROPERTY COMPILE_OPTIONS "/ZW")
+    set_property(SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/Package.appxmanifest"
+                 PROPERTY VS_DEPLOYMENT_CONTENT 1)
 
-    set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/game.toml" PROPERTY VS_DEPLOYMENT_CONTENT 1)
-    set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/input.ini" PROPERTY VS_DEPLOYMENT_CONTENT 1)
+    # These read-only package files seed LocalState/config on first launch.
+    foreach(CONFIG_FILE game.toml settings.toml input.ini keybinds.ini)
+        configure_file(
+            "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/${CONFIG_FILE}"
+            "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_FILE}"
+            COPYONLY)
+        target_sources(psx-runtime PRIVATE
+            "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_FILE}")
+        set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_FILE}"
+                     PROPERTY VS_DEPLOYMENT_CONTENT 1)
+        set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_FILE}"
+                     PROPERTY VS_DEPLOYMENT_LOCATION ".")
+    endforeach()
 
-    # Set the deployment location relative to Appx
-    set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/game.toml" PROPERTY VS_DEPLOYMENT_LOCATION ".")
-    set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/input.ini" PROPERTY VS_DEPLOYMENT_LOCATION ".")
-
-    # Add Assets
     file(GLOB_RECURSE UWP_ASSETS "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/Assets/*.*")
     target_sources(psx-runtime PRIVATE ${UWP_ASSETS})
     foreach(ASSET_FILE ${UWP_ASSETS})
         set_property(SOURCE ${ASSET_FILE} PROPERTY VS_DEPLOYMENT_CONTENT 1)
         set_property(SOURCE ${ASSET_FILE} PROPERTY VS_DEPLOYMENT_LOCATION "Assets")
     endforeach()
-
-    # Add SDL2.dll to the package
-    file(GLOB SDL2_DLL "${PSXRECOMP_ROOT}/../sdl2-msvc/SDL2-*/lib/x64/SDL2.dll")
-    if(SDL2_DLL)
-        target_sources(psx-runtime PRIVATE ${SDL2_DLL})
-        set_property(SOURCE ${SDL2_DLL} PROPERTY VS_DEPLOYMENT_CONTENT 1)
-        set_property(SOURCE ${SDL2_DLL} PROPERTY VS_DEPLOYMENT_LOCATION ".")
-    endif()
 endif()
