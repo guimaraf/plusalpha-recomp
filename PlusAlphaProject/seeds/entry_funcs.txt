@@ -3712,3 +3712,19 @@
 # 121 indiretas anteriores permaneceram identicas.
 0x80177474
 0x801AA448
+
+# Checkpoint local S1-230, derivado do p1-run-250 historico (S1-229 na
+# numeracao original): as duas raizes abaixo fecham tres corpos, 8.620
+# bytes/2.155 palavras, com ganho unico de 2.155 palavras. Nao ha fluxo
+# computado, referencia externa para
+# interior ou palavra orfa; as 67 chamadas externas ja eram estaticas. A call
+# 0x80198D9C -> 0x80199EFC fecha diretamente o helper, com nove pares
+# MULTU/MFHI emitidos e auditados. SHA-256 concatenado historico:
+# 387616f28fe04d8af88d56bd133b42111e67b4baa9622549241fd93695e5ec53.
+# A validacao local confirmou 97.804/195.584 palavras (50,0061%), 13.877
+# blocos, 3.302 calls, 761 alvos, 5.551 branches, 11.317 delay slots e 126
+# indiretas. O generated passou na auditoria e a build limpa UCRT64 de cerca de
+# 20 minutos permaneceu estavel, sem queda de FPS ou regressao de frametime; as
+# 126 indiretas anteriores permaneceram identicas.
+0x80180F80
+0x80198D7C
