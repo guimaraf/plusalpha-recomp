@@ -3658,3 +3658,22 @@
 0x801A74D0
 0x801A7520
 0x801AB0F4
+
+# Checkpoint local S1-227, reaproveitado do p1-run-247 historico (S1-226 na
+# numeracao original): as seis raizes abaixo fecham oito corpos, 5.036
+# bytes/1.259 palavras de corpo, com ganho unico de 1.146 palavras. O switch em
+# 0x80123F6C possui guarda <65, tabela completa em 0x801AB86C e 12 destinos
+# internos; as 65 referencias a interiores sao somente DATA da tabela. O jalr
+# v0 em 0x80195710 preserva latch, link 0x80195718, delay move a3,s1 e fallback
+# CPS. SHA-256 concatenado historico: a0cf688f0b31529c09b73b53defd863093dd1759ce9df7420601b535262ca0a6.
+# A validacao local confirmou 92.482/195.584 palavras (47,2851%), 13.164
+# blocos, 3.038 calls, 703 alvos, 5.296 branches, 10.701 delay slots e 119
+# indiretas. O generated passou na auditoria e as duas builds UCRT64 de 20
+# minutos permaneceram estaveis; as 117 indiretas anteriores permaneceram
+# identicas.
+0x8010F658
+0x801112B8
+0x8016B0E8
+0x8016B46C
+0x8016BE20
+0x80177934

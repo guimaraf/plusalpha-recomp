@@ -3,7 +3,7 @@
 ## Estado desta revisão
 
 Esta revisão reaplica, sobre a baseline estável `f0c5753`, os micro-lotes
-históricos S1-214 a S1-225.
+históricos S1-214 a S1-225 e o checkpoint local S1-227.
 
 | Estado | Seeds | Palavras únicas | Cobertura | Blocos | Indiretas |
 |---|---:|---:|---:|---:|---:|
@@ -14,10 +14,16 @@ históricos S1-214 a S1-225.
 | S1-223 validado | 460 | 89.219 / 195.584 | 45,6167% | 12.729 | 111 |
 | S1-224 validado | 473 | 90.517 / 195.584 | 46,2804% | 12.841 | 111 |
 | S1-225 validado | 482 | 91.336 / 195.584 | 46,6991% | 13.004 | 117 |
+| S1-227 validado | 488 | 92.482 / 195.584 | 47,2851% | 13.164 | 119 |
 
 O S1-225 acrescentou 819 palavras únicas e 9 seeds à baseline anterior. A
 origem histórica registrou 348 `ACCEPT`, 133 `WARN` estruturais conhecidos e
 uma rejeição heurística auditada em `0x801A4278`.
+
+O S1-227 reaproveita o lote registrado como S1-226 no histórico, renumerado
+localmente para separar a build inicial sem fontes regenerados da validação
+efetiva. Ele acrescentou 1.146 palavras únicas e 6 seeds à baseline anterior.
+
 
 ## Situação da validação
 
@@ -56,6 +62,15 @@ e a instrumentada `buildClean-ucrt-s1-225-tele`, sem regressão de gameplay ou
 queda de FPS. A telemetria introduziu a irregularidade de frametime esperada,
 sem impacto perceptível. Assim, 46,6991% passa a ser a baseline estável para os
 cenários testados.
+
+O S1-227 foi revalidado com os fontes do jogo regenerados em duas builds UCRT64
+por aproximadamente 20 minutos, em vários modos: a limpa
+`buildClean-ucrt-s1-227`, com FPS e frametime estáveis, e a instrumentada
+`buildClean-ucrt-s1-227-tele`, sem regressão de gameplay ou queda de FPS. A
+telemetria introduziu a irregularidade de frametime esperada, sem impacto
+perceptível. A auditoria do generated confirmou 949 funções, 14.122 entradas
+de dispatcher e zero destinos ou labels ausentes. Assim, 47,2851% passa a ser a
+baseline estável para os cenários testados.
 
 Os próximos testes de desempenho devem usar uma build limpa, sem observadores,
 sem autocaptura/autocompilação de overlays e com cache somente para leitura.
