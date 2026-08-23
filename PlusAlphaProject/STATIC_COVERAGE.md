@@ -3,7 +3,7 @@
 ## Estado desta revisão
 
 Esta revisão reaplica, sobre a baseline estável `f0c5753`, os micro-lotes
-históricos S1-214 a S1-225 e o checkpoint local S1-227.
+históricos S1-214 a S1-225 e os checkpoints locais S1-227 e S1-228.
 
 | Estado | Seeds | Palavras únicas | Cobertura | Blocos | Indiretas |
 |---|---:|---:|---:|---:|---:|
@@ -15,6 +15,7 @@ históricos S1-214 a S1-225 e o checkpoint local S1-227.
 | S1-224 validado | 473 | 90.517 / 195.584 | 46,2804% | 12.841 | 111 |
 | S1-225 validado | 482 | 91.336 / 195.584 | 46,6991% | 13.004 | 117 |
 | S1-227 validado | 488 | 92.482 / 195.584 | 47,2851% | 13.164 | 119 |
+| S1-228 validado | 490 | 94.434 / 195.584 | 48,2831% | 13.517 | 121 |
 
 O S1-225 acrescentou 819 palavras únicas e 9 seeds à baseline anterior. A
 origem histórica registrou 348 `ACCEPT`, 133 `WARN` estruturais conhecidos e
@@ -23,6 +24,10 @@ uma rejeição heurística auditada em `0x801A4278`.
 O S1-227 reaproveita o lote registrado como S1-226 no histórico, renumerado
 localmente para separar a build inicial sem fontes regenerados da validação
 efetiva. Ele acrescentou 1.146 palavras únicas e 6 seeds à baseline anterior.
+
+O S1-228 reaproveita o checkpoint histórico S1-227 e adiciona duas raízes, com
+oito corpos, 7.992 bytes/1.998 palavras de corpo e ganho único de 1.952
+palavras. A cobertura passa a 94.434 palavras (48,2831%).
 
 
 ## Situação da validação
@@ -71,6 +76,14 @@ telemetria introduziu a irregularidade de frametime esperada, sem impacto
 perceptível. A auditoria do generated confirmou 949 funções, 14.122 entradas
 de dispatcher e zero destinos ou labels ausentes. Assim, 47,2851% passa a ser a
 baseline estável para os cenários testados.
+
+O S1-228 foi validado com os fontes do jogo regenerados em duas builds UCRT64
+por aproximadamente 20 minutos, em vários modos: a limpa
+`buildClean-ucrt-s1-228` e a instrumentada `buildClean-ucrt-s1-228-tele`.
+Ambas permaneceram estáveis, sem queda de FPS ou regressão de frametime. A
+auditoria do generated confirmou 957 funções, 14.488 entradas de dispatcher e
+zero destinos ou labels ausentes. Assim, 48,2831% passa a ser a baseline estável
+para os cenários testados.
 
 Os próximos testes de desempenho devem usar uma build limpa, sem observadores,
 sem autocaptura/autocompilação de overlays e com cache somente para leitura.

@@ -3677,3 +3677,20 @@
 0x8016B46C
 0x8016BE20
 0x80177934
+
+# Checkpoint local S1-228, derivado do p1-run-248 historico (S1-227 na
+# numeracao original): as duas raizes abaixo fecham oito corpos, 7.992
+# bytes/1.998 palavras de corpo, com ganho unico de 1.952 palavras.
+# A cadeia contem 0x8018E23C, 0x8018E778, 0x80163CB0, os helpers
+# 0x80164A10/0x80164CC8 e o switch 0x80167EF8. As 26 referencias a interiores
+# sao DATA em 0x801AC034, guardadas por indice <26 e com seis destinos unicos.
+# O jalr v0 em 0x8018E2B4 preserva link 0x8018E2BC, delay nop e fallback CPS.
+# SHA-256 concatenado historico:
+# 460d8df2a6f6f0f90b53a4e9faba1d9772410009c6dad2487604fca0a99845a7.
+# A validacao local confirmou 94.434/195.584 palavras (48,2831%), 13.517
+# blocos, 3.178 calls, 730 alvos, 5.417 branches, 10.993 delay slots e 121
+# indiretas. O generated passou na auditoria e as duas builds UCRT64 de cerca
+# de 20 minutos permaneceram estaveis, sem queda de FPS ou regressao de
+# frametime; as 119 indiretas anteriores permaneceram identicas.
+0x801043B8
+0x8016CACC
