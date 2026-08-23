@@ -3,7 +3,7 @@
 ## Estado desta revisão
 
 Esta revisão reaplica, sobre a baseline estável `f0c5753`, os micro-lotes
-históricos S1-214 a S1-222.
+históricos S1-214 a S1-225.
 
 | Estado | Seeds | Palavras únicas | Cobertura | Blocos | Indiretas |
 |---|---:|---:|---:|---:|---:|
@@ -13,10 +13,11 @@ históricos S1-214 a S1-222.
 | S1-222 validado | 457 | 89.157 / 195.584 | 45,5850% | 12.711 | 111 |
 | S1-223 validado | 460 | 89.219 / 195.584 | 45,6167% | 12.729 | 111 |
 | S1-224 validado | 473 | 90.517 / 195.584 | 46,2804% | 12.841 | 111 |
+| S1-225 validado | 482 | 91.336 / 195.584 | 46,6991% | 13.004 | 117 |
 
-O S1-224 acrescentou 1.298 palavras únicas e 13 seeds à baseline anterior. A
-origem histórica registrou 341 `ACCEPT`, 132 `WARN` estruturais conhecidos e
-zero `REJECT`.
+O S1-225 acrescentou 819 palavras únicas e 9 seeds à baseline anterior. A
+origem histórica registrou 348 `ACCEPT`, 133 `WARN` estruturais conhecidos e
+uma rejeição heurística auditada em `0x801A4278`.
 
 ## Situação da validação
 
@@ -48,6 +49,13 @@ O S1-224 foi revalidado em build limpa UCRT64 (`buildClean-ucrt-s1-224`), por
 aproximadamente 20 minutos de gameplay, sem lag percebido e com FPS e frametime
 estáveis. Assim, 46,2804% passa a ser a baseline estável para os cenários
 testados.
+
+O S1-225 foi revalidado em duas builds UCRT64 por aproximadamente 20 minutos,
+em vários modos: a limpa `buildClean-ucrt-s1-225`, com FPS e frametime estáveis,
+e a instrumentada `buildClean-ucrt-s1-225-tele`, sem regressão de gameplay ou
+queda de FPS. A telemetria introduziu a irregularidade de frametime esperada,
+sem impacto perceptível. Assim, 46,6991% passa a ser a baseline estável para os
+cenários testados.
 
 Os próximos testes de desempenho devem usar uma build limpa, sem observadores,
 sem autocaptura/autocompilação de overlays e com cache somente para leitura.

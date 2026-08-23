@@ -3635,3 +3635,26 @@
 0x80168EEC
 0x8016CD84
 0x8016E964
+
+# Micro-lote S1-225 aprovado em p1-run-246: as nove raizes formais abaixo fecham
+# 16 corpos, 3.276 bytes/819 palavras. O Ghidra confirmou fronteiras exatas,
+# zero referencias externas para interior e zero literais alinhados para os
+# corpos. Os seis fluxos computados sao exclusivamente stubs BIOS B0 provados:
+# jr t2 em 0x801A0DA4, 0x801A426C, 0x801A7434 e 0x801AB1B4; jalr t2 em
+# 0x801AB24C e 0x801AB304, com latch, link e delay slot preservados pelo CPS.
+# SHA-256 concatenado: a31d4119d9d7661fc97ac90dd1bb8055940c5412e1f9c4166587786d8d60b35c.
+# P1-run-246 confirmou 91.336/195.584 palavras (46,6991%), 13.004 blocos,
+# 2.959 calls, 695 alvos, 5.254 branches, 10.554 delay slots e 117 indiretas;
+# as 111 anteriores permaneceram identicas. Vet com 348 ACCEPT, 133 WARN e a
+# unica rejeicao heuristica auditada 0x801A4278, falso positivo apos jr t2 BIOS.
+# Os 16 corpos nao apareceram nos misses em nenhuma rota. Com OBS aberto, agua
+# correta, 60 FPS cravados nas duas rotas e nenhuma regressao manual percebida.
+0x80168348
+0x801A3560
+0x801A35F8
+0x801A4278
+0x801A7360
+0x801A7388
+0x801A74D0
+0x801A7520
+0x801AB0F4
