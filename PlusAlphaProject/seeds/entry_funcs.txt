@@ -3743,3 +3743,18 @@
 # 20 minutos permaneceu estavel, sem queda de FPS ou regressao de frametime; as
 # 126 indiretas anteriores permaneceram identicas.
 0x8017E2E4
+
+# Checkpoint local S1-232, derivado do p1-run-252 historico (S1-231 na
+# numeracao original): a raiz abaixo fecha 24 corpos, 12.296 bytes/3.074
+# palavras, com ganho unico de 3.074 palavras. Nao ha fluxo computado,
+# referencia externa para interior, literal externo ou palavra orfa; 30 calls
+# internas fecham a cadeia e as 136 externas ja apontavam para alvos estaticos.
+# Um DIV, dois BREAK, 11 MULT/MULTU, dez MFHI, dois MFLO e 12 acessos
+# desalinhados foram emitidos e auditados. SHA-256 concatenado:
+# b4fb06a038284e59a906a3b28530993be1958f7b2a7df92e02389c809a3c0c16.
+# A validacao local confirmou 103.128/195.584 palavras (52,7282%), 14.489
+# blocos, 3.589 calls, 791 alvos, 5.720 branches, 11.835 delay slots e 126
+# indiretas. O generated passou na auditoria e a build limpa UCRT64 de cerca de
+# 20 minutos permaneceu estavel, sem queda de FPS ou regressao de frametime; as
+# 126 indiretas anteriores permaneceram identicas.
+0x8016FCC4
