@@ -3,7 +3,7 @@
 ## Estado desta revisão
 
 Esta revisão reaplica, sobre a baseline estável `f0c5753`, os micro-lotes
-históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-230.
+históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-231.
 
 | Estado | Seeds | Palavras únicas | Cobertura | Blocos | Indiretas |
 |---|---:|---:|---:|---:|---:|
@@ -18,6 +18,8 @@ históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-230.
 | S1-228 validado | 490 | 94.434 / 195.584 | 48,2831% | 13.517 | 121 |
 | S1-229 validado | 492 | 95.649 / 195.584 | 48,9043% | 13.717 | 126 |
 | S1-230 validado | 494 | 97.804 / 195.584 | 50,0061% | 13.877 | 126 |
+| S1-231 validado | 495 | 100.054 / 195.584 | 51,1565% | 14.144 | 126 |
+| Candidato S1-231 | 495 | 100.054 / 195.584 | 51,1565% | 14.144 | 126 |
 | Candidato S1-230 | 494 | 97.804 / 195.584 | 50,0061% | 13.877 | 126 |
 | Candidato S1-229 | 492 | 95.649 / 195.584 | 48,9043% | 13.717 | 126 |
 
@@ -41,6 +43,15 @@ O S1-230 reaproveita o checkpoint histórico S1-229 e adiciona duas raízes, com
 três corpos, 8.620 bytes/2.155 palavras de corpo e ganho único de 2.155
 palavras. A cobertura passa a 97.804 palavras (50,0061%), o primeiro marco
 local acima de 50%.
+
+O S1-231 reaproveita o checkpoint histórico S1-230 e adiciona uma raiz, com
+oito corpos, 9.000 bytes/2.250 palavras de corpo e ganho único de 2.250
+palavras. A cobertura passa a 100.054 palavras (51,1565%).
+
+O S1-231 é o próximo candidato local. Ele reaproveita o checkpoint histórico
+S1-230 e adiciona uma raiz, com oito corpos, 9.000 bytes/2.250 palavras de
+corpo e ganho único esperado de 2.250 palavras. A cobertura projetada passa a
+100.054 palavras (51,1565%).
 
 O S1-230 é o próximo candidato local e o primeiro marco acima de 50%. Ele
 reaproveita o checkpoint histórico S1-229 e adiciona duas raízes, com três
@@ -119,6 +130,17 @@ limpa UCRT64 por aproximadamente 20 minutos, em vários modos. FPS e frametime
 permaneceram estáveis, sem queda percebida. A auditoria do generated confirmou
 970 funções, 14.870 entradas de dispatcher e zero destinos ou labels ausentes.
 Assim, 50,0061% passa a ser a baseline estável para os cenários testados.
+
+O S1-231 foi validado com os fontes do jogo regenerados em build limpa UCRT64
+por aproximadamente 20 minutos, em vários modos. FPS e frametime permaneceram
+estáveis, sem queda percebida. A auditoria do generated confirmou 978 funções,
+15.137 entradas de dispatcher e zero destinos ou labels ausentes. Assim,
+51,1565% passa a ser a baseline estável para os cenários testados.
+
+O S1-231 está aplicado somente como **candidato**. Antes de aprová-lo, é
+obrigatório regenerar as fontes, auditar o `generated/` e executar a validação
+em build limpa UCRT64. A build com telemetria fica reservada para diagnóstico de
+uma regressão, não como etapa obrigatória deste lote.
 
 O S1-230 está aplicado somente como **candidato**. Antes de aprová-lo, é
 obrigatório regenerar as fontes, auditar o `generated/` e executar a validação

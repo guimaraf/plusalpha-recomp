@@ -3728,3 +3728,18 @@
 # 126 indiretas anteriores permaneceram identicas.
 0x80180F80
 0x80198D7C
+
+# Checkpoint local S1-231, derivado do p1-run-251 historico (S1-230 na
+# numeracao original): a raiz abaixo fecha oito corpos, 9.000 bytes/2.250
+# palavras, com ganho unico de 2.250 palavras. Nao ha fluxo computado,
+# referencia externa para interior ou palavra orfa; a unica referencia DATA
+# externa e 0x801AF984 -> 0x8017E2E4, para a entrada exata. Sete calls internas
+# fecham a cadeia e as 114 externas ja apontavam para alvos estaticos. Ha oito
+# MULT/MULTU, sete MFHI e um MFLO emitidos e auditados. SHA-256 concatenado:
+# 12eb11f38a01f832c636f75ce6c233f4dbc296f82fdcc193a4858b128a250790.
+# A validacao local confirmou 100.054/195.584 palavras (51,1565%), 14.144
+# blocos, 3.423 calls, 768 alvos, 5.634 branches, 11.543 delay slots e 126
+# indiretas. O generated passou na auditoria e a build limpa UCRT64 de cerca de
+# 20 minutos permaneceu estavel, sem queda de FPS ou regressao de frametime; as
+# 126 indiretas anteriores permaneceram identicas.
+0x8017E2E4
