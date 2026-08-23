@@ -1,0 +1,184 @@
+name: Build Game Runtime
+
+on:
+  push:
+    branches: [ "main" ]
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install dependencies (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake ninja-build pkg-config libsdl2-dev clang zip
+
+    - name: Setup MSYS2 (Windows)
+      if: runner.os == 'Windows'
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: UCRT64
+        update: true
+        install: >-
+          mingw-w64-ucrt-x86_64-gcc
+          mingw-w64-ucrt-x86_64-cmake
+          mingw-w64-ucrt-x86_64-ninja
+          mingw-w64-ucrt-x86_64-pkgconf
+          mingw-w64-ucrt-x86_64-SDL2
+
+    - name: Configure and Build Game Runtime (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        cmake -S PlusAlphaProject -B PlusAlphaProject/build -G Ninja -DCMAKE_BUILD_TYPE=Release -DPSX_LAUNCHER=ON
+        cmake --build PlusAlphaProject/build --config Release --target psx-runtime
+
+    - name: Configure and Build Game Runtime (Windows)
+      if: runner.os == 'Windows'
+      shell: msys2 {0}
+      run: |
+        cmake -S PlusAlphaProject -B PlusAlphaProject/build-ucrt -G Ninja -DCMAKE_BUILD_TYPE=Release -DPSX_LAUNCHER=ON
+        cmake --build PlusAlphaProject/build-ucrt --target psx-runtime
+
+    - name: Prepare Release Artifact (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        mkdir -p release
+        cp PlusAlphaProject/build/StreetFighterEXPlusAlphaRecomp release/ || true
+        cp -r PlusAlphaProject/build/fonts release/ || true
+        cp -r PlusAlphaProject/build/img release/ || true
+        cp PlusAlphaProject/build/launcher.rml release/ || true
+        cp PlusAlphaProject/game.toml release/ || true
+        cp PlusAlphaProject/README.md release/ || true
+        cd release
+        zip -r ../EXPlusAlpha-Recomp-Linux-x64.zip ./*
+
+    - name: Prepare Release Artifact (Windows)
+      if: runner.os == 'Windows'
+      shell: msys2 {0}
+      run: |
+        mkdir -p release
+        cp PlusAlphaProject/build-ucrt/StreetFighterEXPlusAlphaRecomp.exe release/ || true
+        cp -r PlusAlphaProject/build-ucrt/fonts release/ || true
+        cp -r PlusAlphaProject/build-ucrt/img release/ || true
+        cp PlusAlphaProject/build-ucrt/launcher.rml release/ || true
+        cp PlusAlphaProject/game.toml release/ || true
+        cp PlusAlphaProject/README.md release/ || true
+
+    - name: Zip Release Artifact (Windows)
+      if: runner.os == 'Windows'
+      shell: powershell
+      run: |
+        Compress-Archive -Path release\* -DestinationPath EXPlusAlpha-Recomp-Windows-x64.zip
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: EXPlusAlpha-Recomp-${{ runner.os }}-x64
+        path: release/
+
+    - name: Upload to GitHub Release
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
+      with:
+        tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'latest' }}
+        name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'Continuous Build' }}
+        prerelease: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        files: EXPlusAlpha-Recomp-*-x64.zip
+
+  build-uwp:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Setup MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        uwp: true
+
+    - name: Build SDL2 for WindowsStore
+      shell: pwsh
+      run: |
+        $sdlRoot = Join-Path $env:RUNNER_TEMP "sdl2-uwp"
+        $sdlArchive = Join-Path $sdlRoot "release-2.30.2.zip"
+        $sdlBuild = Join-Path $sdlRoot "build"
+        $sdlInstall = Join-Path $sdlRoot "install"
+        New-Item -ItemType Directory -Path $sdlRoot -Force | Out-Null
+        Invoke-WebRequest `
+          -Uri "https://github.com/libsdl-org/SDL/archive/refs/tags/release-2.30.2.zip" `
+          -OutFile $sdlArchive
+        Expand-Archive -Path $sdlArchive -DestinationPath $sdlRoot
+        $sdlSource = Join-Path $sdlRoot "SDL-release-2.30.2"
+        cmake -S $sdlSource -B $sdlBuild `
+          -G "Visual Studio 17 2022" -A x64 `
+          -DCMAKE_SYSTEM_NAME=WindowsStore `
+          -DCMAKE_SYSTEM_VERSION="10.0" `
+          -DCMAKE_INSTALL_PREFIX=$sdlInstall `
+          -DSDL_SHARED=OFF -DSDL_STATIC=ON -DSDL_TEST=OFF
+        cmake --build $sdlBuild --config Release --target install
+        "SDL2_DIR=$(Join-Path $sdlInstall 'lib\cmake\SDL2')" |
+          Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+    - name: Configure CMake for UWP
+      shell: pwsh
+      run: |
+        cmake -S PlusAlphaProject -B PlusAlphaProject/build-uwp `
+          -G "Visual Studio 17 2022" -A x64 `
+          -DCMAKE_SYSTEM_NAME=WindowsStore `
+          -DCMAKE_SYSTEM_VERSION="10.0" `
+          -DSDL2_DIR="$env:SDL2_DIR" `
+          -DPSX_LAUNCHER=OFF `
+          -DPSX_DEBUG_TOOLS=OFF `
+          -DPSX_ENABLE_VULKAN=OFF
+
+    - name: Build UWP App
+      shell: pwsh
+      run: |
+        $packageDir = Join-Path $pwd "PlusAlphaProject\build-uwp\AppPackages\"
+        cmake --build PlusAlphaProject/build-uwp --config Release -- `
+          /p:AppxBundle=Never `
+          /p:AppxPackageSigningEnabled=false `
+          /p:AppxPackageDir="$packageDir"
+
+    - name: Zip Release Artifact
+      shell: pwsh
+      run: |
+        $packageDir = "PlusAlphaProject\build-uwp\AppPackages"
+        if (-not (Test-Path $packageDir)) {
+          throw "UWP package directory was not generated: $packageDir"
+        }
+        Compress-Archive -Path "$packageDir\*" -DestinationPath EXPlusAlpha-Recomp-UWP-Xbox-x64.zip
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: EXPlusAlpha-Recomp-UWP-Xbox-x64
+        path: EXPlusAlpha-Recomp-UWP-Xbox-x64.zip
+
+    - name: Upload to GitHub Release
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
+      with:
+        tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'latest' }}
+        name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'Continuous Build' }}
+        prerelease: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        files: EXPlusAlpha-Recomp-UWP-Xbox-x64.zip
