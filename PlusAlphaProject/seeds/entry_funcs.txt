@@ -3694,3 +3694,21 @@
 # frametime; as 119 indiretas anteriores permaneceram identicas.
 0x801043B8
 0x8016CACC
+
+# Checkpoint local S1-229, derivado do p1-run-249 historico (S1-228 na
+# numeracao original): as duas raizes abaixo fecham dez corpos, 5.456
+# bytes/1.364 palavras de corpo, com ganho unico de 1.215 palavras.
+# As referencias a interiores sao somente cinco entradas DATA da tabela
+# 0x801ACA60 e cinco da 0x801ACA78. Os jr v0 em 0x8017B9E0 e 0x8017C7B0
+# possuem guarda <5, com respectivamente cinco e tres destinos unicos, e
+# preservam fallback CPS. Os jalr em 0x801AA4D8, 0x801AAAB4 e 0x801AAB60
+# preservam latch, links 0x801AA4E0/0x801AAABC/0x801AAB68, delay nop e CPS.
+# SHA-256 concatenado historico:
+# d398ad3db40d16ce7a5afdf6b8841746aaf71ae97dc8c3b375c258dc565b66fb.
+# A validacao local confirmou 95.649/195.584 palavras (48,9043%), 13.717
+# blocos, 3.234 calls, 760 alvos, 5.496 branches, 11.165 delay slots e 126
+# indiretas. O generated passou na auditoria e a build limpa UCRT64 de cerca de
+# 20 minutos permaneceu estavel, sem queda de FPS ou regressao de frametime; as
+# 121 indiretas anteriores permaneceram identicas.
+0x80177474
+0x801AA448
