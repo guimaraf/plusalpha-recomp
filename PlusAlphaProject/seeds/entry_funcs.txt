@@ -3808,15 +3808,17 @@
 0x80110630
 0x8011B3B8
 
-# Candidato local S1-236, derivado do p1-run-256 historico (S1-235 na
+# Checkpoint local S1-236, derivado do p1-run-256 historico (S1-235 na
 # numeracao original): as quatro raizes abaixo fecham quatro corpos formais
 # contiguos, com 1.156 bytes/289 palavras. Nao ha referencia a interior, fluxo
 # calculado ou transferencia indireta. SHA-256 concatenado:
 # 39008d7334dd3b99b1a1d1fd864fcefe006fe014c6ba9fd2057ab363898da74c.
 # As duas rotas historicas confirmaram 105.165/195.584 palavras (53,7697%),
 # 14.766 blocos, 3.659 calls, 794 alvos, 5.833 branches, 12.049 delay slots e
-# 127 indiretas identicas a baseline. PENDENTE no projeto atual: gerar, auditar
-# o generated e validar em build limpa UCRT64 antes de aprovar este lote.
+# 127 indiretas identicas a baseline. A validacao local confirmou o generated
+# com 1.015 funcoes, 15.759 entradas no dispatcher e auditoria CLEAN. A build
+# limpa UCRT64 de cerca de 20 minutos permaneceu estavel, sem queda de FPS ou
+# regressao de frametime; as 127 indiretas permaneceram identicas.
 0x8011E3AC
 0x8011EA5C
 0x8011EA80
