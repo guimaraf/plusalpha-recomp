@@ -3859,3 +3859,25 @@
 0x80166964
 0x80167CFC
 0x80167D18
+
+# Micro-lote local S1-239 aprovado, ultimo lote ja descoberto no historico e
+# registrado
+# originalmente como S1-237. A raiz formal abaixo emite 0x8019CB4C..0x8019CBBB:
+# 112 bytes/28 palavras e seis entradas despachaveis (0x8019CB4C, 0x8019CB60,
+# 0x8019CB78, 0x8019CB8C, 0x8019CBA0 e 0x8019CBA8). O fluxo acrescenta 23
+# palavras unicas e cinco blocos. 0x8019CB8C..0x8019CB9C e um alias sem
+# predecessor direto, auditado ate o retorno. O intervalo possui dois retornos,
+# duas calls para 0x8019CBBC ja estatico, uma branch, cinco delay slots e zero
+# jalr/jr nao-ra. As dez referencias externas apontam somente para entradas
+# exatas. Nao ha stack/frame emprestado; ra e preservado em a3. A imagem local
+# confirmou o SHA-256 historico dos 112 bytes emitidos:
+# fdd9d044cd1a1e7c491024d255ee0cc47661ffd5fc28788566f69948a71599d6.
+# O generated confirmou 106.319/195.584 palavras (54,3598%), 14.930 blocos, 3.685 calls,
+# 797 alvos, 5.908 branches, 12.179 delay slots, 1.023 funcoes e 127 indiretas.
+# A auditoria confirmou 1.023 funcoes, 15.924 entradas no dispatcher e CLEAN.
+# A build limpa UCRT64 ficou estavel por cerca de 20 minutos, em varios modos e
+# em partidas Guile x Hokuto no cenario da Hokuto. A telemetria complementar de
+# 43 s confirmou 0x8019CB78 e 0x8019CBA8 com pelo menos 4.096 hits fntrace cada,
+# sem fallback candidato; P50/P95/maximo de 16,684/16,766/17,416 ms. O material
+# historico conhecido se encerra neste lote; a proxima etapa sera descoberta nova.
+0x8019CB4C

@@ -3,7 +3,7 @@
 ## Estado desta revisão
 
 Esta revisão reaplica, sobre a baseline estável `f0c5753`, os micro-lotes
-históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-238.
+históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-239.
 
 | Estado | Seeds | Palavras únicas | Cobertura | Blocos | Indiretas |
 |---|---:|---:|---:|---:|---:|
@@ -26,6 +26,7 @@ históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-238.
 | S1-236 validado | 507 | 105.165 / 195.584 | 53,7697% | 14.766 | 127 |
 | S1-237/P4-1 validado | 508 | 106.077 / 195.584 | 54,2360% | 14.877 | 127 |
 | S1-238 validado | 512 | 106.296 / 195.584 | 54,3480% | 14.925 | 127 |
+| S1-239 validado | 513 | 106.319 / 195.584 | 54,3598% | 14.930 | 127 |
 
 O S1-225 acrescentou 819 palavras únicas e 9 seeds à baseline anterior. A
 origem histórica registrou 348 `ACCEPT`, 133 `WARN` estruturais conhecidos e
@@ -79,6 +80,11 @@ palavras. A cobertura passou a 106.077 palavras (54,2360%).
 O S1-238 reaproveitou o lote registrado historicamente como S1-236 e adicionou
 quatro raízes independentes, com quatro corpos, 876 bytes/219 palavras de corpo
 e ganho único de 219 palavras. A cobertura passou a 106.296 palavras (54,3480%).
+
+O S1-239 reaproveitou o último lote já descoberto no histórico, registrado
+originalmente como S1-237, e adicionou uma raiz. O intervalo emitido possui 112
+bytes/28 palavras de corpo e ganho único de 23 palavras. A cobertura passou a
+106.319 palavras (54,3598%).
 
 
 ## Situação da validação
@@ -199,6 +205,22 @@ regressão percebida; FPS e frametime permaneceram estáveis. A auditoria do
 generated confirmou 1.022 funções, 15.918 entradas de dispatcher e zero destinos
 ou labels ausentes. Assim, 54,3480% passa a ser a baseline estável para os
 cenários testados.
+
+O S1-239 foi validado com fontes do jogo regenerados em build limpa UCRT64
+(`buildClean-ucrt-s1-239`), por aproximadamente 20 minutos e em vários modos.
+Partidas Guile x Hokuto no cenário da Hokuto permaneceram sem lag ou regressão
+percebida, com FPS em 60. Houve pequena oscilação visual de frametime entre 15 e
+17 ms, por isso a contraprova de telemetria foi executada.
+
+A coleta de 43 s na build instrumentada confirmou `0x8019CB78` e `0x8019CBA8`
+com pelo menos 4.096 registros de fntrace cada, sem fallback candidato. Não houve
+aborts, bloqueio nativo ou mismatch de endereço. O frametime do intervalo teve
+P50 de 16,684 ms, P95 de 16,766 ms e máximo de 17,416 ms; portanto a variação
+observada é compatível com present/agendamento e não caracteriza stutter. A
+auditoria do generated confirmou 1.023 funções, 15.924 entradas de dispatcher e
+zero destinos ou labels ausentes. Assim, 54,3598% passa a ser a baseline estável
+para os cenários testados. Com este lote, esgota-se o material histórico já
+descoberto; a próxima etapa será descoberta nova.
 
 Os próximos testes de desempenho devem usar uma build limpa, sem observadores,
 sem autocaptura/autocompilação de overlays e com cache somente para leitura.
