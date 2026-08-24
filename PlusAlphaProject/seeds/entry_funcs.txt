@@ -3758,3 +3758,32 @@
 # 20 minutos permaneceu estavel, sem queda de FPS ou regressao de frametime; as
 # 126 indiretas anteriores permaneceram identicas.
 0x8016FCC4
+
+# Checkpoint local S1-233, derivado do p1-run-253 historico (S1-232 na
+# numeracao original): as duas raizes abaixo fecham dois corpos, 492 bytes/123
+# palavras. As referencias externas chegam somente a entradas exatas: DATA
+# 0x801B3454 -> 0x80162688 e PARAM 0x801A0180 -> 0x801A0630. As 16 calls
+# externas ja eram estaticas. A nova indireta e o jalr v0 em 0x801A06D4, com
+# alvo dinamico em 0x801BF3CC, guarda de nulo, link guest, delay NOP,
+# interrupcoes e fallback CPS. SHA-256 concatenado:
+# 9c3696b1b5576d4e22310e0459f4cd8db0f4d0c9572434d12cc67e928a64b99c.
+# A referencia historica projeta 103.251/195.584 palavras (52,7911%), 14.523
+# blocos, 3.605 calls, 792 alvos, 5.729 branches, 11.866 delay slots e 127
+# indiretas. A validacao local confirmou o generated com 1.004 funcoes, 15.516
+# entradas no dispatcher e auditoria CLEAN. A build limpa UCRT64 de cerca de 20
+# minutos permaneceu estavel, sem queda de FPS ou regressao de frametime; a nova
+# indireta preservou o caminho CPS e as 126 anteriores permaneceram identicas.
+0x80162688
+0x801A0630
+
+# Candidato local S1-234, derivado do p1-run-254 historico (S1-233 na
+# numeracao original): a raiz abaixo fecha um corpo formal de 180 bytes/45
+# palavras. A unica referencia externa e DATA 0x801B33B4 -> 0x8015FCC4, para a
+# entrada exata; nao ha referencia a interior, palavra orfa ou fluxo calculado.
+# As sete calls externas ja eram estaticas e nao ha nova indireta. SHA-256 do
+# corpo: 6400f3cdb31966beed7f871db203ee52eb81235d7ec52460c2804f57a3bc9ff4.
+# A referencia historica projeta 103.296/195.584 palavras (52,8141%), 14.533
+# blocos, 3.612 calls, 792 alvos, 5.731 branches, 11.876 delay slots e 127
+# indiretas. PENDENTE no projeto atual: gerar, auditar o generated e validar em
+# build limpa UCRT64 antes de aprovar este lote.
+0x8015FCC4
