@@ -3776,7 +3776,7 @@
 0x80162688
 0x801A0630
 
-# Candidato local S1-234, derivado do p1-run-254 historico (S1-233 na
+# Checkpoint local S1-234, derivado do p1-run-254 historico (S1-233 na
 # numeracao original): a raiz abaixo fecha um corpo formal de 180 bytes/45
 # palavras. A unica referencia externa e DATA 0x801B33B4 -> 0x8015FCC4, para a
 # entrada exata; nao ha referencia a interior, palavra orfa ou fluxo calculado.
@@ -3784,6 +3784,24 @@
 # corpo: 6400f3cdb31966beed7f871db203ee52eb81235d7ec52460c2804f57a3bc9ff4.
 # A referencia historica projeta 103.296/195.584 palavras (52,8141%), 14.533
 # blocos, 3.612 calls, 792 alvos, 5.731 branches, 11.876 delay slots e 127
-# indiretas. PENDENTE no projeto atual: gerar, auditar o generated e validar em
-# build limpa UCRT64 antes de aprovar este lote.
+# indiretas. A validacao local confirmou o generated com 1.005 funcoes, 15.526
+# entradas no dispatcher e auditoria CLEAN. A build limpa UCRT64 de cerca de 20
+# minutos permaneceu estavel, sem queda de FPS ou regressao de frametime; as 127
+# indiretas permaneceram identicas.
 0x8015FCC4
+
+# Candidato local S1-235, derivado do p1-run-255 historico (S1-234 na
+# numeracao original): as quatro raizes abaixo fecham seis corpos formais,
+# incluindo 0x8011B400 e 0x8011B5E4, com 6.320 bytes/1.580 palavras. Os seis
+# literais externos alinhados apontam somente para entradas exatas; nao ha
+# referencia a interior, palavra orfa ou fluxo calculado. Duas calls internas
+# fecham a cadeia e as 42 externas ja eram estaticas. SHA-256 concatenado:
+# 56c5e896a09f311a013bc7d9c9005387115e5e54c8a078662d6cfc362ce4f09e.
+# As duas rotas historicas confirmaram 104.876/195.584 palavras (53,6220%),
+# 14.726 blocos, 3.656 calls, 794 alvos, 5.811 branches, 12.017 delay slots e
+# 127 indiretas identicas a baseline. PENDENTE no projeto atual: gerar, auditar
+# o generated e validar em build limpa UCRT64 antes de aprovar este lote.
+0x8011EA94
+0x8011F084
+0x80110630
+0x8011B3B8
