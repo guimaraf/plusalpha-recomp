@@ -25,6 +25,9 @@
 *.a
 *.lib
 
+bios/
+disc/
+
 # Imagens, BIOS, executáveis extraídos e saves
 *.bin
 *.cue
