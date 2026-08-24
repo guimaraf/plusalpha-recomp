@@ -3,7 +3,7 @@
 ## Estado desta revisão
 
 Esta revisão reaplica, sobre a baseline estável `f0c5753`, os micro-lotes
-históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-234.
+históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-235.
 
 | Estado | Seeds | Palavras únicas | Cobertura | Blocos | Indiretas |
 |---|---:|---:|---:|---:|---:|
@@ -22,7 +22,8 @@ históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-234.
 | S1-232 validado | 496 | 103.128 / 195.584 | 52,7282% | 14.489 | 126 |
 | S1-233 validado | 498 | 103.251 / 195.584 | 52,7911% | 14.523 | 127 |
 | S1-234 validado | 499 | 103.296 / 195.584 | 52,8141% | 14.533 | 127 |
-| Candidato S1-235 | 503 | 104.876 / 195.584 | 53,6220% | 14.726 | 127 |
+| S1-235 validado | 503 | 104.876 / 195.584 | 53,6220% | 14.726 | 127 |
+| Candidato S1-236 | 507 | 105.165 / 195.584 | 53,7697% | 14.766 | 127 |
 
 O S1-225 acrescentou 819 palavras únicas e 9 seeds à baseline anterior. A
 origem histórica registrou 348 `ACCEPT`, 133 `WARN` estruturais conhecidos e
@@ -61,9 +62,13 @@ O S1-234 reaproveitou o checkpoint histórico S1-233 e adicionou uma raiz, com
 um corpo de 180 bytes/45 palavras e ganho único de 45 palavras. A cobertura
 passou a 103.296 palavras (52,8141%).
 
-O S1-235 reaproveita o checkpoint histórico S1-234 e adiciona quatro raízes,
-com seis corpos, 6.320 bytes/1.580 palavras de corpo e ganho único esperado de
-1.580 palavras. A cobertura projetada passa a 104.876 palavras (53,6220%).
+O S1-235 reaproveitou o checkpoint histórico S1-234 e adicionou quatro raízes,
+com seis corpos, 6.320 bytes/1.580 palavras de corpo e ganho único de 1.580
+palavras. A cobertura passou a 104.876 palavras (53,6220%).
+
+O S1-236 reaproveita o checkpoint histórico S1-235 e adiciona quatro raízes,
+com quatro corpos, 1.156 bytes/289 palavras de corpo e ganho único esperado de
+289 palavras. A cobertura projetada passa a 105.165 palavras (53,7697%).
 
 
 ## Situação da validação
@@ -157,7 +162,13 @@ estáveis, sem queda percebida. A auditoria do generated confirmou 1.005 funçõ
 15.526 entradas de dispatcher e zero destinos ou labels ausentes. Assim,
 52,8141% passa a ser a baseline estável para os cenários testados.
 
-O S1-235 está aplicado somente como **candidato**. Antes de aprová-lo, é
+O S1-235 foi validado com os fontes do jogo regenerados em build limpa UCRT64
+por aproximadamente 20 minutos, em vários modos. FPS e frametime permaneceram
+estáveis, sem queda percebida. A auditoria do generated confirmou 1.011 funções,
+15.719 entradas de dispatcher e zero destinos ou labels ausentes. Assim,
+53,6220% passa a ser a baseline estável para os cenários testados.
+
+O S1-236 está aplicado somente como **candidato**. Antes de aprová-lo, é
 obrigatório regenerar as fontes, auditar o `generated/` e executar a validação
 em build limpa UCRT64. A build com telemetria fica reservada para diagnóstico de
 uma regressão, não como etapa obrigatória deste lote.
