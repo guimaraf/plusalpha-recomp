@@ -3823,3 +3823,19 @@
 0x8011EA5C
 0x8011EA80
 0x8019EA10
+
+# Micro-lote S1-237/P4-1 aprovado localmente: a raiz formal
+# abaixo fecha FUN_8014C730, FUN_8014C7C8 e FUN_8014CA58, tres corpos contiguos
+# com 3.648 bytes/912 palavras. Duas calls internas fecham a cadeia e as 22
+# externas ja terminam em alvos estaticos. Nao ha jalr, jr nao-ra, referencia
+# indireta conhecida ou entrada externa em interior. Os corpos contem 42
+# instrucoes COP2/GTE e dois DIV com quatro BREAK de guarda. A imagem local
+# confirmou o SHA-256 concatenado historico:
+# 49e6dc58b6d993bfe77c336274d5605ae0f9fa136bc6e4bc7d9e43e3bd979270.
+# O generated confirmou 106.077/195.584 palavras (54,2360%), 14.877
+# blocos, 3.683 calls, 796 alvos, 5.878 branches, 12.137 delay slots e 127
+# indiretas, 1.018 funcoes, 15.870 entradas no dispatcher e auditoria CLEAN. A
+# build limpa UCRT64 permaneceu estavel por cerca de 20 minutos, em varios
+# modos e com repeticoes do Shungoku-Satsu da Sakura; FPS, frametime e petalas
+# permaneceram corretos, sem regressao percebida.
+0x8014C730

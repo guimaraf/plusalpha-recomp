@@ -24,6 +24,7 @@ históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-236.
 | S1-234 validado | 499 | 103.296 / 195.584 | 52,8141% | 14.533 | 127 |
 | S1-235 validado | 503 | 104.876 / 195.584 | 53,6220% | 14.726 | 127 |
 | S1-236 validado | 507 | 105.165 / 195.584 | 53,7697% | 14.766 | 127 |
+| S1-237/P4-1 validado | 508 | 106.077 / 195.584 | 54,2360% | 14.877 | 127 |
 
 O S1-225 acrescentou 819 palavras únicas e 9 seeds à baseline anterior. A
 origem histórica registrou 348 `ACCEPT`, 133 `WARN` estruturais conhecidos e
@@ -69,6 +70,10 @@ palavras. A cobertura passou a 104.876 palavras (53,6220%).
 O S1-236 reaproveitou o checkpoint histórico S1-235 e adicionou quatro raízes,
 com quatro corpos, 1.156 bytes/289 palavras de corpo e ganho único de 289
 palavras. A cobertura passou a 105.165 palavras (53,7697%).
+
+O S1-237 reaproveitou o micro-lote histórico P4-1 e adicionou uma raiz, com três
+corpos contíguos, 3.648 bytes/912 palavras de corpo e ganho único de 912
+palavras. A cobertura passou a 106.077 palavras (54,2360%).
 
 
 ## Situação da validação
@@ -173,6 +178,14 @@ por aproximadamente 20 minutos, em vários modos. FPS e frametime permaneceram
 estáveis, sem queda percebida. A auditoria do generated confirmou 1.015 funções,
 15.759 entradas de dispatcher e zero destinos ou labels ausentes. Assim,
 53,7697% passa a ser a baseline estável para os cenários testados.
+
+O S1-237/P4-1 foi validado com os fontes do jogo regenerados em build limpa
+UCRT64 (`buildClean-ucrt-s1-237`), por aproximadamente 20 minutos e em vários
+modos. O Shungoku-Satsu da Sakura foi repetido várias vezes, com as pétalas
+corretas e sem regressão percebida. FPS e frametime permaneceram estáveis. A
+auditoria do generated confirmou 1.018 funções, 15.870 entradas de dispatcher e
+zero destinos ou labels ausentes. Assim, 54,2360% passa a ser a baseline estável
+para os cenários testados.
 
 Os próximos testes de desempenho devem usar uma build limpa, sem observadores,
 sem autocaptura/autocompilação de overlays e com cache somente para leitura.
