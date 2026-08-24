@@ -3839,3 +3839,23 @@
 # modos e com repeticoes do Shungoku-Satsu da Sakura; FPS, frametime e petalas
 # permaneceram corretos, sem regressao percebida.
 0x8014C730
+
+# Micro-lote S1-238 aprovado localmente, derivado do lote historico S1-236: as quatro raizes
+# abaixo fecham quatro corpos formais independentes, com 876 bytes/219 palavras.
+# O Ghidra confirmou entradas exatas, quatro retornos, zero call de saida, zero
+# jalr/jr nao-ra, zero referencia externa a interior e zero indireta.
+# FUN_8019EDB0 possui frame proprio e 22 operacoes COP2/GTE; as outras tres sao
+# folhas frameless autonomas, com sete MULT/MULTU no total e um DIV. A imagem
+# local coincide com a historica e confirmou o SHA-256 concatenado na ordem das
+# raizes abaixo:
+# f3169aa675ba0b755d01948625ef291d7bd6d604504a3be484f90df361c73e11.
+# O generated confirmou 106.296/195.584 palavras (54,3480%), 14.925
+# blocos, 3.683 calls, 796 alvos, 5.907 branches, 12.174 delay slots, 1.022
+# funcoes, 15.918 entradas no dispatcher e 127 indiretas, com auditoria CLEAN.
+# A build limpa UCRT64 permaneceu estavel por cerca de 20 minutos, em varios
+# modos e em partidas Guile x Hokuto no cenario da Hokuto; FPS e frametime
+# permaneceram limpos, sem lag ou regressao percebida.
+0x8019EDB0
+0x80166964
+0x80167CFC
+0x80167D18

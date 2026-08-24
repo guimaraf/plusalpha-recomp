@@ -3,7 +3,7 @@
 ## Estado desta revisão
 
 Esta revisão reaplica, sobre a baseline estável `f0c5753`, os micro-lotes
-históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-236.
+históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-238.
 
 | Estado | Seeds | Palavras únicas | Cobertura | Blocos | Indiretas |
 |---|---:|---:|---:|---:|---:|
@@ -25,6 +25,7 @@ históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-236.
 | S1-235 validado | 503 | 104.876 / 195.584 | 53,6220% | 14.726 | 127 |
 | S1-236 validado | 507 | 105.165 / 195.584 | 53,7697% | 14.766 | 127 |
 | S1-237/P4-1 validado | 508 | 106.077 / 195.584 | 54,2360% | 14.877 | 127 |
+| S1-238 validado | 512 | 106.296 / 195.584 | 54,3480% | 14.925 | 127 |
 
 O S1-225 acrescentou 819 palavras únicas e 9 seeds à baseline anterior. A
 origem histórica registrou 348 `ACCEPT`, 133 `WARN` estruturais conhecidos e
@@ -74,6 +75,10 @@ palavras. A cobertura passou a 105.165 palavras (53,7697%).
 O S1-237 reaproveitou o micro-lote histórico P4-1 e adicionou uma raiz, com três
 corpos contíguos, 3.648 bytes/912 palavras de corpo e ganho único de 912
 palavras. A cobertura passou a 106.077 palavras (54,2360%).
+
+O S1-238 reaproveitou o lote registrado historicamente como S1-236 e adicionou
+quatro raízes independentes, com quatro corpos, 876 bytes/219 palavras de corpo
+e ganho único de 219 palavras. A cobertura passou a 106.296 palavras (54,3480%).
 
 
 ## Situação da validação
@@ -186,6 +191,14 @@ corretas e sem regressão percebida. FPS e frametime permaneceram estáveis. A
 auditoria do generated confirmou 1.018 funções, 15.870 entradas de dispatcher e
 zero destinos ou labels ausentes. Assim, 54,2360% passa a ser a baseline estável
 para os cenários testados.
+
+O S1-238 foi validado com os fontes do jogo regenerados em build limpa UCRT64
+(`buildClean-ucrt-s1-238`), por aproximadamente 20 minutos e em vários modos.
+Foram disputadas várias partidas Guile x Hokuto no cenário da Hokuto, sem lag ou
+regressão percebida; FPS e frametime permaneceram estáveis. A auditoria do
+generated confirmou 1.022 funções, 15.918 entradas de dispatcher e zero destinos
+ou labels ausentes. Assim, 54,3480% passa a ser a baseline estável para os
+cenários testados.
 
 Os próximos testes de desempenho devem usar uma build limpa, sem observadores,
 sem autocaptura/autocompilação de overlays e com cache somente para leitura.
