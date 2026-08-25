@@ -3895,11 +3895,29 @@
 # S1-239 permanece como o ultimo checkpoint de build limpa.
 0x8013CB08
 
-# Micro-lote experimental S1-241, ainda nao promovido. A rota Versus Doctrine
-# Dark x Skullomania no cenario Skullomania observou +2.564 execucoes da raiz
+# Micro-lote S1-241 aprovado provisoriamente. A rota Versus Doctrine Dark x
+# Skullomania no cenario Skullomania observou +2.564 execucoes da raiz
 # formal 0x801102A0..0x8011062F. Sao 912 bytes/228 palavras, SHA-256
 # a0f347d22e0d4cc9145e22cc5b8368a14af1cc3563a5ec9268202cab2e7fe6ed.
 # O fluxo possui tres JAL para funcoes ja nativas, 11 branches internas, um
 # retorno, 1 DIV, 6 MULT e 2 BREAK de guarda; zero J, JALR, COP2 ou tabela
-# indireta. Gerar/auditar isoladamente e validar na mesma rota antes de promover.
+# indireta. O generated confirmou 106.580/195.584 palavras (54,4932%), 1.025
+# funcoes e 15.953 entradas no dispatcher; o auditor retornou CLEAN. A coleta
+# s1-241-telemetry-01 registrou 2.934 hits fntrace completos, sem fallback;
+# P50/P95/maximo de 16,682/16,957/22,900 ms. Bonus, Trial e Arcade ficaram
+# estaveis. A promocao integral aguarda o proximo checkpoint de build limpa.
 0x801102A0
+
+# Micro-lote experimental S1-242. A raiz formal 0x80137FE8 fecha duas chamadas
+# diretas ainda nao nativas: 0x80138084 e 0x8013827C. O fechamento contiguo
+# ocupa 0x80137FE8..0x801383BB: 980 bytes/245 palavras em tres funcoes de
+# 156, 504 e 320 bytes. SHA-256 por corpo, na mesma ordem:
+# a99e5f95f307f9d9d6c5ae0cb9fdd6763d18e0d04084ea2cdb06fd5682bc2fe6,
+# 8f11f9f1029eadc99688df60cf0d516d466a7c9574a086244ed144e91e9f1a1e e
+# 68d7afe2cd95f05564257d802044badf5e909f9c11ae3c93aeda6b020c6a5f51.
+# O conjunto possui 11 JAL, 5 J, 12 branches internas, tres retornos e zero
+# JALR, DIV, MULT, BREAK ou COP2. Os oito alvos externos ja sao nativos. A
+# descoberta M02 observou +414 chamadas da raiz e do ultimo corpo, e uma
+# passagem pelo corpo intermediario. Gerar/auditar isoladamente e validar as
+# tres entradas na rota Doctrine Dark x Skullomania antes de promover.
+0x80137FE8
