@@ -1,0 +1,14 @@
+# Candidatos em quarentena. Este arquivo nao e consumido pelo codegen; somente
+# os coletores de descoberta o usam como lista de observacao.
+#
+# Formato: TARGET CALLER ESTADO
+# TARGET e CALLER devem ser enderecos KSEG0 de oito digitos. Use 0x00000000
+# quando o chamador ainda for desconhecido.
+
+# S1-240: 0x8019E6D0..0x8019E867, 408 bytes/102 palavras. Leaf frameless,
+# SHA-256 c4122d56623ca3090a6f9f733e7a77d13472be8b042cdd64443c9038f7097461.
+# O unico JAL estatico conhecido esta em 0x8011C238. A coleta historica
+# modified-m01-bonus-barril-01 registrou +180 entradas, mas varias repeticoes
+# direcionadas em Bonus Barril e Versus nao observaram o JAL nem a entrada
+# compilada. Reabrir somente se TARGET reaparecer em uma coleta consistente.
+0x8019E6D0 0x8011C238 deferred-unreproduced

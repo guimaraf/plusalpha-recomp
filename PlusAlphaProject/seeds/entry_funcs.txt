@@ -3881,3 +3881,25 @@
 # sem fallback candidato; P50/P95/maximo de 16,684/16,766/17,416 ms. O material
 # historico conhecido se encerra neste lote; a proxima etapa sera descoberta nova.
 0x8019CB4C
+
+# Micro-lote S1-240 aprovado provisoriamente. A coleta
+# discovery-m02-versus-doctrine-skullomania-01 observou +185 execucoes desta
+# raiz na build S1-239 de telemetria. A funcao formal ocupa
+# 0x8013CB08..0x8013CB8B: 132 bytes/33 palavras, com SHA-256
+# e5371557634afd2a18808b9474fa67a3f0f6c6476af404f5f84fe34e2be23c7d.
+# A tabela indireta em 0x801ABC44 foi emitida com cinco entradas/quatro destinos
+# internos. O generated confirmou 106.352/195.584 palavras (54,3766%), 1.024
+# funcoes e 15.933 entradas no dispatcher; o auditor retornou CLEAN. A telemetria
+# S1-240 registrou 185 hits em cyc_watch e fntrace, sem fallback ou divergencia;
+# P50/P95/maximo de 16,683/16,734/18,276 ms. Bonus e Arcade ficaram estaveis.
+# S1-239 permanece como o ultimo checkpoint de build limpa.
+0x8013CB08
+
+# Micro-lote experimental S1-241, ainda nao promovido. A rota Versus Doctrine
+# Dark x Skullomania no cenario Skullomania observou +2.564 execucoes da raiz
+# formal 0x801102A0..0x8011062F. Sao 912 bytes/228 palavras, SHA-256
+# a0f347d22e0d4cc9145e22cc5b8368a14af1cc3563a5ec9268202cab2e7fe6ed.
+# O fluxo possui tres JAL para funcoes ja nativas, 11 branches internas, um
+# retorno, 1 DIV, 6 MULT e 2 BREAK de guarda; zero J, JALR, COP2 ou tabela
+# indireta. Gerar/auditar isoladamente e validar na mesma rota antes de promover.
+0x801102A0
