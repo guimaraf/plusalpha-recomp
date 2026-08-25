@@ -3882,7 +3882,7 @@
 # historico conhecido se encerra neste lote; a proxima etapa sera descoberta nova.
 0x8019CB4C
 
-# Micro-lote S1-240 aprovado provisoriamente. A coleta
+# Micro-lote S1-240 aprovado integralmente. A coleta
 # discovery-m02-versus-doctrine-skullomania-01 observou +185 execucoes desta
 # raiz na build S1-239 de telemetria. A funcao formal ocupa
 # 0x8013CB08..0x8013CB8B: 132 bytes/33 palavras, com SHA-256
@@ -3892,10 +3892,10 @@
 # funcoes e 15.933 entradas no dispatcher; o auditor retornou CLEAN. A telemetria
 # S1-240 registrou 185 hits em cyc_watch e fntrace, sem fallback ou divergencia;
 # P50/P95/maximo de 16,683/16,734/18,276 ms. Bonus e Arcade ficaram estaveis.
-# S1-239 permanece como o ultimo checkpoint de build limpa.
+# O checkpoint limpo cumulativo S1-242 confirmou a promocao integral.
 0x8013CB08
 
-# Micro-lote S1-241 aprovado provisoriamente. A rota Versus Doctrine Dark x
+# Micro-lote S1-241 aprovado integralmente. A rota Versus Doctrine Dark x
 # Skullomania no cenario Skullomania observou +2.564 execucoes da raiz
 # formal 0x801102A0..0x8011062F. Sao 912 bytes/228 palavras, SHA-256
 # a0f347d22e0d4cc9145e22cc5b8368a14af1cc3563a5ec9268202cab2e7fe6ed.
@@ -3905,11 +3905,12 @@
 # funcoes e 15.953 entradas no dispatcher; o auditor retornou CLEAN. A coleta
 # s1-241-telemetry-01 registrou 2.934 hits fntrace completos, sem fallback;
 # P50/P95/maximo de 16,682/16,957/22,900 ms. Bonus, Trial e Arcade ficaram
-# estaveis. A promocao integral aguarda o proximo checkpoint de build limpa.
+# estaveis. O checkpoint limpo cumulativo S1-242 confirmou a promocao integral.
 0x801102A0
 
-# Micro-lote experimental S1-242. A raiz formal 0x80137FE8 fecha duas chamadas
-# diretas ainda nao nativas: 0x80138084 e 0x8013827C. O fechamento contiguo
+# Micro-lote S1-242 aprovado integralmente. A raiz formal 0x80137FE8 fecha duas
+# chamadas diretas cujos alvos ainda nao eram nativos no S1-241: 0x80138084 e
+# 0x8013827C. O fechamento contiguo
 # ocupa 0x80137FE8..0x801383BB: 980 bytes/245 palavras em tres funcoes de
 # 156, 504 e 320 bytes. SHA-256 por corpo, na mesma ordem:
 # a99e5f95f307f9d9d6c5ae0cb9fdd6763d18e0d04084ea2cdb06fd5682bc2fe6,
@@ -3918,6 +3919,11 @@
 # O conjunto possui 11 JAL, 5 J, 12 branches internas, tres retornos e zero
 # JALR, DIV, MULT, BREAK ou COP2. Os oito alvos externos ja sao nativos. A
 # descoberta M02 observou +414 chamadas da raiz e do ultimo corpo, e uma
-# passagem pelo corpo intermediario. Gerar/auditar isoladamente e validar as
-# tres entradas na rota Doctrine Dark x Skullomania antes de promover.
+# passagem pelo corpo intermediario. A telemetria S1-242 confirmou 107/1/107
+# hits nas tres entradas, 215/215 registros completos, as duas calls internas e
+# zero fallback; P50/P95/maximo de 16,683/16,741/17,594 ms. O generated confirmou
+# 106.825/195.584 palavras (54,6185%), 1.028 funcoes e 15.985 entradas no
+# dispatcher, com auditoria CLEAN. O checkpoint Release sem telemetria ficou
+# estavel em Versus Doctrine Dark x Skullomania, Versus Guile x Hokuto, Bonus
+# Barril, Bonus Trial e Arcade, com 60 FPS e frametime entre 16,4 e 16,8 ms.
 0x80137FE8

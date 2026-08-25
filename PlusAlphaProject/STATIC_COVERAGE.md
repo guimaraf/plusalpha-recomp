@@ -222,6 +222,24 @@ zero destinos ou labels ausentes. Assim, 54,3598% passa a ser a baseline estáve
 para os cenários testados. Com este lote, esgota-se o material histórico já
 descoberto; a próxima etapa será descoberta nova.
 
+Os micro-lotes inéditos S1-240, S1-241 e S1-242 foram primeiro validados em
+builds instrumentadas próprias. As coletas confirmaram alcance nativo dos
+candidatos, ausência de fallback, zero abort, bloqueio nativo, página divergente
+ou mismatch de endereço. No S1-242, o fechamento de `0x80137FE8`, `0x80138084`
+e `0x8013827C` produziu 107/1/107 hits, 215/215 registros fntrace completos e
+confirmou as duas relações de chamada internas. O frametime instrumentado teve
+P50 de 16,683 ms, P95 de 16,741 ms e máximo de 17,594 ms.
+
+O conjunto cumulativo foi então validado no checkpoint limpo UCRT64
+(`buildClean-ucrt-s1-242`), em `Release`, com `PSX_DEBUG_TOOLS=OFF` e runtime
+estático. Foram percorridos Versus Doctrine Dark x Skullomania no cenário do
+Skullomania, Versus Guile x Hokuto no cenário da Hokuto, Bonus Barril, Bonus
+Trial e várias lutas no Arcade. Não houve regressão percebida; FPS permaneceu em
+60 e o frametime observado ficou entre 16,4 e 16,8 ms. A auditoria do generated
+confirmou 1.028 funções, 15.985 entradas de dispatcher e zero destinos ou labels
+ausentes. Assim, 106.825/195.584 palavras, ou 54,6185%, passam a ser a nova
+baseline estável para os cenários testados.
+
 Os próximos testes de desempenho devem usar uma build limpa, sem observadores,
 sem autocaptura/autocompilação de overlays e com cache somente para leitura.
 Também devem incluir rotas nas quais os lags aleatórios foram percebidos.
