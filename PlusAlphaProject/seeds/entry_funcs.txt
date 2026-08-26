@@ -3955,3 +3955,39 @@
 # JALR ou JR nao-ra. Usa COP2/GTE, scratchpad, DIV e BREAK de guarda, portanto
 # a promocao permanece experimental ate telemetria paginada e checkpoint limpo.
 0x8011D310
+# Micro-lote experimental S1-246: raiz indireta de Doctrine Dark em
+# 0x8011D030..0x8011D077, selecionada pela tabela 0x801AFC70 (celula indice 7,
+# 0x801AFC8C). O dispatcher nativo 0x801171DC faz jalr em 0x80117204, com RA
+# esperado 0x8011720C. A raiz chama a auxiliar formal 0x8011D078..0x8011D30F
+# e a funcao S1-245 0x8011D310. As duas novas funcoes totalizam 184 palavras;
+# todos os alvos diretos da auxiliar ja sao nativos. Sem jalr, jr nao-ra, COP2,
+# scratchpad, DIV ou BREAK; ha somente um MULT na auxiliar.
+0x8011D030
+
+# Micro-lote experimental S1-247: callback formal 0x801A92B8..0x801A939B,
+# observado tanto no Bonus Barril quanto em Versus. Sao 228 bytes/57 palavras,
+# com frame proprio, cinco branches, um jump interno e uma call direta para
+# 0x801A7CB4 ja nativa. A funcao e registrada como callback pelo codigo nativo
+# em 0x801A8E30 e 0x801A8EB8. Os dois JALR internos (0x801A9328 e 0x801A935C)
+# possuem guarda de nulo e devem preservar o fallback CPS para os callbacks
+# dinamicos; eles serao observados pela telemetria, sem promover seus alvos.
+# Nao ha COP2/GTE, scratchpad, DIV, MULT ou BREAK. SHA-256 dos 228 bytes:
+# aca288b108aa7febfbdac243762ba97602c7ffd69049d1a788100991463e03b9.
+0x801A92B8
+
+# Micro-lote experimental S1-248: callback formal 0x801A9DC0..0x801A9FD3,
+# observado 579 vezes na coleta valida S1-247, sempre chamado pelo JALR de
+# 0x801A9328 com RA 0x801A9330. Sao 532 bytes/133 palavras; SHA-256:
+# 6da8e69bb4a4f365c08d2a168395e11a33cf7d58a714f69702836656df656f86.
+# As chamadas diretas alcançam somente oito funcoes ja nativas. O JALR
+# generico em 0x801A9FB4 (RA 0x801A9FBC) le a celula 0x801BFC68, possui
+# guarda de nulo e deve preservar latch, link, delay slot e fallback CPS.
+# Nao ha COP2/GTE, scratchpad, DIV, MULT ou BREAK.
+0x801A9DC0
+
+# Checkpoint limpo cumulativo S1-248 aprovado integralmente. As promocoes
+# S1-246, S1-247 e S1-248 passaram pela telemetria direcionada e pelo
+# checkpoint Release sem PSX_DEBUG_TOOLS: Bonus Barril, Trial, Versus Doctrine
+# Dark x Skullomania, Versus Guile x Hokuto e cenarios variados do Arcade sem
+# regressao perceptivel. A linha de frametime permaneceu estavel abaixo de
+# 17 ms durante o gameplay; o auditor codegen retornou CLEAN.
