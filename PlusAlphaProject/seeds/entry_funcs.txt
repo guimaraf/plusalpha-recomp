@@ -3927,3 +3927,31 @@
 # estavel em Versus Doctrine Dark x Skullomania, Versus Guile x Hokuto, Bonus
 # Barril, Bonus Trial e Arcade, com 60 FPS e frametime entre 16,4 e 16,8 ms.
 0x80137FE8
+# Micro-lote experimental S1-243: raiz formal observada em duas coletas de
+# Versus (Doctrine Dark x Skullomania, cenario Skullomania). 0x80162D68
+# possui 980 bytes/245 palavras; SHA-256: 4226575C83318D0F1490572D14CB151D72296A83F27BF9C3859976C6BDF05664.
+# Despacho pela tabela de estado 0x801B3340 (estado 0x41, celula 0x801B3444)
+# e chamada indireta em 0x8015F958 (RA esperado 0x8015F960). A tabela interna
+# 0x801ABFE0+0x54 possui 21 entradas, seis destinos internos; SHA-256:
+# EFA4AAF9573DC9F310A19605E5F8D1798764BBC82D9412840EC5F87F9B9BC72E.
+# Sem entradas externas no interior; 19 JAL para 13 destinos ja nativos.
+0x80162D68
+# Micro-lote experimental S1-244: funcao formal observada em duas coletas de
+# Versus Doctrine Dark x Skullomania, no cenario Skullomania. 0x80107A74
+# possui 780 bytes/195 palavras; SHA-256:
+# 21AEF47455D2B56FC9177E75E4F9574FC03694BD363C86B45756EEF9851291D7.
+# O unico chamador direto externo e JAL 0x8010773C (RA esperado 0x80107744;
+# instrucao SHA-256 9E4ACA1D882D6BC2EBED00AE07E2D420C1E79CD3A27D4673B23BCD209D3300E7).
+# Possui nove JAL para tres alvos ja nativos, quatro J e quinze branches
+# internos; zero JALR, JR nao-ra, COP2, DIV, MULT ou BREAK. Usa scratchpad,
+# portanto a promocao permanece experimental ate a telemetria e regressao.
+0x80107A74
+# Micro-lote experimental S1-245: corpo formal 0x8011D310..0x8011D9B3,
+# observado repetidamente em Versus Doctrine Dark x Skullomania, cenario
+# Skullomania. Sao 1.700 bytes/425 palavras; SHA-256:
+# 313CDFA25EE0E2086CEA05C2B3DA1151DF880113480BDD186E993E4EFE15D988.
+# O unico chamador externo e JAL 0x8011D060 (RA esperado 0x8011D068).
+# Possui oito JAL para alvos ja nativos, seis J e 23 branches internos; zero
+# JALR ou JR nao-ra. Usa COP2/GTE, scratchpad, DIV e BREAK de guarda, portanto
+# a promocao permanece experimental ate telemetria paginada e checkpoint limpo.
+0x8011D310
