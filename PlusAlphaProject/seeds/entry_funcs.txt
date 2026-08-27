@@ -3991,3 +3991,29 @@
 # Dark x Skullomania, Versus Guile x Hokuto e cenarios variados do Arcade sem
 # regressao perceptivel. A linha de frametime permaneceu estavel abaixo de
 # 17 ms durante o gameplay; o auditor codegen retornou CLEAN.
+
+# Micro-lote experimental S1-249: callback formal 0x8019F6A8..0x8019F88F,
+# observado 15.211 vezes no Bonus Barril e 9.157 vezes em Versus Doctrine
+# Dark x Skullomania. Sao 488 bytes/122 palavras; SHA-256:
+# 821c9079d8a6268de9bc37485acc312e092415c26944c1816d1ebacbdf5c44fd.
+# Os quatro JAL alcançam 0x80197F88 ja nativa e o thunk BIOS formal
+# 0x8019FB64..0x8019FB6F, acrescentado pela closure direta (12 bytes/3
+# palavras). O JALR guardado em 0x8019F788 retorna por 0x8019F790; a coleta
+# S1-247 ja observou 668 chamadas de 0x801A92B8 com essa RA. A funcao
+# 0x8019F5CC e os demais thunks do invólucro permanecem fora deste lote.
+# Nao ha COP2/GTE, scratchpad, DIV, MULT ou BREAK.
+0x8019F6A8
+
+# Micro-lote experimental S1-250: fecha a familia iniciada no S1-249 com o
+# invólucro formal 0x8019F5CC..0x8019F6A7 (220 bytes/55 palavras) e sua closure
+# direta ainda interpretada: thunks BIOS 0x8019FB4C..0x8019FB57 e
+# 0x8019FB84..0x8019FB8F (3 palavras cada), mais SaveState
+# 0x8019FB94..0x8019FBCF (15 palavras). Total novo: 304 bytes/76 palavras.
+# O invólucro foi observado 15 vezes na coleta S1-249; cada auxiliar apareceu
+# uma vez. As demais chamadas chegam apenas a funcoes ja nativas, inclusive a
+# raiz S1-249. Nao ha JALR, COP2/GTE, scratchpad, DIV, MULT ou BREAK no corpo.
+# SHA-256 dos quatro corpos: 5cd2956dd81f7f1bfe041af4d3e471f9966975967245c07c5bdffc35cdcc3764,
+# d3eefd259eb1b5f648ec00610d2defbf4c6e5873f47895dd3d23a322bb0cfd7f,
+# 38790d1aeb4d336da0f746d61d8da4152afc210c2c260c98ac350db6321e05cd e
+# 278fbe40af5ab27be7a1302914ac62558cb96e3323353cc94c5b916af6ca7aa4.
+0x8019F5CC
