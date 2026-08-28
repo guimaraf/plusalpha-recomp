@@ -4017,3 +4017,48 @@
 # 38790d1aeb4d336da0f746d61d8da4152afc210c2c260c98ac350db6321e05cd e
 # 278fbe40af5ab27be7a1302914ac62558cb96e3323353cc94c5b916af6ca7aa4.
 0x8019F5CC
+
+# Micro-lote experimental S1-251: wrapper formal 0x8014C708..0x8014C72F,
+# observado 7.667 vezes no Bonus Barril. Sao 40 bytes/10 palavras; SHA-256:
+# 56fe1cb7a7c1a6e64ef5671b6283ae210932c01d80cfe2b0364933dc332c07a8.
+# A entrada aparece na tabela em 0x801B1BB4. O corpo le o alvo dinamico da
+# celula 0x80018800 e executa um unico JALR em 0x8014C718, com RA 0x8014C720.
+# Nao ha chamadas diretas, branches, COP2/GTE, scratchpad, DIV, MULT ou BREAK.
+# O alvo indireto nao sera promovido por closure; sera identificado e observado
+# pela telemetria S1-251 antes de qualquer decisao posterior.
+0x8014C708
+
+# Micro-lote S1-253: tres folhas formais da closure antes rejeitada de
+# 0x8018F10C. A previa isolada s1-253-preview-01 confirmou exatamente estas
+# tres funcoes, sem closure adicional: 736 bytes/184 palavras; 1.045 funcoes;
+# ranges SHA-256 80df7e6811a60b300cd5371818a2504fb571eb806b5fc755bd470a4582077068.
+# Callers conhecidos em 0x8018F10C: JAL 0x8018FEEC -> 0x8017D860,
+# JAL 0x80190E20 -> 0x8017DA08, JAL 0x8018FEF4 -> 0x80191000.
+# Nao ha JALR, COP2/GTE, scratchpad, DIV, MULT ou BREAK. Os dois J dentro de
+# 0x8017DA08 ficam dentro da propria funcao e nao expandem a closure.
+0x8017D860
+0x8017DA08
+0x80191000
+
+# Micro-lote S1-254: tres folhas formais da rota Expert Mode chamadas pela
+# funcao ainda interpretada 0x8018F10C. A previa isolada
+# s1-254-preview-01 confirmou exatamente estas tres funcoes, sem closure
+# adicional: 620 bytes/155 palavras; 1.048 funcoes; ranges SHA-256
+# 2a1b157977603d23a886102be01a2b7a4b12b7514f450fd893cc96e26b4c4991.
+# 0x8017DA9C chama somente 0x8010C72C; 0x80190EB8 chama 0x80193A18,
+# 0x801252A8 e 0x80125024; 0x80190FAC chama 0x80193A18 e 0x80125024.
+# Todos esses alvos ja sao nativos. Nao ha JALR, COP2/GTE, scratchpad,
+# DIV, MULT ou BREAK. 0x8018F10C e 0x8016FC28 permanecem fora do lote.
+0x8017DA9C
+0x80190EB8
+0x80190FAC
+
+# Lote S1-255: funcao principal da rota Expert Mode. A previa isolada
+# s1-255-preview-01 confirmou somente 0x8018F10C..0x80190E6B, sem closure
+# adicional: 7.520 bytes/1.880 palavras; 1.049 funcoes; ranges SHA-256
+# 30bcd2340878a0c9057ca4b8a66f582a0695af844b1e45e9409678951d76d404.
+# Os 86 JAL alcancam 35 alvos unicos, todos ja nativos na baseline S1-254.
+# A jump table em 0x801AE638 possui cinco destinos internos. Nao ha JALR,
+# COP2/GTE, scratchpad, DIV ou BREAK; ha quatro MULT, cobertos por observacao
+# dirigida na telemetria. 0x8016FC28 permanece fora do lote.
+0x8018F10C

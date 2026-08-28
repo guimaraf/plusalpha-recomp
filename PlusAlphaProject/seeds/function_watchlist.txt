@@ -1,0 +1,22 @@
+# Observador multi-PC de alcance em gameplay.
+#
+# Formato: um endereco formal alinhado por linha. Texto depois de # e ignorado.
+# Limite do runtime: 128 enderecos fisicos unicos.
+# Esta lista NAO promove seeds e NAO autoriza geracao de fontes.
+# Baseline: checkpoint Release S1-255. Das cinco funcoes interpretadas
+# confirmadas na rota Expert, somente 0x8016FC28 permanece interpretada.
+# As demais linhas nao nativas sao candidatos historicos ainda sem hit
+# reproduzivel; ficam preservadas para futuras campanhas de descoberta.
+
+0x8016FC28  # unica das cinco ainda interpretada; raiz S1-252, closure rejeitada
+0x8017D860  # nativa desde S1-253; 106 palavras
+0x8017DA08  # nativa desde S1-253; 37 palavras
+0x8017DA9C  # nativa desde S1-254; 73 palavras
+0x8018F10C  # nativa desde S1-255; 1880 palavras
+0x80190EB8  # nativa desde S1-254; 61 palavras
+0x80190FAC  # nativa desde S1-254; 21 palavras
+0x80191000  # nativa desde S1-253; 41 palavras
+0x801910A4  # candidato S1-252 sem hit reproduzivel; 141 palavras
+0x801914C0  # candidato S1-252 sem hit reproduzivel; 50 palavras
+0x80191C84  # candidato S1-252 sem hit reproduzivel; 297 palavras
+0x80192D6C  # candidato S1-252 sem hit reproduzivel; 59 palavras
