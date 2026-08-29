@@ -10,14 +10,16 @@ readonly GAME_TOML="$PROJECT_ROOT/game.toml"
 readonly RAW_TCP="$FRAMEWORK_ROOT/tools/raw_tcp.py"
 readonly WATCHLIST="$PROJECT_ROOT/seeds/function_watchlist.txt"
 readonly RANGES_FILE="$PROJECT_ROOT/generated/SLUS_005.48_full.ranges"
-readonly BUILD_DIR="$PROJECT_ROOT/buildClean-ucrt-s1-253-tele"
+readonly BUILD_DIR="$PROJECT_ROOT/buildClean-ucrt-s1-255-tele"
 readonly RUNTIME_EXE="$BUILD_DIR/StreetFighterEXPlusAlphaRecomp.exe"
 readonly CMAKE_CACHE="$BUILD_DIR/CMakeCache.txt"
-readonly EXPECTED_RANGES_SHA="80DF7E6811A60B300CD5371818A2504FB571EB806B5FC755BD470A4582077068"
-readonly EXPECTED_FUNCTIONS=1045
-readonly LOT_NUMBER=253
+readonly EXPECTED_RANGES_SHA="30BCD2340878A0C9057CA4B8A66F582A0695AF844B1E45E9409678951D76D404"
+readonly EXPECTED_RUNTIME_SHA="7D828DB8CE17CB908B349474D176B56649963D47FF0472DF65653F40F9C24838"
+readonly EXPECTED_FUNCTIONS=1049
+readonly LOT_NUMBER=256
 readonly WATCH_CAPACITY=128
 readonly POLL_SECONDS=1
+readonly DYNAMIC_JALR_CELL=0x80020800
 
 PYTHON_BIN=""
 DEBUG_PORT=""
@@ -38,17 +40,16 @@ note() {
 
 usage() {
     cat <<'EOF'
-Uso, sempre no MSYS2 UCRT64, com a build S1-253 de telemetria aberta:
+Uso, sempre no MSYS2 UCRT64, com a build S1-255 de telemetria aberta:
 
   bash tools/observe_function_watchlist.sh
 
 O script carrega seeds/function_watchlist.txt uma vez e conduz varias janelas
-de gameplay na mesma execucao do jogo. Para cada confronto, informe um nome
-curto como ken-ryu ou skullo-ddark. Pressione ENTER no inicio do gameplay e
+na mesma execucao do jogo. Para a descoberta S1-256, use tags como options,
+memory-card-load e memory-card-save. Pressione ENTER no inicio da rota e
 novamente ao terminar a janela. Digite fim para encerrar a campanha.
 
-O segundo nome deve representar o personagem que determinou o cenario. Use
-tokens simples, sem espacos: ddark, skullo, evilhokuto etc.
+Use identificadores simples, sem espacos, que descrevam a rota observada.
 
 Este script nao gera fontes, nao compila, nao abre e nao fecha o jogo.
 EOF
@@ -110,13 +111,16 @@ validate_environment() {
     [[ -f "$WATCHLIST" ]] || fail "Watchlist ausente: $WATCHLIST"
     [[ -f "$RANGES_FILE" ]] || fail "Manifesto gerado ausente: $RANGES_FILE"
     [[ -f "$RUNTIME_EXE" ]] ||
-        fail "Build S1-253 ausente. Recompile antes de iniciar o observador."
-    [[ -f "$CMAKE_CACHE" ]] || fail "CMakeCache ausente na build S1-253."
+        fail "Build S1-255 de telemetria ausente: $RUNTIME_EXE"
+    [[ -f "$CMAKE_CACHE" ]] || fail "CMakeCache ausente na build S1-255."
 
-    local ranges_sha function_count
+    local ranges_sha runtime_sha function_count
     ranges_sha="$(sha256sum "$RANGES_FILE" | awk '{print toupper($1)}')"
     [[ "$ranges_sha" == "$EXPECTED_RANGES_SHA" ]] ||
-        fail "Manifesto nao corresponde ao S1-253: $ranges_sha"
+        fail "Manifesto nao corresponde ao S1-255: $ranges_sha"
+    runtime_sha="$(sha256sum "$RUNTIME_EXE" | awk '{print toupper($1)}')"
+    [[ "$runtime_sha" == "$EXPECTED_RUNTIME_SHA" ]] ||
+        fail "Executavel S1-255 de telemetria divergente: $runtime_sha"
     function_count="$(grep -c '^F [0-9A-Fa-f]\{8\}$' "$RANGES_FILE")"
     [[ "$function_count" == "$EXPECTED_FUNCTIONS" ]] ||
         fail "Manifesto possui $function_count funcoes; esperado=$EXPECTED_FUNCTIONS."
@@ -316,7 +320,7 @@ lines = [
     f"- Duracao observada: {result['duration_seconds']} s",
     f"- Funcoes observadas: {len(observed)}/{len(entries)}",
     f"- Hits totais: {result['total_hits']}",
-    "- Segundo token do identificador: personagem que determinou o cenario.",
+    "- Identificador informado pelo usuario para esta rota.",
     "",
     "| Funcao | Hits | Nativos | Interpretados | Primeiro frame | Ultimo frame |",
     "|---|---:|---:|---:|---:|---:|",
@@ -356,7 +360,7 @@ if not results:
     )
     (campaign / "campaign-summary.md").write_text(
         f"# Campanha {campaign.name}\n\n"
-        "Nenhum confronto foi concluido nesta campanha.\n",
+        "Nenhuma rota foi concluida nesta campanha.\n",
         encoding="utf-8",
     )
     raise SystemExit(0)
@@ -464,18 +468,20 @@ run_scenario() {
     : >"$scenario_dir/live.log"
     : >"$scenario_dir/events.jsonl"
 
-    printf '\nCenario: %s\n' "$scenario_id"
-    printf 'Posicione a luta no primeiro frame controlavel do gameplay.\n'
+    printf '\nRota: %s\n' "$scenario_id"
+    printf 'Posicione o jogo no ponto inicial indicado para esta rota.\n'
     read -r -p 'Pressione ENTER para iniciar esta janela... ' _
 
     raw_command "$scenario_dir/start_pc_watch_reset.log" pc_watch_reset
     raw_command "$scenario_dir/start_pc_watch_dump.raw.log" pc_watch_dump
     extract_json "$scenario_dir/start_pc_watch_dump.raw.log" \
         "$scenario_dir/start_pc_watch_dump.json"
+    raw_command "$scenario_dir/start_dynamic_jalr_cell.log" \
+        mem_words "addr=$DYNAMIC_JALR_CELL" count=1
     started_epoch="$(date +%s)"
     {
         printf 'scenario_id=%s\n' "$scenario_id"
-        printf 'stage_owner=second_character_in_scenario_id\n'
+        printf 'route_tag=%s\n' "$scenario_id"
         printf 'started_utc=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
         printf 'campaign=%s\n' "$(basename "$CAMPAIGN_DIR")"
         printf 'watchlist_targets=%s\n' "${#TARGETS[@]}"
@@ -492,6 +498,8 @@ run_scenario() {
     done
 
     raw_command "$scenario_dir/stop_pc_watch.log" pc_watch_stop
+    raw_command "$scenario_dir/final_dynamic_jalr_cell.log" \
+        mem_words "addr=$DYNAMIC_JALR_CELL" count=1
     raw_command "$scenario_dir/final_pc_watch_dump.raw.log" pc_watch_dump
     extract_json "$scenario_dir/final_pc_watch_dump.raw.log" \
         "$scenario_dir/final_pc_watch_dump.json"
@@ -562,12 +570,12 @@ main() {
     arm_watchlist
 
     printf '\nObservador pronto. O jogo continuara aberto durante toda a campanha.\n'
-    printf 'Informe confrontos como ken-ryu ou skullo-ddark; digite fim ao terminar.\n'
+    printf 'Informe rotas como options ou memory-card-save; digite fim ao terminar.\n'
 
     local scenario_id
     while true; do
         printf '\n'
-        read -r -p 'Identificador do confronto: ' scenario_id
+        read -r -p 'Identificador da rota: ' scenario_id
         scenario_id="${scenario_id,,}"
         if [[ "$scenario_id" == "fim" ]]; then
             break

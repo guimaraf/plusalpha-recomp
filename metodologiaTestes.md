@@ -186,6 +186,43 @@ O observador multi-PC usa contadores de 64 bits, sem ring finito de hits, e uma
 tabela hash para consultar até 128 endereços com custo constante. Ele não usa
 `fn_filter`, não compila, não abre e não fecha o jogo.
 
+## Descoberta automática de funções ainda interpretadas
+
+Quando os endereços ainda não são conhecidos, usar a build S1-256 de
+telemetria já aberta e executar no UCRT64:
+
+```bash
+bash tools/observe_interpreted_functions.sh
+```
+
+O script não usa watchlist. Ele compara snapshots cumulativos de
+`static_text_misses` e `overlay_interp_hot` para mostrar somente os PCs que
+entraram no interpretador dentro de cada janela. Para código estático, consulta
+uma vez por segundo; código dinâmico/RAM é consultado a cada cinco segundos. O
+terminal anuncia cada endereço novo uma única vez. O polling ocorre somente
+nesta campanha de descoberta e não substitui a telemetria formal de aprovação.
+
+Fluxo recomendado para um personagem:
+
+1. Escolher o personagem ativo e deixar o adversário parado.
+2. Informar uma tag ampla, por exemplo `ryu-vs-ken-descoberta`.
+3. Pressionar Enter e executar movimentos e golpes livremente.
+4. Quando surgir `[INTERPRETADO]`, pressionar Enter para encerrar a janela.
+5. Informar uma descrição opcional do golpe suspeito.
+6. Abrir outra janela, como `ryu-hadoken-confirmacao`, e repetir somente o
+   golpe para confirmar a associação.
+7. Continuar com outras ações ou digitar `fim` para encerrar a campanha.
+
+Cada janela gera `summary.md`, `interpreted.csv`, `result.json` e os snapshots
+brutos BEFORE/AFTER. A campanha gera `campaign-summary.md` e
+`interpreted-matrix.csv`, relacionando PCs e rotas. Uma tag sem resultados é
+evidência útil de que nenhum novo PC interpretado foi observado naquela janela.
+
+Os resultados são **PCs de entrada**, não funções formais automaticamente. O
+relatório separa código pristine, página modificada, runtime e RAM dinâmica.
+Antes de inserir qualquer endereço em `entry_funcs.txt`, confirmar boundary,
+bytes, callers, fluxo indireto, closure alcançável e orçamento de palavras.
+
 ## Timeline temporizada sem polling durante o jogo
 
 Quando o objetivo for correlacionar lag com a frequência das funções, usar o

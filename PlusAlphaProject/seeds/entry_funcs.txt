@@ -4062,3 +4062,31 @@
 # COP2/GTE, scratchpad, DIV ou BREAK; ha quatro MULT, cobertos por observacao
 # dirigida na telemetria. 0x8016FC28 permanece fora do lote.
 0x8018F10C
+
+# Lote S1-256: familia Options/Memory Card confirmada pela coleta limpa
+# s1-256-function-watch-15. A previa isolada em duas etapas confirmou a
+# closure direta de cinco funcoes/586 palavras e acrescentou somente o destino
+# indireto observado 0x801930BC/36 palavras. Total: seis funcoes, 622 palavras,
+# 1.055 funcoes projetadas; ranges SHA-256 da previa completa
+# 300f1b44336410c0f0dadaf746d2973d27abccf4eb391a36891d827da67057c6.
+# Os outros cinco destinos da tabela 0x801B8538 permanecem fora das seeds.
+0x8016FC28
+0x801930BC
+
+# Micro-lote S1-257: dispatcher permanente observado na tela de titulo.
+# A previa isolada s1-257-preview-01 confirmou somente
+# 0x8019FC6C..0x8019FCE3: 120 bytes/30 palavras; 1.056 funcoes; ranges
+# SHA-256 A10B9A83A30D0CB0280F36898971A2D99F804ABC094461994B137F55B635E6CD.
+# O JALR em 0x8019FCB4 percorre oito callbacks; os oito slots estavam zerados
+# tanto na tela de titulo quanto no primeiro frame controlavel de Versus.
+# O setter vizinho 0x8019FCE4 permanece fora do lote.
+0x8019FC6C
+
+# Micro-lote S1-258: dispatcher permanente localizado no Mode Select.
+# A previa isolada s1-258-preview-01 confirmou somente
+# 0x8017566C..0x801758C7: 604 bytes/151 palavras; 1.057 funcoes; ranges
+# SHA-256 B085DB02B291233F95A55B6F6F25FAACE48147BC5FF273B6518D811F98A73E1E.
+# Os 24 JAL alcancam 19 destinos ja nativos; a jump table 0x801AC9C0
+# possui 19 entradas e nove destinos internos. Os dois JALR permanecem
+# sob gate dinamico na telemetria formal do lote.
+0x8017566C

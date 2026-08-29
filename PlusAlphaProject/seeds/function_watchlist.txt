@@ -3,20 +3,20 @@
 # Formato: um endereco formal alinhado por linha. Texto depois de # e ignorado.
 # Limite do runtime: 128 enderecos fisicos unicos.
 # Esta lista NAO promove seeds e NAO autoriza geracao de fontes.
-# Baseline: checkpoint Release S1-255. Das cinco funcoes interpretadas
-# confirmadas na rota Expert, somente 0x8016FC28 permanece interpretada.
-# As demais linhas nao nativas sao candidatos historicos ainda sem hit
-# reproduzivel; ficam preservadas para futuras campanhas de descoberta.
+# Baseline: checkpoint Release S1-255. Campanha dirigida para preparar S1-256.
+# As cinco primeiras funcoes formam a closure direta residual de 586 palavras.
+# As seis seguintes sao destinos da tabela indireta usada pelo JALR em
+# 0x8019209C. Elas permanecem fora da closure direta e serao apenas observadas.
 
-0x8016FC28  # unica das cinco ainda interpretada; raiz S1-252, closure rejeitada
-0x8017D860  # nativa desde S1-253; 106 palavras
-0x8017DA08  # nativa desde S1-253; 37 palavras
-0x8017DA9C  # nativa desde S1-254; 73 palavras
-0x8018F10C  # nativa desde S1-255; 1880 palavras
-0x80190EB8  # nativa desde S1-254; 61 palavras
-0x80190FAC  # nativa desde S1-254; 21 palavras
-0x80191000  # nativa desde S1-253; 41 palavras
-0x801910A4  # candidato S1-252 sem hit reproduzivel; 141 palavras
-0x801914C0  # candidato S1-252 sem hit reproduzivel; 50 palavras
-0x80191C84  # candidato S1-252 sem hit reproduzivel; 297 palavras
-0x80192D6C  # candidato S1-252 sem hit reproduzivel; 59 palavras
+0x8016FC28  # raiz residual; 39 palavras; 9.888 hits interpretados conhecidos
+0x801910A4  # folha direta; 141 palavras; 16.068 hits interpretados conhecidos
+0x801914C0  # folha direta; 50 palavras; 2.471 hits interpretados conhecidos
+0x80191C84  # closure principal; 297 palavras; dois JALR
+0x80192D6C  # folha direta; 59 palavras; 1.728 hits interpretados conhecidos
+
+0x80192128  # JALR state[0]; fora dos ranges S1-255
+0x80193174  # JALR state[1]; fora dos ranges S1-255
+0x801930BC  # JALR state[2]; fora dos ranges S1-255
+0x8019319C  # JALR state[3]; fora dos ranges S1-255
+0x801931C4  # JALR state[4]; fora dos ranges S1-255
+0x80192F60  # JALR state[5]; fora dos ranges S1-255

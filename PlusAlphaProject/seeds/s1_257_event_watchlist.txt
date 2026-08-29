@@ -1,0 +1,8 @@
+# Observador orientado a eventos sobre a baseline S1-257.
+#
+# Esta lista NAO promove seeds e NAO autoriza geracao de fontes. Cada endereco
+# deve ser uma entrada formal alinhada, ainda interpretada na baseline S1-257.
+# O runtime aceita no maximo 128 enderecos fisicos unicos por pc_watch.
+
+0x8017566C  # candidato recomendado S1-258; 151 palavras; transicoes/Bonus
+0x80103384  # candidato posterior; 332 palavras; menus e gameplay
