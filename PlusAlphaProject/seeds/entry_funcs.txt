@@ -4090,3 +4090,19 @@
 # possui 19 entradas e nove destinos internos. Os dois JALR permanecem
 # sob gate dinamico na telemetria formal do lote.
 0x8017566C
+
+# Micro-lote S1-259: helper de copia observado no Mode Select.
+# A previa isolada s1-259-preview-01 confirmou somente
+# 0x801939A0..0x80193A17: 120 bytes/30 palavras; 1.058 funcoes; ranges
+# SHA-256 C0E7A0A37DB76E98E731D4E9CA5A0882DE02802E8CDADA5805E07C83DE15999F.
+# Nao ha JAL/JALR ou closure; o corpo vivo coincidiu 30/30 palavras com o
+# executavel apesar de a pagina conter codigo vizinho modificado.
+0x801939A0
+
+# Micro-lote S1-260: ramo curto observado exclusivamente no Pause.
+# A previa isolada s1-260-preview-01 confirmou somente
+# 0x80103BD8..0x80103CA7: 208 bytes/52 palavras; 1.059 funcoes; ranges
+# SHA-256 0B63B7672129C4A357100D5DE97DAB762910705FAABC4580880C291AD14DE69F.
+# Os JAL alcancam 0x801938F0 e 0x80125154, ambos ja nativos. A raiz
+# 0x80103384 e todo o ramo 0x8016EA0C permanecem fora deste lote.
+0x80103BD8

@@ -24,24 +24,24 @@ fila `pendente` abaixo deve ser triada.
 
 ## Baseline atual
 
-- Baseline de trabalho promovida provisoriamente: **S1-258**, validada em build de telemetria.
-- Ultimo checkpoint Release limpo: **S1-255**.
-- Cobertura: **111.297 / 195.584 palavras (56,9050%)**.
-- Funcoes geradas: **1.057**.
-- Entradas do dispatcher: **16.648**.
+- Checkpoint promovido: **S1-261 Release limpo**, incorporando a baseline S1-260.
+- Ultimo checkpoint Release limpo: **S1-261**.
+- Cobertura: **111.379 / 195.584 palavras (56,9469%)**.
+- Funcoes geradas: **1.059**.
+- Entradas do dispatcher: **16.667**.
 - Auditor codegen: **CLEAN**.
-- Configuracao S1-258 validada: **RelWithDebInfo**, `PSX_DEBUG_TOOLS=ON`, runtime estatico.
+- Configuracao validada: **Release**, `PSX_DEBUG_TOOLS=OFF`, runtime estatico.
 - Ranges SHA-256:
-  `B085DB02B291233F95A55B6F6F25FAACE48147BC5FF273B6518D811F98A73E1E`.
-- Executavel S1-258 de telemetria SHA-256:
-  `8164471615F18C86137152CFE04C661E895A51E64B647A380BE3442C35BAE536`.
+  `0B63B7672129C4A357100D5DE97DAB762910705FAABC4580880C291AD14DE69F`.
+- Executavel S1-261 Release SHA-256:
+  `11E39E8400412A71BEAD05317548798C60B7EB18C3EDE72ABA8A47B159D51A8D`.
 
-O checkpoint cumulativo incorpora S1-251, S1-253, S1-254 e S1-255. A regressao
-Release percorreu Expert Mode, Bonus Barril com Guile, Versus Doctrine Dark x
-Skullomania e cinco partidas completas de Arcade. Nao houve regressao
-percebida; o jogo permaneceu em 60 FPS e a linha de frametime ficou
-extremamente estavel. A politica revisada do turbo loading, incluindo o teto de
-apresentacao de 30 Hz, tambem integra este checkpoint.
+O checkpoint cumulativo S1-261 incorpora S1-251, S1-253, S1-254, S1-255 e os
+lotes S1-256 a S1-260. A regressao Release percorreu Expert Mode com retorno a
+selecao, Bonus Barril com Guile e Pause, Versus Doctrine Dark x Skullomania,
+varias partidas de Arcade, Survival, Options e Memory Card. Nao houve regressao
+percebida; turbo loading, audio, controles, 60 FPS e frametime permaneceram
+estaveis.
 
 A tentativa S1-252 contaminou temporariamente os fontes de trabalho com 1.054
 funcoes e ranges SHA-256
@@ -79,11 +79,13 @@ ranges nativos e 50 ainda estao fora deles. Os 50 PCs restantes nao equivalem a
 | S1-253 | `0x8017D860`, `0x8017DA08`, `0x80191000` | 184 | 108.459 | processado; checkpoint S1-255 |
 | S1-254 | `0x8017DA9C`, `0x80190EB8`, `0x80190FAC` | 155 | 108.614 | processado; checkpoint S1-255 |
 | S1-255 | `0x8018F10C..0x80190E6B` | 1.880 | 110.494 | processado; checkpoint S1-255 |
-| S1-256 | `0x8016FC28`, `0x801910A4`, `0x801914C0`, `0x80191C84`, `0x80192D6C`, `0x801930BC` | 622 | 111.116 | processado; baseline S1-257 |
-| S1-257 | `0x8019FC6C..0x8019FCE3` | 30 | 111.146 | processado; telemetria e regressao aprovadas |
-| S1-258 | `0x8017566C..0x801758C7` | 151 | 111.297 | processado; telemetria e regressao aprovadas provisoriamente |
+| S1-256 | `0x8016FC28`, `0x801910A4`, `0x801914C0`, `0x80191C84`, `0x80192D6C`, `0x801930BC` | 622 | 111.116 | processado; checkpoint S1-261 |
+| S1-257 | `0x8019FC6C..0x8019FCE3` | 30 | 111.146 | processado; checkpoint S1-261 |
+| S1-258 | `0x8017566C..0x801758C7` | 151 | 111.297 | processado; checkpoint S1-261 |
+| S1-259 | `0x801939A0..0x80193A17` | 30 | 111.327 | processado; checkpoint S1-261 |
+| S1-260 | `0x80103BD8..0x80103CA7` | 52 | 111.379 | processado; checkpoint S1-261 |
 
-Total promovido desde S1-239: **4.978 palavras**.
+Total promovido desde S1-239: **5.060 palavras**.
 
 ## Lote em validacao
 
@@ -511,13 +513,186 @@ Decisao: **S1-257 processado e promovido na baseline de trabalho**.
 
 ## Lote em andamento e funcoes formais pendentes
 
-Com as 151 palavras do S1-258 ja processadas, permanecem **332 palavras
+Com as 30 palavras do S1-259 ja processadas, permanecem **332 palavras
 formais confirmadas pendentes** na fila, sem contar closures ainda
 interpretadas nem PCs cuja boundary continua pendente.
 
 | Prioridade | Funcao formal | Palavras | Evidencia e risco | Estado |
 |---:|---|---:|---|---|
-| 1 | `0x80103384..0x801038B3` | 332 | dispatcher global de apresentacao/interface; dois destinos JAL distintos ainda fora dos ranges (`0x80103BD8`, `0x8016EA0C`) | proximo candidato; medir closure direta isolada |
+| 1 | `0x80103384..0x801038B3` | 332 | dispatcher global de apresentacao/interface; dois destinos JAL distintos ainda fora dos ranges (`0x80103BD8`, `0x8016EA0C`) | adiar ate medir a closure direta |
+
+### S1-259 - `0x801939A0`
+
+A candidata formal ocupa `0x801939A0..0x80193A17`, 120 bytes/**30
+palavras**, entre os ranges nativos `0x80193920..0x8019399F` e
+`0x80193A18..0x80194273`. O corpo possui SHA-256
+`37B07726C20B9FBADA32ADF7CC1ED776D342F0F742F1FEA3734EA48EB6A26179`.
+Nao ha JAL, JALR, COP2/GTE, MULT, DIV, syscall ou BREAK. Seis branches e tres
+jumps absolutos permanecem dentro do corpo; o retorno normal ocorre por
+`JR $ra` em `0x80193A10`. O caller direto encontrado no executavel e o JAL em
+`0x80134EF8`.
+
+A telemetria S1-258 registrou 378 observacoes em pagina modificada. A campanha
+posterior demonstrou que esse total corresponde exatamente a 63 frames com
+seis chamadas por frame na tela `Options -> Ranking`. A leitura das 30 palavras
+vivas coincidiu com o executavel e reproduziu exatamente o SHA-256 acima; a
+marcacao modificada pertence a codigo vizinho, nao ao corpo candidato.
+
+O script `PlusAlphaProject/tools/preaudit_s1_259_sources.ps1` prepara somente
+uma previa isolada. O orcamento rigido e **uma funcao/30 palavras**, projetando
+1.058 funcoes e 111.327/195.584 palavras (**56,9203%**). Qualquer closure ou
+range adicional rejeita a previa. A seed e os fontes principais permanecem na
+baseline S1-258 ate a geracao principal pelo usuario.
+
+A previa `s1-259-preview-01` foi executada e aprovada: adicionou somente
+`0x801939A0`, mediu 30 palavras/1.058 funcoes, produziu ranges SHA-256
+`C0E7A0A37DB76E98E731D4E9CA5A0882DE02802E8CDADA5805E07C83DE15999F` e
+terminou a auditoria codegen com status CLEAN. A seed foi registrada uma vez
+em `entry_funcs.txt`. Foram preparados gerador principal, compilacao UCRT64 e
+telemetria formal S1-259 dirigida ao Mode Select, a raiz nativa e o retorno ao
+caller `0x80134F00`.
+
+As coletas formais `s1-259-telemetry-01` e `s1-259-telemetry-02` terminaram
+sem misses, aborts, bloqueios ou divergencias e com regressao manual limpa. A
+segunda janela percorreu Mode Select, Options, algumas subtelas e retornou ao
+Mode Select. Mesmo assim, ambas registraram zero hit na raiz `0x801939A0` e no
+retorno `0x80134F00`; portanto, o gate positivo continua **insuficiente**. O
+frametime da segunda coleta permaneceu limpo: P50 16,683 ms, P95 16,755 ms e
+maximo 17,228 ms.
+
+Para evitar novas tentativas dirigidas a uma rota presumida, foi criado
+`PlusAlphaProject/tools/observe_s1_259_watch_events.sh`, alimentado somente por
+`seeds/s1_259_event_watchlist.txt`. Ele observa exclusivamente a entrada nativa
+`0x801939A0`, congela no primeiro hit, solicita uma tag da tela/transicao e
+permite rearmar depois da mudanca de contexto. Essa campanha apenas localiza a
+rota positiva; nao substitui uma nova telemetria formal e nao promove o lote.
+
+Tres sessoes do observador localizaram a funcao somente em `Options -> Ranking`
+entre as telas e modos percorridos. Cinco eventos reproduziveis somaram **1.262
+hits nativos e zero interpretados**: 258, 186, 228, 216 e 374 hits. O padrao
+permaneceu em aproximadamente seis chamadas por frame, com corpo vivo e caller
+exatos, `miss_total=0`, zero abort, zero handoff inesperado e nenhuma
+divergencia de texto.
+
+A coleta formal `s1-259-telemetry-03`, executada dentro de Ranking, durou 13
+segundos e confirmou **4.752 hits nativos e zero interpretados** na raiz. O
+corpo permaneceu exato e estavel, a candidata nao apareceu nas observacoes do
+interpretador, o delta de misses foi zero e nao houve abort, bloqueio, handoff
+ou divergencia. O frametime ficou em P50 16,682 ms, P95 16,745 ms e maximo
+17,929 ms. O texto de rota em `metadata.txt` permaneceu herdado do coletor
+original, mas a rota efetivamente executada e atestada pelo usuario foi
+`Options -> Ranking`.
+
+O retorno fixo `0x80134F00` permaneceu zerado e fez o resumo automatico marcar
+o gate como insuficiente. A evidencia demonstrou que esse retorno nao pertence
+ao caminho exercitado por Ranking; ele nao representa fallback da candidata.
+Com a raiz amplamente exercitada, exclusivamente nativa, os guards limpos e a
+regressao manual aprovada, a decisao tecnica e: **S1-259 processado e promovido
+provisoriamente na baseline de trabalho**.
+
+### Descoberta do proximo gate sobre a S1-259
+
+A candidata global `0x80103384..0x801038B3` possui 1.328 bytes/**332
+palavras** e SHA-256
+`7BC970EBE34267125EFD878140DDD4A9637404E57EFCF7E32211A5073C0DCE32`.
+Seus sete destinos JAL diretos sao `0x80103A74`, `0x80103B1C`,
+`0x80103BD8`, `0x80103CA8`, `0x80125024`, `0x8016EA0C` e `0x80193A18`.
+Cinco ja pertencem a baseline S1-259; os dois ramos ainda interpretados
+expandem a closure direta para outras quatro funcoes.
+
+| Etapa sugerida | Funcao | Palavras | SHA-256 do corpo | Dependencias novas |
+|---|---|---:|---|---|
+| ramo curto | `0x80103BD8..0x80103CA7` | 52 | `533D35036FC79CA6AE38DCC80BB9A148F200E4FC42477662428072A212450918` | nenhuma |
+| ramo maior | `0x8016EA0C..0x8016EA5F` | 21 | `5BC9322758913EAD6D97B1C276357E53C103C37B6BFE94594DD04BFA0FC59B9C` | `0x8016EA60`, `0x8016EAE8` |
+| ramo maior | `0x8016EA60..0x8016EAE7` | 34 | `3A083B12B88A50FD0040D62650DA4B52555B591489F34EE999EBDE3A628B5387` | nenhuma |
+| ramo maior | `0x8016EAE8..0x8016F1AF` | 434 | `C93DEF8DD510FA6A9D66EFAB7469C53927D2F45231407F90E2AD58E03C5BE10A` | `0x8016F560`, `0x8016FB64` |
+| ramo maior | `0x8016F560..0x8016F667` | 66 | `8ABDB0EBCC4758FE178847F5966AFDAD3451B0A4A084467D9F3E9781E4911BA3` | nenhuma |
+| ramo maior | `0x8016FB64..0x8016FC27` | 49 | `F73BCA9D56A85EB08B8A05A81B25F1B798969FA4B3357B6E5E9F417C93FDF650` | nenhuma |
+| raiz final | `0x80103384..0x801038B3` | 332 | `7BC970EBE34267125EFD878140DDD4A9637404E57EFCF7E32211A5073C0DCE32` | os dois ramos acima |
+
+A closure integral mede **sete funcoes/988 palavras**: 52 palavras no ramo
+curto, 604 no ramo maior e 332 na raiz. Nenhuma funcao possui JALR. A funcao
+`0x8016EAE8` contem dois `MULTU`, em `0x8016EC34` e `0x8016ED34`, e por isso o
+ramo maior exige telemetria propria. A estrategia preliminar mais segura e
+promover primeiro o ramo curto, depois o ramo maior e somente por ultimo a
+raiz, evitando um lote unico de 988 palavras.
+
+Para localizar as rotas foi criado
+`PlusAlphaProject/tools/observe_s1_259_next_gate_events.sh`, com a lista
+`seeds/s1_260_gate_watchlist.txt`. A raiz global e apenas contexto e nao
+interrompe a procura. O observador congela somente quando uma das seis
+dependencias executa, solicita a tag da tela/transicao e salva os corpos vivos
+de todas as sete funcoes. Nenhuma seed foi selecionada e nenhuma previa, fonte
+ou build foi gerada nesta etapa.
+
+#### Decisao do micro-lote S1-260 - Pause
+
+A sessao valida `s1-260-gate-discovery-02` registrou o ramo curto
+`0x80103BD8` em cinco eventos independentes de Pause: Bonus Game (27 hits),
+confirmacao no Bonus Game (12), Arcade com Ryu (27), `whath-game` (15) e
+Survival (11). Foram **92 hits, todos interpretados**, e o corpo vivo permaneceu
+identico nos cinco eventos. A execucao ocupou janelas com cadencia aproximada
+de uma chamada a cada dois frames, associando o ramo ao estado de Pause nos
+contextos observados.
+
+A raiz `0x80103384` somou 6.730 hits interpretados, mas ja estava ativa antes
+do Pause e continua classificada apenas como contexto global. As cinco funcoes
+do ramo maior (`0x8016EA0C`, `0x8016EA60`, `0x8016EAE8`, `0x8016F560` e
+`0x8016FB64`) ficaram zeradas em todos os eventos. Os contadores criticos
+registraram zero aborts, native handoffs, bloqueios de texto, paginas
+divergentes e mismatches exatos.
+
+Fica aprovado para **pre-auditoria isolada**, sem promocao ainda, o micro-lote
+S1-260 contendo somente `0x80103BD8..0x80103CA7`: uma funcao/**52 palavras**,
+SHA-256
+`533D35036FC79CA6AE38DCC80BB9A148F200E4FC42477662428072A212450918`.
+Se a closure permanecer exata, a projecao sera 1.059 funcoes e
+111.379/195.584 palavras (**56,9469%**). A raiz de 332 palavras e o ramo maior
+de 604 palavras permanecem explicitamente fora das seeds.
+
+O gate foi codificado em
+`PlusAlphaProject/tools/preaudit_s1_260_sources.ps1`. Ele protege a baseline
+S1-259, exige exatamente uma nova funcao/52 palavras, valida boundary,
+vizinhas, dois callers diretos, dois callees ja nativos e o fluxo MIPS, gera
+somente em `local/preaudit/s1-260-preview-NN` e confirma ao final que seeds,
+fontes principais, `.gitignore` e BIOS permaneceram intactos.
+
+A previa isolada `s1-260-preview-01` foi aprovada com **1.059 funcoes**,
+111.379/195.584 palavras (**56,9469%**) e ranges SHA-256
+`0B63B7672129C4A357100D5DE97DAB762910705FAABC4580880C291AD14DE69F`.
+A auditoria codegen terminou `CLEAN`, com zero chamadas diretas nao resolvidas,
+misses de `call_by_address`, misses de tail-call, labels sem destino ou achados
+reais. A seed `0x80103BD8` fica selecionada para a geracao principal S1-260;
+naquele ponto, a aprovacao ainda dependia da telemetria e da regressao manual.
+
+A coleta formal `s1-260-telemetry-01` durou 136 segundos. Antes da janela, a
+raiz e os dois retornos estavam zerados. Durante tres ciclos de Pause no Bonus
+com Guile, `0x80103BD8` registrou **625 hits nativos e zero interpretados**. Os
+625 retornos ocorreram por `0x8010344C`; `0x801035BC` permaneceu zerado e fica
+como flag de observacao, sem bloquear a promocao. O PC de retorno interpretado
+pertence a raiz global ainda interpretada e nao caracteriza fallback da
+candidata.
+
+O corpo vivo BEFORE/AFTER coincidiu com o SHA-256 aprovado, os dois callers
+JAL/delay permaneceram exatos, a candidata desapareceu das observacoes do
+interpretador e o delta de `miss_total` foi zero. Aborts, native handoffs,
+`text_native_blocked`, paginas divergentes e mismatches exatos permaneceram
+zerados/estaveis. O frametime foi P50 16,683 ms, P95 16,771 ms e maximo
+17,276 ms; o perfil registrou 79,47% estatico, 9,81% interpretador e 6,07% GPU.
+
+A regressao manual posterior cobriu Arcade, Survival, Versus Doctrine Dark x
+Skullomania e Bonus, incluindo FPS, frametime, Pause, audio, controles e
+retorno ao gameplay, sem regressao percebida. Decisao: **S1-260 processada e
+promovida**. O checkpoint Release limpo S1-261 foi preparado para o smoke final.
+
+O checkpoint `buildClean-ucrt-s1-261` foi compilado localmente em Release, com
+`PSX_DEBUG_TOOLS=OFF` e runtime estatico. O executavel possui SHA-256
+`11E39E8400412A71BEAD05317548798C60B7EB18C3EDE72ABA8A47B159D51A8D`.
+O smoke final percorreu Expert Mode com retorno a selecao, Bonus com Guile e
+tres ciclos de Pause, Versus Doctrine Dark x Skullomania, varias partidas de
+Arcade, Survival, Options e Memory Card. Turbo loading, audio, controles,
+60 FPS e frametime foram verificados sem regressao percebida. Decisao:
+**S1-261 promovido como checkpoint Release limpo**.
 
 ### Preparacao S1-258 - `0x8017566C`
 
@@ -640,10 +815,12 @@ marcados como alias quando sua funcao formal for auditada.
 
 ## Proxima decisao
 
-1. Versionar e publicar a baseline de trabalho S1-258 com todo o historico de
-   ferramentas e fontes acumulado desde o checkpoint S1-255.
-2. Manter os dois retornos JALR S1-258 como flags de observacao, sem bloquear o
+1. Preservar S1-261 como baseline limpa antes de iniciar outra descoberta de
+   funcoes interpretadas.
+2. Na proxima rodada, usar um observador sobre a build de telemetria apropriada
+   para localizar primeiro a rota reproduzivel, antes de selecionar qualquer
+   nova seed.
+3. Manter os dois retornos JALR S1-258 como flags de observacao, sem bloquear o
    proximo lote enquanto continuarem sem fallback ou regressao.
-3. Iniciar a pre-auditoria isolada de `0x80103384`, medindo primeiro a closure
-   completa de `0x80103BD8` e `0x8016EA0C`; nenhum seed novo pode ser ativado
-   antes de conhecer o custo total.
+4. Manter `0x8019E6D0` em quarentena ate nova evidencia reproduzivel e auditoria
+   formal de boundary e closure.

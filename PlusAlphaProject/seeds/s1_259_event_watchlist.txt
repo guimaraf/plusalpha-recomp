@@ -1,0 +1,7 @@
+# Observador orientado a eventos sobre a build S1-259 de telemetria.
+#
+# Esta lista NAO promove seeds nem altera os fontes. O unico alvo e a entrada
+# formal ja nativa do lote S1-259, usada exclusivamente para descobrir a rota
+# reproduzivel em que ela executa.
+
+0x801939A0  # S1-259; 30 palavras; rota positiva ainda desconhecida

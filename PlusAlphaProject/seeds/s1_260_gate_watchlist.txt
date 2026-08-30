@@ -1,0 +1,12 @@
+# Descoberta do proximo gate sobre a build S1-259 de telemetria.
+#
+# "context" e contado, mas nao congela o observador. "trigger" congela no
+# primeiro hit e solicita a tag da tela/transicao. Esta lista NAO promove seeds.
+
+context 0x80103384  # raiz global; 332 palavras
+trigger 0x80103BD8  # ramo curto; 52 palavras
+trigger 0x8016EA0C  # entrada do ramo maior; 21 palavras
+trigger 0x8016EA60  # closure do ramo maior; 34 palavras
+trigger 0x8016EAE8  # closure principal; 434 palavras; MULTU
+trigger 0x8016F560  # closure do ramo maior; 66 palavras
+trigger 0x8016FB64  # closure do ramo maior; 49 palavras
