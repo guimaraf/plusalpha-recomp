@@ -87,9 +87,50 @@ ranges nativos e 50 ainda estao fora deles. Os 50 PCs restantes nao equivalem a
 
 Total promovido desde S1-239: **5.060 palavras**.
 
-## Lote em validacao
+## Trilha dinamica de overlays
 
-Nenhum. O proximo lote ainda depende de pre-auditoria e orcamento explicito.
+**OVL-001A**, trilha dinamica separada do EXE principal. O checkpoint estatico
+continua S1-261 com 111.379/195.584 palavras (56,9469%); nenhuma seed S1 foi
+adicionada.
+
+A captura privada `ovl-001-capture-04` identificou duas variantes exatas da
+regiao `0x80020000..0x800F2000`. A variante BEFORE
+`0x00020000:0xAC1FF1A4` possui 64 entradas classificadas: 22 raizes e 42
+interiores, com **4.563 palavras MIPS alcancaveis**. A variante AFTER
+`0x00020000:0x94E6122F` possui 122 entradas: 32 raizes e 90 interiores, com
+5.313 palavras alcancaveis. Nenhuma palavra de codigo classificada nas 32
+raizes mudou entre as duas imagens; 37.420 bytes de dados mudaram em 39 paginas.
+
+Os quatro PCs dominantes sao `0x8004A44C`, `0x80091878`, `0x8004922C` e
+`0x80049500`. Juntos, responderam por 23.937.237 instrucoes interpretadas,
+95,86% das instrucoes atribuidas a entradas externas na janela e cerca de
+64,2% de todo o trabalho do interpretador dirty-RAM observado. O primeiro PC e
+uma entrada interior cujo owner e `0x8004A1B8`; os outros tres sao entradas de
+dispatch formais do overlay.
+
+Decisao: atacar primeiro apenas **OVL-001A/AC1FF1A4**. O compilador dedicado
+usa `--capture-key` exato, GCC, CPS e runtime isolado; exige o shard principal,
+pares DLL/ranges e entradas nativas para os quatro targets. A telemetria exige
+CRC exato, ring nativo, zero fallback interpretado nos quatro PCs e todos os
+gates tecnicos limpos. O shadow-diff foi retirado deste lote depois que sua
+primeira chamada deixou o harness em `in_shadow=1`, `native_exec=0`, zero
+passes e 25.963 rotas forcadas ao interpretador. Essa tentativa e rejeitada
+como incidente de instrumentacao, sem indicar falha do shard. A coleta curta
+`ovl-001a-telemetry-04` aprovou tecnicamente OVL-001A: 629.101 despachos nativos
+em 59,384 segundos, quatro alvos presentes no ring, zero fallback interpretado
+nesses alvos, zero miss, abort, handoff, stale, invalidacao ou divergencia de
+texto. O soak `ovl-001a-soak-3matches-01` ampliou a janela para 122,815
+segundos e tres lutas completas: 1.232.009 despachos nativos, 1.229.068 chamadas
+nativas no ring, zero fallback nos quatro alvos, zero chamadas sem retorno e
+zero miss, abort, handoff, stale, invalidacao ou divergencia de texto. As 123
+amostras do runtime ficaram entre 59,7 e 60,2 FPS, com media de 59,9333 FPS.
+
+O operador tambem concluiu uma sessao mais longa por varios modos, incluindo
+Versus e varias lutas de Arcade, sem regressao percebida em gameplay, audio,
+controles, FPS ou frametime. Decisao: **OVL-001A/AC1FF1A4 aprovada como
+checkpoint dinamico isolado**. Suas 4.563 palavras nao alteram a cobertura
+estatica S1. OVL-001B/94E6122F, com 5.313 palavras alcancaveis, permanece fora
+do cache e sera o proximo corpo grande a passar pelo mesmo processo conservador.
 
 O S1-251 e um wrapper formal de 40 bytes. A telemetria confirmou 8.736 entradas
 na raiz, sem misses, e que o alvo da celula `0x80018800` foi `0x80018DE0` entre
@@ -811,16 +852,124 @@ marcados como alias quando sua funcao formal for auditada.
 
 | PC | Motivo | Estado |
 |---|---|---|
+| `0x80103384..0x801038B3` | raiz global muito ativa, mas sua promocao alcanca diretamente o ramo sem rota reproduzivel | bloqueada pela closure em quarentena; fora das seeds |
+| `0x8016EA0C..0x8016F1AF` | entrada, auxiliar e closure principal nunca executaram nas varreduras; 489 palavras | quarentena como parte do ramo de 604 palavras |
+| `0x8016F560..0x8016F667` | closure direta sem hit dinamico; 66 palavras | quarentena como parte do ramo de 604 palavras |
+| `0x8016FB64..0x8016FC27` | closure direta sem hit dinamico; 49 palavras | quarentena como parte do ramo de 604 palavras |
 | `0x8019E6D0` | origem historicamente nao reproduzida de forma confiavel e suspeita de regressao aleatoria | observacao somente; fora das seeds |
 
 ## Proxima decisao
 
-1. Preservar S1-261 como baseline limpa antes de iniciar outra descoberta de
-   funcoes interpretadas.
-2. Na proxima rodada, usar um observador sobre a build de telemetria apropriada
-   para localizar primeiro a rota reproduzivel, antes de selecionar qualquer
-   nova seed.
-3. Manter os dois retornos JALR S1-258 como flags de observacao, sem bloquear o
+Depois da promocao do ramo curto S1-260, permanecem **seis funcoes/936
+palavras** no gate previamente separado:
+
+| Ordem | Funcao | Palavras | Papel atual |
+|---:|---|---:|---|
+| 1 | `0x8016EA0C..0x8016EA5F` | 21 | entrada do ramo maior |
+| 2 | `0x8016EA60..0x8016EAE7` | 34 | closure direta |
+| 3 | `0x8016EAE8..0x8016F1AF` | 434 | closure principal; dois `MULTU` |
+| 4 | `0x8016F560..0x8016F667` | 66 | closure direta |
+| 5 | `0x8016FB64..0x8016FC27` | 49 | closure direta |
+| 6 | `0x80103384..0x801038B3` | 332 | raiz global; promover somente por ultimo |
+| **Total** |  | **936** | ramo maior 604 + raiz final 332 |
+
+O observador `observe_s1_261_remaining_gate_events.sh` usa a build
+`buildClean-ucrt-s1-260-tele`, cujo codigo nativo equivale ao checkpoint
+S1-261, mas preserva o servidor TCP. A raiz e apenas contexto silencioso; o
+script congela e pede uma tag somente quando uma das cinco funcoes do ramo
+maior executa. A watchlist nao seleciona seeds.
+
+A primeira sessao `s1-261-remaining-gate-discovery-01` percorreu praticamente
+todas as telas, exceto os finais dos personagens, sem disparar um gatilho. Ela
+gerou apenas `metadata.txt`, pois a versao inicial nao preservava o dump ao
+receber Ctrl+C. Isso nao demonstra perda por polling: os hits de `pc_watch` sao
+acumulativos. A auditoria estatica mostrou que os dois JAL para `0x8016EA0C`,
+em `0x80103550` e `0x801036C0`, so executam quando o byte `0x801F9603` vale
+zero.
+
+O observador foi revisado para amostrar esse byte a cada dois segundos, salvar
+`final_pc_watch_dump.log`, gate, dispatch e dirty-RAM ao receber Ctrl+C e gerar
+`summary.md` mesmo quando nenhum gatilho aparece. A interrupcao do Python nao
+deve mais imprimir traceback. Essa instrumentacao continua somente de leitura
+e nao exige nova build.
+
+As sessoes `s1-261-remaining-gate-discovery-02` e `-03` encerraram corretamente
+com snapshot final. A segunda observou 7.892 frames efetivos, 7.242 hits
+interpretados da raiz e 36 amostras do gate; a terceira ampliou a cobertura
+para 15.903 frames efetivos, 10.763 hits da raiz e 63 amostras. Em ambas, o
+byte `0x801F9603` permaneceu zero em todas as amostras e as cinco funcoes do
+ramo maior tiveram zero hits. `miss_total`, aborts e divergencias de texto
+permaneceram zerados. Isso encerra a busca generica por telas: repetir a mesma
+varredura nao oferece ganho de informacao.
+
+A analise dos dois callsites dentro da raiz mostrou um gate anterior e
+simetrico por jogador. A rota P1 testa o bit `0x00010000` da palavra
+`0x801D39E4` antes do bloco `0x80103534`; a rota P2 testa `0x00020000` antes de
+`0x801036A4`. Somente depois desses blocos o byte `0x801F9603` decide se o JAL
+para `0x8016EA0C` pode ocorrer. A associacao desses bits a um recurso concreto
+do jogo ainda nao esta provada; tela, estado de jogador e periferico continuam
+como hipoteses, nao conclusoes.
+
+Foi criado o observador direcionado
+`PlusAlphaProject/tools/observe_s1_261_remaining_gate_state.sh`, alimentado por
+`seeds/s1_261_remaining_gate_state_watchlist.txt`. Ele conta silenciosamente a
+raiz, `0x80103508` e `0x80103678`, congela e pede tag ao alcancar os estagios
+`0x80103534`/`0x801036A4` ou qualquer uma das cinco funcoes formais e amostra
+`0x801D39E4` e `0x801F9603` a cada dois segundos. Os PCs acumulativos sao o
+gate principal e nao perdem estados breves entre polls; as amostras de memoria
+sao evidencia complementar. O script usa a build S1-260 de telemetria, nao
+gera fontes, nao compila e nao seleciona seeds.
+
+Na sessao `s1-261-remaining-state-discovery-01`, a raiz acumulou 26.083 hits,
+o teste P1 em `0x80103508` acumulou 22.123 e o teste P2 em `0x80103678`
+acumulou 22.643. Apesar disso, os estagios `0x80103534` e `0x801036A4` e as
+cinco funcoes formais permaneceram zerados. As 123 amostras de `0x801D39E4`
+assumiram 17 valores distintos, mas nunca ativaram `0x00010000` ou
+`0x00020000`; o gate `0x801F9603` tambem permaneceu zero. A janela percorreu
+aproximadamente 32.056 frames, sem miss, abort, handoff ou divergencia.
+
+Somadas as tres sessoes conclusivas, `0x80103384` teve 44.088 hits e o ramo
+maior teve zero. Decisao: **as cinco funcoes/604 palavras ficam em quarentena**
+e a raiz de 332 palavras fica bloqueada pela closure. Nenhum desses enderecos
+deve entrar em pre-auditoria ou seed sem um evento dinamico futuro espontaneo.
+A lista operacional esta em
+`PlusAlphaProject/seeds/s1_261_gameplay_quarantine.txt` e filtra tambem PCs
+interiores desses ranges durante novas descobertas.
+
+### Nova direcao: descoberta por blocos de gameplay
+
+O proximo alvo S1-262 nao sera escolhido por uma lista estatica nem por uma
+varredura de menus. O observador
+`PlusAlphaProject/tools/observe_interpreted_gameplay_s1_261.sh` usa a build
+`buildClean-ucrt-s1-260-tele`, que possui o mesmo codigo nativo do checkpoint
+S1-261 e mantem o servidor TCP. Nao e necessario gerar fontes ou recompilar.
+
+Cada janela faz snapshot BEFORE, anuncia `[JANELA ATIVA]`, espera o usuario e
+faz snapshot AFTER. Durante a janela ativa nao existe polling TCP, Python em
+segundo plano nem gravacao em disco. O relatorio separa codigo principal
+pristine, paginas modificadas, runtime/RAM, ranges ja nativos e quarentena.
+Somente PCs pristine de `0x80101000..0x801BFFFF`, fora de ranges nativos e da
+quarentena, entram em `static-candidates.csv` e `candidate-matrix.csv`. Esses
+PCs ainda nao sao boundaries formais nem seeds aprovadas.
+
+A primeira campanha recomendada usa Ryu x Ken no cenario de Ken e tres blocos:
+
+1. `ryu-ken-cenario-ken-idle`: ambos parados, para medir o nucleo permanente.
+2. `ryu-ken-cenario-ken-acoes`: movimento, normais, especiais, defesa, dano e
+   knockdown na mesma janela, sem uma tag por golpe.
+3. `ryu-ken-cenario-ken-round-end`: KO e transicao de round isolados.
+
+A matriz resultante permitira priorizar PCs repetidos, exclusivos de acoes ou
+exclusivos do encerramento. Antes de S1-262, cada PC priorizado deve passar por
+boundary, callers, corpo, fluxo e closure completa. A preferencia inicial sera
+uma closure reproduzivel de ate 200-300 palavras; frequencia alta so melhora a
+prioridade depois que o risco e o orcamento estiverem delimitados.
+
+1. Executar as tres janelas de Ryu x Ken e analisar a matriz de candidatos.
+2. Parar a descoberta ampla assim que houver um candidato pequeno,
+   reproduzivel e independente da quarentena.
+3. Preparar pre-auditoria isolada S1-262 somente depois dessa selecao.
+4. Manter os dois retornos JALR S1-258 como flags de observacao, sem bloquear o
    proximo lote enquanto continuarem sem fallback ou regressao.
-4. Manter `0x8019E6D0` em quarentena ate nova evidencia reproduzivel e auditoria
+5. Manter `0x8019E6D0` em quarentena ate nova evidencia reproduzivel e auditoria
    formal de boundary e closure.

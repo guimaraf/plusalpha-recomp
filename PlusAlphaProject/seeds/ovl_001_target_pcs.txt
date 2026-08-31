@@ -1,0 +1,6 @@
+# OVL-001: nucleo dinamico dominante do gameplay Ryu x Ken.
+# Estes PCs identificam a variante capturada; nao sao seeds do EXE principal.
+target 0x8004A44C shared_core_01
+target 0x80091878 shared_core_02
+target 0x8004922C shared_core_03
+target 0x80049500 shared_core_04

@@ -1,0 +1,18 @@
+# Diagnostico de estado do ramo restante depois do checkpoint S1-261.
+#
+# context: contado silenciosamente para provar ate onde a raiz chegou.
+# stage:   congela e pede tag quando o bit por jogador habilita o teste do gate.
+# trigger: congela quando uma funcao formal do ramo restante executa.
+#
+# Esta lista NAO seleciona seeds e NAO gera fontes.
+
+context 0x80103384  # entrada da raiz global; 332 palavras
+context 0x80103508  # rota P1 chegou ao teste do bit 0x00010000
+stage   0x80103534  # bit P1 satisfeito; imediatamente antes do gate 0x801F9603
+context 0x80103678  # rota P2 chegou ao teste do bit 0x00020000
+stage   0x801036A4  # bit P2 satisfeito; imediatamente antes do gate 0x801F9603
+trigger 0x8016EA0C  # entrada do ramo maior; 21 palavras
+trigger 0x8016EA60  # closure direta; 34 palavras
+trigger 0x8016EAE8  # closure principal; 434 palavras; dois MULTU
+trigger 0x8016F560  # closure direta; 66 palavras
+trigger 0x8016FB64  # closure direta; 49 palavras

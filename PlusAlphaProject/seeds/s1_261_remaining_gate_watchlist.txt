@@ -1,0 +1,11 @@
+# Descoberta do ramo restante depois do checkpoint Release S1-261.
+#
+# A raiz global e somente contexto. Os cinco gatilhos formam o ramo maior de
+# 604 palavras ainda interpretado. Esta lista NAO promove seeds.
+
+context 0x80103384  # raiz global final; 332 palavras
+trigger 0x8016EA0C  # entrada do ramo maior; 21 palavras
+trigger 0x8016EA60  # closure direta; 34 palavras
+trigger 0x8016EAE8  # closure principal; 434 palavras; dois MULTU
+trigger 0x8016F560  # closure direta; 66 palavras
+trigger 0x8016FB64  # closure direta; 49 palavras

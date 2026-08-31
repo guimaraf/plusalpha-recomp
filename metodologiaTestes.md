@@ -263,6 +263,130 @@ a cauda da timeline ficou incompleta e a coleta deve ser repetida com uma rota
 menor. Esse observador exige somente recompilar localmente a build de
 telemetria depois da mudança no runtime; **não exige gerar novas fontes**.
 
+## Trilha separada para overlays dinamicos
+
+PCs `0x800...` carregados do disco durante o gameplay nao pertencem ao EXE
+principal e nao podem virar seeds S1. Eles usam uma trilha `OVL-XYZ`, sem alterar
+a porcentagem estatica do executavel principal.
+
+Na primeira captura OVL-001, preparar uma copia isolada da build aprovada:
+
+```bash
+bash tools/prepare_ovl_001_capture_runtime.sh
+```
+
+O script nao compila e nao abre o jogo. Executar manualmente o comando mostrado
+por ele. Depois usar, na mesma execucao aberta:
+
+```bash
+bash tools/telemetry_capture_ovl_001.sh prepare
+bash tools/telemetry_capture_ovl_001.sh before
+bash tools/telemetry_capture_ovl_001.sh after
+```
+
+O `prepare` ocorre no Mode Select. Depois e obrigatorio entrar no gameplay de
+Ryu contra Ken, no cenario do Ken, aguardar dois segundos com os controles
+neutros e somente entao executar `before`. O coletor exige que os quatro PCs
+dominantes estejam ativos e presentes na captura; um BEFORE ainda no Mode
+Select falha sem avancar a fase. Durante a janela, somente Ryu recebe comandos;
+o `after` deve ocorrer antes do fim do round. Nao ha polling, cache nativo ou
+autocompilacao durante a janela.
+
+O AFTER copia a captura privada para `local/telemetry/`, identifica a regiao e o
+CRC dos PCs dominantes e gera `capture-candidates.csv`. Somente depois de revisar
+essa evidencia pode ser criado um script de compilacao com `--capture-key`
+exato. `overlay_captures.json` contem codigo do disco do usuario e nunca deve ser
+publicado.
+
+### Micro-lote OVL-001A
+
+O primeiro gate nativo usa somente a variante de repouso capturada no BEFORE:
+`0x00020000:0xAC1FF1A4`. Ela contem 22 raizes, 42 entradas interiores e 4.563
+palavras MIPS alcancaveis. A variante de acoes `0x00020000:0x94E6122F` fica
+explicitamente fora desta etapa.
+
+Com o jogo fechado, compilar o shard e preparar o runtime isolado no UCRT64:
+
+```bash
+bash tools/compile_ovl_001a_test_runtime.sh
+```
+
+Esse comando executa o recompilador de overlays e o GCC somente sobre a captura
+privada exata. Ele nao recompila o executavel principal, nao gera fontes S1 e
+nao altera `generated/`, BIOS ou seeds do EXE. O script valida hashes, exige
+4/4 targets nos manifests e grava um inventario imutavel do cache antes de
+mostrar o comando manual para abrir o jogo.
+
+Na execucao isolada, ainda no Mode Select:
+
+```bash
+bash tools/telemetry_before_after_ovl_001a.sh prepare
+```
+
+Entrar em Ryu contra Ken, cenario do Ken, aguardar de tres a cinco segundos com
+ambos neutros e executar:
+
+```bash
+bash tools/telemetry_before_after_ovl_001a.sh before
+```
+
+O shadow-diff nao e usado neste lote: a primeira chamada da variante deixa o
+harness em `in_shadow=1`, desabilita a execucao nativa e invalida a propria
+medicao. O BEFORE somente avanca depois que os quatro targets possuem
+candidatos GCC com CRC exato, aparecem no ring nativo e o despacho nativo esta
+ativo. Em seguida, controlar somente Ryu por cerca de 30 segundos, incluindo
+movimento, golpes normais, especial, defesa/dano e knockdown, e executar antes
+do fim do round:
+
+```bash
+bash tools/telemetry_before_after_ovl_001a.sh after
+```
+
+O gate exige os quatro PCs no ring nativo, delta interpretado zero nesses PCs,
+`dispatch_native > 0`, shadow desligado e sem execucoes, zero stale,
+invalidacao, desregistro, miss, abort ou divergencia de texto. O fallback geral
+de outros PCs dinamicos e apenas informativo: OVL-001A deliberadamente nao
+compila a variante B nem toda a regiao observada. A tentativa shadow-stuck e
+preservada como incidente tecnico e nunca pode ser promovida como evidencia.
+
+Apos um resultado tecnico CLEAN, manter a mesma execucao aberta e verificar
+manualmente Ryu x Ken parado e em acoes, colisoes, animacoes, golpes, audio,
+input, 60 FPS e frametime. Somente depois dessa aprovacao OVL-001B pode ser
+preparado. A cobertura estatica do EXE principal continua em 56,9469%; overlays
+possuem metrica separada.
+
+#### Soak OVL-001A de tres partidas
+
+Como segundo gate, abrir exatamente o runtime isolado com
+`bash tools/run_ovl_001a_test.sh`. No Mode Select, executar:
+
+```bash
+bash tools/telemetry_soak_ovl_001a_3matches.sh prepare
+```
+
+Iniciar Ryu contra Ken no cenario do Ken. No primeiro round controlavel, deixar
+ambos neutros por tres a cinco segundos e executar:
+
+```bash
+bash tools/telemetry_soak_ovl_001a_3matches.sh before
+```
+
+Jogar tres partidas completas sem fechar o jogo. Depois da terceira partida,
+voltar ao Mode Select e executar:
+
+```bash
+bash tools/telemetry_soak_ovl_001a_3matches.sh after
+```
+
+O soak aceita que o codigo da luta nao esteja mais residente no AFTER. Ele usa
+contadores cumulativos, consultas individuais dos quatro PCs, ring nativo e os
+guards de dirty-RAM. Loads, invalidacoes, revalidacoes, desregistros e stale sao
+registrados como informacao de transicao; os gates duros sao crescimento da
+execucao nativa, zero fallback interpretado nos quatro alvos, zero miss, abort,
+handoff e divergencia de texto, shadow sempre desligado e nenhuma chamada nativa
+sem retorno. As tres partidas e a ausencia de regressao visual/sonora dependem
+da confirmacao manual do operador.
+
 ## Comandos canônicos
 
 Os comandos abaixo são etapas separadas. Substituir `S1_XYZ` pelo nome do lote

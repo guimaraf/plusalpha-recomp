@@ -1,0 +1,10 @@
+# Exclusoes da descoberta de gameplay sobre a baseline S1-261.
+#
+# range usa limite final exclusivo. pc exclui somente um endereco exato.
+# Esta lista NAO seleciona seeds, NAO gera fontes e NAO altera entry_funcs.txt.
+
+range 0x80103384 0x801038B4  # raiz global bloqueada pela closure sem rota; 332 palavras
+range 0x8016EA0C 0x8016F1B0  # entrada + closure principal em quarentena; 489 palavras
+range 0x8016F560 0x8016F668  # closure direta em quarentena; 66 palavras
+range 0x8016FB64 0x8016FC28  # closure direta em quarentena; 49 palavras
+pc    0x8019E6D0             # candidato historicamente nao reproduzivel
