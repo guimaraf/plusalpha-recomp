@@ -387,6 +387,99 @@ handoff e divergencia de texto, shadow sempre desligado e nenhuma chamada nativa
 sem retorno. As tres partidas e a ausencia de regressao visual/sonora dependem
 da confirmacao manual do operador.
 
+### Lote cumulativo OVL-001B
+
+A OVL-001B usa a variante de acoes `0x00020000:0x94E6122F`. A variante integral
+tem 5.313 palavras, mas `0x8004B154..0x8004B35B` contem tres `BREAK` que a ABI
+v12 de overlays nao consegue linkar. Essa raiz de 130 palavras e seus aliases
+permanecem interpretados. O subconjunto OVL-001B-safe possui 5.183 palavras,
+das quais 620 sao novas em relacao as 4.563 palavras aprovadas da OVL-001A.
+
+O script valida a captura integral, deriva uma captura privada filtrada dentro
+do novo runtime local, copia e audita o cache A e compila somente B-safe sobre
+a copia. A tentativa incompleta anterior permanece preservada; nao reutilizar
+`ovl-001b-test-runtime-01` nem remover manualmente seus artefatos.
+
+Com o jogo fechado, no UCRT64:
+
+```bash
+bash tools/compile_ovl_001b_test_runtime.sh
+```
+
+Depois da compilacao local terminar sem erro:
+
+```bash
+bash tools/run_ovl_001b_test.sh
+```
+
+No Mode Select:
+
+```bash
+bash tools/telemetry_before_after_ovl_001b.sh prepare
+```
+
+Entrar em Ryu contra Ken, cenario do Ken, manter ambos neutros por tres a cinco
+segundos e executar:
+
+```bash
+bash tools/telemetry_before_after_ovl_001b.sh before
+```
+
+Controlar somente Ryu durante 30 a 45 segundos. Incluir movimento, normais,
+especial, defesa/dano e knockdown; Ken nao deve receber comandos. Antes do fim
+do round:
+
+```bash
+bash tools/telemetry_before_after_ovl_001b.sh after
+```
+
+O BEFORE valida que os quatro gates da OVL-001A continuam nativos. O AFTER
+procura os quatro gates exclusivos de B-safe no ring nativo, candidatos GCC
+com CRC exato, zero fallback interpretado nesses PCs, chamadas retornadas,
+zero miss, abort, stale, invalidacao, desregistro ou divergencia de texto e
+shadow sempre desligado. Um gate nao executado nao pode receber credito apenas
+porque a sessao terminou sem regressao: ele deve ser localizado em uma campanha
+de descoberta ou colocado em quarentena.
+
+Na campanha concluida, `0x80045440` e `0x80044664` acumularam respectivamente
+932 e 581 hits nativos, sem entrada interpretada. `0x8004590C` e `0x8004596C`
+nao executaram nem na telemetria formal nem na busca isolada posterior. Os dois
+somam 108 palavras e ficam sem credito, pendentes de exclusao fisica. Assim, o
+corpo dinamico promovido possui 5.075 palavras unicas: as 4.563 de A mais 512
+novas de B. A quarentena projetada e de 238 palavras, somando os 130 words com
+`BREAK` e os 108 words nao alcancados.
+
+#### Checkpoint limpo S1-261 + OVL-001A+B
+
+Para validar o estado cumulativo sem a sobrecarga das ferramentas de debug,
+compilar com o jogo fechado:
+
+```bash
+bash tools/compile-run_s1_261_clean_test.sh
+```
+
+O script produz `buildClean-ucrt-s1-261-clean-test` em Release, com
+`PSX_DEBUG_TOOLS=OFF`, runtime estatico e uma copia auditada do cache A+B. Ele
+nao gera fontes, nao regenera BIOS, nao recompila overlays e nao abre o jogo.
+Depois da compilacao, abrir exclusivamente por:
+
+```bash
+bash tools/run_s1_261_clean_test.sh
+```
+
+Abrir o executavel diretamente pode selecionar `game.toml`, onde o cache esta
+desligado, e validar apenas o EXE estatico. O launcher dedicado usa
+`game_s1_261_clean_test.toml`, habilita o cache e grava um log simples ao lado
+do executavel. Esse log nao e telemetria por funcao: registra somente mensagens
+normais do runtime e amostras de FPS.
+
+O checkpoint concluido passou por aproximadamente 15 minutos e 50 segundos de
+execucao registrada, com Bonus, Expert, Versus e Arcade, FPS medio normal de
+59,925 e frametime visualmente limpo no RivaTuner. Nao houve erro, falha,
+stale, invalidacao, divergencia ou abort. Esse resultado promove o subconjunto
+comprovado e preserva os 108 words nao executados como pendencia explicita; a
+exclusao fisica deles constitui outro artefato e exige nova validacao.
+
 ## Comandos canônicos
 
 Os comandos abaixo são etapas separadas. Substituir `S1_XYZ` pelo nome do lote

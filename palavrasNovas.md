@@ -973,3 +973,113 @@ prioridade depois que o risco e o orcamento estiverem delimitados.
    proximo lote enquanto continuarem sem fallback ou regressao.
 5. Manter `0x8019E6D0` em quarentena ate nova evidencia reproduzivel e auditoria
    formal de boundary e closure.
+
+### Preparacao OVL-001B - variante de acoes `94E6122F`
+
+A captura privada `0x00020000:0x94E6122F`, produzida na janela em que somente
+Ryu executou movimento, normais, especial, defesa/dano e knockdown, passou pela
+classificacao offline sem gerar fontes ou compilar. Ela possui 110 entradas de
+dispatch observadas, 32 raizes formais, 90 entradas interiores e **5.313
+palavras MIPS alcancaveis**.
+
+A comparacao exata com a OVL-001A aprovada (`AC1FF1A4`) delimitou o risco real:
+as 4.563 palavras de A sao subconjunto integral de B, nenhuma palavra de A foi
+perdida e nenhum byte das 5.313 palavras de codigo alcancavel mudou. A variante
+B acrescenta 10 raizes, 48 aliases interiores e **750 palavras novas**. As dez
+raizes incrementais sao:
+
+| Raiz | Palavras |
+|---|---:|
+| `0x80044664` | 101 |
+| `0x80045440` | 16 |
+| `0x8004B154` | 130 |
+| `0x8004B35C` | 115 |
+| `0x8004B528` | 232 |
+| `0x8004B8C8` | 27 |
+| `0x8004B934` | 44 |
+| `0x8004B9E4` | 45 |
+| `0x8004BA98` | 38 |
+| `0x8004BB30` | 2 |
+| **Delta total** | **750** |
+
+Na primeira tentativa local, o shard principal e um fragment isolado falharam
+na linkagem com `undefined reference to psx_break`. A causa e delimitada a
+`0x8004B154..0x8004B35B`: essa raiz de 130 palavras contem tres instrucoes
+MIPS `BREAK`, em `0x8004B270`, `0x8004B2BC` e `0x8004B2D4`. A ABI de overlay
+v12 encaminha `psx_syscall`, mas nao oferece callback para `psx_break`.
+Adicionar esse callback exigiria alterar a ABI, recompilar o executavel e
+invalidar o cache A aprovado; essa expansao foi rejeitada para este gate.
+
+A politica revisada deriva localmente a **OVL-001B-safe** com a mesma imagem e
+CRC, mas remove `0x8004B154`, os aliases `0x8004B310`/`0x8004B328` e promove
+explicitamente as sete closures diretas posteriores. O resultado possui 107
+entradas de dispatch, 31 raizes, 88 interiores, **5.183 palavras totais** e
+**620 palavras novas sobre A**, sem `BREAK` em qualquer corpo enraizado. As
+130 palavras retiradas ficam em quarentena interpretada ate existir uma ABI
+formal para a excecao.
+
+Os quatro gates dinamicos do subconjunto seguro sao `0x80045440`,
+`0x80044664`, `0x8004590C` e `0x8004596C`; na captura original eles tiveram
+1.113, 350, 263 e 250 entradas interpretadas. `0x8004B154` e `0x8004B328`
+deixaram de ser gates nativos por pertencerem ao corpo em quarentena.
+
+O teste e cumulativo. O compilador dedicado valida e copia byte a byte o cache
+OVL-001A ja aprovado e compila somente o subconjunto B-safe sobre a copia, sem
+autocompilacao em runtime. O runtime incompleto `ovl-001b-test-runtime-01` fica
+preservado como incidente tecnico.
+
+### Resultado OVL-001B e checkpoint limpo S1-261
+
+A compilacao isolada posterior produziu o runtime cumulativo
+`ovl-001b-test-runtime-02`, com 49 DLLs, 108 entradas unicas e os hashes do
+cache preservados. Na telemetria formal `ovl-001b-telemetry-02`, os dois gates
+alcancaveis da nova raiz tiveram execucao exclusivamente nativa:
+
+| PC | Hits nativos | Hits interpretados | CRC exato |
+|---|---:|---:|---|
+| `0x80045440` | 932 | 0 | sim |
+| `0x80044664` | 581 | 0 | sim |
+
+Nao houve miss de texto, abort, pagina divergente, mismatch exato ou fallback
+interpretado nesses dois PCs. Os `native_handoffs` registrados foram a
+transferencia esperada do interpretador para o overlay nativo, nao falha de
+retorno.
+
+Os gates interiores `0x8004590C` e `0x8004596C` nao executaram na janela
+formal. As campanhas posteriores encontraram seis pares de CRC estrangeiros
+nesses mesmos enderecos fisicos, associados a personagens no slot P1, mas
+nunca os corpos exatos de B-safe (`70559BA1` e `63EB4F67`). A sessao isolada
+`ovl-001b-interior-route-discovery-05` armou somente esses dois corpos durante
+uma rota extensa de Ryu e terminou com zero hits nativos e interpretados.
+
+Por seguranca, esses dois fragmentos nao recebem credito de promocao:
+
+| Fragmento | Palavras | Decisao |
+|---|---:|---|
+| `0x8004590C` | 66 | quarentena pendente de exclusao fisica |
+| `0x8004596C` | 42 | quarentena pendente de exclusao fisica |
+| **Total** | **108** | **nao promovido** |
+
+O credito formal do overlay fica em **5.075 palavras unicas**: 4.563 da
+OVL-001A mais 512 palavras novas comprovadas de B. Somando as duas imagens
+como variantes distintas, sao 9.638 palavras promovidas. A quarentena
+projetada passa a 238 palavras: 130 do corpo com `BREAK` e 108 dos dois
+fragmentos nao alcancados. O cache do checkpoint ainda contem os 108 words,
+pois a exclusao fisica mudaria o artefato que foi testado; essa derivacao sera
+um lote posterior com nova compilacao e validacao.
+
+A build `buildClean-ucrt-s1-261-clean-test` combinou o EXE S1-261 Release,
+`PSX_DEBUG_TOOLS=OFF`, runtime estatico e o cache OVL-001A+B sem
+autocompilacao. O manifesto local registrou EXE SHA-256
+`FBEAC52997BDBC6D0366F898B38C04226EBAEF4D280FA64BEAF7ADFCB6A9CA3E`.
+Na execucao pela configuracao correta, o log cobriu aproximadamente 15 minutos
+e 50 segundos, 942 amostras e 59,925 FPS de media nas amostras normais, sem
+erro, falha, stale, invalidacao, divergencia ou abort. O operador percorreu
+Bonus, Expert, Versus e Arcade contra varios personagens, sem regressao
+percebida e com frametime limpo no RivaTuner.
+
+Decisao: **checkpoint de estabilidade OVL-001B aprovado**, com promocao formal
+de 512 palavras novas e 5.075 palavras dinamicas unicas acumuladas. A cobertura
+estatica permanece 111.379/195.584 (**56,9469%**). O volume unico promovido
+entre as trilhas estatica e dinamica e **116.454 palavras**, sem atribuir uma
+porcentagem combinada a denominadores diferentes.

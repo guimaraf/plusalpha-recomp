@@ -1,0 +1,42 @@
+[game]
+name = "Street Fighter EX Plus Alpha - S1-261 clean test"
+id = "SLUS-00548"
+exe = "local/SLUS_005.48"
+disc = "disc-a/Street Fighter EX Plus Alpha (USA).cue"
+load_address = "0x80101000"
+entry_pc = "0x80101008"
+text_size = "0x000BF000"
+stack_base = "0x801FFFF0"
+
+[recompiler]
+seeds = "seeds/entry_funcs.txt"
+out_dir = "generated"
+strict = true
+discovery = "reachable"
+
+[runtime]
+window_title = "EX Plus Alpha - S1-261 clean test"
+controller = "digital"
+memcard_dir = "saves"
+disc_speed = "1x"
+turbo_loads = true
+bios_hle = true
+overlay_cache = true
+# O cache cumulativo OVL-001A+B foi preparado e auditado offline. Esta build
+# limpa nao possui telemetria nem comando de autocompilacao.
+overlay_backend = "tcc"
+
+[controller]
+default_mode = "digital"
+deadzone = 13106
+
+[audit]
+
+[[audit.regions]]
+name = "Main EXE text"
+rom_start = "0x800"
+rom_end = "0xBF800"
+vaddr_base = "0x80101000"
+
+[audit.normalize]
+kseg_mask = "0x1FFFFFFF"

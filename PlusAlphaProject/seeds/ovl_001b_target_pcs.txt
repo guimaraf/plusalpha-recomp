@@ -1,0 +1,7 @@
+# OVL-001B-safe: gates exclusivos da variante de acoes 94E6122F.
+# A raiz 0x8004B154 e o alias 0x8004B328 permanecem interpretados porque a
+# ABI v12 nao encaminha psx_break para DLLs de overlay.
+target 0x80045440 b_root_hot_01
+target 0x80044664 b_root_hot_02
+target 0x8004590C b_interior_hot_01
+target 0x8004596C b_interior_hot_02
