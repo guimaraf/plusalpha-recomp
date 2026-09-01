@@ -593,3 +593,230 @@ evidência de um candidato rejeitado: marcar como `rejeitado` ou `watchlist`.
   logs e informar a fase, mensagem completa e versão da build.
 - Não usar `git clean -fdX`, `git reset --hard` ou exclusão manual de árvores
   geradas para recuperação sem uma autorização explícita e alvos verificados.
+
+## Ciclo contínuo de descoberta e micro-lotes dinâmicos
+
+Depois do checkpoint OVL-001B, a estratégia padrão para gameplay passa a ser:
+
+1. Executar `observe_interpreted_function_events_s1_261.sh` em uma build de
+   telemetria aprovada.
+2. Isolar cada ação em uma janela curta e registrar uma tag descritiva.
+3. Usar repouso e uma ação que não dispara o grupo como controles negativos.
+4. Cruzar repetição, entradas e instruções; endereço observado continua sendo
+   somente PC, nunca boundary presumida.
+5. Confirmar imagem viva, CRC/SHA, raiz formal, aliases, JAL externos, closure e
+   riscos especiais.
+6. Compilar e testar um único corpo/closure por micro-lote. Os demais
+   candidatos permanecem fora do cache novo até a rodada seguinte.
+
+Esse ciclo permite descobrir muitos candidatos numa campanha, mas trata cada
+função separadamente. Uma função frequente não ganha prioridade sobre os gates
+de boundary e closure. Uma coleta de descoberta também não concede crédito de
+cobertura.
+
+## Micro-lote OVL-002A - D.Dark `F943B63B`
+
+A OVL-002A usa somente a raiz `0x80093BB8..0x80093F3F` da imagem
+`0x00020000:0xF943B63B`, com 226 palavras. O PC quente `0x80093E4C` é uma
+entrada interior despachável e deve permanecer alias da raiz. Os dois JAL do
+corpo saem do overlay para código estático já nativo. As nove instruções
+COP2/GTE exigem validação visual e de colisão reforçada.
+
+Com o jogo fechado, compilar apenas o novo shard sobre uma cópia auditada do
+cache OVL-001B:
+
+```bash
+bash tools/compile_ovl_002a_test_runtime.sh
+```
+
+O comando não recompila o executável principal, não gera fontes S1 e não muda
+BIOS ou seeds. Depois, abrir a variante isolada:
+
+```bash
+bash tools/run_ovl_002a_test.sh
+```
+
+Ainda no Mode Select:
+
+```bash
+bash tools/telemetry_before_after_ovl_002a.sh prepare
+```
+
+Entrar em Versus com D.Dark no P1 e Ryu no P2, cenário de Ryu. Ryu deve ficar
+sem comandos. No primeiro round controlável, aguardar de três a cinco segundos
+com ambos neutros e executar:
+
+```bash
+bash tools/telemetry_before_after_ovl_002a.sh before
+```
+
+Executar com D.Dark pelo menos três bombas e três Killing Blades, alternando
+lado, acerto e erro. Se houver barra, incluir Death Trump e Dark Shackle.
+Executar o AFTER ainda no mesmo round:
+
+```bash
+bash tools/telemetry_before_after_ovl_002a.sh after
+```
+
+O gate exige CRC vivo exato antes/depois, candidato GCC exato para raiz e
+alias, hit nativo em `0x80093E4C`, zero fallback interpretado nesse PC, zero
+miss, abort, desregistro ou divergência e todas as chamadas nativas retornadas.
+`stale_blocked` e invalidações globais são informativos neste micro-lote: outras
+regiões dinâmicas podem trocar durante o gameplay. Eles só bloqueiam quando
+acompanhados por mudança dos bytes do alvo, perda do candidato exato, fallback
+interpretado no alias ou desregistro. Depois do CLEAN técnico, verificar
+manualmente movimento, salto, agachamento, defesa, dano, knockdown, troca de
+lado, golpes com e sem colisão, áudio, controles, Pause, KO/transição, 60 FPS e
+frametime.
+
+Resultado de referência: `ovl-002a-telemetry-02` terminou CLEAN com 19.794
+hits nativos no alias, zero interpretados e todos os guards fatais zerados. A
+validação manual incluiu três lutas completas de D.Dark contra Ryu controlado
+pela CPU, sem regressão, com frametime máximo observado de 16,9 ms. A OVL-002A
+está aprovada como base cumulativa.
+
+## Micro-lote OVL-002B - closure de `0x80092C2C`
+
+A OVL-002B acrescenta 882 palavras em seis roots da mesma imagem
+`0x00020000:0xF943B63B`. Como o arquivo DLL dessa imagem substitui o shard
+anterior, a compilação é obrigatoriamente cumulativa: 882 palavras novas mais
+as 226 palavras já aprovadas da OVL-002A, totalizando 1.108 palavras na imagem.
+Os alvos `0x80092F00` e `0x80047DE8` continuam fora deste lote.
+
+Com o jogo fechado, no UCRT64:
+
+```bash
+cd /f/GitRevised/alphaplus/plusalpha-recomp/PlusAlphaProject
+bash tools/compile_ovl_002b_test_runtime.sh
+```
+
+Esse comando compila somente o shard dinâmico isolado; não executa build do
+EXE principal, não gera fontes S1 e não modifica BIOS, seeds estáticas ou
+`generated/`. Depois, abra a variante:
+
+```bash
+bash tools/run_ovl_002b_test.sh
+```
+
+No Mode Select:
+
+```bash
+bash tools/telemetry_before_after_ovl_002b.sh prepare
+```
+
+Entre em Versus com D.Dark no P1 e Ryu no P2, cenário de Ryu. Ryu deve ficar
+sem comandos. Aguarde de três a cinco segundos de gameplay neutro e execute:
+
+```bash
+bash tools/telemetry_before_after_ovl_002b.sh before
+```
+
+Com D.Dark, execute pelo menos cinco bombas e cinco Killing Blades. Alterne os
+lados da tela e inclua acerto, erro e bloqueio. Se houver barra disponível,
+inclua Death Trump e Dark Shackle. Ainda no mesmo round, execute:
+
+```bash
+bash tools/telemetry_before_after_ovl_002b.sh after
+```
+
+O gate técnico exige:
+
+- hit nativo e zero hit interpretado no novo alvo `0x80092C2C`;
+- hit nativo e zero hit interpretado no alias preservado `0x80093E4C`;
+- CRC vivo e candidato GCC exato nas seis roots novas, na raiz anterior e no
+  alias anterior;
+- zero miss, abort, divergência, mismatch ou desregistro;
+- todas as chamadas nativas retornadas.
+
+`stale_blocked` e invalidações globais permanecem informativos quando os bytes
+e candidatos do alvo continuam exatos. Depois do CLEAN técnico, validar
+manualmente bombas, Killing Blade, supers, colisão e bloqueio dos dois lados,
+defesa, dano, knockdown, KO/transição, Pause, áudio, controles, 60 FPS e
+frametime. Depois, jogar pelo menos três lutas completas de D.Dark contra Ryu
+controlado pela CPU antes de qualquer promoção.
+
+## Descoberta interpretada após OVL-002B
+
+Quando uma função interpretada é executada continuamente, o observador antigo
+que congela no primeiro incremento não consegue separar repouso de golpe. Para
+a OVL-002B, usar janelas temporizadas sem consultas TCP durante a ação. O
+primeiro segmento é sempre um controle neutro; os seguintes registram a taxa e
+o excesso de cada PC em relação ao neutro.
+
+Com a variante OVL-002B aberta, entrar em Versus com D.Dark no P1, Ryu no P2 e
+cenário de Ryu. Deixar ambos neutros e executar:
+
+```bash
+bash tools/observe_interpreted_function_events_ovl_002b.sh
+```
+
+No gameplay controlável, pressionar Enter. A primeira janela de cinco segundos
+é registrada automaticamente como `ddark-neutro-controle`. Não executar golpes
+nessa janela. Para as janelas seguintes, informar `tag [segundos]`; a duração é
+opcional e o padrão é cinco segundos. Usar a contagem regressiva para retornar
+ao jogo e agir somente depois do aviso `[CAPTURANDO]`.
+
+Rota inicial recomendada:
+
+1. `ddark-bomba-ciclo-completo 5`: lançar uma bomba e acompanhar até depois da
+   explosão, sem executar outro golpe.
+2. `ddark-bomba-ciclo-completo-v2 5`: repetir do outro lado da tela.
+3. `ddark-faca-no-chao 4`: executar somente o especial da faca no chão.
+4. `ddark-faca-no-chao-v2 4`: repetir com colisão ou orientação oposta.
+5. `ddark-dano-pesado 4`: fazer D.Dark receber somente um golpe pesado.
+6. `ddark-dano-pesado-v2 4`: repetir o mesmo dano do outro lado.
+
+Ao ouvir `[FIM DA JANELA]`, voltar ao neutro e aguardar o ranking no terminal.
+Não misturar ações dentro da mesma janela. Digitar `q` no prompt seguinte para
+encerrar. O observador salva snapshots brutos, CSV por janela, evidência das 16
+entradas mais pesadas e um ranking agregado por excesso de instruções por
+segundo sobre o controle neutro. Os PCs ainda precisam de auditoria de
+boundary, imagem e closure antes de qualquer seleção.
+
+### Rota automática específica do D.Dark
+
+Para comparar diretamente bombas, dano recebido e o especial da faca sem
+digitar tags ou alternar o foco entre cada janela, usar:
+
+```bash
+bash tools/observer_ddark_actions_ovl_002b.sh
+```
+
+O jogo já deve estar no gameplay Versus com D.Dark no P1, Ryu no P2 e cenário
+do Ryu. A sequência é fixa e começa imediatamente:
+
+1. cinco segundos de preparação e dez segundos para lançar cinco bombas,
+   repetindo dos dois lados e sem usar outro golpe;
+2. cinco segundos de preparação e dez segundos para controlar o P2 e fazer
+   D.Dark sofrer danos variados, sem D.Dark atacar;
+3. cinco segundos de preparação e vinte segundos para executar o especial da
+   faca no chão pelo menos uma vez de cada lado.
+
+Um aviso simples marca o início da captura e um aviso duplo marca o final.
+Durante cada janela o processo observador dorme e não consulta o runtime; as
+consultas ocorrem somente antes e depois. Ao final, o ranking compara as taxas
+de instruções por segundo entre as três ações e usa o menor valor de cada PC
+como base comum, destacando o excesso específico de cada fase. Não interromper
+entre as fases, exceto em caso de erro evidente; Ctrl+C preserva as fases já
+concluídas. A evidência viva dos 16 maiores excessos também é coletada ao final
+em `ranking-live-evidence.json`, depois que as três janelas já terminaram.
+
+### Janela longa isolada de bombas
+
+Para obter uma baseline reproduzível somente da bomba, usar o mesmo observador
+no modo `bombas`:
+
+```bash
+bash tools/observer_ddark_actions_ovl_002b.sh bombas
+```
+
+O jogo deve estar no gameplay Versus com D.Dark no P1, Ryu parado no P2 e
+cenário do Ryu. Depois de cinco segundos de preparação, o observador captura
+trinta segundos sem consultas TCP. Durante toda a janela, repetir somente a
+bomba com D.Dark em posição fixa, evitando movimentação e outros golpes. A sessão é gravada em
+`local/telemetry/ovl-002b-ddark-bombs-discovery-XX`.
+
+Na OVL-002B essa coleta é uma baseline de interpretação restante, portanto não
+se espera zero. Repetir exatamente o mesmo comando depois do lote que tornar as
+closures da bomba nativas. Só considerar uma rotina eliminada quando o PC não
+acumular instruções interpretadas e o novo candidato permanecer exato e ativo.

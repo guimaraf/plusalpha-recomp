@@ -1,0 +1,4 @@
+# OVL-002A: entrada interior quente da variante D.Dark F943B63B.
+# A raiz formal 0x80093BB8 deve ser compilada junto; 0x80093E4C nunca pode
+# ser tratada como raiz independente.
+target 0x80093E4C ddark_action_hot_interior

@@ -1,0 +1,4 @@
+# OVL-002B: raiz quente da pipeline de acoes do D.Dark na imagem F943B63B.
+# A closure direta possui seis boundaries formais e 882 palavras. A OVL-002A
+# (0x80093BB8 + alias 0x80093E4C) deve permanecer no mesmo shard cumulativo.
+target 0x80092C2C ddark_action_pipeline_hot

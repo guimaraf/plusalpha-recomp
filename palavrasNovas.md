@@ -1083,3 +1083,153 @@ de 512 palavras novas e 5.075 palavras dinamicas unicas acumuladas. A cobertura
 estatica permanece 111.379/195.584 (**56,9469%**). O volume unico promovido
 entre as trilhas estatica e dinamica e **116.454 palavras**, sem atribuir uma
 porcentagem combinada a denominadores diferentes.
+
+### Preparacao OVL-002A - acoes do D.Dark `F943B63B`
+
+O observador generico de entradas interpretadas foi executado com D.Dark no
+slot P1 e Ryu parado no slot P2. A sessao
+`s1-261-interpreted-event-discovery-02` concluiu seis eventos e encontrou 25
+PCs distintos. Os controles negativos `d-dark-parado` e `d-dark-dark-wire` nao
+acionaram o grupo pesado. Bomba, Killing Blade, Death Trump e Dark Shackle
+acionaram repetidamente o mesmo conjunto de quatro entradas:
+
+| PC observado | Eventos | Entradas | Instrucoes interpretadas | Papel |
+|---|---:|---:|---:|---|
+| `0x80093E4C` | 4 | 375 | 178.510 | entrada interior quente |
+| `0x80092C2C` | 4 | 63 | 107.851 | raiz com closure de 882 palavras |
+| `0x80092F00` | 4 | 63 | 38.706 | raiz com closure de 1.813 palavras |
+| `0x80047DE8` | 4 | 63 | 1.575 | raiz independente de 69 palavras |
+
+Na janela isolada `d-dark-bomba`, esse conjunto respondeu por 5.166 das 5.181
+instrucoes interpretadas, ou **99,71%**. A imagem viva unica que contem os
+quatro PCs possui load fisico `0x00020000`, tamanho 860.160 bytes, CRC32
+`F943B63B` e SHA-256
+`603A2A697D5CCCE74E6AFF3E4A5621F868C587E896410BC68A5275F01E57F3BF`.
+Ela ainda nao possui candidato exato no cache cumulativo aprovado.
+
+O PC `0x80093E4C` nao e uma boundary formal. Ele esta 165 palavras dentro da
+raiz `0x80093BB8..0x80093F3F`. A classificacao offline exige a raiz como
+`FUNCTION_POINTER_TARGET` e preserva `0x80093E4C` como
+`DISPATCH_INTERIOR`. O corpo e contiguo, possui 904 bytes/**226 palavras** e
+SHA-256
+`A02CD4A887B4CC31A81BE9815A007D51635070447FBE5F5200188DEA2003A5DC`.
+
+O fluxo possui dois JAL externos, para `0x8019E440` e `0x8019CB60`; ambos ja
+estao cobertos pelo codigo estatico S1-261. Nao ha JAL para outra funcao da
+imagem, JALR, jump table, BREAK ou SYSCALL. Existem nove instrucoes COP2/GTE,
+portanto o lote tem risco visual/geometrico elevado e deve exercitar lados da
+tela, acerto, erro, bloqueio e troca de orientacao. A closure dinamica nova
+permanece exatamente em **226 palavras**.
+
+Decisao: preparar somente a **OVL-002A**, contendo a raiz `0x80093BB8` e a
+entrada interior `0x80093E4C`. `0x80092C2C`, `0x80092F00` e `0x80047DE8`
+ficam fora deste gate. O estado permanece **pre-auditado, aguardando compilacao
+local e telemetria**; nenhuma das 226 palavras recebe credito antes dos gates
+tecnico e manual.
+
+Na primeira coleta `ovl-002a-telemetry-01`, o alias acumulou 18.996 hits
+nativos e zero interpretados. Os CRC vivos da raiz (`E9D28991`) e do alias
+(`12FF550F`) permaneceram identicos, o candidato exato continuou ativo e houve
+zero miss, abort, divergencia, mismatch ou desregistro. O resultado inicial
+ficou em REVIEW somente porque o coletor tratava quatro invalidacoes e quatro
+`stale_blocked` globais como fatais. O CRC geral de outras regioes mudou
+durante o gameplay, enquanto o corpo OVL-002A permaneceu intacto.
+
+Correcao de politica: stale/invalidation globais ficam informativos. Mudanca
+dos bytes vivos, perda do candidato exato, fallback interpretado no alias ou
+`unregistered_funcs` continuam fatais. A coleta `-01` permanece preservada
+como evidencia do gate excessivamente global.
+
+A repeticao `ovl-002a-telemetry-02` terminou **CLEAN**. O alias acumulou
+**19.794 hits nativos**, zero hits interpretados e permaneceu com candidato
+GCC exato. Os CRC vivos da raiz (`E9D28991`) e do alias (`12FF550F`) ficaram
+identicos; miss, abort, divergencia, mismatch e desregistro permaneceram
+zerados. Na validacao manual posterior, o operador jogou tres lutas completas
+de D.Dark contra Ryu controlado pela CPU. O FPS permaneceu estavel e o
+frametime nao passou de **16,9 ms**, sem regressao percebida.
+
+Decisao final OVL-002A: **aprovada como base do proximo lote**, promovendo 226
+palavras dinamicas. O credito dinamico unico acumulado passa de 5.075 para
+**5.301 palavras**. A cobertura estatica S1 permanece
+111.379/195.584 (**56,9469%**), e o volume unico entre as trilhas estatica e
+dinamica passa a **116.680 palavras**.
+
+### Preparacao OVL-002B - closure de `0x80092C2C`
+
+O segundo alvo da imagem `F943B63B` e `0x80092C2C`. A pre-auditoria completa
+confirmou uma closure direta contigua de **882 palavras**, formada por seis
+boundaries formais:
+
+| Funcao | Palavras | Proxima boundary | SHA-256 do corpo |
+|---|---:|---|---|
+| `0x80092138` | 251 | `0x80092524` | `7768292DD1C1AA1077CA34DC89E57FA1DCD988B61E3169ED4890B3CB7877D291` |
+| `0x80092524` | 135 | `0x80092740` | `CC309F0A92FD7D97BE39AB9D37519AAD684E4654946C2A1147A2CF1B8063E975` |
+| `0x80092740` | 48 | `0x80092800` | `79514577D32E4357A26A7D2241543869282C8DA278ECE07E6BD280AC7D6234E8` |
+| `0x80092800` | 117 | `0x800929D4` | `8D86D93AAD5E18FB95EEF98263A3A1FB5558016B4D46A8BB98B9A4499766A5AE` |
+| `0x800929D4` | 150 | `0x80092C2C` | `43B267F40F08E3FCA8AA1113CFED806DA2AE002333033D5D6AA231CED3AA7F31` |
+| `0x80092C2C` | 181 | `0x80092F00` | `29F21B590D2CCA11848C1E8288E9EC52FA2623B0EA1BF7E0D360311EB23B0452` |
+| **Total** | **882** | — | `F355D348E55F4E41FCF4211A355F59B00DB135C77C0D374A73F0E47C65D13E01` |
+
+`0x80092C2C` e a unica entrada de dispatch observada dentro dessa closure. As
+outras cinco boundaries entram como `FUNCTION_POINTER_TARGET`. Ha 71
+instrucoes COP2/GTE e nao ha BREAK, SYSCALL, JALR ou jump table. Os JAL
+externos alcancam `0x8010C72C`, `0x801938B0`, `0x8019497C`, `0x8019DBE8` e
+`0x8019E440`; todos ja estao presentes nos ranges e no dispatch estatico
+S1-261.
+
+Como a OVL-002B ocupa a mesma imagem dinamica da OVL-002A, o shard precisa ser
+substituido de forma cumulativa. O gate projetado contem as 882 palavras novas
+e preserva a raiz `0x80093BB8` com o alias `0x80093E4C`, totalizando **1.108
+palavras** nesta imagem. O SHA-256 da concatenacao ordenada dos corpos
+cumulativos e
+`4C4FAFE76654E302D0F542AB03DD167B3D4D7B19DCBD2A30FB0E30CCB7F893B6`.
+`0x80092F00` e `0x80047DE8` permanecem explicitamente fora do shard.
+
+Decisao: **OVL-002B pre-auditada e preparada, aguardando compilacao local e
+telemetria**. O gate deve provar hits nativos e zero fallback tanto no alvo
+novo `0x80092C2C` quanto no alias aprovado `0x80093E4C`, alem de manter CRC e
+candidato exato para todas as oito entradas cumulativas. As 882 palavras nao
+recebem credito antes dos gates tecnico e manual.
+
+A coleta tecnica `ovl-002b-telemetry-01` terminou **CLEAN**. O alvo novo
+`0x80092C2C` acumulou 4.190 hits nativos e zero interpretados; o alias anterior
+`0x80093E4C` acumulou 23.718 hits nativos e zero interpretados. O dispatch
+nativo cresceu 251.057 chamadas. Os oito CRCs vivos e candidatos GCC ficaram
+exatos, sem miss, abort, divergencia, mismatch, stale, invalidacao ou
+desregistro.
+
+Na validacao manual, bombas, faca no chao, dano pesado e lutas completas foram
+exercitados. Depois, o operador jogou tres lutas completas de D.Dark contra Ryu
+controlado pela CPU. Nao houve regressao de gameplay; as oscilacoes restantes
+de frametime continuaram associadas a codigo ainda interpretado da bomba, do
+especial e do dano, fora do corpo OVL-002B.
+
+A descoberta especifica `ovl-002b-ddark-actions-discovery-02` reconfirmou a
+identidade do runtime pelos oito CRCs e candidatos exatos. As tres janelas
+terminaram sem abort, invalidacao, stale, desregistro, overflow ou miss de
+dispatch. `0x80092F00` e o PC interior `0x80094710` formaram a maior base
+interpretada comum. Na bomba, `0x80049808` foi o sinal exclusivo mais forte,
+com 365 entradas e 123.047 instrucoes em dez segundos. No dano, `0x8008E064`
+e `0x8008EE40` apareceram somente nessa fase. No especial da faca,
+`0x80047EFC` acumulou 87 entradas e 118.511 instrucoes em vinte segundos. Esses
+PCs permanecem apenas candidatos observados ate auditoria formal de boundary e
+closure.
+
+Decisao final OVL-002B: **aprovada como checkpoint dinamico cumulativo**,
+promovendo 882 palavras novas e preservando as 226 palavras da OVL-002A na
+mesma imagem. O credito dinamico unico acumulado passa de 5.301 para **6.183
+palavras**. A cobertura estatica S1 permanece 111.379/195.584
+(**56,9469%**), e o volume unico entre as trilhas estatica e dinamica passa a
+**117.562 palavras**. A promocao nao concede credito aos PCs ainda
+interpretados encontrados pela descoberta.
+
+A baseline longa `ovl-002b-ddark-bombs-discovery-01` executou somente bombas
+por trinta segundos, sem acertar Ryu. A janela efetiva durou 30,029 s e
+registrou 46 PCs/5.163.929 instrucoes interpretadas. Os oito gates OVL-002B
+permaneceram exatos e ativos, com zero miss, abort, stale, invalidacao,
+desregistro ou overflow. `0x80094710` e `0x80092F00` repetiram exatamente as
+taxas anteriores de 112.140 e 27.330 instrucoes/s, formando 81,03% da carga
+interpretada. O sinal especifico mais forte da bomba foi novamente
+`0x80049808`, agora com 1.237 entradas/416.088 instrucoes (13.869,6/s), seguido
+por `0x80049568` e `0x80049988`. Essa sessao fica como baseline oficial para
+comparacao apos o proximo lote; ela nao acrescenta credito de palavras.
