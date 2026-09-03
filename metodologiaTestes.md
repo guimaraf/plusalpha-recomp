@@ -820,3 +820,158 @@ Na OVL-002B essa coleta é uma baseline de interpretação restante, portanto n�
 se espera zero. Repetir exatamente o mesmo comando depois do lote que tornar as
 closures da bomba nativas. Só considerar uma rotina eliminada quando o PC não
 acumular instruções interpretadas e o novo candidato permanecer exato e ativo.
+
+### Gate cumulativo OVL-002C da bomba
+
+A OVL-002C acrescenta a closure formal `0x80049568..0x8004A47F` ao cache
+OVL-002B. `0x80049808` e `0x80049988` são aliases interiores da função
+`0x800497E4`; nunca devem aparecer como raízes de walk. O fluxo obrigatório é:
+
+```bash
+bash tools/compile_ovl_002c_test_runtime.sh
+bash tools/run_ovl_002c_test.sh
+bash tools/telemetry_before_after_ovl_002c.sh prepare
+bash tools/telemetry_before_after_ovl_002c.sh before
+bash tools/telemetry_before_after_ovl_002c.sh after
+```
+
+Executar `prepare` no Mode Select. No Versus, escolher D.Dark como P1, Ryu
+parado como P2 e cenário do Ryu. Após três a cinco segundos neutros, executar
+`before`; lançar dez bombas, cinco de cada lado, alternando acerto, erro e
+bloqueio; então executar `after` no mesmo round. O gate exige hits nativos e
+zero hits interpretados na raiz e nos dois aliases novos, além de preservar
+uma sentinela da OVL-002A e outra da OVL-002B.
+
+Depois do gate before/after, repetir a janela longa isolada com:
+
+```bash
+bash tools/observer_ddark_bombs_ovl_002c.sh
+```
+
+Durante os trinta segundos, executar somente bombas sem acertar Ryu. Essa
+segunda coleta compara diretamente a carga interpretada remanescente com
+`ovl-002b-ddark-bombs-discovery-01`; não promove palavras por si só.
+
+### Descoberta diferencial dos especiais no Versus
+
+Para localizar código interpretado exclusivo de especiais sem polling durante
+o gameplay, usar o observador OVL-002C por janelas delimitadas:
+
+```bash
+bash tools/observe_interpreted_special_events_ovl_002c.sh prepare
+bash tools/observe_interpreted_special_events_ovl_002c.sh before
+# executar somente a ação planejada
+bash tools/observe_interpreted_special_events_ovl_002c.sh after
+```
+
+O `after` fecha a janela antes de solicitar a tag; o tempo gasto digitando não
+contamina a coleta. Depois de registrar a tag, o observador fica pronto para
+outro `before`. Ao final de todas as rotas, executar:
+
+```bash
+bash tools/observe_interpreted_special_events_ovl_002c.sh finish
+```
+
+A primeira janela concluída é sempre a baseline. Ela deve ser feita no Versus,
+com tempo infinito, Ryu P1 × Ryu P2 e ambos neutros, usando a tag
+`versus-ryu-ryu-neutro`. Manter essa primeira janela aberta por cerca de dez
+segundos, sem qualquer comando. O Training não serve para este gate: ele
+carrega a variante dinâmica `94E6122F`, enquanto a família OVL-002C pertence à
+imagem `F943B63B`. Rotas seguintes recomendadas:
+
+1. `versus-ryu-ryu-acoes`: movimentos e especiais do Ryu;
+2. `versus-ddark-ryu-neutro`: D.Dark e Ryu parados;
+3. `versus-ddark-killing-blades`: repetir somente o especial da faca no chão,
+   dos dois lados, acertando e errando;
+4. criar eventos separados para cada outro especial do D.Dark.
+
+Executar `prepare` somente uma vez, já dentro do primeiro Versus Ryu × Ryu.
+Antes das janelas do D.Dark, sair da seleção, ativar tempo infinito, escolher
+D.Dark P1 × Ryu P2 e encher as três barras fora de qualquer janela. Os golpes
+usados para carregar a barra não entram na coleta. Quando D.Dark estiver
+neutro e as três barras estiverem prontas, executar `before`, realizar três
+vezes somente o especial escolhido, aguardar seus efeitos terminarem e então
+executar `after`. Não repetir `prepare` entre os eventos.
+
+Cada evento registra todos os PCs interpretados, sua taxa por segundo, a taxa
+da baseline e o excesso. PCs comuns ao cenário ou ao Versus permanecem na
+baseline; candidatos exclusivos do especial aparecem como `new_vs_baseline`.
+O observador é de descoberta: ainda será necessária auditoria formal de
+boundary e closure antes de selecionar qualquer novo lote.
+
+### Comparação de ownership dos resíduos da bomba
+
+Para separar os PCs residuais que também executam com Ryu daqueles observados
+somente na rota do D.Dark, usar o observador OVL-002C em duas partes. O runtime
+OVL-002C deve ser aberto manualmente e permanecer na mesma execução durante os
+dois testes:
+
+```bash
+bash tools/observer_ddark_vs_ryu_ownership_ovl_002c.sh ryu
+# trocar os personagens na mesma execução
+bash tools/observer_ddark_vs_ryu_ownership_ovl_002c.sh ddark
+```
+
+Na primeira parte, escolher Ryu P1 × Ryu P2 no cenário do Ryu e manter ambos
+neutros durante os trinta segundos. Na segunda, escolher D.Dark P1 × Ryu P2 no
+mesmo cenário, manter Ryu parado e repetir somente bombas sem acertá-lo durante
+os trinta segundos. Cada janela possui cinco segundos de preparação e não faz
+polling nem gravação durante a captura.
+
+O universo comparado é fixado pelos 38 PCs de
+`ovl-002c-ddark-bombs-discovery-01/result.json`, validado por SHA-256. Para cada
+PC, o relatório guarda contagem, taxa, 32 palavras vivas, CRC do prefixo e
+candidatos de overlay. Endereços iguais com CRC diferente representam corpos
+reutilizados e não podem ser tratados como a mesma função.
+
+A classe `ddark_only_observed` significa apenas que o PC apareceu na janela do
+D.Dark e ficou zerado na janela controlada do Ryu. Zero em uma única janela não
+prova impossibilidade global. A coleta serve para priorizar a próxima auditoria;
+nenhum PC pode virar raiz ou alias sem boundary, callers, fluxo e closure
+formalmente medidos e registrados em `palavrasNovas.md`.
+
+### Gate incremental OVL-002D para `0x80047DE8`
+
+A OVL-002D acrescenta somente a closure `0x80047DE8..0x80047EFB`, limitada a
+69 palavras, sobre o cache experimental OVL-002C. Os demais candidatos ficam
+fora. Com o jogo fechado, executar no UCRT64:
+
+```bash
+bash tools/compile_ovl_002d_test_runtime.sh
+bash tools/run_ovl_002d_test.sh
+```
+
+No Mode Select, iniciar o gate:
+
+```bash
+bash tools/telemetry_before_after_ovl_002d.sh prepare
+```
+
+Entrar no Versus com D.Dark P1, Ryu P2 e cenário do Ryu. Após três a cinco
+segundos neutros, executar `before`. No mesmo round, lançar dez bombas, cinco
+de cada lado, cobrindo acerto, erro e bloqueio, sem usar outro golpe. Então
+executar `after`:
+
+```bash
+bash tools/telemetry_before_after_ovl_002d.sh before
+# executar as dez bombas no jogo
+bash tools/telemetry_before_after_ovl_002d.sh after
+```
+
+O gate exige hits nativos e zero hits interpretados em `0x80047DE8`, além de
+preservar a raiz e os dois aliases da OVL-002C e as sentinelas OVL-002A/B. CRC
+vivo, candidato GCC exato, miss, abort, divergência e desregistro também são
+verificados.
+
+Depois do gate técnico, ainda na mesma rota, executar a janela residual:
+
+```bash
+bash tools/observer_ddark_bombs_ovl_002d.sh
+```
+
+Durante os trinta segundos, manter Ryu parado e repetir somente bombas sem
+acertá-lo. Não mover os personagens e não misturar golpes. O observador não
+consulta o runtime durante a janela; ao final, exige `0x80047DE8` nativa e com
+zero fallback e compara a carga interpretada bruta com a baseline OVL-002C de
+4.676.020 instruções. A promoção só pode ser decidida após esses dois gates e
+uma validação manual de lutas completas, FPS e frametime.

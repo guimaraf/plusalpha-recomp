@@ -43,6 +43,44 @@ You must provide your own SCPH-1001 BIOS and your own image of the USA edition `
 
 Do not open issues asking for BIOS, ROM, BIN/CUE, ISO, or extracted executables.
 
+## Recording with OBS on Windows
+
+For stable video capture, use **Window Capture** in OBS and select the game
+window. The game may be displayed fullscreen; capturing its window is still the
+recommended method. Avoid **Display Capture** when frame-perfect recording is
+important: in local tests, it occasionally produced apparent skipped frames in
+the recorded video even though the game itself continued reporting stable FPS
+and frame time.
+
+During my tests, I recorded two complete Arcade matches in each of the
+following configurations:
+
+- OpenGL renderer, without video encoding or resolution scaling;
+- OpenGL renderer, with video encoding and scaling from 1080p to 1440p;
+- Software renderer, with video encoding and scaling from 1080p to 1440p.
+
+Window Capture showed no FPS drops in any of my runs. The Display Capture
+behavior may involve the OBS capture path, the Windows compositor, SDL2, and the
+selected rendering backend; my tests did not isolate it as an SDL2 defect.
+
+### Interpreting CPU clock readings
+
+The CPU clock normally shown directly by MSI Afterburner/RTSS is an
+instantaneous clock and should not be treated as the processor's effective
+workload. For more representative readings, use HWiNFO's **Effective Clock**,
+exported to MSI Afterburner/RTSS through HWiNFO Shared Memory and `HwInfo.dll`.
+
+On my test machine, the clean build `buildClean-ucrt-s1-261-clean-ddark-bomb`
+typically measured about 200-400 MHz of effective CPU clock, staying near
+300 MHz during Ryu versus Ken gameplay. Running OBS increased it by roughly
+100 MHz, remaining near or below 500 MHz. These values are specific to my
+machine and test environment and are not performance requirements.
+
+Consequently, a displayed instantaneous clock near the processor's maximum is
+not, by itself, evidence that interpreted game instructions are saturating the
+CPU. Interpreted code can still have a performance cost, but it must be assessed
+with frame-time data, effective clocks, and controlled comparisons.
+
 ## Framework and Attributions
 
 The framework is located at [`guimaraf/psxrecomp-plusalpha`](https://github.com/guimaraf/psxrecomp-plusalpha) and maintains its PolyForm Noncommercial 1.0.0 license and third-party attributions in the submodule itself.
@@ -101,6 +139,47 @@ USA `SLUS-00548`. Os hashes aceitos estão documentados em
 [`PlusAlphaProject/DISC.md`](PlusAlphaProject/DISC.md).
 
 Não abra issues pedindo BIOS, ROM, BIN/CUE, ISO ou executáveis extraídos.
+
+## Captura com OBS no Windows
+
+Para obter uma gravação estável, use **Captura de Janela** no OBS e selecione a
+janela do jogo. O jogo pode permanecer em tela cheia; ainda assim, a captura da
+janela é o método recomendado. Evite **Captura de Tela/Monitor** quando for
+importante preservar todos os quadros: nos testes locais, esse método apresentou
+saltos aparentes de quadros no vídeo gravado em alguns momentos, embora o jogo
+continuasse indicando FPS e frametime estáveis.
+
+Durante meus testes, gravei duas partidas completas do modo Arcade em cada uma
+destas configurações:
+
+- renderizador OpenGL, sem codec de vídeo e sem escala de resolução;
+- renderizador OpenGL, com codec e escala de 1080p para 1440p;
+- renderizador Software, com codec e escala de 1080p para 1440p.
+
+A Captura de Janela não apresentou queda de FPS em nenhuma das minhas execuções. O
+comportamento observado na Captura de Tela/Monitor pode envolver o caminho de
+captura do OBS, o compositor do Windows, o SDL2 e o backend de renderização
+selecionado; meus testes não isolaram esse comportamento como um defeito do SDL2.
+
+### Como interpretar o clock da CPU
+
+O clock de CPU normalmente exibido diretamente pelo MSI Afterburner/RTSS é um
+clock instantâneo e não deve ser tratado como a carga efetiva do processador.
+Para uma leitura mais representativa, use o **Effective Clock** do HWiNFO,
+exportado para o MSI Afterburner/RTSS por meio de Shared Memory e `HwInfo.dll`.
+
+Na minha máquina de teste, a build limpa `buildClean-ucrt-s1-261-clean-ddark-bomb`
+apresentou normalmente cerca de 200-400 MHz de clock efetivo, permanecendo
+próxima de 300 MHz durante o gameplay de Ryu contra Ken. Com o OBS em execução,
+houve aumento aproximado de 100 MHz, mantendo-se próximo ou abaixo de 500 MHz.
+Esses números pertencem à minha máquina e ao ambiente testados e não constituem
+requisitos de desempenho.
+
+Portanto, um clock instantâneo exibido próximo ao máximo do processador não é,
+isoladamente, evidência de que as instruções interpretadas do jogo estejam
+saturando a CPU. O código interpretado ainda pode ter custo de desempenho, mas
+isso deve ser avaliado com dados de frametime, clocks efetivos e comparações
+controladas.
 
 ## Framework e atribuições
 

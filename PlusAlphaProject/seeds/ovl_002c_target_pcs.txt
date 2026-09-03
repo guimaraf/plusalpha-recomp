@@ -1,0 +1,4 @@
+# OVL-002C: familia da bomba de D.Dark na imagem F943B63B.
+# 0x80049568 e a unica raiz observada formal. 0x80049808 e 0x80049988
+# sao entradas interiores pertencentes a 0x800497E4 e nunca podem ser roots.
+target 0x80049568 ddark_bomb_family_root

@@ -1,0 +1,261 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+readonly PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd -P)"
+readonly REPO_ROOT="$(cd "$PROJECT_ROOT/.." && pwd -P)"
+readonly RAW_TCP="$REPO_ROOT/psxrecomp/tools/raw_tcp.py"
+readonly TEST_CONFIG="$PROJECT_ROOT/game_ovl_002c_test.toml"
+readonly RUNTIME_STATE="$PROJECT_ROOT/local/overlay/.ovl-002c-current-runtime.state"
+readonly STATE_FILE="$PROJECT_ROOT/local/telemetry/.ovl-002c-test-active.state"
+readonly EXPECTED_EXE_SHA=5E2EF0F5451D7455BD72D5710FA24C415C83FDBE3F60D6F1229D52928BDA058E
+readonly EXPECTED_RANGES_SHA=0B63B7672129C4A357100D5DE97DAB762910705FAABC4580880C291AD14DE69F
+
+PYTHON_BIN=
+DEBUG_PORT=
+RUNTIME_DIR=
+RUNTIME_EXE=
+CACHE_MANIFEST=
+RUN_DIR=
+RUN_PHASE=
+START_EPOCH_NS=0
+
+fail() { printf 'ERRO: %s\n' "$*" >&2; exit 1; }
+note() { printf '\n==> %s\n' "$*"; }
+state_value() { awk -F= -v wanted="$2" '$1==wanted {print substr($0,index($0,"=")+1); exit}' "$1"; }
+
+usage() {
+    cat <<'EOF'
+Uso no MSYS2 UCRT64, com a mesma execucao OVL-002C aberta:
+
+  bash tools/telemetry_before_after_ovl_002c.sh prepare
+  bash tools/telemetry_before_after_ovl_002c.sh before
+  bash tools/telemetry_before_after_ovl_002c.sh after
+
+PREPARE: Mode Select.
+BEFORE : Versus, D.Dark P1 x Ryu P2, cenario Ryu; aguarde 3-5 s neutros.
+AFTER  : no mesmo round, depois de 10 bombas (5 de cada lado).
+
+Alterne acerto, erro e bloqueio. Nao use outro golpe e mantenha Ryu parado.
+EOF
+}
+
+select_python() {
+    if command -v python >/dev/null 2>&1; then PYTHON_BIN="$(command -v python)"
+    elif command -v python3 >/dev/null 2>&1; then PYTHON_BIN="$(command -v python3)"
+    else fail "Python nao encontrado no UCRT64."
+    fi
+}
+
+read_runtime() {
+    [[ -f "$RUNTIME_STATE" ]] || fail "Runtime OVL-002C ausente. Execute compile_ovl_002c_test_runtime.sh."
+    RUNTIME_DIR="$(state_value "$RUNTIME_STATE" runtime_dir)"; RUNTIME_EXE="$(state_value "$RUNTIME_STATE" runtime_exe)"
+    CACHE_MANIFEST="$(state_value "$RUNTIME_STATE" cache_manifest)"
+    case "$RUNTIME_DIR" in "$PROJECT_ROOT"/local/overlay/ovl-002c-test-runtime-*) ;; *) fail "Runtime OVL-002C invalido." ;; esac
+    [[ "$(state_value "$RUNTIME_STATE" capture_key)" == 0x00020000:0xF943B63B ]] || fail "Chave divergente."
+    [[ "$(state_value "$RUNTIME_STATE" target)" == 0x80049568 ]] || fail "Raiz divergente."
+    [[ "$(state_value "$RUNTIME_STATE" alias_1)" == 0x80049808 && "$(state_value "$RUNTIME_STATE" alias_2)" == 0x80049988 ]] || fail "Aliases divergentes."
+    [[ "$(state_value "$RUNTIME_STATE" image_body_words)" == 2074 ]] || fail "Volume cumulativo divergente."
+    [[ -f "$RUNTIME_EXE" && -f "$CACHE_MANIFEST" ]] || fail "Runtime incompleto."
+}
+
+validate_common() {
+    [[ "${MSYSTEM:-}" == UCRT64 ]] || fail "Abra o MSYS2 UCRT64."
+    for tool in sha256sum awk grep mv seq; do command -v "$tool" >/dev/null 2>&1 || fail "$tool nao encontrado."; done
+    select_python; read_runtime
+    [[ -f "$RAW_TCP" && -f "$TEST_CONFIG" ]] || fail "Infraestrutura ausente."
+    [[ "$(sha256sum "$RUNTIME_EXE" | awk '{print toupper($1)}')" == "$EXPECTED_EXE_SHA" ]] || fail "Executavel divergiu."
+    [[ "$(sha256sum "$PROJECT_ROOT/generated/SLUS_005.48_full.ranges" | awk '{print toupper($1)}')" == "$EXPECTED_RANGES_SHA" ]] || fail "Ranges S1-261 divergiram."
+    DEBUG_PORT="$(awk '/^[[:space:]]*\[runtime\]/{ok=1;next} /^[[:space:]]*\[/{ok=0} ok&&/^[[:space:]]*debug_port[[:space:]]*=/{sub(/^[^=]*=/,"");gsub(/[[:space:]]+/,"");print;exit}' "$TEST_CONFIG")"
+    [[ "$DEBUG_PORT" =~ ^[0-9]+$ ]] || fail "debug_port invalida."
+    "$PYTHON_BIN" - "$RUNTIME_DIR" "$CACHE_MANIFEST" <<'PY'
+import hashlib,json,pathlib,sys
+root=pathlib.Path(sys.argv[1]); data=json.loads(pathlib.Path(sys.argv[2]).read_text(encoding='utf-8'))
+if data.get('track')!='OVL-002C-DDARK-BOMBS-CUMULATIVE': raise SystemExit('manifesto nao pertence a OVL-002C')
+if int(data.get('image_body_words',0))!=2074 or data.get('new_aliases')!=['0x80049808','0x80049988']: raise SystemExit('manifesto OVL-002C divergente')
+for item in data.get('files',[]):
+ p=root/pathlib.Path(*pathlib.PurePosixPath(item['path']).parts)
+ if not p.is_file() or p.stat().st_size!=int(item['size']) or hashlib.sha256(p.read_bytes()).hexdigest().upper()!=item['sha256']:
+  raise SystemExit(f'cache alterado: {item["path"]}')
+PY
+}
+
+raw() {
+    local output="$1"; shift
+    "$PYTHON_BIN" "$RAW_TCP" "$DEBUG_PORT" "$@" >"$output" 2>&1 || fail "Falha TCP: $*"
+    grep -q '"ok":true' "$output" || fail "Resposta TCP invalida: $*"
+    grep -q '^OK keys:' "$output" || fail "JSON truncado: $*"
+}
+
+make_run_dir() {
+    local suffix candidate; mkdir -p "$PROJECT_ROOT/local/telemetry"
+    for suffix in $(seq -w 1 99); do
+        candidate="$PROJECT_ROOT/local/telemetry/ovl-002c-telemetry-$suffix"
+        if [[ ! -e "$candidate" ]]; then mkdir "$candidate"; RUN_DIR="$candidate"; return; fi
+    done
+    fail "Nao ha pasta livre para telemetria OVL-002C."
+}
+
+write_state() {
+    umask 077
+    printf 'run_dir=%s\nruntime_dir=%s\nphase=%s\nstart_epoch_ns=%s\n' "$RUN_DIR" "$RUNTIME_DIR" "$1" "$START_EPOCH_NS" >"$STATE_FILE"
+    RUN_PHASE="$1"
+}
+
+read_state() {
+    [[ -f "$STATE_FILE" ]] || fail "Nao existe coleta ativa; execute prepare."
+    RUN_DIR="$(state_value "$STATE_FILE" run_dir)"; RUN_PHASE="$(state_value "$STATE_FILE" phase)"; START_EPOCH_NS="$(state_value "$STATE_FILE" start_epoch_ns)"
+    [[ "$(state_value "$STATE_FILE" runtime_dir)" == "$RUNTIME_DIR" ]] || fail "Runtime mudou durante a coleta."
+    case "$RUN_DIR" in "$PROJECT_ROOT"/local/telemetry/ovl-002c-telemetry-*) ;; *) fail "Run invalido." ;; esac
+}
+
+general_snapshot() {
+    local phase="$1"
+    raw "$RUN_DIR/${phase}_overlay_loader_status.log" overlay_loader_status
+    raw "$RUN_DIR/${phase}_dirty_ram_stats.log" dirty_ram_stats
+    raw "$RUN_DIR/${phase}_dispatch_stats.log" dispatch_stats
+    raw "$RUN_DIR/${phase}_overlay_shadow_dump.log" overlay_shadow_dump
+    raw "$RUN_DIR/${phase}_overlay_native_ring.log" overlay_native_ring
+}
+
+live_snapshot() {
+    local phase="$1" pc
+    for pc in 80049568 80049808 80049988 80092C2C 80093E4C; do
+        raw "$RUN_DIR/${phase}_${pc}_words.log" mem_words addr="0x$pc" count=32
+        raw "$RUN_DIR/${phase}_${pc}_candidate.log" overlay_candidates pc="0x$pc"
+    done
+}
+
+verify_live() {
+    "$PYTHON_BIN" - "$RUN_DIR" "$1" <<'PY'
+import json,pathlib,re,struct,sys,zlib
+run=pathlib.Path(sys.argv[1]); phase=sys.argv[2]
+expected={'80049568':0x9611F1A0,'80049808':0xCB050F22,'80049988':0x6D2C8CD6,'80092C2C':0x1B64D20F,'80093E4C':0x12FF550F}
+def raw(name):
+ t=(run/name).read_text(encoding='utf-8',errors='replace'); m=re.search(r'=== raw bytes \(len=\d+\) ===\r?\n(.*?)\r?\n=== json parse attempt ===',t,re.S)
+ if not m: raise SystemExit(f'JSON ausente: {name}')
+ return json.loads(m.group(1))
+errors=[]; crcs={}; matches={}
+for pc,wanted in expected.items():
+ words=raw(f'{phase}_{pc}_words.log').get('words',[])
+ if len(words)!=32: errors.append(f'0x{pc}: leitura incompleta'); continue
+ crc=zlib.crc32(b''.join(struct.pack('<I',int(x,16)) for x in words))&0xffffffff; crcs['0x'+pc]=f'0x{crc:08X}'
+ if crc!=wanted: errors.append(f'0x{pc}: CRC 0x{crc:08X}, esperado 0x{wanted:08X}')
+ candidates=raw(f'{phase}_{pc}_candidate.log').get('candidates',[])
+ ok=any(int(c.get('match',0))==1 and int(c.get('state',9))==0 and int(c.get('dll',-1))>=0 and int(c.get('device_touch',1))==0 for c in candidates)
+ matches['0x'+pc]=ok
+ if not ok: errors.append(f'0x{pc}: candidato GCC exato ausente/inativo')
+if errors: raise SystemExit('ERRO: gate vivo '+phase.upper()+': '+'; '.join(errors))
+(run/f'{phase}-live-gate.json').write_text(json.dumps({'phase':phase,'prefix_crc32':crcs,'candidate_match':matches},indent=2,sort_keys=True)+'\n')
+print(f'Gate {phase.upper()}: cinco PCs possuem CRC vivo e candidato GCC exatos.')
+PY
+}
+
+arm_watch() {
+    raw "$RUN_DIR/prepare_pc_watch_clear.log" pc_watch_clear
+    local pc
+    for pc in 80049568 80049808 80049988 80092C2C 80093E4C; do raw "$RUN_DIR/prepare_pc_watch_arm_${pc}.log" pc_watch_arm target="0x$pc"; done
+    raw "$RUN_DIR/prepare_pc_watch_dump.log" pc_watch_dump
+    "$PYTHON_BIN" - "$RUN_DIR/prepare_pc_watch_dump.log" <<'PY'
+import json,pathlib,re,sys
+t=pathlib.Path(sys.argv[1]).read_text(errors='replace'); m=re.search(r'=== raw bytes \(len=\d+\) ===\r?\n(.*?)\r?\n=== json parse attempt ===',t,re.S)
+if not m: raise SystemExit('pc_watch PREPARE sem JSON')
+w=json.loads(m.group(1)); targets={str(x.get('target','')).upper() for x in w.get('entries',[])}
+expected={'0X80049568','0X80049808','0X80049988','0X80092C2C','0X80093E4C'}
+if not w.get('armed') or targets!=expected: raise SystemExit(f'pc_watch divergente: {targets}')
+PY
+}
+
+analyze() {
+    "$PYTHON_BIN" - "$RUN_DIR" "$START_EPOCH_NS" <<'PY'
+import json,pathlib,re,sys,time
+run=pathlib.Path(sys.argv[1]); start=int(sys.argv[2])
+def raw(name):
+ t=(run/name).read_text(encoding='utf-8',errors='replace'); m=re.search(r'=== raw bytes \(len=\d+\) ===\r?\n(.*?)\r?\n=== json parse attempt ===',t,re.S)
+ if not m: raise SystemExit(f'JSON ausente: {name}')
+ return json.loads(m.group(1))
+def delta(a,b,k): return max(0,int(b.get(k,0) or 0)-int(a.get(k,0) or 0))
+bl=raw('before_overlay_loader_status.log'); al=raw('after_overlay_loader_status.log')
+bd=raw('before_dirty_ram_stats.log'); ad=raw('after_dirty_ram_stats.log')
+bp=raw('before_dispatch_stats.log'); ap=raw('after_dispatch_stats.log')
+shadow=raw('after_overlay_shadow_dump.log').get('shadow',{}); watch=raw('after_pc_watch_dump.log')
+seen={str(x.get('target','')).upper():x for x in watch.get('entries',[])}
+roles={'0X80049568':'nova raiz','0X80049808':'alias novo 1','0X80049988':'alias novo 2','0X80092C2C':'sentinela OVL-002B','0X80093E4C':'sentinela OVL-002A'}
+targets={}; errors=[]
+for pc,role in roles.items():
+ w=seen.get(pc,{}); hits=int(w.get('hits',0) or 0); native=int(w.get('native_hits',0) or 0); interp=int(w.get('interpreted_hits',0) or 0)
+ targets[pc]={'role':role,'hits':hits,'native_hits':native,'interpreted_hits':interp}
+ if native<=0: errors.append(f'{pc}: nenhum hit nativo')
+ if interp: errors.append(f'{pc}: {interp} hit(s) interpretado(s)')
+ if hits!=native+interp: errors.append(f'{pc}: contadores inconsistentes')
+loader={k:delta(bl,al,k) for k in ('dispatch_native','dispatch_interp_fallback','stale_blocked','invalidations','unregistered_funcs')}
+guards={k:delta(bd,ad,k) for k in ('aborts','native_handoffs','text_native_blocked','text_diverged_pages','text_exact_mismatches')}
+fatal={k:v for k,v in guards.items() if k!='native_handoffs'}; miss=delta(bp,ap,'miss_total')
+if loader['dispatch_native']<=0: errors.append('dispatch_native nao cresceu')
+if loader['unregistered_funcs']: errors.append('funcoes nativas desregistradas')
+if any(fatal.values()): errors.append('guard dirty-RAM fatal nao zerado')
+if miss: errors.append('miss_total cresceu')
+if int(shadow.get('diff_mode',1)) or int(shadow.get('shadow_calls',0)) or int(shadow.get('in_shadow',0)) or int(shadow.get('native_exec',0))!=1: errors.append('estado shadow/native invalido')
+before=json.loads((run/'before-live-gate.json').read_text()); after=json.loads((run/'after-live-gate.json').read_text())
+if before.get('prefix_crc32')!=after.get('prefix_crc32'): errors.append('bytes vivos mudaram')
+duration=max(0,(time.time_ns()-start)/1e9); clean=not errors
+result={'track':'OVL-002C-DDARK-BOMBS-CUMULATIVE','duration_s':round(duration,3),'incremental_words':966,'prior_image_words':1108,'image_body_words':2074,
+ 'targets':targets,'loader_deltas':loader,'guard_deltas':guards,'dispatch_miss_delta':miss,'errors':errors,'technical_clean':clean}
+(run/'result.json').write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
+lines=['# OVL-002C - familia da bomba','',f'- Duracao: {duration:.3f} s','- Incremento: 966 palavras; corpo cumulativo: 2.074',
+ f'- Dispatch nativo: +{loader["dispatch_native"]}',f'- Fallback geral informativo: +{loader["dispatch_interp_fallback"]}',f'- Guards fatais: {fatal}',
+ f'- Stale/invalidation informativos: {loader["stale_blocked"]}/{loader["invalidations"]}',f'- Miss total: {miss}',f'- Status tecnico: {"CLEAN" if clean else "REVIEW"}',
+ '','| PC | Papel | Nativos | Interpretados |','|---|---|---:|---:|']
+for pc in roles:
+ x=targets[pc]; lines.append(f'| `{pc}` | {x["role"]} | {x["native_hits"]} | {x["interpreted_hits"]} |')
+if errors: lines += ['','## Bloqueios','']+[f'- {x}' for x in errors]
+(run/'summary.md').write_text('\n'.join(lines)+'\n')
+PY
+}
+
+prepare_phase() {
+    [[ ! -f "$STATE_FILE" ]] || fail "Ja existe coleta OVL-002C ativa."
+    make_run_dir
+    raw "$RUN_DIR/prepare_native_block_clear.log" overlay_native_block clear=1
+    raw "$RUN_DIR/prepare_overlay_diff_off.log" overlay_diff_off
+    general_snapshot prepare; arm_watch
+    printf 'track=OVL-002C-DDARK-BOMBS-CUMULATIVE\nruntime_dir=%s\nroute=D.Dark P1 x Ryu P2; cenario Ryu\n' "$RUNTIME_DIR" >"$RUN_DIR/metadata.txt"
+    write_state prepared
+    printf '\nPREPARE concluido. Entre no Versus, aguarde 3-5 s neutros e execute BEFORE.\n'
+}
+
+before_phase() {
+    read_state; [[ "$RUN_PHASE" == prepared ]] || fail "BEFORE exige fase prepared."
+    note "Validando raiz, aliases e sentinelas OVL-002C"
+    general_snapshot before; live_snapshot before; verify_live before
+    raw "$RUN_DIR/window_pc_watch_reset.log" pc_watch_reset
+    START_EPOCH_NS="$("$PYTHON_BIN" -c 'import time; print(time.time_ns())')"; write_state before
+    printf '\nBEFORE concluido. Execute 10 bombas, 5 de cada lado, sem outro golpe. Depois execute AFTER.\n'
+}
+
+after_phase() {
+    read_state; [[ "$RUN_PHASE" == before ]] || fail "AFTER exige fase before."
+    note "Coletando gate cumulativo da familia da bomba"
+    raw "$RUN_DIR/after_pc_watch_stop.log" pc_watch_stop
+    general_snapshot after; live_snapshot after; verify_live after
+    raw "$RUN_DIR/after_pc_watch_dump.log" pc_watch_dump
+    raw "$RUN_DIR/after_overlay_diff_off.log" overlay_diff_off
+    analyze
+    "$PYTHON_BIN" - "$RUN_DIR/result.json" <<'PY'
+import json,pathlib,sys
+r=json.loads(pathlib.Path(sys.argv[1]).read_text())
+if not r.get('technical_clean'): raise SystemExit('ERRO: AFTER em REVIEW: '+'; '.join(r.get('errors',[])))
+print('Gate AFTER OVL-002C: raiz, aliases e sentinelas nativos, sem fallback nos cinco PCs.')
+PY
+    mv "$STATE_FILE" "$RUN_DIR/completed.state"
+    printf '\nAFTER concluido. Resumo: %s/summary.md\n' "$RUN_DIR"
+}
+
+main() {
+    case "${1:-}" in prepare|before|after) ;; *) usage; fail "Use prepare, before ou after." ;; esac
+    validate_common
+    case "$1" in prepare) prepare_phase ;; before) before_phase ;; after) after_phase ;; esac
+}
+
+main "$@"

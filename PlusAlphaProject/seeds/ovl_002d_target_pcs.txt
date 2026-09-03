@@ -1,0 +1,3 @@
+# OVL-002D: funcao exclusiva observada na rota de bombas do D.Dark.
+# Closure pre-auditada: 0x80047DE8..0x80047EFB, limite rigido de 69 palavras.
+target 0x80047DE8 ddark_bomb_exclusive_leaf

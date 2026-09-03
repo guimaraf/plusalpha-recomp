@@ -1233,3 +1233,144 @@ interpretada. O sinal especifico mais forte da bomba foi novamente
 `0x80049808`, agora com 1.237 entradas/416.088 instrucoes (13.869,6/s), seguido
 por `0x80049568` e `0x80049988`. Essa sessao fica como baseline oficial para
 comparacao apos o proximo lote; ela nao acrescenta credito de palavras.
+
+### Pre-auditoria OVL-002C - familia da bomba
+
+A baseline isolada da bomba apontou tres PCs candidatos: `0x80049568`,
+`0x80049808` e `0x80049988`. A auditoria de boundary corrigiu a interpretacao
+inicial: `0x80049568` e uma entrada formal, enquanto `0x80049808` e
+`0x80049988` sao entradas interiores da funcao formal `0x800497E4`. Os dois
+PCs interiores devem ser emitidos exclusivamente como aliases; usa-los como
+roots truncaria a funcao proprietaria.
+
+O orcamento foi fixado em **966 palavras novas** antes da preparacao. A closure
+e contigua em `0x80049568..0x8004A47F` e possui oito funcoes formais:
+
+| Funcao | Palavras | SHA-256 do corpo alcancavel |
+|---|---:|---|
+| `0x80049568` | 57 | `2DC88239EEAC988824A97927EEF7706D75F4D0492CD7120ADE9317C94C5C44BA` |
+| `0x8004964C` | 102 | `868563252F7FCF589EEC6E78C6151669D7B6C943C21AE6389C11B8D0A72EC37A` |
+| `0x800497E4` | 238 | `506AF8908284A8E3021372F31FB3FE8408A895B75762B6030B6765D25E279E3B` |
+| `0x80049B9C` | 98 | `2294365645DEE8ED2D4931E9A0F83174F7C4F9F7B142B989F8CACCD3A7C8B811` |
+| `0x80049D24` | 83 | `4192AA5560B00A6079D77774827CD8786A792DDB4FD07315DD9CEE633CE4D6D8` |
+| `0x80049E70` | 8 | `B731B0CF800CBD93593B62E1A6BE51067A2E31B6ADD26BA907A121B79773EB2A` |
+| `0x80049E90` | 3 | `5E5D29712D87F23CFAC414C497EA12FB9D5D5DFC49B1498E2955433307D4CFEF` |
+| `0x80049E9C` | 377 | `632887006C0D3F5A8449C4ABECB5F46B94230AEBA5051B7AF54A934F0B29F4AC` |
+| **Total** | **966** | `744CD7A64502F3E9FC01A43732EE20D3E6A2FC70077EB2B546437C1ED81B47A8` |
+
+A raiz contem seis destinos de jump table, todos internos ao seu proprio
+range e cobertos pelo walk. A closure possui 35 instrucoes COP2/GTE e zero
+BREAK, SYSCALL ou JALR. Seus 16 destinos JAL externos estao todos presentes
+nos ranges e no dispatcher estatico S1-261. Nao existe sobreposicao com as
+1.108 palavras dinamicas ja promovidas na imagem F943B63B.
+
+O shard OVL-002C deve ser cumulativo: 1.108 palavras anteriores mais 966
+palavras novas, totalizando **2.074 palavras unicas** na imagem. O SHA-256 do
+corpo novo contiguo e o total acima; o SHA-256 dos corpos cumulativos ordenados
+e `483ACB7679B05D29B1C011A75A64E31DEED5CAA957985DACBE12FA3F9C6409E0`.
+`0x80092F00` e `0x80047DE8` continuam em quarentena e fora do shard.
+
+Decisao: **OVL-002C pre-auditada e selecionada, aguardando compilacao local e
+telemetria**. As 966 palavras ainda nao recebem credito. O gate deve provar a
+raiz e os dois aliases novos em execucao nativa, zero fallback interpretado e
+preservacao das sentinelas OVL-002A/OVL-002B.
+
+### Investigacao de ownership dos residuos da bomba apos OVL-002C
+
+A janela `ovl-002c-ddark-bombs-discovery-01` deixou 38 PCs no relatorio e
+4.676.020 instrucoes interpretadas em trinta segundos. Os maiores sinais foram
+`0x80094710` e `0x80092F00`, mas a coleta isolada da bomba nao prova por si so
+se os enderecos pertencem ao D.Dark, ao Ryu, ao cenario ou a uma rotina comum.
+
+Foi preparado um observador comparativo em duas partes, sem selecionar novas
+roots e sem alterar o shard. A primeira janela mede Ryu P1 x Ryu P2, ambos
+neutros; a segunda mede D.Dark P1 x Ryu P2 repetindo somente bombas. O conjunto
+de entrada e exatamente o resultado residual acima, com SHA-256
+`737A485D4736481DF36A210195209F5773655E64B63448231733AB350D1F34C7`.
+
+O comparador tambem registra o CRC das 32 palavras vivas em cada PC. Um endereco
+que execute nas duas rotas com CRC diferente e reutilizacao fisica de overlay,
+nao evidencia de uma funcao compartilhada. Um PC zerado no Ryu e observado no
+D.Dark recebe apenas o estado `ddark_only_observed`; isso orienta a auditoria,
+mas nao autoriza seed, alias, closure ou credito de palavras.
+
+Estado: **investigacao preparada, aguardando as duas coletas controladas**.
+Nenhum novo limite de palavras ou lote foi selecionado.
+
+As duas fases validas foram consolidadas em
+`ovl-002c-ddark-ownership-04`. Ryu P1 x Ryu P2 neutros acumulou 1.436.720
+instrucoes nos alvos; D.Dark P1 x Ryu P2 repetindo bombas acumulou 1.587.318.
+O cenario e o P2 permaneceram Ryu nas duas fases. Oito PCs ficaram zerados na
+janela do Ryu e ativos apenas com D.Dark, sempre com CRC de corpo diferente:
+`0x80047DE8`, `0x80044830`, `0x800448EC`, `0x80044984`, `0x8004485C`,
+`0x80044A68`, `0x80044AF8` e `0x80044B8C`. O maior deles foi `0x80047DE8`,
+com 45.125 instrucoes em trinta segundos. `0x80092F00` executou nas duas rotas
+com o mesmo CRC e praticamente a mesma taxa; portanto nao e exclusivo do
+D.Dark. `0x80094710` nao foi reproduzido e permanece inconclusivo.
+
+Decisao de ownership: priorizar somente `0x80047DE8`. Os outros sete sinais
+exclusivos continuam em investigacao, sem seed e sem credito. `0x80092F00`
+permanece em quarentena por ser compartilhado e pela closure ampla conhecida.
+
+### Pre-auditoria OVL-002D - raiz exclusiva `0x80047DE8`
+
+O limite foi fixado antes da selecao em **69 palavras novas**. A boundary
+formal ocupa `0x80047DE8..0x80047EFB`, totaliza 276 bytes e possui SHA-256
+`72081505A413F5F2B6E6DEA7162CAC427AC4E977408B13E5364657A366D61E82`.
+A instrucao anterior pertence a outra funcao e termina em `JR $ra`; a proxima
+boundary comeca em `0x80047EFC`.
+
+A closure alcancavel contem exatamente as mesmas 69 palavras. Nao ha JAL,
+JALR, COP2/GTE, BREAK ou SYSCALL. Existe um `JR $v0` controlado por uma tabela
+de nove entradas em `0x8004A6BC`; todos os valores apontam somente para
+`0x80047E84` ou `0x80047EF4`, ambos internos. Todos os branches diretos tambem
+ficam dentro da funcao. A classificacao offline preserva as 18 entradas
+cumulativas anteriores e inclui `0x80047DE8` como `DISPATCH_ENTRY`, sem criar
+alias novo.
+
+O shard experimental OVL-002D preserva as 2.074 palavras da OVL-002C e soma
+69, totalizando **2.143 palavras unicas** na imagem `F943B63B`. Nao ha
+sobreposicao. O SHA-256 da concatenacao ordenada dos corpos cumulativos e
+`06358D70C43FBE0E004784C448EA3AEE6ED3AC91AEFFE5BDD66917BCEBF11B56`.
+Os sete outros PCs exclusivos, `0x80047EFC`, `0x80092F00` e `0x80094710`
+ficam explicitamente fora do lote.
+
+Estado: **OVL-002D pre-auditada e preparada, aguardando compilacao local,
+telemetria e teste manual**. O lote ainda nao recebe credito. A OVL-002C e
+usada apenas como base experimental tecnicamente CLEAN; sua promocao formal
+continua condicionada ao registro do gate manual correspondente.
+
+A compilacao local OVL-002D confirmou 19 entradas na imagem, zero TODO de
+instrucao e zero destino desconhecido. Somente o DLL e o manifesto de ranges
+`F943B63B` foram substituidos; os outros artefatos do cache permaneceram
+identicos. Os dois usos de syscall informados pelo codegen ja existiam no shard
+OVL-002C e nao foram introduzidos pela funcao nova.
+
+O gate valido `ovl-002d-telemetry-03` terminou **CLEAN**. `0x80047DE8`
+acumulou 3.924 hits nativos e zero interpretados. As cinco sentinelas
+cumulativas acumularam hits nativos e zero interpretados: `0x80049568` 1.020,
+`0x80049808` 977, `0x80049988` 45, `0x80092C2C` 3.924 e `0x80093E4C`
+21.726. Os CRCs e candidatos exatos permaneceram identicos antes e depois.
+Houve zero miss, abort, bloqueio nativo, divergencia, mismatch, stale,
+invalidacao ou desregistro. O FPS medido dentro da janela ficou entre 59,8 e
+60,1, com media de 59,94.
+
+Na janela residual `ovl-002d-ddark-bombs-discovery-01`, a nova raiz somou mais
+2.107 hits nativos e zero interpretados. Ela desapareceu integralmente do
+ranking interpretado: as 48.025 instrucoes da baseline OVL-002C passaram a
+zero. O total bruto caiu de 4.676.020 para 4.632.289 (-43.731; -0,94%); a
+diferenca para 48.025 decorre de seis iteracoes adicionais das rotinas comuns
+na nova janela. O FPS permaneceu entre 59,9 e 60,0, com media de 59,94.
+
+Os sete PCs exclusivos ainda interpretados somaram 104.806 instrucoes em
+trinta segundos. `0x80044830` liderou esse grupo com 18.070. Ja
+`0x80094710` e `0x80092F00` somaram 4.200.416 instrucoes, ou 90,68% do total,
+mas continuam fora de selecao: o primeiro tem ownership inconclusivo e o
+segundo e compartilhado e possui closure ampla.
+
+Decisao final cumulativa: **OVL-002C e OVL-002D aprovadas como checkpoint
+dinamico**, promovendo respectivamente 966 e 69 palavras novas. O credito
+dinamico unico acumulado passa de 6.183 para **7.218 palavras**. A cobertura
+estatica S1 permanece 111.379/195.584 (**56,9469%**), e o volume unico entre
+as trilhas estatica e dinamica passa de 117.562 para **118.597 palavras**.
+Nenhum dos sete PCs residuais recebe credito antes de nova pre-auditoria.
