@@ -1374,3 +1374,100 @@ dinamico unico acumulado passa de 6.183 para **7.218 palavras**. A cobertura
 estatica S1 permanece 111.379/195.584 (**56,9469%**), e o volume unico entre
 as trilhas estatica e dinamica passa de 117.562 para **118.597 palavras**.
 Nenhum dos sete PCs residuais recebe credito antes de nova pre-auditoria.
+
+### Pre-auditoria OVL-002E - familia residual da bomba
+
+Os sete PCs exclusivos restantes pertencem a uma unica funcao formal. A raiz
+e `0x80044830`; `0x8004485C`, `0x800448EC`, `0x80044984`, `0x80044A68`,
+`0x80044AF8` e `0x80044B8C` sao entradas interiores e devem ser emitidas
+somente como aliases. A instrucao anterior a raiz e o `JR $ra` da funcao
+precedente, e a proxima boundary formal comeca em `0x80044C7C`.
+
+O limite foi fixado antes da selecao em **275 palavras novas**. A closure e
+contigua em `0x80044830..0x80044C7B`, cobre todos os seis aliases sem lacunas e
+possui SHA-256
+`ADF1F024D3646B2AF044CB439C53284B520B9284524912C1013001CB8FBCBC53`.
+Todos os branches e jumps permanecem internos. Nao ha JAL para outra funcao da
+imagem, JALR, jump table, COP2/GTE, BREAK ou SYSCALL. As 18 instrucoes JAL do
+corpo alcançam somente tres destinos estaticos: `0x8015830C`, `0x8015D718` e
+`0x8015E12C`; todos estao presentes nos ranges e no dispatcher S1-261.
+
+Nao existe sobreposicao com as 2.143 palavras acumuladas ate OVL-002D. O shard
+OVL-002E tera **2.418 palavras unicas** na imagem `F943B63B`, com SHA-256
+cumulativo
+`36548803322202BB9F7080F82FDCD5B06CFDD190A1E286D18C611403CD7F4D0A`.
+`0x80044C7C`, `0x80047EFC`, `0x80092F00` e `0x80094710` permanecem fora.
+
+Na baseline OVL-002D, essa familia residual respondeu por 104.806 instrucoes
+interpretadas em trinta segundos. O gate deve provar a raiz e os seis aliases
+nativos, sem fallback, e preservar as sentinelas cumulativas OVL-002A ate D.
+
+Estado: **OVL-002E pre-auditada e preparada, aguardando compilacao local,
+telemetria e teste manual**. As 275 palavras ainda nao recebem credito.
+
+A compilacao local OVL-002E preservou os 50 pares de artefatos do cache e
+substituiu somente o shard `F943B63B`. O manifesto possui 2.418 palavras
+cumulativas, e os 100 arquivos declarados foram posteriormente conferidos sem
+divergencia de tamanho ou SHA-256.
+
+O gate `ovl-002e-telemetry-01` terminou **CLEAN**. A raiz e os seis aliases
+novos acumularam 4.117 hits nativos cada e zero interpretados. Todas as seis
+sentinelas OVL-002A/B/C/D permaneceram nativas. CRCs e candidatos exatos foram
+preservados, com zero miss, abort, bloqueio, divergencia, mismatch, stale,
+invalidacao ou desregistro. O FPS ficou entre 59,8 e 60,1, com media de 59,93.
+
+Na janela `ovl-002e-ddark-bombs-discovery-01`, a familia nova acumulou 14.742
+hits nativos e zero interpretados. As 104.806 instrucoes atribuidas a ela na
+baseline OVL-002D desapareceram integralmente. O total bruto caiu de 4.632.289
+para 4.533.370 (-98.919; -2,135%). O operador precisou movimentar D.Dark para
+executar as bombas, mantendo Ryu parado e sem acertos. Essa variacao revelou
+11.005 instrucoes ausentes da baseline, principalmente 10.311 em `0x80044C7C`;
+por isso o delta bruto nao deve ser tratado como comparacao perfeitamente
+pareada, embora a eliminacao da familia esteja provada pelos contadores diretos.
+
+Estado OVL-002E: **gate tecnico aprovado; shard ainda experimental e sem novo
+credito formal nesta etapa**. `0x80094710` continua em investigacao;
+`0x80092F00` permanece em quarentena por ser compartilhado e ter closure ampla.
+
+### Investigacao de rota de `0x80044C7C` apos OVL-002E
+
+Foi preparado um comparador em tres partes sobre o mesmo runtime OVL-002E,
+sempre com D.Dark P1 x Ryu P2 no cenario do Ryu: primeiro D.Dark parado e
+somente Ryu em movimento sem golpes; depois Ryu parado e somente D.Dark em
+movimento sem golpes; por fim, Ryu parado e D.Dark repetindo apenas bombas sem
+acerto, com o movimento minimo necessario.
+
+O universo e fixado nos 27 PCs de
+`ovl-002e-ddark-bombs-discovery-01/result.json`, com SHA-256
+`DC65D829667A68AB2C1A7C354BBE389DF5258E128C0D92675A7CF9473483AE70`.
+Cada fase mede trinta segundos sem polling durante a acao, registra os corpos
+vivos e compara diretamente `0x80044C7C`. O objetivo e distinguir movimento
+comum, movimento especifico do D.Dark e execucao associada a bomba.
+
+Estado: **investigacao preparada, sem root, alias, closure, limite de palavras
+ou selecao nova**. Qualquer promocao depende primeiro do resultado dessas tres
+janelas e depois de pre-auditoria formal completa.
+
+A sessao `ovl-002e-ddark-44c7c-route-01` concluiu as tres fases com trinta
+segundos cada. O metadata da primeira fase ainda continha o rotulo antigo
+Ryu P1 x Ryu P2, mas o operador confirmou que manteve D.Dark P1 x Ryu P2 nas
+tres janelas. Os 27 CRCs vivos foram identicos entre as fases, confirmando o
+mesmo corpo carregado. Todos os guards ficaram zerados, os 100 arquivos do
+cache mantiveram os hashes e o FPS permaneceu entre 59,8 e 60,1.
+
+`0x80044C7C` ficou zerado com D.Dark parado/Ryu em movimento e com Ryu
+parado/D.Dark em movimento. Na janela de bombas sem colisao, acumulou 410
+entradas e 14.730 instrucoes interpretadas, ou 491,0 instrucoes/s. Outros sete
+PCs tambem apareceram somente com bombas: `0x800442DC`, `0x80045F38`,
+`0x80045F00`, `0x80045EDC`, `0x80045EB4`, `0x80046020` e `0x8004438C`.
+Juntos somaram 15.600 instrucoes; `0x80044C7C` respondeu por 94,423%.
+
+`0x80094710` e `0x80092F00` mantiveram taxas praticamente identicas nas tres
+janelas. Assim, nao sao sinais especificos da bomba nesse confronto. O
+espelhamento passivo do Ryu durante as bombas nao disparou nenhum dos oito PCs
+exclusivos.
+
+Decisao de descoberta: **priorizar somente a funcao formal iniciada em
+`0x80044C7C` para a proxima pre-auditoria**. Os outros sete PCs continuam como
+sinais observados, sem root, alias ou credito. Nenhuma palavra e selecionada
+antes de medir integralmente a nova closure e fixar um limite explicito.

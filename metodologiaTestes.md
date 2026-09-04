@@ -975,3 +975,76 @@ consulta o runtime durante a janela; ao final, exige `0x80047DE8` nativa e com
 zero fallback e compara a carga interpretada bruta com a baseline OVL-002C de
 4.676.020 instruções. A promoção só pode ser decidida após esses dois gates e
 uma validação manual de lutas completas, FPS e frametime.
+
+### Gate cumulativo OVL-002E da família residual
+
+A OVL-002E acrescenta somente `0x80044830..0x80044C7B`: uma raiz formal de 275
+palavras com seis aliases interiores. Com o jogo fechado, executar no UCRT64:
+
+```bash
+bash tools/compile_ovl_002e_test_runtime.sh
+bash tools/run_ovl_002e_test.sh
+```
+
+No Mode Select:
+
+```bash
+bash tools/telemetry_before_after_ovl_002e.sh prepare
+```
+
+Entrar no Versus com D.Dark P1, Ryu P2 e cenário do Ryu. Aguardar três a cinco
+segundos neutros e executar `before`. No mesmo round, lançar dez bombas, cinco
+de cada lado, alternando acerto, erro e bloqueio, sem misturar outro golpe.
+Então executar `after`:
+
+```bash
+bash tools/telemetry_before_after_ovl_002e.sh before
+# executar somente as dez bombas
+bash tools/telemetry_before_after_ovl_002e.sh after
+```
+
+O gate observa a raiz e os seis aliases novos, além de seis sentinelas das
+OVL-002A/B/C/D. Todos devem ter candidato exato, hits nativos e zero hits
+interpretados. CRC vivo, miss, abort, divergência, stale, invalidação e
+desregistro também são conferidos.
+
+Depois do gate, repetir a janela residual:
+
+```bash
+bash tools/observer_ddark_bombs_ovl_002e.sh
+```
+
+Durante trinta segundos, manter Ryu parado e repetir somente bombas sem
+acertá-lo. D.Dark pode fazer apenas o movimento mínimo necessário para executar
+e reposicionar as bombas. O observador não consulta o runtime durante a janela e
+exige os sete PCs novos em execução nativa, com zero fallback. O total é
+comparado à baseline OVL-002D de 4.632.289 instruções; a família promovida
+respondia por 104.806. Depois, validar manualmente especiais e lutas completas,
+observando gameplay, efeitos, FPS e frametime antes de qualquer promoção.
+
+### Comparação de movimento e bomba para `0x80044C7C`
+
+Depois da coleta residual OVL-002E, usar o mesmo runtime aberto para três
+janelas consecutivas:
+
+```bash
+bash tools/observer_ddark_44c7c_ovl_002e.sh ryu-move
+# trocar apenas o P1 para D.Dark na mesma execução
+bash tools/observer_ddark_44c7c_ovl_002e.sh ddark-move
+bash tools/observer_ddark_44c7c_ovl_002e.sh ddark-bombs
+```
+
+As três partes usam D.Dark P1 × Ryu P2 no cenário do Ryu. Na primeira, manter
+D.Dark parado e movimentar somente Ryu, incluindo caminhada, salto e
+agachamento, sem executar golpes. Na segunda, manter Ryu parado e movimentar
+somente D.Dark da mesma forma, sem golpes. Na terceira, manter Ryu parado e
+repetir bombas dos dois lados sem acertá-lo, fazendo apenas o movimento
+necessário para o comando e o reposicionamento.
+
+Cada fase possui cinco segundos de preparação e trinta de captura. Não ocorre
+polling durante a janela. O script valida o runtime e o cache OVL-002E, usa os
+27 PCs fixados pela coleta residual e registra CRC dos corpos vivos. O relatório
+compara as três taxas e destaca se `0x80044C7C` foi observado no movimento do
+Ryu, no movimento do D.Dark ou somente na rota com bombas. A classificação é
+apenas evidência de rota e não autoriza seed, alias, closure ou crédito; qualquer
+seleção exige pré-auditoria completa e limite explícito de palavras.

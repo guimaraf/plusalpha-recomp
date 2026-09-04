@@ -1,0 +1,4 @@
+# OVL-002E: familia residual exclusiva observada nas bombas do D.Dark.
+# Raiz formal 0x80044830; seis PCs observados sao aliases interiores.
+# Closure pre-auditada: 0x80044830..0x80044C7B, limite rigido de 275 palavras.
+target 0x80044830 ddark_bomb_residual_family_root
