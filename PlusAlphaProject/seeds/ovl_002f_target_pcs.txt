@@ -1,0 +1,5 @@
+# OVL-002F: wrapper de despacho executado exclusivamente na rota de bombas do D.Dark.
+# Closure direta pre-auditada: 0x80044C7C..0x80044CBB, limite rigido de 16 palavras.
+# O retorno 0x80044CAC e emitido como DISPATCH_INTERIOR da mesma closure, sem palavras novas.
+# O JALR em 0x80044CA4 e seus 11 handlers permanecem fora deste microlote.
+target 0x80044C7C ddark_bomb_dispatch_wrapper_root

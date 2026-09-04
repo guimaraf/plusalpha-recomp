@@ -1471,3 +1471,93 @@ Decisao de descoberta: **priorizar somente a funcao formal iniciada em
 `0x80044C7C` para a proxima pre-auditoria**. Os outros sete PCs continuam como
 sinais observados, sem root, alias ou credito. Nenhuma palavra e selecionada
 antes de medir integralmente a nova closure e fixar um limite explicito.
+
+### Pre-auditoria OVL-002F - wrapper de despacho da bomba
+
+O limite foi fixado antes da selecao em **16 palavras novas**. A funcao formal
+ocupa `0x80044C7C..0x80044CBB`, totaliza 64 bytes e possui SHA-256
+`60D4D42E1515483EAF1DF172A73A4F61F3FD58916561B553EB15EBE0931BA31C`.
+A instrucao anterior pertence a funcao OVL-002E e termina em `JR $ra`; a
+proxima boundary formal comeca em `0x80044CBC`. A primeira tentativa nao
+emitiu alias interior.
+
+A closure direta alcancavel contem exatamente as mesmas 16 palavras. Nao ha
+JAL direto, branch, jump, jump table detectada pelo walker, COP2/GTE, BREAK,
+SYSCALL ou `JR` por registrador diferente de `$ra`. Existe um unico
+`JALR` em `0x80044CA4`, com retorno em `0x80044CAC`. O wrapper le o estado
+em `0x1517(a0)` e escolhe o destino na tabela de 12 slots em `0x800431C0`,
+cujo SHA-256 e
+`23A797D9E9251508BD2B2901F0A2DD56A2A05AA16D40C46EA861973E97F6F1EE`.
+
+Os 12 slots apontam para 11 handlers formais: `0x80044CBC`, `0x80045124`,
+`0x80045868`, `0x80045A1C` (duplicado), `0x80045C14`, `0x80045E30`,
+`0x80046034`, `0x800465A8`, `0x80046C38`, `0x80046998` e
+`0x80047000`. Todos permanecem **explicitamente fora** do OVL-002F. Isso
+inclui a familia `0x80045E30`, que contem os sinais de bomba
+`0x80045EB4`, `0x80045EDC`, `0x80045F00`, `0x80045F38` e
+`0x80046020`. `0x800442DC` e `0x8004438C` tambem permanecem fora.
+
+A raiz e referenciada como callback em `0x80043008`; nao foi encontrado
+caller direto por J/JAL. A classificacao offline inclui somente
+`0x80044C7C` como `DISPATCH_ENTRY` e preserva as 26 entradas cumulativas
+anteriores. Nao ha sobreposicao com as 2.418 palavras OVL-002E. O shard
+OVL-002F tera **2.434 palavras unicas** na imagem `F943B63B`, com SHA-256
+cumulativo
+`2101DC48778749D24CEC812ED939B3CD4714D978341C2A46FFFDF04B163DFB2E`.
+
+Decisao: **OVL-002F pre-auditada e preparada somente com a raiz de 16
+palavras**. O gate deve provar execucao nativa da raiz e da continuacao
+`0x80044CAC`, zero fallback nesses dois PCs, identidade imutavel da tabela
+indireta e pelo menos um handler excluido executando interpretado. O lote
+aguarda compilacao local, telemetria e teste manual; nao recebe credito.
+
+A primeira compilacao local gerou corretamente o shard com 27 funcoes,
+2.434 palavras cumulativas, zero TODO e zero destino desconhecido. Entretanto,
+uma verificacao do script comparou por engano o range virtual novo com
+enderecos fisicos e encerrou antes de criar o estado do runtime. Esse falso
+negativo foi corrigido sem alterar ou promover o runtime parcial
+`ovl-002f-test-runtime-01`. O lote continua aguardando uma nova compilacao
+isolada, que usara o proximo sufixo livre, e todos os gates permanecem
+pendentes.
+
+O runtime completo seguinte, `ovl-002f-test-runtime-02`, provou que a raiz
+`0x80044C7C` foi promovida: no gate acumulou 820 hits nativos e zero
+interpretados; no observador, 492 nativos e zero interpretados. Entretanto,
+`0x80044CAC` acumulou respectivamente 820 e 492 hits interpretados, sem hit
+nativo. Em ambas as coletas, o handler `0x80045E30` teve a mesma contagem
+interpretada do retorno. Isso identifica a sequencia exata raiz nativa ->
+handler interpretado -> retorno interpretado. CRC, tabela indireta, miss,
+stale, invalidacao, desregistro e guards permaneceram limpos.
+
+Decisao: **o runtime 02 fica em REVIEW e nao recebe credito**. A pre-auditoria
+da correcao classificou `0x80044CAC` como `DISPATCH_INTERIOR` dentro das mesmas
+16 palavras ja medidas. Portanto, a revisao OVL-002F adiciona somente essa
+entrada explicita, sem palavra nova, sem ampliar a closure e sem incluir nenhum
+dos 11 handlers. O proximo runtime isolado deve ter 18 roots formais, 10
+aliases e continuar com 2.434 palavras cumulativas. Gate e observador devem ser
+repetidos em novas pastas antes de qualquer promocao.
+
+O runtime corrigido `ovl-002f-test-runtime-03` gerou 28 entradas no shard,
+incluindo `0x80044CAC` como alias explicito, e preservou as 2.434 palavras
+cumulativas. A compilacao local reportou zero TODO, zero destino desconhecido e
+manifesto com 136 entradas unicas.
+
+O gate `ovl-002f-telemetry-02` terminou **CLEAN**. A raiz `0x80044C7C` e o
+retorno `0x80044CAC` acumularam 820 hits nativos cada e zero interpretados. O
+handler excluido `0x80045E30` acumulou 820 hits interpretados e zero nativos,
+confirmando a travessia real do `JALR`. Todas as sentinelas permaneceram
+nativas; miss, abort, bloqueio, divergencia, mismatch, stale, invalidacao e
+desregistro ficaram zerados.
+
+O observador `ovl-002f-ddark-bombs-discovery-02` tambem terminou **CLEAN**. A
+raiz e o retorno tiveram 492 hits nativos cada e zero interpretados, e as
+10.311 instrucoes antes atribuidas a `0x80044C7C` cairam a zero. O total bruto
+foi 4.531.472, somente 1.898 abaixo da baseline OVL-002E; esse delta nao mede o
+ganho isolado porque, depois da divisao nativa do wrapper, `0x80045E30` passou
+a aparecer separadamente com 492 entradas e 10.896 instrucoes interpretadas.
+
+Estado OVL-002F: **gate tecnico e observador aprovados; 16 palavras nativas e
+alias de retorno validados, ainda aguardando confirmacao manual antes de
+promocao definitiva**. O proximo candidato de personagem e `0x80045E30`, mas
+permanece somente em investigacao ate uma nova pre-auditoria completa e um
+limite explicito de palavras.

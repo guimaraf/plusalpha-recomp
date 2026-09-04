@@ -1048,3 +1048,71 @@ compara as três taxas e destaca se `0x80044C7C` foi observado no movimento do
 Ryu, no movimento do D.Dark ou somente na rota com bombas. A classificação é
 apenas evidência de rota e não autoriza seed, alias, closure ou crédito; qualquer
 seleção exige pré-auditoria completa e limite explícito de palavras.
+
+### Gate cumulativo OVL-002F para `0x80044C7C`
+
+A OVL-002F acrescenta somente a função formal
+`0x80044C7C..0x80044CBB`, limitada a 16 palavras, sobre as 2.418 palavras
+OVL-002E. O `JALR` em `0x80044CA4` é auditado e seu retorno
+`0x80044CAC` é emitido como alias `DISPATCH_INTERIOR` da mesma closure, sem
+palavras adicionais. A tabela indireta em `0x800431C0` é auditada, mas os 11
+handlers possíveis ficam fora do microlote. Se uma tentativa anterior terminou
+em REVIEW, primeiro preservar e liberar seu estado:
+
+```bash
+bash tools/telemetry_before_after_ovl_002f.sh retry
+```
+
+O próximo `prepare` e o observador sempre usam o próximo sufixo livre. Com o
+jogo fechado, executar no UCRT64:
+
+```bash
+bash tools/compile_ovl_002f_test_runtime.sh
+bash tools/run_ovl_002f_test.sh
+```
+
+No Mode Select:
+
+```bash
+bash tools/telemetry_before_after_ovl_002f.sh prepare
+```
+
+Entrar no Versus com D.Dark P1, Ryu P2 e cenário do Ryu. Aguardar três a cinco
+segundos neutros e executar `before`. No mesmo round, soltar dez bombas sem
+acertar Ryu, cinco de cada lado, usando apenas o movimento mínimo necessário.
+Então executar `after`:
+
+```bash
+bash tools/telemetry_before_after_ovl_002f.sh before
+# executar somente as dez bombas sem colisão
+bash tools/telemetry_before_after_ovl_002f.sh after
+```
+
+O gate exige hits nativos e zero interpretados na raiz `0x80044C7C` e no
+retorno `0x80044CAC`, além das sentinelas cumulativas. A tabela de 12 slots
+deve permanecer idêntica antes e depois. Os 11 handlers indiretos são
+observados separadamente: nenhum pode executar nativo neste lote e pelo menos
+um deve ser visto no interpretador, provando a travessia real do `JALR`.
+Também devem permanecer zerados miss, abort, bloqueio, divergência, mismatch e
+desregistro.
+
+Depois do gate técnico, ainda em D.Dark P1 x Ryu P2 no cenário do Ryu,
+executar:
+
+```bash
+bash tools/observer_ddark_bombs_ovl_002f.sh
+```
+
+Durante os trinta segundos, manter Ryu parado e repetir somente bombas sem
+acertá-lo, dos dois lados, com movimento mínimo. O observador compara o total
+bruto com a baseline OVL-002E de 4.533.370 instruções e exige que as 10.311
+instruções antes atribuídas a `0x80044C7C` caiam a zero. Depois, validar
+manualmente bombas com erro, acerto e bloqueio, especiais e lutas completas,
+observando gameplay, efeitos, FPS e frametime antes de promover o lote.
+
+Resultado técnico registrado: `ovl-002f-telemetry-02` e
+`ovl-002f-ddark-bombs-discovery-02` terminaram CLEAN no runtime corrigido 03.
+Raiz e retorno tiveram zero fallback; `0x80045E30` permaneceu interpretado e
+foi isolado como próximo ponto de investigação. O delta bruto entre janelas não
+deve ser usado sozinho como ganho, pois a promoção do wrapper altera a
+atribuição da execução interpretada ao handler indireto.
