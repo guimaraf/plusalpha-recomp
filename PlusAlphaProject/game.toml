@@ -26,6 +26,7 @@ overlay_cache = false
 
 [controller]
 default_mode = "digital"
+lock_mode = true
 deadzone = 13106
 
 [audit]
