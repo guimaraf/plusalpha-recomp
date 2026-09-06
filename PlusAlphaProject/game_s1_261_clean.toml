@@ -1,5 +1,5 @@
 [game]
-name = "Street Fighter EX Plus Alpha - OVL-002F D.Dark bomb dispatch test"
+name = "Street Fighter EX Plus Alpha - S1-261 clean OVL-002H candidate"
 id = "SLUS-00548"
 exe = "local/SLUS_005.48"
 disc = "disc-a/Street Fighter EX Plus Alpha (USA).cue"
@@ -15,15 +15,15 @@ strict = true
 discovery = "reachable"
 
 [runtime]
-debug_port = 4534
-window_title = "EX Plus Alpha - OVL-002F D.Dark bomb dispatch test"
+window_title = "EX Plus Alpha - S1-261 clean OVL-002H candidate"
 controller = "digital"
 memcard_dir = "saves"
 disc_speed = "1x"
 turbo_loads = true
 bios_hle = true
 overlay_cache = true
-# Cache cumulativo ate OVL-002F preparado offline; autocompilacao proibida.
+# Cache cumulativo ate OVL-002H para validacao manual em build limpa.
+# Sem TCP, telemetria, shadow, observadores ou autocompilacao.
 overlay_backend = "tcc"
 
 [controller]
