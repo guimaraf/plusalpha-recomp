@@ -1,0 +1,23 @@
+# OVL-002H: handler 8 acionado pelo especial da bomba explosiva do D.Dark.
+# Limite fixado antes da selecao: 252 palavras. Closure medida: 239 palavras.
+# Corpo principal: 0x800465A8..0x80046933 (227 palavras).
+# Helper JAL direto: 0x80047DB8..0x80047DE7 (12 palavras), descoberto automaticamente.
+# 0x80046934 e os demais handlers externos permanecem fora.
+target 0x800465A8 ddark_bomb_super_handler_8_root
+alias 0x80046634 ddark_bomb_super_local_case_0
+alias 0x800466A8 ddark_bomb_super_observed_01
+alias 0x800466D8 ddark_bomb_super_observed_02
+alias 0x800466FC ddark_bomb_super_observed_03
+alias 0x80046704 ddark_bomb_super_local_case_1
+alias 0x80046710 ddark_bomb_super_observed_04
+alias 0x80046724 ddark_bomb_super_observed_05
+alias 0x800467BC ddark_bomb_super_observed_06
+alias 0x80046810 ddark_bomb_super_local_case_2
+alias 0x8004681C ddark_bomb_super_observed_07
+alias 0x80046830 ddark_bomb_super_observed_08
+alias 0x800468A0 ddark_bomb_super_local_case_16
+alias 0x800468CC ddark_bomb_super_local_case_17
+alias 0x800468EC ddark_bomb_super_observed_09
+alias 0x800468F8 ddark_bomb_super_observed_10
+alias 0x80046920 ddark_bomb_super_local_default
+alias 0x80047DD8 ddark_bomb_super_helper_observed

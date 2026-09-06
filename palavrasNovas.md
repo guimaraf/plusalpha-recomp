@@ -1561,3 +1561,138 @@ alias de retorno validados, ainda aguardando confirmacao manual antes de
 promocao definitiva**. O proximo candidato de personagem e `0x80045E30`, mas
 permanece somente em investigacao ate uma nova pre-auditoria completa e um
 limite explicito de palavras.
+
+### Pre-auditoria OVL-002G - handler 6 da bomba
+
+O limite foi fixado antes da selecao em **129 palavras novas**. A funcao formal
+ocupa `0x80045E30..0x80046033`, totaliza 516 bytes e possui SHA-256
+`365E6F1263836718ABA1E8F66EB12B014DAC10586B2291B28074833C7A5ACE73`.
+A boundary anterior termina em `JR $ra` seguido do delay slot; a proxima
+funcao formal comeca em `0x80046034`. O walker alcancou integralmente as 129
+palavras, sem lacuna.
+
+Nao ha JAL, JALR, COP2/GTE, BREAK ou SYSCALL. Existe um unico `JR` por
+registrador em `0x80045E68`, reconhecido como tabela local de cinco slots em
+`0x8004A5C0`. Seus alvos sao `0x80045E70`, `0x80045F00`, `0x80045F80`,
+`0x80045F94` e `0x80045FF8`; todos pertencem a mesma funcao. A tabela possui
+SHA-256 `4226C5CF1230376AEFEAE73A73B64D95BF8F4DFB8753607A65ED332A259CF498`.
+Todos os branches e jumps diretos tambem permanecem dentro da boundary.
+
+Para cobrir reentradas observadas e todos os destinos indiretos, a selecao
+inclui nove aliases `DISPATCH_INTERIOR`: `0x80045E70`, `0x80045EB4`,
+`0x80045EDC`, `0x80045F00`, `0x80045F38`, `0x80045F80`, `0x80045F94`,
+`0x80045FF8` e `0x80046020`. A classificacao offline acrescenta somente uma
+raiz e esses nove aliases, elevando o shard `F943B63B` de 28 para 38 entradas.
+
+Nao existe sobreposicao com as 2.434 palavras OVL-002F. O corpo cumulativo
+previsto possui **2.563 palavras unicas** e SHA-256
+`36DD3A48D0A8777E1449EAC941A239EC8EDB6D4CA427B136D2AA2B4E97299B5E`.
+Os outros dez handlers da tabela externa em `0x800431C0`, assim como
+`0x800442DC` e `0x8004438C`, permanecem explicitamente fora.
+
+Decisao: **OVL-002G pre-auditada e preparada como um unico microlote de 129
+palavras**. O gate deve provar execucao nativa da raiz e dos cinco aliases ja
+observados, zero fallback em todos os nove aliases, pelo menos um alvo da
+tabela local executando nativo e identidade imutavel das tabelas local e
+externa. A familia respondia por 11.468 instrucoes interpretadas na baseline
+OVL-002F. O lote aguarda compilacao local, telemetria e teste manual; nao recebe
+credito antecipado.
+
+O runtime `ovl-002g-test-runtime-01` gerou 38 entradas na imagem `F943B63B`,
+146 entradas unicas no cache e preservou exatamente as 2.563 palavras previstas.
+O codegen reportou zero TODO e zero destino desconhecido. O gate
+`ovl-002g-telemetry-01` e o observador
+`ovl-002g-ddark-bombs-discovery-01` terminaram **CLEAN**: a raiz acumulou
+respectivamente 861 e 451 hits nativos, os cinco aliases antes observados
+executaram nativos e toda a familia caiu de 11.468 para zero instrucoes
+interpretadas. O delta bruto foi -11.383, com zero miss, guard, stale,
+invalidacao ou desregistro.
+
+A cobertura funcional ainda nao e completa: somente `0x80045F00` entre os
+cinco destinos da tabela local executou. `0x80045E70`, `0x80045F80`,
+`0x80045F94` e `0x80045FF8` possuem candidato exato ativo e zero fallback, mas
+nao tiveram hit. Assim, OVL-002G fica **tecnicamente aprovada na rota de bombas
+sem acerto, mas ainda em investigacao de cobertura dos estados 0, 2, 3 e 4**.
+
+Foi preparado um comparador de quatro janelas, sem palavra ou selecao nova:
+bombas sem acerto, bombas acertando Ryu neutro, bombas contra a defesa e o
+especial/super do D.Dark relacionado a bombas. O resultado deve formar uma
+matriz dos cinco destinos locais, manter zero hit interpretado em toda a
+familia e destacar PCs interpretados exclusivos de cada condicao. Cada fase
+pode ser repetida em nova pasta enquanto a comparacao estiver ativa.
+
+A comparacao `ovl-002g-ddark-bomb-states-01` terminou tecnicamente **CLEAN**
+nas quatro fases, com zero fallback em toda a familia. Sem acerto, acerto e
+defesa acumularam respectivamente 492, 451 e 574 hits nativos na raiz; em todas
+as tres condicoes, somente `0x80045F00` foi selecionado na tabela local, com
+12, 11 e 14 hits. Parar os ataques antes do fim do round foi correto e evitou
+contaminacao por KO/replay sem invalidar a coleta.
+
+O especial da bomba que explode e lanca o oponente nao executou
+`0x80045E30`: a raiz e seus aliases tiveram zero hit. Em vez disso, a janela
+registrou 144 hits interpretados em `0x800465A8` e 480 em `0x80047000`, ambos
+handlers externos preservados fora do lote. Portanto, repetir o mesmo especial
+nao cobre `0x80045E70`, `0x80045F80`, `0x80045F94` ou `0x80045FF8`. A decisao
+permanece **OVL-002G tecnicamente aprovada nas rotas exercitadas e em REVIEW de
+cobertura, com 1/5 destinos locais observados**. Os quatro destinos ausentes
+nao podem ser considerados falha nem promovidos por presuncao; o proximo gate
+deve identificar seus gatilhos por janelas separadas de movimentos do D.Dark.
+
+Primeiro passo desse gate: observar isoladamente o outro especial/super do
+D.Dark, diferente da bomba explosiva que lanca o adversario. A fase
+`other-special` reutiliza a sessao ativa e o runtime OVL-002G, sem nova palavra
+ou selecao. Para evitar contaminacao, executar no maximo uma vez de cada lado e
+parar antes do KO; a coleta serve somente para descobrir se esse golpe seleciona
+algum dos quatro destinos locais ainda ausentes.
+
+A fase `other-special` terminou **CLEAN** e confirmou que o especial das facas
+nao pertence a familia OVL-002G. Ele executou o handler `0x80046034` 184 vezes
+e acumulou aproximadamente 6.753 instrucoes interpretadas na familia
+`0x80046034..0x800465A7`. Esse resultado fica como candidato separado; nao
+amplia nem resolve a cobertura da bomba.
+
+### Pre-auditoria OVL-002H - handler do especial da bomba explosiva
+
+O limite foi fixado antes da selecao em **252 palavras novas**. A auditoria
+separou corretamente duas funcoes: a raiz `0x800465A8..0x80046933`, com 227
+palavras e SHA-256
+`E35BE10F7BA889CED32DD5A0AD6CE8C505E562E9634B811B5801D3CCCEAF0466`,
+e o helper direto `0x80047DB8..0x80047DE7`, com 12 palavras e SHA-256
+`47E3896F16BADCFF45B7D5871ED3A486938A05EA9FC760A96086EFFB0E666E21`.
+`0x80046934` e uma funcao independente e permanece fora.
+
+A closure alcancavel possui exatamente **239 palavras**, abaixo do limite, com
+SHA-256 `06177D4AB270F914DDD1B3D0FDCED67009A95623231DAFA17CC6CE042D356825`.
+Nao ha sobreposicao com as 2.563 palavras OVL-002G; o corpo cumulativo previsto
+possui 2.802 palavras e SHA-256
+`34F2CF64C7D2D74E231A65A7D7F58F48C1097CBF9DA6870DF0C66FB33A42E92E`.
+
+O unico `JR` indireto fica em `0x8004662C` e usa uma tabela de 18 slots em
+`0x8004A610`, com seis destinos internos: `0x80046634`, `0x80046704`,
+`0x80046810`, `0x800468A0`, `0x800468CC` e `0x80046920`. A tabela possui
+SHA-256 `6CFA63DD09A9FB9B111F6B57D76865F17A595AB155DAD5DCDBEBF3CAB3489206`.
+O lote possui 17 aliases interiores, incluindo os destinos da tabela, retornos
+observados e `0x80047DD8` no helper.
+
+Nao ha JALR, COP2/GTE, BREAK ou SYSCALL. O unico JAL para a imagem alcanca o
+helper incluido. Os 12 destinos JAL externos estao todos nos ranges e no
+dispatcher estatico S1-261. A janela do especial atribuiu **6.991 instrucoes
+interpretadas** a closure selecionada. `0x80046934` e `0x80047000` devem
+continuar interpretadas neste microlote para provar a boundary.
+
+Decisao: **OVL-002H pre-auditada e preparada como lote experimental de 239
+palavras**, ainda sem credito. O gate deve provar raiz e aliases observados
+nativos, zero fallback na closure e os dois PCs excluidos
+`0x80046934`/`0x80047000` executando interpretados. Os seis destinos da tabela
+local sao cobertura opcional: qualquer destino exercitado deve permanecer
+nativo, mas ausencia de hit e REVIEW de cobertura, nao falha tecnica.
+
+A coleta `ovl-002h-telemetry-01` terminou tecnicamente **CLEAN**. A raiz
+`0x800465A8` acumulou 274 hits nativos e zero interpretado, e todos os aliases
+exercitados da closure ficaram nativos. As boundaries excluidas `0x80046934` e
+`0x80047000` tiveram 240 hits interpretados cada e nenhum hit nativo. O delta
+registrou 214.324 dispatches nativos, zero miss, zero invalidacao, zero stale,
+zero desregistro e todos os guards zerados. Nenhum dos seis destinos da tabela
+local executou; essa lacuna permanece como **REVIEW de cobertura**. A OVL-002H
+esta tecnicamente aprovada na rota exercitada, mas ainda aguarda observador
+residual e teste manual antes de promocao ou credito definitivo.

@@ -1116,3 +1116,165 @@ Raiz e retorno tiveram zero fallback; `0x80045E30` permaneceu interpretado e
 foi isolado como próximo ponto de investigação. O delta bruto entre janelas não
 deve ser usado sozinho como ganho, pois a promoção do wrapper altera a
 atribuição da execução interpretada ao handler indireto.
+
+### Gate cumulativo OVL-002G para `0x80045E30`
+
+A OVL-002G acrescenta somente a função formal
+`0x80045E30..0x80046033`, limitada a 129 palavras, sobre as 2.434 palavras
+OVL-002F. Nove aliases internos cobrem os PCs observados e todos os cinco
+destinos da tabela local controlada pelo `JR` em `0x80045E68`. Os outros dez
+handlers externos permanecem fora. Com o jogo fechado, executar no UCRT64:
+
+```bash
+bash tools/compile_ovl_002g_test_runtime.sh
+bash tools/run_ovl_002g_test.sh
+```
+
+No Mode Select, executar `prepare`. Entrar no Versus com D.Dark P1, Ryu P2 e
+cenário do Ryu, aguardar três a cinco segundos neutros e executar `before`.
+Soltar dez bombas sem acertar Ryu, cinco de cada lado, usando somente o
+movimento mínimo necessário, e executar `after`:
+
+```bash
+bash tools/telemetry_before_after_ovl_002g.sh prepare
+bash tools/telemetry_before_after_ovl_002g.sh before
+# executar somente as dez bombas sem colisão
+bash tools/telemetry_before_after_ovl_002g.sh after
+```
+
+O gate exige hits nativos na raiz e nos cinco aliases previamente observados,
+zero hit interpretado em toda a família e pelo menos um destino da tabela local
+executando nativo. Os quatro aliases de tabela ainda não observados não exigem
+hit, mas, se executarem, devem permanecer nativos. As tabelas em `0x800431C0`
+e `0x8004A5C0`, os CRCs vivos, as sentinelas cumulativas e todos os guards são
+validados antes e depois.
+
+Depois do gate técnico, repetir a janela residual:
+
+```bash
+bash tools/observer_ddark_bombs_ovl_002g.sh
+```
+
+Durante trinta segundos, manter Ryu parado e repetir somente bombas sem
+acertá-lo, dos dois lados. O observador exige que as 11.468 instruções da
+família `0x80045E30` medidas na baseline OVL-002F caiam a zero. Depois, validar
+manualmente bombas com erro, acerto e bloqueio, especiais e lutas completas,
+observando gameplay, efeitos, FPS e frametime antes de promover o lote.
+
+### Cobertura dos cinco estados locais da bomba na OVL-002G
+
+O gate e o observador sem acerto provaram execução nativa da família, mas
+exercitaram somente `0x80045F00` entre os cinco destinos da tabela local. Para
+investigar os quatro destinos restantes sem selecionar nenhuma palavra nova,
+manter o mesmo runtime OVL-002G aberto e executar quatro janelas controladas:
+
+```bash
+bash tools/observer_ddark_bomb_states_ovl_002g.sh no-hit
+bash tools/observer_ddark_bomb_states_ovl_002g.sh hit
+bash tools/observer_ddark_bomb_states_ovl_002g.sh block
+bash tools/observer_ddark_bomb_states_ovl_002g.sh special
+```
+
+Usar sempre D.Dark P1 × Ryu P2 no cenário do Ryu. Em `no-hit`, repetir bombas
+dos dois lados sem colisão e aguardar o ciclo completo. Em `hit`, deixar Ryu
+neutro e acertá-lo somente com bombas. Em `block`, manter Ryu defendendo e
+atingir somente a defesa com bombas. Em `special`, executar somente o
+especial/super do D.Dark relacionado a bombas, permitindo o acerto e sem usar
+golpes normais.
+
+Cada fase possui cinco segundos de preparação e trinta segundos de captura,
+sem polling durante a ação. O script valida cache, CRCs e as tabelas externa e
+local; registra hits nativos/interpretados nos nove aliases; coleta todos os
+PCs interpretados e produz uma matriz final. Uma fase pode ser repetida antes
+da conclusão e sempre recebe uma pasta nova. Consultar o andamento com:
+
+```bash
+bash tools/observer_ddark_bomb_states_ovl_002g.sh status
+```
+
+O resultado só é CLEAN quando todos os cinco destinos da tabela local tiverem
+ao menos um hit nativo e toda a família permanecer com zero fallback. Resultado
+incompleto fica em REVIEW com o estado ativo preservado para repetição. Essa
+comparação é somente cobertura; não autoriza root, alias, closure ou crédito
+novo.
+
+Também é possível recalcular a comparação das fases já gravadas, sem nova
+captura de gameplay:
+
+```bash
+bash tools/observer_ddark_bomb_states_ovl_002g.sh compare
+```
+
+Na sessão `ovl-002g-ddark-bomb-states-01`, as quatro fases ficaram tecnicamente
+CLEAN e a família permaneceu com zero fallback. As janelas `no-hit`, `hit` e
+`block` selecionaram apenas `0x80045F00`; interromper os ataques antes do KO é
+o procedimento correto para excluir fim de round e replay. O especial da bomba
+explosiva que lança o adversário não passou por `0x80045E30`: registrou zero hit
+na família e atividade interpretada em `0x800465A8` e `0x80047000`. Não repetir
+esse mesmo especial para buscar os quatro destinos ausentes. O resultado deve
+ser registrado como técnico CLEAN e cobertura REVIEW, sem traceback. O próximo
+passo é observar movimentos distintos do D.Dark em janelas isoladas, mantendo
+Ryu e cenário constantes, antes de qualquer nova seleção.
+
+Começar pelo outro especial/super do D.Dark:
+
+```bash
+bash tools/observer_ddark_bomb_states_ovl_002g.sh other-special
+```
+
+Usar D.Dark P1 × Ryu P2 no cenário do Ryu. Executar exclusivamente o outro
+especial, diferente da bomba explosiva que lança o adversário, no máximo uma
+vez de cada lado. Parar antes do KO e não executar bombas, golpes normais ou
+qualquer ação de fim de round. A fase é anexada à sessão ativa e recalcula a
+matriz incluindo a nova janela.
+
+### Gate cumulativo OVL-002H para o especial da bomba explosiva
+
+A OVL-002H preserva as 2.563 palavras OVL-002G e acrescenta uma closure de 239
+palavras, dentro do limite predefinido de 252. Ela inclui
+`0x800465A8..0x80046933` e o helper `0x80047DB8..0x80047DE7`; `0x80046934`
+permanece fora. Com o jogo fechado, executar:
+
+```bash
+bash tools/compile_ovl_002h_test_runtime.sh
+bash tools/run_ovl_002h_test.sh
+```
+
+No Mode Select, executar `prepare`. Entrar no Versus com D.Dark P1, Ryu P2 e
+cenario do Ryu, aguardar tres a cinco segundos neutros e executar `before`:
+
+```bash
+bash tools/telemetry_before_after_ovl_002h.sh prepare
+bash tools/telemetry_before_after_ovl_002h.sh before
+```
+
+Com Ryu parado, fazer somente o especial da bomba explosiva acertar o adversario
+uma vez de cada lado. Parar apos o segundo impacto e antes do KO. Nao usar o
+especial das facas, bombas comuns ou golpes normais. Em seguida:
+
+```bash
+bash tools/telemetry_before_after_ovl_002h.sh after
+```
+
+Se o gate terminar CLEAN, repetir a mesma acao no observador de trinta segundos:
+
+```bash
+bash tools/observer_ddark_bomb_super_ovl_002h.sh
+```
+
+O gate exige hits nativos na raiz e nos aliases previamente observados e zero
+fallback em toda a closure. Os seis destinos da tabela local sao cobertura
+opcional: se executarem, devem permanecer nativos; se nenhum executar, o fato e
+registrado como cobertura nao exercitada, sem reprovar o gate tecnico. As
+funcoes excluidas `0x80046934` e `0x80047000` devem executar interpretadas, sem
+hit nativo. CRCs, cache, tabela externa, tabela local e guards devem permanecer
+exatos. Nenhuma palavra recebe credito antes da telemetria e validacao manual.
+
+A coleta `ovl-002h-telemetry-01` terminou tecnicamente **CLEAN**. A raiz
+`0x800465A8` acumulou 274 hits nativos e zero interpretado; todos os aliases
+exercitados da closure permaneceram nativos. `0x80046934` e `0x80047000`
+registraram 240 hits interpretados cada, como esperado para as boundaries
+excluidas. Houve 214.324 dispatches nativos, zero miss e zero evento nos guards.
+Nenhum dos seis destinos da tabela local executou nessa janela, portanto essa
+cobertura permanece em REVIEW e nao invalida a rota exercitada. O lote ainda
+aguarda o observador residual e a validacao manual antes de receber credito.

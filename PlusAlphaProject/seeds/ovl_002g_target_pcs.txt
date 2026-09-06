@@ -1,0 +1,14 @@
+# OVL-002G: handler 6 da tabela de despacho da bomba do D.Dark.
+# Closure completa pre-auditada: 0x80045E30..0x80046033, limite rigido de 129 palavras.
+# Os cinco alvos da tabela local e os cinco PCs internos observados formam nove aliases unicos.
+# Nenhum dos outros dez handlers da tabela externa entra neste microlote.
+target 0x80045E30 ddark_bomb_handler_6_root
+alias 0x80045E70 ddark_bomb_local_jump_case_0
+alias 0x80045EB4 ddark_bomb_observed_branch_1
+alias 0x80045EDC ddark_bomb_observed_branch_2
+alias 0x80045F00 ddark_bomb_local_jump_case_1
+alias 0x80045F38 ddark_bomb_observed_branch_3
+alias 0x80045F80 ddark_bomb_local_jump_case_2
+alias 0x80045F94 ddark_bomb_local_jump_case_3
+alias 0x80045FF8 ddark_bomb_local_jump_case_4
+alias 0x80046020 ddark_bomb_observed_branch_4
