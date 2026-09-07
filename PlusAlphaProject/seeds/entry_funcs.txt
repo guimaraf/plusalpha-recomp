@@ -4140,3 +4140,22 @@
 0x801912D8
 0x80191588
 0x801961BC
+
+# Micro-lote S1-265: Fechamento da Tabela de Options / Memory Card 0x801B8538 e helpers.
+# - 0x80192128: 3140 bytes / 785 palavras (Entrada 0 da tabela 0x801B8538; 3 jump tables internas 0x801AEA20, 0x801AEA38, 0x801AEA58)
+# - 0x80192E58:  264 bytes /  66 palavras (Helper de opcoes chamado por 0x80192128)
+# - 0x80192F60:  348 bytes /  87 palavras (Entrada 5 da tabela 0x801B8538; cobre o bloco 0x80193020)
+# - 0x8019314C:   40 bytes /  10 palavras (Thunk de callback do overlay chamado por 0x80192128 via 0x80020804)
+# - 0x80193174:   40 bytes /  10 palavras (Entrada 1 da tabela 0x801B8538; thunk de callback via 0x8002080C)
+# - 0x8019319C:   40 bytes /  10 palavras (Entrada 3 da tabela 0x801B8538; thunk de callback via 0x80020808)
+# - 0x801931C4:   40 bytes /  10 palavras (Entrada 4 da tabela 0x801B8538; thunk de callback via 0x80020810)
+# - 0x8019328C:   72 bytes /  18 palavras (Thunks de syscall/B0; cobre entradas 0x801932AC e 0x801932BC)
+# Total: 8 funcoes novas, 3.984 bytes / 996 palavras.
+0x80192128
+0x80192E58
+0x80192F60
+0x8019314C
+0x80193174
+0x8019319C
+0x801931C4
+0x8019328C
