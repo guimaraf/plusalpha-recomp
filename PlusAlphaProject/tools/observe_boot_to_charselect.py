@@ -348,12 +348,13 @@ def main():
     print("=" * 70)
     print("  1. Corte livremente as telas (FMV Capcom, FMV Arika, Intro).")
     print("  2. No Menu Principal (Mode Select), selecione ARCADE e aperte X.")
-    print("  3. Pare na TELA DE SELEÇÃO DE PERSONAGENS (nao selecione lutador).")
-    print("  4. Volte AQUI NESTE TERMINAL e pressione [ENTER] para coletar o AFTER.")
+    print("  3. Na Seleção de Personagens, escolha o Ken e inicie a luta.")
+    print("  4. Assim que a tela da luta carregar (ROUND 1 / FIGHT), volte aqui.")
+    print("  5. Pressione [ENTER] neste terminal para coletar o AFTER.")
     print("=" * 70)
 
     try:
-        input("\n>>> Pressione [ENTER] quando estiver na Seleção de Personagens... ")
+        input("\n>>> Pressione [ENTER] quando a luta carregar (ou na Seleção)... ")
     except KeyboardInterrupt:
         print("\n[!] Coleta cancelada pelo usuario.")
         sys.exit(0)

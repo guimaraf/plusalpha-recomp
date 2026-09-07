@@ -4118,3 +4118,17 @@
 # Todas as 6 funcoes possuem hashes SHA-256 exatos auditados e zero dependencias externas.
 0x80103384
 
+# Micro-lote S1-263: Pipeline de Renderizacao 3D e Matematica GTE da Luta (Match Start).
+# Previa isolada e auditoria confirmaram exatamente 9 funcoes e 2.427 palavras (9.708 bytes):
+# - 0x80164F00:  560 bytes / 140 palavras (Raiz de dispatch da luta chamada via overlay)
+# - 0x80165558: 2132 bytes / 533 palavras
+# - 0x80166170: 1348 bytes / 337 palavras (Loop principal 3D - elimina misses 0x80166260, 0x801662D8, 0x80166370)
+# - 0x801666B4:  688 bytes / 172 palavras
+# - 0x80166A84:  528 bytes / 132 palavras (Pipeline GTE - elimina miss 0x80166C10)
+# - 0x80166C94: 1376 bytes / 344 palavras
+# - 0x801671F4: 1004 bytes / 251 palavras (Pipeline de Entidade 3D - elimina miss 0x80167450)
+# - 0x801675E0: 1820 bytes / 455 palavras (Pipeline GTE - elimina misses 0x801677A0, 0x80167A14, 0x80167AA4)
+# - 0x80167D38:  252 bytes /  63 palavras
+# Todas as 9 funcoes auditadas: zero JR nao-RA, zero JALR, status CLEAN no codegen audit.
+0x80164F00
+
