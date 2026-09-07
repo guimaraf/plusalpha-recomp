@@ -4159,3 +4159,19 @@
 0x8019319C
 0x801931C4
 0x8019328C
+
+# Micro-lote S1-266: Dispatcher de UI/Animacao, Menu Cursor Helpers, Dispatcher de Opcoes e Syscall Thunks.
+# - 0x80124400:  324 bytes /  81 palavras (Caller direto dos thunks 0x8019328C, 0x8019329C e 0x801932AC)
+# - 0x801932BC:   16 bytes /   4 palavras (Thunk de syscall B0:51 chamado por 0x80125594)
+# - 0x80125594:  608 bytes / 152 palavras (Helper de cursor de menu; chama 0x801932BC)
+# - 0x801258D4:  176 bytes /  44 palavras (Helper de cursor de menu; cobre o bloco 0x80125940)
+# - 0x8016A84C: 1484 bytes / 371 palavras (Raiz do dispatcher de UI/Animacao; closure com jump tables 0x801AC460 e 0x801AC4B8)
+# - 0x8018C880: 1440 bytes / 360 palavras (Raiz do dispatcher de Opcoes / Sound Test e helpers de audio)
+# Total: 6 seeds formais, expande 22 funcoes nativas e 3.896 palavras unicas (atinge 125.435 palavras / 64,1336%).
+0x80124400
+0x801932BC
+0x80125594
+0x801258D4
+0x8016A84C
+0x8018C880
+
