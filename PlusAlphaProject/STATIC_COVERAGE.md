@@ -31,6 +31,7 @@ históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-239.
 | S1-263 validado | 547 | 120.341 / 195.584 | 61,5291% | 17.228 | 127 |
 | S1-264 validado | 550 | 120.558 / 195.584 | 61,6400% | 17.258 | 127 |
 | S1-265 validado | 558 | 121.539 / 195.584 | 62,1416% | 17.424 | 127 |
+| S1-266 validado | 564 | 125.435 / 195.584 | 64,1336% | 18.079 | 127 |
 
 O S1-225 acrescentou 819 palavras únicas e 9 seeds à baseline anterior. A
 origem histórica registrou 348 `ACCEPT`, 133 `WARN` estruturais conhecidos e
@@ -258,6 +259,19 @@ eliminação de 100% dos 1.118 misses observados nas entradas dessa tabela e seu
 reduzindo os PCs únicos não compilados observados de 63 para 52. A auditoria do generated
 confirmou 1.086 funções, 17.416 entradas de dispatcher, 17.424 blocos e status CLEAN. A cobertura
 oficial atinge 121.539/195.584 palavras (62,1416%).
+
+O micro-lote S1-266 promoveu os dispatchers centrais de UI/Animação (0x8016A84C),
+Opções/Sound Test (0x8018C880), helpers de cursor de menus (0x80125594 e 0x801258D4),
+caller direto de thunks (0x80124400) e thunk de syscall BIOS B0:51 (0x801932BC),
+expandindo 22 funções nativas e somando 3.896 palavras únicas. A validação
+diferencial entre menus-exploration-03 e menus-exploration-04 confirmou a
+erradicação total de 50 dos 52 PCs não compilados observados (-96,15%), eliminando
+100% dos 2.591 misses dessas rotinas e reduzindo os fallbacks de interpretador
+em 482.594 chamadas (-12,7%). A rota inteira de menus agora opera 100% nativa no EXE
+principal, restando estaticamente apenas o loop de hardware polling de joypad
+(0x801AB1F4 e 0x801AB2C0). A auditoria do generated confirmou 1.108 funções, 18.069
+entradas de dispatcher, 18.079 blocos e status CLEAN. A cobertura oficial atinge
+125.435/195.584 palavras (64,1336%).
 
 ### Gate aplicado
 

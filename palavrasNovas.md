@@ -24,13 +24,13 @@ fila `pendente` abaixo deve ser triada.
 
 ## Baseline atual
 
-- Checkpoint promovido: **S1-265 validado**, incorporando fechamento da tabela 0x801B8538 (Options / Memory Card) e helpers.
-- Ultimo checkpoint validado: **S1-265**.
-- Cobertura: **121.539 / 195.584 palavras (62,1416%)**.
-- Funcoes geradas: **1.086**.
-- Entradas do dispatcher: **17.416**.
+- Checkpoint promovido: **S1-266 validado**, incorporando dispatchers de UI/Animacao, Opcoes, cursor helpers e syscalls.
+- Ultimo checkpoint validado: **S1-266**.
+- Cobertura: **125.435 / 195.584 palavras (64,1336%)**.
+- Funcoes geradas: **1.108**.
+- Entradas do dispatcher: **18.069**.
 - Auditor codegen: **CLEAN**.
-- Validacao diferencial: `menus-exploration-02` vs `menus-exploration-03` confirmou eliminacao de 100% dos 1.118 misses da tabela 0x801B8538 e reduziu os PCs unicos nao compilados de 63 para 52.
+- Validacao diferencial: `menus-exploration-03` vs `menus-exploration-04` confirmou eliminacao de 50 dos 52 PCs nao compilados (2.591 misses erradicados, -100% nos alvos) e reducao de -12,7% nos fallbacks globais de interpretador nos menus.
 
 O checkpoint cumulativo S1-261 incorpora S1-251, S1-253, S1-254, S1-255 e os
 lotes S1-256 a S1-260. A regressao Release percorreu Expert Mode com retorno a
@@ -84,8 +84,9 @@ ranges nativos e 50 ainda estao fora deles. Os 50 PCs restantes nao equivalem a
 | S1-263 | `0x80164F00` + closure | 8.026 | 120.341 | processado; checkpoint S1-263 |
 | S1-264 | `0x801912D8`, `0x80191588`, `0x801961BC` | 217 | 120.558 | processado; checkpoint S1-264 |
 | S1-265 | `0x80192128`, `0x80192E58`, `0x80192F60`, `0x8019314C`, `0x80193174`, `0x8019319C`, `0x801931C4`, `0x8019328C` | 981 | 121.539 | processado; checkpoint S1-265 |
+| S1-266 | `0x80124400`, `0x801932BC`, `0x80125594`, `0x801258D4`, `0x8016A84C`, `0x8018C880` + closure | 3.896 | 125.435 | processado; checkpoint S1-266 |
 
-Total promovido desde S1-239: **15.220 palavras**.
+Total promovido desde S1-239: **19.116 palavras**.
 
 ## Trilha dinamica de overlays
 
