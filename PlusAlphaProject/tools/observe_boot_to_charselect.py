@@ -362,7 +362,48 @@ def main():
     after = capture_full_snapshot(port)
     print(f"[+] SNAPSHOT AFTER CAPTURADO EM {after['elapsed_ms']:.1f} ms!")
 
+    # Descarrega overlay_captures.json do runtime
+    try:
+        cap_dump = send_command(port, {"id": 99, "cmd": "overlay_capture_dump"})
+        entries_count = cap_dump.get("capture_entries", 0)
+        print(f"[+] Comando overlay_capture_dump enviado: {entries_count} entrada(s) registradas.")
+    except Exception as e:
+        print(f"[!] Aviso ao enviar overlay_capture_dump: {e}")
+
     (run_dir / "after.json").write_text(json.dumps(after, indent=2), encoding="utf-8")
+
+    # Localiza e preserva overlay_captures.json
+    possible_cap_paths = [
+        project_root / "build-telemetry" / "overlay_captures.json",
+        project_root / "overlay_captures.json",
+        pathlib.Path.cwd() / "overlay_captures.json",
+    ]
+    captured_file = None
+    for p in possible_cap_paths:
+        if p.is_file():
+            captured_file = p
+            break
+
+    if captured_file:
+        dest_cap = run_dir / "overlay_captures.json"
+        import shutil
+        shutil.copyfile(captured_file, dest_cap)
+        print(f"[+] Arquivo de captura preservado em: {dest_cap}")
+        try:
+            cap_data = json.loads(dest_cap.read_text(encoding="utf-8"))
+            print(f"[+] Detalhes de Overlays Capturados ({len(cap_data)} regioes):")
+            for idx, item in enumerate(cap_data):
+                laddr = item.get("load_addr", "")
+                sz = item.get("size", 0)
+                exec_pcs = [x.upper() for x in item.get("executed_pcs", [])]
+                has_monstro = any("800E78DC" in pc or "000E78DC" in pc for pc in exec_pcs)
+                print(f"    - Regiao [{idx+1}]: load_addr={laddr}, tamanho={sz} bytes, {len(exec_pcs)} PCs executados")
+                if has_monstro:
+                    print(f"      >>> [ALERTA] O HOTSPOT 0x800E78DC ESTA PRESENTE NESTA REGIAO! <<<")
+        except Exception as e:
+            print(f"[!] Erro ao inspecionar overlay_captures.json: {e}")
+    else:
+        print("[!] overlay_captures.json ainda nao foi gravado em disco (verifique se overlay_cache = true).")
 
     print("\n[+] Processando analise diferencial (Deltas)...")
     res = analyze(before, after, funcs, ranges)
