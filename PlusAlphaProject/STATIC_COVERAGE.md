@@ -30,6 +30,7 @@ históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-239.
 | S1-262 validado | 546 | 112.315 / 195.584 | 57,4255% | 15.820 | 127 |
 | S1-263 validado | 547 | 120.341 / 195.584 | 61,5291% | 17.228 | 127 |
 | S1-264 validado | 550 | 120.558 / 195.584 | 61,6400% | 17.258 | 127 |
+| S1-265 validado | 558 | 121.539 / 195.584 | 62,1416% | 17.424 | 127 |
 
 O S1-225 acrescentou 819 palavras únicas e 9 seeds à baseline anterior. A
 origem histórica registrou 348 `ACCEPT`, 133 `WARN` estruturais conhecidos e
@@ -248,6 +249,15 @@ confirmou a erradicação total dos 5.102 misses dessas funções (-100%) e redu
 fallbacks de interpretador em 24,17% (-1.251.656 chamadas). A auditoria do generated
 confirmou 1.078 funções, 17.250 entradas de dispatcher e zero erros. A cobertura
 oficial atinge 120.558/195.584 palavras (61,6400%).
+
+O micro-lote S1-265 promoveu o fechamento completo da tabela de Options / Memory Card
+0x801B8538 e seus helpers para C nativo (0x80192128, 0x80192E58, 0x80192F60, 0x8019314C,
+0x80193174, 0x8019319C, 0x801931C4 e 0x8019328C), somando 981 palavras únicas (+8 funções).
+A validação diferencial entre menus-exploration-02 e menus-exploration-03 confirmou a
+eliminação de 100% dos 1.118 misses observados nas entradas dessa tabela e seus helpers,
+reduzindo os PCs únicos não compilados observados de 63 para 52. A auditoria do generated
+confirmou 1.086 funções, 17.416 entradas de dispatcher, 17.424 blocos e status CLEAN. A cobertura
+oficial atinge 121.539/195.584 palavras (62,1416%).
 
 ### Gate aplicado
 

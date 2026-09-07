@@ -24,13 +24,13 @@ fila `pendente` abaixo deve ser triada.
 
 ## Baseline atual
 
-- Checkpoint promovido: **S1-264 validado**, incorporando S1-262, S1-263 e alvos de overlay.
-- Ultimo checkpoint validado: **S1-264**.
-- Cobertura: **120.558 / 195.584 palavras (61,6400%)**.
-- Funcoes geradas: **1.078**.
-- Entradas do dispatcher: **17.250**.
+- Checkpoint promovido: **S1-265 validado**, incorporando fechamento da tabela 0x801B8538 (Options / Memory Card) e helpers.
+- Ultimo checkpoint validado: **S1-265**.
+- Cobertura: **121.539 / 195.584 palavras (62,1416%)**.
+- Funcoes geradas: **1.086**.
+- Entradas do dispatcher: **17.416**.
 - Auditor codegen: **CLEAN**.
-- Validacao diferencial: `menus-exploration-01` vs `menus-exploration-02` confirmou -100% de misses nos alvos (5.102 misses eliminados) e reducao de -24,17% nos fallbacks globais de interpretador nos menus.
+- Validacao diferencial: `menus-exploration-02` vs `menus-exploration-03` confirmou eliminacao de 100% dos 1.118 misses da tabela 0x801B8538 e reduziu os PCs unicos nao compilados de 63 para 52.
 
 O checkpoint cumulativo S1-261 incorpora S1-251, S1-253, S1-254, S1-255 e os
 lotes S1-256 a S1-260. A regressao Release percorreu Expert Mode com retorno a
@@ -80,8 +80,12 @@ ranges nativos e 50 ainda estao fora deles. Os 50 PCs restantes nao equivalem a
 | S1-258 | `0x8017566C..0x801758C7` | 151 | 111.297 | processado; checkpoint S1-261 |
 | S1-259 | `0x801939A0..0x80193A17` | 30 | 111.327 | processado; checkpoint S1-261 |
 | S1-260 | `0x80103BD8..0x80103CA7` | 52 | 111.379 | processado; checkpoint S1-261 |
+| S1-262 | `0x80103384` + closure | 936 | 112.315 | processado; checkpoint S1-262 |
+| S1-263 | `0x80164F00` + closure | 8.026 | 120.341 | processado; checkpoint S1-263 |
+| S1-264 | `0x801912D8`, `0x80191588`, `0x801961BC` | 217 | 120.558 | processado; checkpoint S1-264 |
+| S1-265 | `0x80192128`, `0x80192E58`, `0x80192F60`, `0x8019314C`, `0x80193174`, `0x8019319C`, `0x801931C4`, `0x8019328C` | 981 | 121.539 | processado; checkpoint S1-265 |
 
-Total promovido desde S1-239: **5.060 palavras**.
+Total promovido desde S1-239: **15.220 palavras**.
 
 ## Trilha dinamica de overlays
 
