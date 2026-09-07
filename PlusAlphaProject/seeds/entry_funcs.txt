@@ -4132,3 +4132,11 @@
 # Todas as 9 funcoes auditadas: zero JR nao-RA, zero JALR, status CLEAN no codegen audit.
 0x80164F00
 
+# Micro-lote S1-264: Alvos diretos do Overlay 0x80020000 (Menus e Selecao de Personagens).
+# - 0x801912D8: 488 bytes / 122 palavras (11 JALs diretos do overlay 0x80020000; jump table interna 0x801AE828)
+# - 0x80191588: 248 bytes /  62 palavras (4 JALs diretos do overlay 0x80020000; 3 calls diretos para 0x8010C72C)
+# - 0x801961BC: 132 bytes /  33 palavras (12 JALs diretos do overlay 0x80020000; 2 calls diretos para 0x80196808 e 0x801968D4)
+# Total: 3 funcoes novas, 868 bytes / 217 palavras (elimina mais de 5.100 misses diretos de overlay).
+0x801912D8
+0x80191588
+0x801961BC
