@@ -4106,3 +4106,15 @@
 # Os JAL alcancam 0x801938F0 e 0x80125154, ambos ja nativos. A raiz
 # 0x80103384 e todo o ramo 0x8016EA0C permanecem fora deste lote.
 0x80103BD8
+
+# Micro-lote S1-262: Dispatcher Global de Apresentacao/Telas/Menus e closure completa.
+# A previa isolada confirmou exatamente 6 funcoes e 936 palavras:
+# - 0x80103384: 1328 bytes / 332 palavras (Raiz global)
+# - 0x8016EA0C:   84 bytes /  21 palavras
+# - 0x8016EA60:  136 bytes /  34 palavras
+# - 0x8016EAE8: 1736 bytes / 434 palavras
+# - 0x8016F560:  264 bytes /  66 palavras
+# - 0x8016FB64:  196 bytes /  49 palavras
+# Todas as 6 funcoes possuem hashes SHA-256 exatos auditados e zero dependencias externas.
+0x80103384
+
