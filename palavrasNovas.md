@@ -24,17 +24,13 @@ fila `pendente` abaixo deve ser triada.
 
 ## Baseline atual
 
-- Checkpoint promovido: **S1-261 Release limpo**, incorporando a baseline S1-260.
-- Ultimo checkpoint Release limpo: **S1-261**.
-- Cobertura: **111.379 / 195.584 palavras (56,9469%)**.
-- Funcoes geradas: **1.059**.
-- Entradas do dispatcher: **16.667**.
+- Checkpoint promovido: **S1-264 validado**, incorporando S1-262, S1-263 e alvos de overlay.
+- Ultimo checkpoint validado: **S1-264**.
+- Cobertura: **120.558 / 195.584 palavras (61,6400%)**.
+- Funcoes geradas: **1.078**.
+- Entradas do dispatcher: **17.250**.
 - Auditor codegen: **CLEAN**.
-- Configuracao validada: **Release**, `PSX_DEBUG_TOOLS=OFF`, runtime estatico.
-- Ranges SHA-256:
-  `0B63B7672129C4A357100D5DE97DAB762910705FAABC4580880C291AD14DE69F`.
-- Executavel S1-261 Release SHA-256:
-  `11E39E8400412A71BEAD05317548798C60B7EB18C3EDE72ABA8A47B159D51A8D`.
+- Validacao diferencial: `menus-exploration-01` vs `menus-exploration-02` confirmou -100% de misses nos alvos (5.102 misses eliminados) e reducao de -24,17% nos fallbacks globais de interpretador nos menus.
 
 O checkpoint cumulativo S1-261 incorpora S1-251, S1-253, S1-254, S1-255 e os
 lotes S1-256 a S1-260. A regressao Release percorreu Expert Mode com retorno a

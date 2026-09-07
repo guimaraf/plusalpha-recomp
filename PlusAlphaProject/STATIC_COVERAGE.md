@@ -25,8 +25,11 @@ históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-239.
 | S1-235 validado | 503 | 104.876 / 195.584 | 53,6220% | 14.726 | 127 |
 | S1-236 validado | 507 | 105.165 / 195.584 | 53,7697% | 14.766 | 127 |
 | S1-237/P4-1 validado | 508 | 106.077 / 195.584 | 54,2360% | 14.877 | 127 |
-| S1-238 validado | 512 | 106.296 / 195.584 | 54,3480% | 14.925 | 127 |
 | S1-239 validado | 513 | 106.319 / 195.584 | 54,3598% | 14.930 | 127 |
+| S1-261 validado | 545 | 111.379 / 195.584 | 56,9469% | 15.680 | 127 |
+| S1-262 validado | 546 | 112.315 / 195.584 | 57,4255% | 15.820 | 127 |
+| S1-263 validado | 547 | 120.341 / 195.584 | 61,5291% | 17.228 | 127 |
+| S1-264 validado | 550 | 120.558 / 195.584 | 61,6400% | 17.258 | 127 |
 
 O S1-225 acrescentou 819 palavras únicas e 9 seeds à baseline anterior. A
 origem histórica registrou 348 `ACCEPT`, 133 `WARN` estruturais conhecidos e
@@ -238,13 +241,16 @@ Trial e várias lutas no Arcade. Não houve regressão percebida; FPS permaneceu
 60 e o frametime observado ficou entre 16,4 e 16,8 ms. A auditoria do generated
 confirmou 1.028 funções, 15.985 entradas de dispatcher e zero destinos ou labels
 ausentes. Assim, 106.825/195.584 palavras, ou 54,6185%, passam a ser a nova
-baseline estável para os cenários testados.
-
-Os próximos testes de desempenho devem usar uma build limpa, sem observadores,
-sem autocaptura/autocompilação de overlays e com cache somente para leitura.
-Também devem incluir rotas nas quais os lags aleatórios foram percebidos.
+O micro-lote S1-264 promoveu os três alvos diretos do overlay de menu e seleção
+0x80020000 para C nativo (0x801912D8, 0x80191588 e 0x801961BC), somando 217
+palavras. A validação diferencial entre menus-exploration-01 e menus-exploration-02
+confirmou a erradicação total dos 5.102 misses dessas funções (-100%) e reduziu os
+fallbacks de interpretador em 24,17% (-1.251.656 chamadas). A auditoria do generated
+confirmou 1.078 funções, 17.250 entradas de dispatcher e zero erros. A cobertura
+oficial atinge 120.558/195.584 palavras (61,6400%).
 
 ### Gate aplicado
+
 
 - fontes gerados a partir deste arquivo de seeds;
 - auditoria do código gerado sem destinos diretos, tail-calls ou labels ausentes;
