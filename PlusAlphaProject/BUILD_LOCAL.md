@@ -76,6 +76,9 @@ O runtime usa a toolchain MSYS2 UCRT64 com SDL2:
 C:\msys64\ucrt64\bin\cmake.exe --build .\PlusAlphaProject\build-ucrt --target psx-runtime
 ```
 
+> **Aviso de Performance e Frametime**:
+> O build type **deve ser sempre `RelWithDebInfo`** (`-O2 -g -DNDEBUG`). Nunca use `Release` (`-O3`), pois a vetorização e o unroll agressivos do `-O3` no código gerado massivo (mais de 1,2 milhão de linhas) causam inchaço de Instruction Cache (L1i) e instabilidade de frametime durante a emulação e na execução de dirty RAM. Para gerar uma build limpa sem servidor de debug, use `RelWithDebInfo` com `-DPSX_DEBUG_TOOLS=OFF`.
+
 ## 8. Executar
 
 ```powershell

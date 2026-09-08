@@ -111,6 +111,28 @@ O script de telemetria deve usar diretório novo e isolado, por exemplo
 O script encerra mostrando o caminho do executável. O usuário o abre
 manualmente depois.
 
+### Contrato da build limpa de entrega / gameplay (buildClean-*)
+
+Toda build limpa destinada a testes de gameplay manual, validação de frametime e empacotamento (`buildClean-ucrt-*`) **DEVE OBRIGATORIAMENTE** seguir o perfil `RelWithDebInfo`:
+
+1. **Configuração de Compilação Obrigatória**:
+   - `CMAKE_BUILD_TYPE="RelWithDebInfo"` (`-O2 -g -DNDEBUG`).
+   - `PSX_STATIC_RUNTIME=ON` (incorporação estática das bibliotecas C/C++ e SDL2).
+   - `PSX_DEBUG_TOOLS=OFF` (desativação do servidor TCP de debug e da instrumentação pesada).
+   - `PSX_LAUNCHER=ON` (interface gráfica do launcher).
+
+2. **Justificativa Técnica (`-O2` vs `-O3`)**:
+   - O código-fonte gerado (`SLUS_005.48_full.c`) possui mais de 36 MB e 1,2 milhão de linhas C, contendo milhares de blocos básicos e switches de salto.
+   - O nível `-O3` do GCC ativa inlining agressivo, auto-vetorização e loop unrolling expansivo. Esse comportamento causa inflação excessiva da pegada de código binário no Instruction Cache (L1i/L2i) e desestabiliza a previsão de desvios tanto no código nativo quanto no switch de interpretação de dirty RAM (`dirty_ram_interp.c`).
+   - Sob `-O3`, quedas temporárias de execução para o interpretador (como golpes de personagens ou rotinas sem cobertura de fragmento) geram picos severos de I-cache misses que se manifestam como oscilações (stutter/jitter) na linha de frametime.
+   - O perfil `RelWithDebInfo` compila sob `-O2`, gerando código mais denso, linear e amigável às hierarquias de cache do host, mantendo a linha de frametime limpa e estável durante todo o gameplay.
+   - Adicionalmente, `RelWithDebInfo` não injeta a flag `-mwindows`, preservando a estabilidade dos canais de saída padrão e temporizadores.
+
+3. **Requisitos de Ativos e Cache de Overlays**:
+   - Toda pasta de build limpa deve conter a árvore integral de fragmentos compilados:
+     `cache/SLUS-00548/gcc/win-x64/cg5_<hash>/` com todas as DLLs e sidecars `.ranges` correspondentes.
+   - Deve conter os arquivos de configuração e ativos: `launcher.rml`, `settings.toml`, `keybinds.ini`, `input.ini`, pastas `fonts/` e `img/`.
+
 ### Contrato do coletor
 
 O coletor deve aceitar somente `prepare`, `before` e `after`.
