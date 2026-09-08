@@ -4175,3 +4175,9 @@
 0x8016A84C
 0x8018C880
 
+# Micro-lote S1-267: FSM de Combate e Round State Manager (Versus/Arcade Match Flow).
+# - 0x80106BD4: 3744 bytes / 936 palavras (Raiz da FSM de luta; switch com jump table estatica 0x801AB5BC de 9 casos)
+# Elimina 10 dos 13 misses estaticos observados no gameplay (0x80106BD4, 0x80106CB0, 0x80106CB8,
+# 0x80106DB0, 0x80106E8C, 0x80106E94, 0x80106E9C, 0x80106F74, 0x8010773C, 0x80107744).
+# Todas as 17 chamadas diretas JAL sao nativas; zero expansao de closure. Total: 126.371 palavras (64,6121%).
+0x80106BD4
