@@ -32,6 +32,9 @@ históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-239.
 | S1-264 validado | 550 | 120.558 / 195.584 | 61,6400% | 17.258 | 127 |
 | S1-265 validado | 558 | 121.539 / 195.584 | 62,1416% | 17.424 | 127 |
 | S1-266 validado | 564 | 125.435 / 195.584 | 64,1336% | 18.079 | 127 |
+| S1-267 validado | 565 | 126.371 / 195.584 | 64,6121% | 18.200 | 127 |
+| S1-268 validado | 566 | 126.830 / 195.584 | 64,8468% | 18.271 | 127 |
+
 
 O S1-225 acrescentou 819 palavras únicas e 9 seeds à baseline anterior. A
 origem histórica registrou 348 `ACCEPT`, 133 `WARN` estruturais conhecidos e
@@ -272,6 +275,22 @@ principal, restando estaticamente apenas o loop de hardware polling de joypad
 (0x801AB1F4 e 0x801AB2C0). A auditoria do generated confirmou 1.108 funções, 18.069
 entradas de dispatcher, 18.079 blocos e status CLEAN. A cobertura oficial atinge
 125.435/195.584 palavras (64,1336%).
+
+O micro-lote S1-267 promoveu a FSM central de combate e Round State Manager
+(0x80106BD4, 936 palavras, jump table 0x801AB5BC de 9 casos), eliminando 10 dos 13
+misses estáticos observados em combate e aumentando o dispatch nativo em mais de 40.000
+chamadas. A auditoria confirmou 1.109 funções nativas, 18.200 entradas de dispatcher e
+status CLEAN. A cobertura oficial atingiu 126.371/195.584 palavras (64,6121%).
+
+O micro-lote S1-268 promoveu o cluster de processamento de entidades e frame update da luta
+(0x80117224, 0x8011726C, 0x80117328 e 0x80117564, totalizando 459 palavras e 4 funções),
+conectando perfeitamente 0x801171DC a 0x80117950 no Main EXE. A validação diferencial de telemetria
+(gameplay-discovery-03) confirmou a erradicação de 100% dos últimos 3 misses do Main EXE
+(reduzindo misses estáticos a zero) e cortou os fallbacks de interpretador em 60% (-132.634 chamadas).
+A validação em build limpa (buildClean-ucrt-s1-268) foi executada em Versus completo (D.Dark vs Ryu)
+e 4 lutas consecutivas no Arcade, com frametime 100% liso a 60 FPS fixos e zero regressões.
+A auditoria confirmou 1.113 funções nativas, 18.271 entradas de dispatcher e status CLEAN.
+A cobertura oficial atinge 126.830/195.584 palavras (64,8468%).
 
 ### Gate aplicado
 

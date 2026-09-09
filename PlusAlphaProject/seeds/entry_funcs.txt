@@ -4181,3 +4181,14 @@
 # 0x80106DB0, 0x80106E8C, 0x80106E94, 0x80106E9C, 0x80106F74, 0x8010773C, 0x80107744).
 # Todas as 17 chamadas diretas JAL sao nativas; zero expansao de closure. Total: 126.371 palavras (64,6121%).
 0x80106BD4
+
+# Micro-lote S1-268: Cluster de Processamento de Entidades / Frame Processing da Luta.
+# - 0x80117224:   72 bytes /  18 palavras (Raiz do cluster; chama 0x8011726C e 0x80117328)
+# - 0x8011726C:  188 bytes /  47 palavras (Helper de atualizacao de frame; chama 0x801938B0 e 0x80194A58 nativos)
+# - 0x80117328:  572 bytes / 143 palavras (Processamento de estado de entidade; chama 0x80117564)
+# - 0x80117564: 1004 bytes / 251 palavras (Sub-rotina de entidade; chama 0x801938B0 e 0x8010C72C nativos)
+# Conecta perfeitamente 0x801171DC a 0x80117950 no Main EXE, eliminando os ultimos 3 misses de gameplay
+# observados (0x80117224, 0x8011726C, 0x80117328).
+# Total: 4 funcoes novas, 1.836 bytes / 459 palavras. Atinge 126.830 palavras (64,8468%), 1.113 funcoes nativas.
+0x80117224
+
