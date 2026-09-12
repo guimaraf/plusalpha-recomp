@@ -24,6 +24,11 @@ turbo_loads = true
 bios_hle = true
 overlay_cache = true
 
+[video]
+vsync = "immediate"
+low_latency_input = true
+exclusive_fullscreen = false
+
 [controller]
 default_mode = "digital"
 lock_mode = true
