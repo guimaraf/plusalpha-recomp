@@ -44,9 +44,6 @@ cmake -B "$BUILD_DIR" -S "$PROJECT_ROOT" -G Ninja \
 printf '[2/4] Compilando target psx-runtime com Ninja...\n'
 cmake --build "$BUILD_DIR" --target psx-runtime
 
-printf '      Compilando target exPlusAlpha com Ninja...\n'
-cmake --build "$BUILD_DIR" --target exPlusAlpha
-
 [[ -f "$TARGET_EXE" ]] || fail "Executavel nao foi produzido em: $TARGET_EXE"
 
 printf '[3/4] Sincronizando e populando hierarquia de Cache de Overlays...\n'

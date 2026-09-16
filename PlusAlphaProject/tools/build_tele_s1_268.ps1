@@ -65,17 +65,11 @@ if ($LASTEXITCODE -ne 0) {
     throw "Falha na configuracao do CMake (exit code $LASTEXITCODE)"
 }
 
-# 2. Compilar psx-runtime e exPlusAlpha
+# 2. Compilar psx-runtime
 Write-Host "[2/4] Compilando target psx-runtime com Ninja..." -ForegroundColor Green
 & $CMake --build $BuildDir --target psx-runtime
 if ($LASTEXITCODE -ne 0) {
     throw "Falha na compilacao de psx-runtime com Ninja (exit code $LASTEXITCODE)"
-}
-
-Write-Host "      Compilando target exPlusAlpha com Ninja..." -ForegroundColor Green
-& $CMake --build $BuildDir --target exPlusAlpha
-if ($LASTEXITCODE -ne 0) {
-    throw "Falha na compilacao de exPlusAlpha com Ninja (exit code $LASTEXITCODE)"
 }
 
 if (-not (Test-Path $TargetExe)) {
