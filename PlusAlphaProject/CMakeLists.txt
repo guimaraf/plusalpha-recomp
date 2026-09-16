@@ -28,6 +28,79 @@ psxrecomp_add_runtime_target(psx-runtime
     DEFAULT_GAME_CONFIG_PATH "game.toml"
 )
 
+# Decoupled clean-room launcher target: 0 bytes of proprietary game code.
+# The game core is compiled dynamically from extracted disc C via embedded TinyCC.
+psxrecomp_add_runtime_target(StreetFighterEXPlusAlpha_Launcher
+    DEBUG_PORT 4531
+    WINDOW_TITLE "Street Fighter EX Plus Alpha"
+    EXE_NAME "StreetFighterEXPlusAlpha_Launcher"
+    DEFAULT_GAME_CONFIG_PATH "game.toml"
+)
+
+set_target_properties(StreetFighterEXPlusAlpha_Launcher PROPERTIES
+    ENABLE_EXPORTS TRUE
+    WIN32_EXECUTABLE TRUE
+)
+
+if(MINGW)
+    target_link_options(StreetFighterEXPlusAlpha_Launcher PRIVATE "-Wl,--export-all-symbols")
+endif()
+
+add_custom_command(TARGET StreetFighterEXPlusAlpha_Launcher POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/game.toml"
+        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/game.toml"
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/compileBuild"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/overlay_captures.json"
+        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/compileBuild/overlay_captures.json"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/overlay_toolchain"
+        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/compileBuild/overlay_toolchain"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/tools"
+        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/compileBuild/tools"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${PSXRECOMP_ROOT}/runtime/include"
+        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/compileBuild/psxrecomp/runtime/include"
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/compileBuild/psxrecomp/tools"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${PSXRECOMP_ROOT}/tools/compile_overlays.py"
+        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/compileBuild/psxrecomp/tools/compile_overlays.py"
+    COMMENT "Copying game config to launcher directory, and toolchain into compileBuild/"
+)
+
+if(WIN32)
+    get_filename_component(_cxx_dir "${CMAKE_CXX_COMPILER}" DIRECTORY)
+    find_file(RUNTIME_SDL2_DLL "SDL2.dll"
+        PATHS
+            "${_cxx_dir}"
+            "C:/msys64/ucrt64/bin"
+            "C:/msys64/mingw64/bin"
+    )
+    if(RUNTIME_SDL2_DLL)
+        add_custom_command(TARGET StreetFighterEXPlusAlpha_Launcher POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${RUNTIME_SDL2_DLL}"
+                "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/SDL2.dll"
+            COMMENT "Copying SDL2.dll to $<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>"
+        )
+    endif()
+
+    foreach(_dep libgcc_s_seh-1.dll libstdc++-6.dll libwinpthread-1.dll)
+        if(EXISTS "${_cxx_dir}/${_dep}")
+            add_custom_command(TARGET StreetFighterEXPlusAlpha_Launcher POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    "${_cxx_dir}/${_dep}"
+                    "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/${_dep}"
+                COMMENT "Copying ${_dep} to $<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>"
+            )
+        endif()
+    endforeach()
+endif()
+
 if(CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
     message(STATUS "Configuring Xbox-only UWP AppX properties for psx-runtime")
 
