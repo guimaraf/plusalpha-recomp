@@ -55,12 +55,8 @@ if %ERRORLEVEL% EQU 0 (
 echo [RELEASE] Copying config files and launcher UI assets...
 copy /Y "%PROJECT_ROOT%\game.toml" "%OUT_DIR%\game.toml" >nul
 if exist "%PROJECT_ROOT%\overlay_captures.json" copy /Y "%PROJECT_ROOT%\overlay_captures.json" "%OUT_DIR%\compileBuild\overlay_captures.json" >nul
-if not exist "%OUT_DIR%\compileBuild\overlay_captures.json" if exist "%PROJECT_ROOT%\buildClean-ucrt-s1-268\overlay_captures.json" copy /Y "%PROJECT_ROOT%\buildClean-ucrt-s1-268\overlay_captures.json" "%OUT_DIR%\compileBuild\overlay_captures.json" >nul
 if exist "%PROJECT_ROOT%\keybinds.ini" copy /Y "%PROJECT_ROOT%\keybinds.ini" "%OUT_DIR%\keybinds.ini" >nul
-copy /Y "%PROJECT_ROOT%\buildLauncher\launcher.rml" "%OUT_DIR%\launcher.rml" >nul
-if exist "%PROJECT_ROOT%\buildLauncher\launcher.rcss" copy /Y "%PROJECT_ROOT%\buildLauncher\launcher.rcss" "%OUT_DIR%\launcher.rcss" >nul
-if exist "%PROJECT_ROOT%\buildLauncher\fonts" xcopy /E /I /Y "%PROJECT_ROOT%\buildLauncher\fonts" "%OUT_DIR%\fonts" >nul
-if exist "%PROJECT_ROOT%\buildLauncher\img" xcopy /E /I /Y "%PROJECT_ROOT%\buildLauncher\img" "%OUT_DIR%\img" >nul
+xcopy /E /I /Y "%PROJECT_ROOT%\..\psxrecomp\runtime\launcher\assets\*" "%OUT_DIR%\" >nul
 if exist "%PROJECT_ROOT%\input.ini" copy /Y "%PROJECT_ROOT%\input.ini" "%OUT_DIR%\input.ini" >nul
 if exist "%PROJECT_ROOT%\settings.toml" copy /Y "%PROJECT_ROOT%\settings.toml" "%OUT_DIR%\settings.toml" >nul
 

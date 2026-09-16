@@ -80,15 +80,9 @@ if (Test-Path $captures) {
     Copy-Item $captures (Join-Path $OutDir "compileBuild\overlay_captures.json") -Force
 }
 
-Copy-Item (Join-Path $BuildLauncherDir "launcher.rml") (Join-Path $OutDir "launcher.rml") -Force
-if (Test-Path (Join-Path $BuildLauncherDir "launcher.rcss")) {
-    Copy-Item (Join-Path $BuildLauncherDir "launcher.rcss") (Join-Path $OutDir "launcher.rcss") -Force
-}
-if (Test-Path (Join-Path $BuildLauncherDir "fonts")) {
-    Copy-Item (Join-Path $BuildLauncherDir "fonts") (Join-Path $OutDir "fonts") -Recurse -Force
-}
-if (Test-Path (Join-Path $BuildLauncherDir "img")) {
-    Copy-Item (Join-Path $BuildLauncherDir "img") (Join-Path $OutDir "img") -Recurse -Force
+$launcherAssetsSrc = Join-Path $ProjectRoot "..\psxrecomp\runtime\launcher\assets"
+if (Test-Path $launcherAssetsSrc) {
+    Copy-Item -Path (Join-Path $launcherAssetsSrc "*") -Destination $OutDir -Recurse -Force
 }
 
 # 4. Copiar toolchain e scripts em compileBuild

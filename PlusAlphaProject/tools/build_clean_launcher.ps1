@@ -89,20 +89,17 @@ if (Test-Path $refCache) {
 
 # 4. Copiar arquivos de configuracao, UI e assets visuais
 Write-Host "[4/4] Copiando arquivos de configuracao, UI e assets visuais..." -ForegroundColor Green
-$assetFiles = @("settings.toml", "keybinds.ini", "input.ini", "launcher.rml")
-foreach ($file in $assetFiles) {
+$configFiles = @("settings.toml", "keybinds.ini", "input.ini")
+foreach ($file in $configFiles) {
     $src = Join-Path $RefCleanDir $file
     if (Test-Path $src) {
         Copy-Item -Path $src -Destination (Join-Path $BuildDir $file) -Force
     }
 }
 
-$assetDirs = @("fonts", "img")
-foreach ($dir in $assetDirs) {
-    $src = Join-Path $RefCleanDir $dir
-    if (Test-Path $src) {
-        Copy-Item -Path $src -Destination $BuildDir -Recurse -Force
-    }
+$launcherAssetsSrc = Join-Path $ProjectRoot "..\psxrecomp\runtime\launcher\assets"
+if (Test-Path $launcherAssetsSrc) {
+    Copy-Item -Path (Join-Path $launcherAssetsSrc "*") -Destination $BuildDir -Recurse -Force
 }
 
 $exeSize = (Get-Item $TargetExe).Length
