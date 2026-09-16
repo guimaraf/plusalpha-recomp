@@ -44,6 +44,9 @@ cmake -B "$BUILD_DIR" -S "$PROJECT_ROOT" -G Ninja \
 printf '[2/4] Compilando target psx-runtime com Ninja...\n'
 cmake --build "$BUILD_DIR" --target psx-runtime
 
+printf '      Compilando target exPlusAlpha com Ninja...\n'
+cmake --build "$BUILD_DIR" --target exPlusAlpha
+
 [[ -f "$TARGET_EXE" ]] || fail "Executavel nao foi produzido em: $TARGET_EXE"
 
 printf '[3/4] Sincronizando e populando hierarquia de Cache de Overlays...\n'
@@ -55,15 +58,31 @@ if [[ -d "$REF_CLEAN_DIR/cache" ]]; then
 fi
 
 printf '[4/4] Copiando arquivos de configuracao, UI e assets visuais...\n'
-for asset_file in settings.toml keybinds.ini input.ini launcher.rml; do
-    if [[ -f "$REF_CLEAN_DIR/$asset_file" ]]; then
-        cp -u "$REF_CLEAN_DIR/$asset_file" "$BUILD_DIR/$asset_file" 2>/dev/null || cp "$REF_CLEAN_DIR/$asset_file" "$BUILD_DIR/$asset_file"
+CANONICAL_ASSETS="$PROJECT_ROOT/../psxrecomp/runtime/launcher/assets"
+if [[ -f "$CANONICAL_ASSETS/launcher.rml" ]]; then
+    cp "$CANONICAL_ASSETS/launcher.rml" "$BUILD_DIR/launcher.rml"
+    printf '    [+] launcher.rml canonico copiado (33 KB)\n'
+elif [[ -f "$REF_CLEAN_DIR/launcher.rml" ]]; then
+    cp "$REF_CLEAN_DIR/launcher.rml" "$BUILD_DIR/launcher.rml"
+fi
+
+for asset_dir in fonts img; do
+    if [[ -d "$CANONICAL_ASSETS/$asset_dir" ]]; then
+        cp -r "$CANONICAL_ASSETS/$asset_dir" "$BUILD_DIR/"
+    elif [[ -d "$REF_CLEAN_DIR/$asset_dir" ]]; then
+        cp -r "$REF_CLEAN_DIR/$asset_dir" "$BUILD_DIR/"
     fi
 done
 
-for asset_dir in fonts img; do
-    if [[ -d "$REF_CLEAN_DIR/$asset_dir" ]]; then
-        cp -ru "$REF_CLEAN_DIR/$asset_dir" "$BUILD_DIR/" 2>/dev/null || cp -r "$REF_CLEAN_DIR/$asset_dir" "$BUILD_DIR/"
+for proj_file in game.toml overlay_captures.json; do
+    if [[ -f "$PROJECT_ROOT/$proj_file" ]]; then
+        cp "$PROJECT_ROOT/$proj_file" "$BUILD_DIR/$proj_file"
+    fi
+done
+
+for clean_file in settings.toml keybinds.ini input.ini game_core.dll; do
+    if [[ -f "$REF_CLEAN_DIR/$clean_file" ]]; then
+        cp "$REF_CLEAN_DIR/$clean_file" "$BUILD_DIR/$clean_file"
     fi
 done
 

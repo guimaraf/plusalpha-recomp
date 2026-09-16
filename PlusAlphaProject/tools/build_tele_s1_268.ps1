@@ -65,11 +65,17 @@ if ($LASTEXITCODE -ne 0) {
     throw "Falha na configuracao do CMake (exit code $LASTEXITCODE)"
 }
 
-# 2. Compilar psx-runtime
+# 2. Compilar psx-runtime e exPlusAlpha
 Write-Host "[2/4] Compilando target psx-runtime com Ninja..." -ForegroundColor Green
 & $CMake --build $BuildDir --target psx-runtime
 if ($LASTEXITCODE -ne 0) {
-    throw "Falha na compilacao com Ninja (exit code $LASTEXITCODE)"
+    throw "Falha na compilacao de psx-runtime com Ninja (exit code $LASTEXITCODE)"
+}
+
+Write-Host "      Compilando target exPlusAlpha com Ninja..." -ForegroundColor Green
+& $CMake --build $BuildDir --target exPlusAlpha
+if ($LASTEXITCODE -ne 0) {
+    throw "Falha na compilacao de exPlusAlpha com Ninja (exit code $LASTEXITCODE)"
 }
 
 if (-not (Test-Path $TargetExe)) {
@@ -89,19 +95,37 @@ if (Test-Path $refCache) {
 
 # 4. Copiar arquivos de configuracao, UI e assets visuais
 Write-Host "[4/4] Copiando arquivos de configuracao, UI e assets visuais..." -ForegroundColor Green
-$assetFiles = @("settings.toml", "keybinds.ini", "input.ini", "launcher.rml")
-foreach ($file in $assetFiles) {
-    $src = Join-Path $RefCleanDir $file
+$canonicalLauncherRml = Join-Path $ProjectRoot "..\psxrecomp\runtime\launcher\assets\launcher.rml"
+if (Test-Path $canonicalLauncherRml) {
+    Copy-Item -Path $canonicalLauncherRml -Destination (Join-Path $BuildDir "launcher.rml") -Force
+    Write-Host "    [+] launcher.rml canonico copiado (33 KB)" -ForegroundColor Gray
+} elseif (Test-Path (Join-Path $RefCleanDir "launcher.rml")) {
+    Copy-Item -Path (Join-Path $RefCleanDir "launcher.rml") -Destination (Join-Path $BuildDir "launcher.rml") -Force
+}
+
+$canonicalAssets = Join-Path $ProjectRoot "..\psxrecomp\runtime\launcher\assets"
+foreach ($dir in @("fonts", "img")) {
+    $srcDir = Join-Path $canonicalAssets $dir
+    if (Test-Path $srcDir) {
+        Copy-Item -Path $srcDir -Destination $BuildDir -Recurse -Force
+    } elseif (Test-Path (Join-Path $RefCleanDir $dir)) {
+        Copy-Item -Path (Join-Path $RefCleanDir $dir) -Destination $BuildDir -Recurse -Force
+    }
+}
+
+$projectFiles = @("game.toml", "overlay_captures.json")
+foreach ($file in $projectFiles) {
+    $src = Join-Path $ProjectRoot $file
     if (Test-Path $src) {
         Copy-Item -Path $src -Destination (Join-Path $BuildDir $file) -Force
     }
 }
 
-$assetDirs = @("fonts", "img")
-foreach ($dir in $assetDirs) {
-    $src = Join-Path $RefCleanDir $dir
+$cleanFiles = @("settings.toml", "keybinds.ini", "input.ini", "game_core.dll")
+foreach ($file in $cleanFiles) {
+    $src = Join-Path $RefCleanDir $file
     if (Test-Path $src) {
-        Copy-Item -Path $src -Destination $BuildDir -Recurse -Force
+        Copy-Item -Path $src -Destination (Join-Path $BuildDir $file) -Force
     }
 }
 
