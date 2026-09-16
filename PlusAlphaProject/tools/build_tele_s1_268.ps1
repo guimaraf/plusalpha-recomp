@@ -129,6 +129,24 @@ foreach ($file in $cleanFiles) {
     }
 }
 
+# 5. Criar script de inicializacao rapida local
+$runBatContent = @"
+@echo off
+setlocal
+cd /d "%~dp0"
+echo ======================================================================
+echo   Iniciando Street Fighter EX Plus Alpha [buildTele-s1-268]
+echo   Telemetria ativa na porta TCP 4531 (observe_gameplay.py)
+echo ======================================================================
+if exist "..\disc-a\Street Fighter EX Plus Alpha (USA).cue" (
+    "StreetFighterEXPlusAlphaRecomp.exe" --game "game.toml" --disc "..\disc-a\Street Fighter EX Plus Alpha (USA).cue"
+) else (
+    "StreetFighterEXPlusAlphaRecomp.exe" --game "game.toml"
+)
+"@
+Set-Content -Path (Join-Path $BuildDir "run_telemetry.bat") -Value $runBatContent -Encoding ASCII
+Write-Host "    [+] Script run_telemetry.bat gerado na raiz da build" -ForegroundColor Gray
+
 $exeSize = (Get-Item $TargetExe).Length
 Write-Host ""
 Write-Host "======================================================================" -ForegroundColor Green
