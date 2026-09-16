@@ -17,6 +17,12 @@
 *.o
 *.a
 *.lib
+*.def
+!/tools/launcher.def
+
+# Embedded portable compilation toolchain
+!/overlay_toolchain/**
+/compileBuild/
 
 # Conteúdo protegido por direitos autorais
 /disc-a/*
