@@ -11,7 +11,7 @@ $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ProjectRoot = Resolve-Path (Join-Path $ScriptDir "..")
 $BuildDir = Join-Path $ProjectRoot $BuildDirName
-$TargetExe = Join-Path $BuildDir "StreetFighterEXPlusAlphaRecomp.exe"
+$TargetExe = Join-Path $BuildDir "exPlusAlpha.exe"
 $RefCleanDir = Join-Path $ProjectRoot "buildClean-ucrt-s1-268"
 
 Write-Host "======================================================================" -ForegroundColor Cyan
@@ -133,9 +133,9 @@ echo   Iniciando Street Fighter EX Plus Alpha [buildTele-s1-268]
 echo   Telemetria ativa na porta TCP 4531 (observe_gameplay.py)
 echo ======================================================================
 if exist "..\disc-a\Street Fighter EX Plus Alpha (USA).cue" (
-    "StreetFighterEXPlusAlphaRecomp.exe" --game "game.toml" --disc "..\disc-a\Street Fighter EX Plus Alpha (USA).cue"
+    "exPlusAlpha.exe" --game "game.toml" --disc "..\disc-a\Street Fighter EX Plus Alpha (USA).cue"
 ) else (
-    "StreetFighterEXPlusAlphaRecomp.exe" --game "game.toml"
+    "exPlusAlpha.exe" --game "game.toml"
 )
 "@
 Set-Content -Path (Join-Path $BuildDir "run_telemetry.bat") -Value $runBatContent -Encoding ASCII

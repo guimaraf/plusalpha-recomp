@@ -20,86 +20,131 @@ set(GAME_GENERATED_FULL
 set(GAME_GENERATED_DISPATCH
     "${CMAKE_CURRENT_SOURCE_DIR}/generated/SLUS_005.48_dispatch.c")
 
-psxrecomp_add_runtime_target(psx-runtime
-    GAME_GENERATED_FULL_C "${GAME_GENERATED_FULL}"
-    GAME_GENERATED_DISPATCH_C "${GAME_GENERATED_DISPATCH}"
-    DEBUG_PORT 4531
-    WINDOW_TITLE "StreetFighterEXPlusAlphaRecomp"
-    DEFAULT_GAME_CONFIG_PATH "game.toml"
-)
+option(BUILD_DECOUPLED_LAUNCHER "Build decoupled clean-room launcher (0 proprietary bytes; loads game_core.dll dynamically)" OFF)
 
-# Decoupled clean-room launcher target: 0 bytes of proprietary game code.
-# The game core is compiled dynamically from extracted disc C via embedded TinyCC.
-psxrecomp_add_runtime_target(exPlusAlpha
-    DEBUG_PORT 4531
-    WINDOW_TITLE "Ex Plus Alpha"
-    EXE_NAME "exPlusAlpha"
-    DEFAULT_GAME_CONFIG_PATH "game.toml"
-)
-
-set_target_properties(exPlusAlpha PROPERTIES
-    ENABLE_EXPORTS TRUE
-    WIN32_EXECUTABLE TRUE
-    OUTPUT_NAME "exPlusAlpha"
-)
-
-if(MINGW)
-    target_link_options(exPlusAlpha PRIVATE "-Wl,--export-all-symbols")
-endif()
-
-add_custom_command(TARGET exPlusAlpha POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_CURRENT_SOURCE_DIR}/game.toml"
-        "$<TARGET_FILE_DIR:exPlusAlpha>/game.toml"
-    COMMAND ${CMAKE_COMMAND} -E make_directory
-        "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild"
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_CURRENT_SOURCE_DIR}/overlay_captures.json"
-        "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/overlay_captures.json"
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_CURRENT_SOURCE_DIR}/overlay_toolchain"
-        "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/overlay_toolchain"
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_CURRENT_SOURCE_DIR}/tools"
-        "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/tools"
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${PSXRECOMP_ROOT}/runtime/include"
-        "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/psxrecomp/runtime/include"
-    COMMAND ${CMAKE_COMMAND} -E make_directory
-        "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/psxrecomp/tools"
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${PSXRECOMP_ROOT}/tools/compile_overlays.py"
-        "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/psxrecomp/tools/compile_overlays.py"
-    COMMENT "Copying game config to launcher directory, and toolchain into compileBuild/"
-)
-
-if(WIN32)
-    get_filename_component(_cxx_dir "${CMAKE_CXX_COMPILER}" DIRECTORY)
-    find_file(RUNTIME_SDL2_DLL "SDL2.dll"
-        PATHS
-            "${_cxx_dir}"
-            "C:/msys64/ucrt64/bin"
-            "C:/msys64/mingw64/bin"
+if(BUILD_DECOUPLED_LAUNCHER)
+    # Decoupled clean-room launcher target: 0 bytes of proprietary game code.
+    # The game core is compiled dynamically from extracted disc C via embedded TinyCC.
+    psxrecomp_add_runtime_target(exPlusAlpha
+        DEBUG_PORT 4531
+        WINDOW_TITLE "Ex Plus Alpha"
+        EXE_NAME "exPlusAlpha"
+        DEFAULT_GAME_CONFIG_PATH "game.toml"
     )
-    if(RUNTIME_SDL2_DLL)
-        add_custom_command(TARGET exPlusAlpha POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                "${RUNTIME_SDL2_DLL}"
-                "$<TARGET_FILE_DIR:exPlusAlpha>/SDL2.dll"
-            COMMENT "Copying SDL2.dll to $<TARGET_FILE_DIR:exPlusAlpha>"
-        )
+
+    set_target_properties(exPlusAlpha PROPERTIES
+        ENABLE_EXPORTS TRUE
+        WIN32_EXECUTABLE TRUE
+        OUTPUT_NAME "exPlusAlpha"
+    )
+
+    if(MINGW)
+        target_link_options(exPlusAlpha PRIVATE "-Wl,--export-all-symbols")
     endif()
 
-    foreach(_dep libgcc_s_seh-1.dll libstdc++-6.dll libwinpthread-1.dll)
-        if(EXISTS "${_cxx_dir}/${_dep}")
+    add_custom_command(TARGET exPlusAlpha POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_CURRENT_SOURCE_DIR}/game.toml"
+            "$<TARGET_FILE_DIR:exPlusAlpha>/game.toml"
+        COMMAND ${CMAKE_COMMAND} -E make_directory
+            "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_CURRENT_SOURCE_DIR}/overlay_captures.json"
+            "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/overlay_captures.json"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_CURRENT_SOURCE_DIR}/overlay_toolchain"
+            "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/overlay_toolchain"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_CURRENT_SOURCE_DIR}/tools"
+            "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/tools"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${PSXRECOMP_ROOT}/runtime/include"
+            "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/psxrecomp/runtime/include"
+        COMMAND ${CMAKE_COMMAND} -E make_directory
+            "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/psxrecomp/tools"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${PSXRECOMP_ROOT}/tools/compile_overlays.py"
+            "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/psxrecomp/tools/compile_overlays.py"
+        COMMENT "Copying game config to launcher directory, and toolchain into compileBuild/"
+    )
+
+    if(WIN32)
+        get_filename_component(_cxx_dir "${CMAKE_CXX_COMPILER}" DIRECTORY)
+        find_file(RUNTIME_SDL2_DLL "SDL2.dll"
+            PATHS
+                "${_cxx_dir}"
+                "C:/msys64/ucrt64/bin"
+                "C:/msys64/mingw64/bin"
+        )
+        if(RUNTIME_SDL2_DLL)
             add_custom_command(TARGET exPlusAlpha POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    "${_cxx_dir}/${_dep}"
-                    "$<TARGET_FILE_DIR:exPlusAlpha>/${_dep}"
-                COMMENT "Copying ${_dep} to $<TARGET_FILE_DIR:exPlusAlpha>"
+                    "${RUNTIME_SDL2_DLL}"
+                    "$<TARGET_FILE_DIR:exPlusAlpha>/SDL2.dll"
+                COMMENT "Copying SDL2.dll to $<TARGET_FILE_DIR:exPlusAlpha>"
             )
         endif()
-    endforeach()
+
+        foreach(_dep libgcc_s_seh-1.dll libstdc++-6.dll libwinpthread-1.dll)
+            if(EXISTS "${_cxx_dir}/${_dep}")
+                add_custom_command(TARGET exPlusAlpha POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                        "${_cxx_dir}/${_dep}"
+                        "$<TARGET_FILE_DIR:exPlusAlpha>/${_dep}"
+                    COMMENT "Copying ${_dep} to $<TARGET_FILE_DIR:exPlusAlpha>"
+                )
+            endif()
+        endforeach()
+    endif()
+else()
+    # Monolithic full recompilation target (for telemetry & baseline gameplay)
+    psxrecomp_add_runtime_target(psx-runtime
+        GAME_GENERATED_FULL_C "${GAME_GENERATED_FULL}"
+        GAME_GENERATED_DISPATCH_C "${GAME_GENERATED_DISPATCH}"
+        DEBUG_PORT 4531
+        WINDOW_TITLE "Ex Plus Alpha"
+        EXE_NAME "exPlusAlpha"
+        DEFAULT_GAME_CONFIG_PATH "game.toml"
+    )
+
+    set_target_properties(psx-runtime PROPERTIES
+        ENABLE_EXPORTS TRUE
+        WIN32_EXECUTABLE TRUE
+        OUTPUT_NAME "exPlusAlpha"
+    )
+
+    if(MINGW)
+        target_link_options(psx-runtime PRIVATE "-Wl,--export-all-symbols")
+    endif()
+
+    if(WIN32)
+        get_filename_component(_cxx_dir "${CMAKE_CXX_COMPILER}" DIRECTORY)
+        find_file(RUNTIME_SDL2_DLL "SDL2.dll"
+            PATHS
+                "${_cxx_dir}"
+                "C:/msys64/ucrt64/bin"
+                "C:/msys64/mingw64/bin"
+        )
+        if(RUNTIME_SDL2_DLL)
+            add_custom_command(TARGET psx-runtime POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    "${RUNTIME_SDL2_DLL}"
+                    "$<TARGET_FILE_DIR:psx-runtime>/SDL2.dll"
+                COMMENT "Copying SDL2.dll to $<TARGET_FILE_DIR:psx-runtime>"
+            )
+        endif()
+
+        foreach(_dep libgcc_s_seh-1.dll libstdc++-6.dll libwinpthread-1.dll)
+            if(EXISTS "${_cxx_dir}/${_dep}")
+                add_custom_command(TARGET psx-runtime POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                        "${_cxx_dir}/${_dep}"
+                        "$<TARGET_FILE_DIR:psx-runtime>/${_dep}"
+                    COMMENT "Copying ${_dep} to $<TARGET_FILE_DIR:psx-runtime>"
+                )
+            endif()
+        endforeach()
+    endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")

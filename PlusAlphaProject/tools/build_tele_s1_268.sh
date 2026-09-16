@@ -5,7 +5,7 @@ set -Eeuo pipefail
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 readonly PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd -P)"
 readonly BUILD_DIR="$PROJECT_ROOT/buildTele-s1-268"
-readonly TARGET_EXE="$BUILD_DIR/StreetFighterEXPlusAlphaRecomp.exe"
+readonly TARGET_EXE="$BUILD_DIR/exPlusAlpha.exe"
 readonly REF_CLEAN_DIR="$PROJECT_ROOT/buildClean-ucrt-s1-268"
 
 fail() {

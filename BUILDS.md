@@ -34,7 +34,7 @@ O frontend foi instrumentado para verificar a presença dos arquivos pré-compil
 ## 2. Build de Telemetria e Instrumentação (`buildTele-s1-*`)
 
 - **Diretório**: `PlusAlphaProject/buildTele-s1-268/`
-- **Executável Principal**: `StreetFighterEXPlusAlphaRecomp.exe` (~217.95 MB, monolítico estático)
+- **Executável Principal**: `exPlusAlpha.exe` (~217.95 MB, com telemetria e código estático integrado)
 - **Perfil de Compilação**: `RelWithDebInfo` (`-O2 -g -DNDEBUG`) com `PSX_DEBUG_TOOLS=ON` e `PSX_STATIC_RUNTIME=ON`.
 - **Finalidade**: Testar, debugar e instrumentar rotas de combate, menus e modos de jogo para identificar instruções interpretadas (*misses*) e *hotspots* de overlays para guiar os próximos micro-lotes (ex: **S1-269**).
 

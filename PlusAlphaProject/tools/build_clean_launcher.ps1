@@ -51,6 +51,7 @@ $cmakeArgs = @(
     "-S", $ProjectRoot,
     "-G", "Ninja",
     "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+    "-DBUILD_DECOUPLED_LAUNCHER=ON",
     "-DPSX_DEBUG_TOOLS=OFF",
     "-DPSX_STATIC_RUNTIME=ON",
     "-DPSX_LAUNCHER=ON",

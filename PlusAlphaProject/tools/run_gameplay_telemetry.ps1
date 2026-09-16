@@ -1,7 +1,10 @@
 $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ProjectRoot = Resolve-Path (Join-Path $ScriptDir "..")
-$ExePath = Join-Path $ProjectRoot "buildTele-s1-268\StreetFighterEXPlusAlphaRecomp.exe"
+$ExePath = Join-Path $ProjectRoot "buildTele-s1-268\exPlusAlpha.exe"
+if (-not (Test-Path $ExePath)) {
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-268\StreetFighterEXPlusAlphaRecomp.exe"
+}
 if (-not (Test-Path $ExePath)) {
     $ExePath = Join-Path $ProjectRoot "build-telemetry\StreetFighterEXPlusAlphaRecomp.exe"
 }
