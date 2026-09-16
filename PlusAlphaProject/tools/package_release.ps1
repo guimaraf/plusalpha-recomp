@@ -12,7 +12,7 @@ $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ProjectRoot = Resolve-Path (Join-Path $ScriptDir "..")
 $OutDir = Join-Path $ProjectRoot $OutputDirName
 $BuildLauncherDir = Join-Path $ProjectRoot "buildLauncher"
-$LauncherExe = Join-Path $BuildLauncherDir "StreetFighterEXPlusAlpha_Launcher.exe"
+$LauncherExe = Join-Path $BuildLauncherDir "exPlusAlpha.exe"
 
 Write-Host "======================================================================" -ForegroundColor Cyan
 Write-Host "   EMPACOTAMENTO DO BUNDLE LIMPO DESACOPLADO (CLEAN-ROOM RELEASE)     " -ForegroundColor Cyan
@@ -38,7 +38,7 @@ New-Item -ItemType Directory -Path (Join-Path $OutDir "compileBuild\psxrecomp\to
 
 # 2. Copiar executavel e dependencias
 Write-Host "[2/5] Copiando executavel e dependencias Win32..." -ForegroundColor Green
-$targetExe = Join-Path $OutDir "StreetFighterEXPlusAlpha_Launcher.exe"
+$targetExe = Join-Path $OutDir "exPlusAlpha.exe"
 Copy-Item $LauncherExe $targetExe -Force
 
 foreach ($dll in @("SDL2.dll", "libgcc_s_seh-1.dll", "libwinpthread-1.dll", "libstdc++-6.dll")) {
@@ -143,6 +143,6 @@ $exeSizeMb = [math]::Round((Get-Item $targetExe).Length / 1MB, 2)
 Write-Host "======================================================================" -ForegroundColor Green
 Write-Host "  PACOTE CLEAN-ROOM GERADO COM SUCESSO!" -ForegroundColor Green
 Write-Host "  Diretorio:   $OutDir" -ForegroundColor White
-Write-Host "  Executavel:  StreetFighterEXPlusAlpha_Launcher.exe ($exeSizeMb MB)" -ForegroundColor White
+Write-Host "  Executavel:  exPlusAlpha.exe ($exeSizeMb MB)" -ForegroundColor White
 Write-Host "  Integridade: 0 bytes proprietarios Capcom/Arika/Sony" -ForegroundColor Green
 Write-Host "======================================================================" -ForegroundColor Green

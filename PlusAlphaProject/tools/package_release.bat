@@ -18,11 +18,11 @@ if not "%~1"=="" (
 ) else (
     set "OUT_DIR=%PROJECT_ROOT%\buildNoCopyright-s1-268"
 )
-set "LAUNCHER_EXE=%PROJECT_ROOT%\buildLauncher\StreetFighterEXPlusAlpha_Launcher.exe"
+set "LAUNCHER_EXE=%PROJECT_ROOT%\buildLauncher\exPlusAlpha.exe"
 
 if not exist "%LAUNCHER_EXE%" (
     echo [ERROR] Launcher executable not found: %LAUNCHER_EXE%
-    echo Please build StreetFighterEXPlusAlpha_Launcher first.
+    echo Please build exPlusAlpha first.
     exit /b 1
 )
 
@@ -36,8 +36,8 @@ mkdir "%OUT_DIR%\compileBuild\overlay_toolchain\tcc"
 mkdir "%OUT_DIR%\compileBuild\psxrecomp\runtime\include"
 mkdir "%OUT_DIR%\compileBuild\psxrecomp\tools"
 
-echo [RELEASE] Copying StreetFighterEXPlusAlpha_Launcher.exe and runtime dependencies...
-copy /Y "%LAUNCHER_EXE%" "%OUT_DIR%\StreetFighterEXPlusAlpha_Launcher.exe" >nul
+echo [RELEASE] Copying exPlusAlpha.exe and runtime dependencies...
+copy /Y "%LAUNCHER_EXE%" "%OUT_DIR%\exPlusAlpha.exe" >nul
 copy /Y "%PROJECT_ROOT%\buildLauncher\SDL2.dll" "%OUT_DIR%\SDL2.dll" >nul
 if exist "%PROJECT_ROOT%\buildLauncher\libgcc_s_seh-1.dll" copy /Y "%PROJECT_ROOT%\buildLauncher\libgcc_s_seh-1.dll" "%OUT_DIR%\" >nul
 if exist "%PROJECT_ROOT%\buildLauncher\libwinpthread-1.dll" copy /Y "%PROJECT_ROOT%\buildLauncher\libwinpthread-1.dll" "%OUT_DIR%\" >nul
@@ -46,10 +46,10 @@ if exist "%PROJECT_ROOT%\buildLauncher\libstdc++-6.dll" copy /Y "%PROJECT_ROOT%\
 where strip >nul 2>&1
 if %ERRORLEVEL% EQU 0 (
     echo [RELEASE] Stripping debug symbols from release executable...
-    strip "%OUT_DIR%\StreetFighterEXPlusAlpha_Launcher.exe"
+    strip "%OUT_DIR%\exPlusAlpha.exe"
 ) else if exist "C:\msys64\ucrt64\bin\strip.exe" (
     echo [RELEASE] Stripping debug symbols from release executable...
-    "C:\msys64\ucrt64\bin\strip.exe" "%OUT_DIR%\StreetFighterEXPlusAlpha_Launcher.exe"
+    "C:\msys64\ucrt64\bin\strip.exe" "%OUT_DIR%\exPlusAlpha.exe"
 )
 
 echo [RELEASE] Copying config files and launcher UI assets...

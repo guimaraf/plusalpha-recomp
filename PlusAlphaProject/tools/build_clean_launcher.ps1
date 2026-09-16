@@ -11,7 +11,7 @@ $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ProjectRoot = Resolve-Path (Join-Path $ScriptDir "..")
 $BuildDir = Join-Path $ProjectRoot $BuildDirName
-$TargetExe = Join-Path $BuildDir "StreetFighterEXPlusAlpha_Launcher.exe"
+$TargetExe = Join-Path $BuildDir "exPlusAlpha.exe"
 $RefCleanDir = Join-Path $ProjectRoot "buildClean-ucrt-s1-268"
 
 Write-Host "======================================================================" -ForegroundColor Cyan
@@ -65,9 +65,9 @@ if ($LASTEXITCODE -ne 0) {
     throw "Falha na configuracao do CMake (exit code $LASTEXITCODE)"
 }
 
-# 2. Compilar psx-runtime
-Write-Host "[2/4] Compilando target psx-runtime com Ninja..." -ForegroundColor Green
-& $CMake --build $BuildDir --target StreetFighterEXPlusAlpha_Launcher
+# 2. Compilar target exPlusAlpha
+Write-Host "[2/4] Compilando target exPlusAlpha com Ninja..." -ForegroundColor Green
+& $CMake --build $BuildDir --target exPlusAlpha
 if ($LASTEXITCODE -ne 0) {
     throw "Falha na compilacao com Ninja (exit code $LASTEXITCODE)"
 }

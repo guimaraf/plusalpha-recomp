@@ -1,4 +1,4 @@
-LIBRARY StreetFighterEXPlusAlpha_Launcher.exe
+LIBRARY exPlusAlpha.exe
 
 EXPORTS
 psx_cyc_load_word

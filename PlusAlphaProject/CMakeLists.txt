@@ -30,45 +30,46 @@ psxrecomp_add_runtime_target(psx-runtime
 
 # Decoupled clean-room launcher target: 0 bytes of proprietary game code.
 # The game core is compiled dynamically from extracted disc C via embedded TinyCC.
-psxrecomp_add_runtime_target(StreetFighterEXPlusAlpha_Launcher
+psxrecomp_add_runtime_target(exPlusAlpha
     DEBUG_PORT 4531
-    WINDOW_TITLE "Street Fighter EX Plus Alpha"
-    EXE_NAME "StreetFighterEXPlusAlpha_Launcher"
+    WINDOW_TITLE "Ex Plus Alpha"
+    EXE_NAME "exPlusAlpha"
     DEFAULT_GAME_CONFIG_PATH "game.toml"
 )
 
-set_target_properties(StreetFighterEXPlusAlpha_Launcher PROPERTIES
+set_target_properties(exPlusAlpha PROPERTIES
     ENABLE_EXPORTS TRUE
     WIN32_EXECUTABLE TRUE
+    OUTPUT_NAME "exPlusAlpha"
 )
 
 if(MINGW)
-    target_link_options(StreetFighterEXPlusAlpha_Launcher PRIVATE "-Wl,--export-all-symbols")
+    target_link_options(exPlusAlpha PRIVATE "-Wl,--export-all-symbols")
 endif()
 
-add_custom_command(TARGET StreetFighterEXPlusAlpha_Launcher POST_BUILD
+add_custom_command(TARGET exPlusAlpha POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${CMAKE_CURRENT_SOURCE_DIR}/game.toml"
-        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/game.toml"
+        "$<TARGET_FILE_DIR:exPlusAlpha>/game.toml"
     COMMAND ${CMAKE_COMMAND} -E make_directory
-        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/compileBuild"
+        "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${CMAKE_CURRENT_SOURCE_DIR}/overlay_captures.json"
-        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/compileBuild/overlay_captures.json"
+        "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/overlay_captures.json"
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_CURRENT_SOURCE_DIR}/overlay_toolchain"
-        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/compileBuild/overlay_toolchain"
+        "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/overlay_toolchain"
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_CURRENT_SOURCE_DIR}/tools"
-        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/compileBuild/tools"
+        "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/tools"
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${PSXRECOMP_ROOT}/runtime/include"
-        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/compileBuild/psxrecomp/runtime/include"
+        "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/psxrecomp/runtime/include"
     COMMAND ${CMAKE_COMMAND} -E make_directory
-        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/compileBuild/psxrecomp/tools"
+        "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/psxrecomp/tools"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${PSXRECOMP_ROOT}/tools/compile_overlays.py"
-        "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/compileBuild/psxrecomp/tools/compile_overlays.py"
+        "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/psxrecomp/tools/compile_overlays.py"
     COMMENT "Copying game config to launcher directory, and toolchain into compileBuild/"
 )
 
@@ -81,21 +82,21 @@ if(WIN32)
             "C:/msys64/mingw64/bin"
     )
     if(RUNTIME_SDL2_DLL)
-        add_custom_command(TARGET StreetFighterEXPlusAlpha_Launcher POST_BUILD
+        add_custom_command(TARGET exPlusAlpha POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
                 "${RUNTIME_SDL2_DLL}"
-                "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/SDL2.dll"
-            COMMENT "Copying SDL2.dll to $<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>"
+                "$<TARGET_FILE_DIR:exPlusAlpha>/SDL2.dll"
+            COMMENT "Copying SDL2.dll to $<TARGET_FILE_DIR:exPlusAlpha>"
         )
     endif()
 
     foreach(_dep libgcc_s_seh-1.dll libstdc++-6.dll libwinpthread-1.dll)
         if(EXISTS "${_cxx_dir}/${_dep}")
-            add_custom_command(TARGET StreetFighterEXPlusAlpha_Launcher POST_BUILD
+            add_custom_command(TARGET exPlusAlpha POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different
                     "${_cxx_dir}/${_dep}"
-                    "$<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>/${_dep}"
-                COMMENT "Copying ${_dep} to $<TARGET_FILE_DIR:StreetFighterEXPlusAlpha_Launcher>"
+                    "$<TARGET_FILE_DIR:exPlusAlpha>/${_dep}"
+                COMMENT "Copying ${_dep} to $<TARGET_FILE_DIR:exPlusAlpha>"
             )
         endif()
     endforeach()
