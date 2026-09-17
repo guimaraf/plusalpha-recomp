@@ -17,10 +17,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-268** (Entity / Frame Processing Cluster promoted; bridges `0x801171DC` to `0x80117950`, eliminating the final 3 uncompiled Main EXE misses; verified clean in clean build `buildClean-ucrt-s1-268` across Versus and 4 Arcade matches).
-- **Current Active Batch**: None (S1-268 promoted and fully verified).
-- **Current Main Binary Coverage**: **126,830 / 195,584 words (64.8468%)**.
-- **Total Compiled Native Functions**: **1,113 functions**.
+- **Validated Checkpoint**: **S1-269** (3D Projectile / Particle & Effect Entity Processor `0x8014FE30` promoted; bridges `0x8014FD54` to `0x801502D8`, eradicating all 3 Ryu vs Ken combat misses; verified clean in `gameplay-discovery-05` with 0 misses and -107,853 interpreter fallbacks; confirmed frametime stability).
+- **Current Active Batch**: None (S1-269 provisionally approved).
+- **Current Main Binary Coverage**: **127,128 / 195,584 words (64.9991%)**.
+- **Total Compiled Native Functions**: **1,114 functions**.
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
 - **Residual Main EXE Misses**: 0 uncompiled misses in Main EXE text (remaining runtime hits are exclusively quarantined BIOS/SIO SMC patches at `0x801AB1F4` and `0x801AB2C0`).
 
@@ -57,9 +57,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-266** | `0x80124400`, `0x801932BC`, `0x80125594`, `0x801258D4`, `0x8016A84C`, `0x8018C880` + closure | 3,896 | 125,435 | Processed; Checkpoint S1-266 |
 | **S1-267** | `0x80106BD4` (Round State Manager FSM; jump table `0x801AB5BC`) | 936 | 126,371 | Processed; Checkpoint S1-267 |
 | **S1-268** | `0x80117224`, `0x8011726C`, `0x80117328`, `0x80117564` (Entity / Frame Processing Cluster) | 459 | 126,830 | Processed & Validated; Checkpoint S1-268 |
+| **S1-269** | `0x8014FE30..0x801502D4` (3D Projectile/Particle Entity Processor; jump table `0x801ABDD4`) | 298 | 127,128 | Processed & Validated; Telemetry 05 CLEAN |
 
 
-- **Total words promoted since S1-239**: **+20,511 words** (+10.49% absolute gain).
+- **Total words promoted since S1-239**: **+20,809 words** (+10.64% absolute gain).
 
 ---
 

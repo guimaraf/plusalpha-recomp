@@ -33,15 +33,15 @@ O frontend foi instrumentado para verificar a presença dos arquivos pré-compil
 
 ## 2. Build de Telemetria e Instrumentação (`buildTele-s1-*`)
 
-- **Diretório**: `PlusAlphaProject/buildTele-s1-268/`
-- **Executável Principal**: `exPlusAlpha.exe` (~217.95 MB, com telemetria e código estático integrado)
+- **Diretório**: `PlusAlphaProject/buildTele-s1-269/`
+- **Executável Principal**: `exPlusAlpha.exe` (~218.05 MB, com telemetria e código estático integrado)
 - **Perfil de Compilação**: `RelWithDebInfo` (`-O2 -g -DNDEBUG`) com `PSX_DEBUG_TOOLS=ON` e `PSX_STATIC_RUNTIME=ON`.
-- **Finalidade**: Testar, debugar e instrumentar rotas de combate, menus e modos de jogo para identificar instruções interpretadas (*misses*) e *hotspots* de overlays para guiar os próximos micro-lotes (ex: **S1-269**).
+- **Finalidade**: Testar, debugar e instrumentar rotas de combate, menus e modos de jogo para identificar instruções interpretadas (*misses*) e *hotspots* de overlays para guiar os próximos micro-lotes (ex: **S1-270**).
 
 ### Totalmente Pronta para Testes Imediatos
 Diferente da release, a build de telemetria é preparada para máxima produtividade de desenvolvimento:
 - **Tudo Pré-Compilado**:
-  - Código C do jogo integrado estaticamente (`SLUS_005.48_full.c` e `SLUS_005.48_dispatch.c` com as 1.113 funções nativas até S1-268).
+  - Código C do jogo integrado estaticamente (`SLUS_005.48_full.c` e `SLUS_005.48_dispatch.c` com as 1.114 funções nativas até S1-269, totalizando 127.128 palavras).
   - DLLs dinâmicas (`game_core.dll`) e cache completo de overlays (`cache/SLUS-00548/gcc` e `cache/SLUS-00548/tcc`) já copiados e sincronizados.
 - **Zero Etapas Manuais de Compilação**: Não é necessário extrair disco nem compilar nada; o desenvolvedor roda os testes imediatamente.
 - **Ignora Tela de Setup**: Como todos os arquivos e módulos do jogo já estão gerados e presentes, o launcher não abre o wizard de build — ele inicia diretamente no jogo com o servidor de telemetria ouvindo na porta TCP **`4531`**.
@@ -49,7 +49,7 @@ Diferente da release, a build de telemetria é preparada para máxima produtivid
 ### Execução da Telemetria
 - **Iniciar jogo instrumentado**:
   ```cmd
-  PlusAlphaProject\buildTele-s1-268\run_telemetry.bat
+  PlusAlphaProject\buildTele-s1-269\run_telemetry.bat
   ```
   *(ou via `tools/run_gameplay_telemetry.ps1`)*
 - **Capturar dados em tempo real (em terminal separado)**:

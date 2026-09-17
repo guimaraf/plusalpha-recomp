@@ -4192,3 +4192,10 @@
 # Total: 4 funcoes novas, 1.836 bytes / 459 palavras. Atinge 126.830 palavras (64,8468%), 1.113 funcoes nativas.
 0x80117224
 
+# Micro-lote S1-269: Processador de Projecao e Fisica 3D de Projeteis / Particulas Visuais.
+# - 0x8014FE30: 1192 bytes / 298 palavras (Raiz formal; switch com jump table 0x801ABDD4 de 5 casos internos)
+# Elimina os 3 misses observados no combate Ryu vs Ken (0x8014FE30, 0x8014FF98 e 0x8014FFCC).
+# Conecta perfeitamente o bloco 0x8014FD54 a 0x801502D8 no Main EXE.
+# Todas as 13 chamadas JAL resolvem para funcoes ja nativas; zero expansao de closure.
+# Total: 1 funcao nova, 1.192 bytes / 298 palavras. Atinge 127.128 palavras (64,9991%), 1.114 funcoes nativas.
+0x8014FE30

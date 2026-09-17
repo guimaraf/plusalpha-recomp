@@ -34,6 +34,7 @@ históricos S1-214 a S1-225 e os checkpoints locais S1-227 a S1-239.
 | S1-266 validado | 564 | 125.435 / 195.584 | 64,1336% | 18.079 | 127 |
 | S1-267 validado | 565 | 126.371 / 195.584 | 64,6121% | 18.200 | 127 |
 | S1-268 validado | 566 | 126.830 / 195.584 | 64,8468% | 18.271 | 127 |
+| S1-269 validado | 567 | 127.128 / 195.584 | 64,9991% | 18.311 | 127 |
 
 
 O S1-225 acrescentou 819 palavras únicas e 9 seeds à baseline anterior. A
