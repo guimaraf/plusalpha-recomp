@@ -4294,4 +4294,15 @@
 0x801437D8
 0x801439E4
 
+# Micro-lote S1-274 (Frente 2): Subsistema de Acao/Reacao de Combate (Cluster 2).
+# - 0x80146B74:  156 bytes /  39 palavras (Raiz formal apontada pelo indice 0x801B1B88 da tabela de acoes; despacha para 0x80146C10 e 0x80146E18)
+# - 0x80146C10:  520 bytes / 130 palavras (Setup de parametros defensivos e impacto)
+# - 0x80146E18: 2060 bytes / 515 palavras (Fisica de recoil, animacao de impacto e transicao de estado)
+# Closure 100% nativa; zero expansao de closure; zero JALR.
+# Total Frente 2: 3 funcoes novas, 2.736 bytes / 684 palavras. Atinge 131.330 palavras (67,1476%), 1.145 funcoes nativas.
+0x80146B74
+0x80146C10
+0x80146E18
+
+
 

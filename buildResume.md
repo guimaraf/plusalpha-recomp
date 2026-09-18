@@ -217,6 +217,23 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-274 (Frente 2): Combat Action & Reaction Subsystem - Cluster 2 (Promovido e Validado)
+- **Origem / Gatilho**: Teste com inversao de papeis (Bison P1 atacando com P2 inerte, `gameplay-discovery-14` e `15`), restando 1.455 hits no Cluster 2.
+- **Topologia & Limites**:
+  - `0x80146B74`: 156 bytes / **39 palavras** (721 hits; despachador de evento de impacto/reacao que chama `0x80146C10` e `0x80146E18`).
+  - `0x80146C10`: 520 bytes / **130 palavras** (13 hits na raiz, 13 hits em `0x80146D80`; setup de parametros defensivos).
+  - `0x80146E18`: 2.060 bytes / **515 palavras** (708 hits; fisica de recoil, animacao de impacto e transicao de estado).
+- **Fechamento de Chamadas**: Todas as 14 chamadas externas diretas JAL apontam para rotinas ja nativas (`0x8019D740`, `0x8019D7D0`, `0x8019CA30`, `0x8019EFD0`, `0x8019CE70`, `0x8010C72C`, etc.). Zero saltos indiretos; expansao de closure ZERO.
+- **Orcamento Frente 2**: 3 funcoes novas, 2.736 bytes / **684 palavras**.
+- **Cobertura Final S1-274**: **131.330 palavras (67,1476%)** em **1.145 funcoes nativas** e **18.861 entradas de dispatch**. Codegen audit: **CLEAN**.
+- **Validacao em Gameplay (`gameplay-discovery-16`)**:
+  - Erradicou 100% dos 1.455 hits do Cluster 2 (`0x80146B74`, `0x80146C10`, `0x80146D80`, `0x80146E18` todos zerados).
+  - **Zero misses no Main EXE em combate ativo**. Os unicos registros em fallback sao a quarentena SMC BIOS/SIO (`0x801AB1F4` e `0x801AB2C0`).
+  - Queda macica no fallback interpretado de +379.198 para **+75.594** (-303.604 instrucoes interpretadas eliminadas).
+  - Telemetria de frametime perfeitamente estavel a 60 FPS com motor de acao/reacao inteiramente nativo.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.
