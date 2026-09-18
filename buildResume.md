@@ -471,6 +471,25 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-284: Movement & Sliding Subroutines - Blair Dame (Promovido & Validado)
+- **Origem / Gatilho**: Teste inicial de Zangief vs Blair Dame (`gameplay-discovery-34`), que desmascarou o gap contínuo `0x8014901C..0x801495D4` responsável pelo processamento de deslize no solo (*sliding*), avanço pós-ataque e atrito/recuo de recuperação de solo.
+- **Topologia & Limites (3 funções novas, 1.464 bytes / 366 palavras)**:
+  - `0x8014901C`: 152 bytes / **38 palavras** (vetores de aceleração no solo e cálculo de deslize / sliding; **32 hits**).
+  - `0x801490B4`: 268 bytes / **67 palavras** (transição de avanço e postura pós-ataque; **1 hit**).
+  - `0x801491C0`: 1.044 bytes / **261 palavras** (processamento de atrito, recuo e recuperação de solo; **31 hits**).
+- **Encaixe e Continuidade**: Conecta diretamente com `0x80148B64..0x8014901C` (função compilada anteriormente), estendendo a cobertura contínua desse bloco até `0x801495D4`.
+- **Fechamento de Chamadas**: Zero saltos indiretos `jr $reg`, zero chamadas externas não resolvidas (closure 100% fechada). Expansão de closure: **ZERO** (1.205 -> 1.208 funções cravadas).
+- **Orçamento Total S1-284**: 3 funções novas, 1.464 bytes / **366 palavras**.
+- **Cobertura Final S1-284**: **137.409 palavras (70,2557%)** em **1.208 funções nativas**. Codegen audit: **CLEAN**.
+- **Validação em Gameplay (`gameplay-discovery-39`)**:
+  - Erradicou 100% dos candidatos de movimento e sliding da sessão 34.
+  - Novos candidatos a promoção no Main EXE: **EXATAMENTE 0** (`candidates.txt` vazio).
+  - Native Handoffs: **0** mantidos estritamente.
+  - Linha de frametime: confirmada como extremamente estável durante todo o combate, com transient jitter restrito apenas ao carregamento inicial de cena/overlay.
+- **Conclusão de Ciclo**: **Zangief (15º)** e **Blair Dame (16º)** oficialmente homologados com **100% de execução nativa** no Main EXE.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

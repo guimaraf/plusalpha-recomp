@@ -4473,3 +4473,15 @@
 0x8013E930
 0x8013E9C8
 0x8013EB60
+
+# Micro-lote S1-284 (Movement & Sliding Subroutines - Blair Dame):
+# Gap contínuo 0x8014901C..0x801495D4 (3 funções contínuas, 1.464 bytes / 366 palavras):
+# - 0x8014901C:  152 bytes /  38 palavras (Vetores de deslize e aceleração no solo / sliding; 32 hits)
+# - 0x801490B4:  268 bytes /  67 palavras (Transição de avanço e postura pós-ataque; 1 hit)
+# - 0x801491C0: 1044 bytes / 261 palavras (Processamento de atrito, recuo e recuperação de solo; 31 hits)
+# Erradica 100% dos candidatos de movimento da sessão Zangief vs Blair (gameplay-discovery-34).
+# Total S1-284: 3 funções novas, 1.464 bytes / 366 palavras. Atinge 137.409 palavras (70,2557%), 1.208 funções nativas.
+0x8014901C
+0x801490B4
+0x801491C0
+

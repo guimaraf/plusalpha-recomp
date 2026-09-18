@@ -22,6 +22,8 @@ Este documento registra os personagens testados e homologados com **100% de exec
 | **Darun Mister** | **100% Nativo** (0 misses) | `gameplay-discovery-30` | S1-279 | Lariat, Ganga Lariat, Brahma Lariat, Indra Bridge, Daisharin, Twilight Collar, Hasin Shake. |
 | **Cracker Jack** | **100% Nativo** (0 misses) | `gameplay-discovery-31` & `33` | S1-280 | Dash Straight, Dash Upper, Batting Hero, Soccer Ball Kick, Crazy Jack, Raging Buffalo, Home Run Hero, cenário e props. |
 | **Allen Snider** | **100% Nativo** (0 misses) | `gameplay-discovery-31` & `33` | S1-280 | Soul Force, Justice Fist, Vaulting Kick, Rising Dragon, Fire Force, Triple Break, transições de golpe e cenário. |
+| **Zangief** | **100% Nativo** (0 misses) | `gameplay-discovery-36` & `37` | S1-281 / S1-282 | Spinning Piledriver, Atomic Suplex, Final Atomic Buster, Double Lariat, Banishing Flat, tabela global de agarrões `0x801B33F0`. |
+| **Blair Dame** | **100% Nativo** (0 misses) | `gameplay-discovery-38` & `39` | S1-283 / S1-284 | Shoot Kick, Lightning Knee, Sliding D-Kick, Spin Kick, Mirage Kick, ação/combate `0x8013E930`, vetores de deslizamento `0x8014901C`. |
 
 ---
 
@@ -74,6 +76,20 @@ Durante os testes de combate de alta densidade, o isolamento de telemetria desma
 - **Resolução Implementada (S1-280)**:
   - Promoção de 8 funções nativas (`0x8011A8DC`, `0x8011AB7C`, `0x8011ABD4`, `0x8011AC1C`, `0x8011AC50`, `0x8011AFBC`, `0x8011B180`, `0x8011B238`), totalizando +663 palavras.
   - Validação em `gameplay-discovery-33`: **0 misses no Main EXE**, erradicação completa das 153k chamadas em fallback, queda de **-91,1%** nas instruções interpretadas e frametime 100% limpo em ambas as orientações de combate (normal e invertida).
+
+---
+
+### Caso 5: Jitter Transiente de Inicialização e Estabilização Plena de Frametime (Micro-lote S1-284)
+- **Comportamento Observado**: Durante a sessão `gameplay-discovery-39` (Blair Dame vs Zangief), notou-se um transitório inicial de frametime na transição da tela de carregamento/apresentação para o início do Round 1. Logo em seguida, durante todo o restante do combate, o frametime estabilizou de forma completamente limpa e cravada a 60 FPS.
+- **Diagnóstico Técnico**:
+  - **Main EXE 100% Isento de Misses**: A telemetria registrou `static_text_misses: []` (0 novos candidatos e 0 quedas de contexto em código estático da ROM).
+  - **Origem do Jitter Inicial**: Decorre do ciclo de staging de recursos do PlayStation e carga dinâmica em RAM:
+    1. *Streaming de CD-ROM / ISO9660*: Leitura de blocos de áudio XA/CDDA e amostras SPU/VAG dos personagens para a memória de som.
+    2. *Carregamento de Módulos Dinâmicos (Track 2)*: Alocação dos blocos de overlay em RAM (`0x80020000..0x800F2000`) contendo tabelas de golpes específicos dos personagens e scripts de introdução.
+    3. *Setup de VRAM*: Upload de texturas 3D/sprites 2D e paletas de cores (CLUTs) nos buffers da GPU do PS1.
+  - **Comportamento em Luta Ativa**: Assim que os buffers de RAM e VRAM estão estabelecidos, o despachador de ações (`0x801AFC70`), o motor de agarroes (`0x801B33F0`), a máquina de combate (`0x8013E930..0x8013EB60`) e as sub-rotinas de movimentação/sliding (`0x8014901C..0x801495D4`) operam 100% em código de máquina nativo x64, eliminando completamente quedas de frametime por fallback do interpretador.
+- **Tratamento Planejado (Track 2)**:
+  - O transitório inicial de streaming será mitigado futuramente na etapa de OVL Caching/JIT e otimização de I/O de disco.
 
 ---
 
