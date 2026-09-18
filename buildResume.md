@@ -173,6 +173,33 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-273: Action NOP Handler, Special/Effects & Model Rendering Clusters (Promovido e Validado)
+- **Origem / Gatilho**: Teste com Akuma vs Bison no cenario do Bison (`gameplay-discovery-12`), revelando 14 PCs candidatos no Main EXE Text com um total de **3.306 hits interpretados**.
+- **Cluster A (Action Dispatch NOP Handler)**:
+  - `0x8011721C`: 8 bytes / **2 palavras** (2.969 hits / 89,8% do teste; stub `jr $ra; nop` chamado pelos indices 0, 11, 13 e 15 da tabela `0x801AFC70`). Preenche perfeitamente o micro-gap entre `0x801171DC` e `0x80117224`.
+- **Cluster B (Subsistema de Movimentos Especiais e Projeteis/Efeitos)**:
+  - `0x801338B8`: 1.348 bytes / **337 palavras** (38 hits; raiz formal apontada pelo indice `0x801B1BFC` da tabela de efeitos; despacha para `0x80133DFC` e `0x80134224`).
+  - `0x80133DFC`: 1.064 bytes / **266 palavras** (1 hit; setup de vetores de trajetoria e estado).
+  - `0x80134224`: 1.880 bytes / **470 palavras** (36 hits na raiz, hits internos em `0x80134348`, `0x801343B4`, `0x801344F0`, `0x801344FC`, `0x80134618`; processador de colisao e fisica de efeito).
+  - Fechamento: Todas as 21 chamadas externas diretas sao para rotinas ja nativas (`0x80123BF4`, `0x8010C72C`, `0x80101D18`, `0x80194990`, `0x8015C000`, etc.). Zero saltos indiretos; expansao de closure ZERO.
+- **Cluster C (Motor de Renderizacao de Modelo e Cenarios)**:
+  - `0x8013FF34`: 152 bytes / **38 palavras** (127 hits; handler apontado pela tabela `0x801B1B58`).
+  - `0x8013FFCC`: 552 bytes / **138 palavras** (1 hit na raiz, 2 hits em `0x80140058`; setup de matriz/vertices).
+  - `0x801401F4`: 1.448 bytes / **362 palavras** (126 hits; transformador de vertices e iluminacao).
+  - `0x8014079C`: 188 bytes / **47 palavras** (Handler apontado por `0x801B1B5C`; possui switch interno com tabela `0x801ABC58` cujos alvos sao todos rotulos locais).
+  - Topologia: Conecta perfeitamente o bloco nativo `0x8013F998..0x8013FF34` com o bloco nativo `0x80140858..0x80140CEC`.
+  - Fechamento: Todas as chamadas externas sao nativas. Expansao de closure ZERO.
+- **Orcamento Total S1-273**: 8 funcoes novas, 6.640 bytes / **1.660 palavras**.
+- **Cobertura Final S1-273**: **129.977 palavras (66,4558%)** em **1.139 funcoes nativas** e **18.726 entradas de dispatch**. Codegen audit: **CLEAN**.
+- **Validacao em Gameplay (`gameplay-discovery-13`)**:
+  - Erradicou 100% dos 14 candidatos e 3.306 misses observados em Akuma vs Bison.
+  - Novos candidatos a promocao no Main EXE: **EXATAMENTE 0**.
+  - Dispatches nativos saltaram para o recorde de **+209.855 hits**.
+  - Fallback interpretado despencou de +176.952 para +119.782 (-57.170 instrucoes interpretadas eliminadas).
+  - **Diagnostico do Teleporte do Akuma (Ashura Senku)**: O leve ripple no frametime observado durante o teleporte repetido decorre do motor de overlay dinamico em RAM (`0x80045ACC`, +31.318 instrucoes interpretadas no overlay na sessao 13), responsavel pela animacao de rastro/sombras e flags de invulnerabilidade do golpe, enquanto o Main EXE permaneceu 100% livre de misses. Frametime no restante do combate manteve estabilidade extrema.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

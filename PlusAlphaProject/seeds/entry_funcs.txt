@@ -4256,3 +4256,31 @@
 0x80120848
 0x80120C88
 0x80120CB0
+
+# Micro-lote S1-273: Subsistemas de Gameplay Descobertos em Akuma vs Bison.
+# Cluster A: Handler NOP/Default da Tabela de Acoes 0x801AFC70 (8 bytes / 2 palavras).
+# Erradica 2.969 misses observados no teste Akuma vs Bison.
+0x8011721C
+
+# Cluster B: Subsistema de Movimentos Especiais e Projeteis/Efeitos.
+# - 0x801338B8: 1348 bytes / 337 palavras (Raiz formal apontada por 0x801B1BFC; chama 0x80133DFC e 0x80134224)
+# - 0x80133DFC: 1064 bytes / 266 palavras (Inicializador de vetores de efeito)
+# - 0x80134224: 1880 bytes / 470 palavras (Processador de colisao e fisica de efeito)
+# Erradica 80 misses observados no teste Akuma vs Bison. Closure 100% nativa.
+0x801338B8
+0x80133DFC
+0x80134224
+
+# Cluster C: Motor de Renderizacao de Modelo e Cenarios.
+# - 0x8013FF34:  152 bytes /  38 palavras (Raiz apontada por 0x801B1B58; chama 0x8013FFCC e 0x801401F4)
+# - 0x8013FFCC:  552 bytes / 138 palavras (Setup de matriz e vertices)
+# - 0x801401F4: 1448 bytes / 362 palavras (Transformador de vertices e iluminacao)
+# - 0x8014079C:  188 bytes /  47 palavras (Handler apontado por 0x801B1B5C com jump table switch 0x801ABC58)
+# Conecta 0x8013FF34 a 0x80140858 eliminando gap de 585 palavras.
+# Erradica 256 misses observados no teste Akuma vs Bison. Closure 100% nativa.
+# Total S1-273: 8 funcoes novas, 6.640 bytes / 1.660 palavras. Atinge 129.977 palavras (66,4558%), 1.139 funcoes nativas.
+0x8013FF34
+0x8013FFCC
+0x801401F4
+0x8014079C
+

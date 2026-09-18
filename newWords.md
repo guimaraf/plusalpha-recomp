@@ -17,10 +17,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-272** (Cluster de Reacao Corporal, Dano, Recoil e Hit-Stun do Defensor `0x801202EC..0x80120E44`, totalizando 8 funcoes e 726 palavras; erradicou 100% dos 19.678 misses de combate observados em Kairi vs Garuda; validado com sucesso em `gameplay-discovery-11` com 0 novos candidatos no Main EXE e minimo historico de fallback do interpretador: +70.140).
-- **Current Active Batch**: **Homologado (S1-272)** (Baseline estavel em 65,6071% com zero misses em combate).
-- **Current Main Binary Coverage**: **128,317 / 195,584 words (65.6071%)** (Baseline S1-272).
-- **Total Compiled Native Functions**: **1,131 functions** (18,528 entradas de dispatch).
+- **Validated Checkpoint**: **S1-273** (Clusters A, B e C: Handler NOP `0x8011721C`, Projeteis/Efeitos `0x801338B8..0x8013497C` e Renderizacao de Modelo `0x8013FF34..0x80140858`, totalizando 8 funcoes e 1.660 palavras; erradicou 100% dos 3.306 misses de combate observados em Akuma vs Bison; validado com sucesso em `gameplay-discovery-13` com 0 novos candidatos no Main EXE e recorde de +209.855 hits nativos).
+- **Current Active Batch**: **Homologado (S1-273)** (Baseline estavel em 66,4558% com zero misses no Main EXE).
+- **Current Main Binary Coverage**: **129,977 / 195,584 words (66.4558%)** (Baseline S1-273).
+- **Total Compiled Native Functions**: **1,139 functions** (18,726 entradas de dispatch).
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
 - **Residual Main EXE Misses**: **ZERO misses em combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
 
@@ -61,8 +61,9 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-270** | `0x8019E6D0` (F1) + `0x80160B54..0x80160F94` (F2, 5 funcs) | 374 | 127,502 | Processed & Validated; Telemetry 08 CLEAN |
 | **S1-271** | `0x801288DC`, `0x80128930`, `0x80128988` (Physics & Special Move Vector Cluster) | 89 | 127,591 | Processed & Validated; Telemetry 09 CLEAN |
 | **S1-272** | `0x801202EC..0x80120E44` (Defender Hit-Stun, Recoil & Damage Physics Cluster, 8 funcs) | 726 | 128,317 | Processed & Validated; Telemetry 11 CLEAN |
+| **S1-273** | `0x8011721C` (A) + `0x801338B8..0x8013497C` (B) + `0x8013FF34..0x80140858` (C, 8 funcs) | 1,660 | 129,977 | Processed & Validated; Telemetry 13 CLEAN |
 
-- **Total words promovidas desde S1-239**: **+21,998 words** (+11.25% absolute gain).
+- **Total words promovidas desde S1-239**: **+23,658 words** (+12.10% absolute gain).
 
 ---
 
