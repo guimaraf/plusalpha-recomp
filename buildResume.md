@@ -149,6 +149,30 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-272: Defender Hit-Stun, Recoil & Damage Physics Cluster (Promovido e Validado)
+- **Origem / Gatilho**: Teste com inversao de papeis (Kairi P1 atacando, Garuda P2 defendendo/recebendo dano, `gameplay-discovery-10`), desmascarando **19.678 hits interpretados** distribuidos em 9 PCs do Main EXE.
+- **Topologia**: Ocupa de forma continua o intervalo `0x801202EC..0x80120E44` (2.904 bytes / **726 palavras**), conectando perfeitamente a extremidade de `0x8011FE28` com a funcao nativa `0x80120E44`.
+- **Funcoes Promovidas (8 continuas)**:
+  - `0x801202EC`: 104 bytes / 26 palavras (3.176 hits; despachador de evento de impacto)
+  - `0x80120354`: 516 bytes / 129 palavras (1 hit; atualizador de medidor e status de combate)
+  - `0x80120558`: 696 bytes / 174 palavras (3.176 hits; loop de reacao com `jalr` indireto via tabela `0x801AFFA0`)
+  - `0x80120810`: 36 bytes / 9 palavras (18 hits; sub-rotina de recoil / knockback)
+  - `0x80120834`: 20 bytes / 5 palavras (14 hits; limpeza de flags de colisao)
+  - `0x80120848`: 1.088 bytes / 272 palavras (5.107 hits na entrada, 3.061 em `0x80120A48`, 18 em `0x80120954`; processador principal de animacao e impacto de dano, alvo 0 da tabela `0x801AFFA0`)
+  - `0x80120C88`: 40 bytes / 10 palavras (handler alternativo; alvo 1 da tabela `0x801AFFA0`)
+  - `0x80120CB0`: 404 bytes / 101 palavras (5.107 hits; finalizador de frame de hit-stun / guarda)
+- **Resolucao do JALR em `0x801206AC`**: O salto indireto consulta a tabela `0x801AFFA0` cujos unicos dois alvos (`0x80120848` e `0x80120C88`) pertencem a este proprio lote. Sendo ambos promovidos para a tabela de dispatch nativo, o `call_by_address` resolve em tempo de execucao nativo sem qualquer fallback de dirty-RAM.
+- **Fechamento de Chamadas**: Todas as 13 chamadas externas diretas JAL apontam para funcoes ja compiladas (`0x801938B0`, `0x8019D740`, `0x8019E870`, `0x8019C0B8`, etc.). Expansao de closure: **ZERO**.
+- **Orcamento**: 8 funcoes novas, 2.904 bytes / **726 palavras**.
+- **Cobertura Final S1-272**: **128.317 palavras (65,6071%)** em **1.131 funcoes nativas** e **18.528 entradas de dispatch**. Codegen audit: **CLEAN**.
+- **Validacao em Gameplay (`gameplay-discovery-11`)**:
+  - Erradicou 100% dos 19.678 misses observados em Kairi vs Garuda nos 8 PCs do cluster de defesa/hit-stun (`0x801202EC`, `0x80120354`, `0x80120558`, `0x80120810`, `0x80120834`, `0x80120848`, `0x80120A48`, `0x80120CB0` todos zerados).
+  - Queda macica no fallback do interpretador de +2.512.419 para o recorde historico absoluto de **+70.140**.
+  - Dispatches nativos atingiram **+175.766** com estabilidade e frametime limpo a 60 FPS.
+  - Novos candidatos a promocao no Main EXE: **EXATAMENTE 0**. Cobertura de combate no binario principal permanece 100% livre de misses.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

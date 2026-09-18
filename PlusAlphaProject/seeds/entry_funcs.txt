@@ -4234,3 +4234,25 @@
 0x801288DC
 0x80128930
 0x80128988
+
+# Micro-lote S1-272: Cluster de Reacao Corporal, Dano, Recoil e Hit-Stun do Defensor.
+# - 0x801202EC:  104 bytes /  26 palavras (Dispatcher de evento de impacto; chama 0x80120354 e 0x80120558)
+# - 0x80120354:  516 bytes / 129 palavras (Helper de atualizacao de medidor/status; chama 0x8019492C e 0x801948DC nativos)
+# - 0x80120558:  696 bytes / 174 palavras (Loop de reacao com jalr indireto via tabela 0x801AFFA0; chama 0x80120810, 0x80120834 e nativas)
+# - 0x80120810:   36 bytes /   9 palavras (Sub-rotina de recoil / knockback)
+# - 0x80120834:   20 bytes /   5 palavras (Limpeza de flags de colisao)
+# - 0x80120848: 1088 bytes / 272 palavras (Processador principal de impacto de dano / animacao; alvo 0 da tabela 0x801AFFA0)
+# - 0x80120C88:   40 bytes /  10 palavras (Handler alternativo; alvo 1 da tabela 0x801AFFA0)
+# - 0x80120CB0:  404 bytes / 101 palavras (Finalizador de frame de hit-stun / guarda; chamado por 0x80120848)
+# Conecta perfeitamente 0x801202EC a 0x80120E44 no Main EXE (elimina gap de 726 palavras).
+# Erradica 100% dos 19.678 misses observados na Sessao 10 (Kairi vs Garuda).
+# Todas as 13 chamadas externas diretas sao nativas; zero expansao de closure.
+# Total: 8 funcoes novas, 2.904 bytes / 726 palavras. Atinge 128.317 palavras (65,6071%), 1.131 funcoes nativas.
+0x801202EC
+0x80120354
+0x80120558
+0x80120810
+0x80120834
+0x80120848
+0x80120C88
+0x80120CB0
