@@ -17,12 +17,12 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-270** (Frente 1 `0x8019E6D0` + Frente 2 `0x80160B54..0x80160F94`, totalizando 6 funcoes e 374 palavras; erradicou 100% dos 5.622 misses de combate observados em Garuda vs Kairi; validado com sucesso em `gameplay-discovery-08` com estabilizacao extrema de frametime).
-- **Current Active Batch**: **S1-271 (Planejamento)** (Cluster de Fisica de Movimentos Especiais / Reacao `0x80128524..0x80128D74`; 364 hits observados na Sessao 08).
-- **Current Main Binary Coverage**: **127,502 / 195,584 words (65.1904%)** (Baseline S1-270).
-- **Total Compiled Native Functions**: **1,120 functions** (18,388 entradas de dispatch).
+- **Validated Checkpoint**: **S1-271** (Cluster de Fisica de Movimentos Especiais e Vetores `0x801288DC`, `0x80128930`, `0x80128988`, totalizando 3 funcoes e 89 palavras; erradicou 100% dos misses residuais; validado com sucesso em `gameplay-discovery-09` com 0 novos candidatos no Main EXE e 100% de dispatch nativo no segmento text).
+- **Current Active Batch**: **Homologado (S1-271)** (Baseline estavel em 65,2359% com zero misses em combate).
+- **Current Main Binary Coverage**: **127,591 / 195,584 words (65.2359%)** (Baseline S1-271).
+- **Total Compiled Native Functions**: **1,123 functions** (18,405 entradas de dispatch).
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
-- **Residual Main EXE Misses**: Apenas 5 PCs observados na Sessao 08 pertencentes ao cluster de fisica `0x801288DC..0x801289D0` (364 hits), alem dos patches de quarentena BIOS/SIO SMC em `0x801AB1F4` e `0x801AB2C0`.
+- **Residual Main EXE Misses**: **ZERO misses em combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
 
 ---
 
@@ -59,9 +59,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-268** | `0x80117224`, `0x8011726C`, `0x80117328`, `0x80117564` (Entity / Frame Processing Cluster) | 459 | 126,830 | Processed & Validated; Checkpoint S1-268 |
 | **S1-269** | `0x8014FE30..0x801502D4` (3D Projectile/Particle Entity Processor; jump table `0x801ABDD4`) | 298 | 127,128 | Processed & Validated; Telemetry 05 CLEAN |
 | **S1-270** | `0x8019E6D0` (F1) + `0x80160B54..0x80160F94` (F2, 5 funcs) | 374 | 127,502 | Processed & Validated; Telemetry 08 CLEAN |
+| **S1-271** | `0x801288DC`, `0x80128930`, `0x80128988` (Physics & Special Move Vector Cluster) | 89 | 127,591 | Processed & Validated; Telemetry 09 CLEAN |
 
 
-- **Total words promoted since S1-239**: **+21,183 words** (+10.83% absolute gain).
+- **Total words promovidas desde S1-239**: **+21,272 words** (+10.88% absolute gain).
 
 ---
 

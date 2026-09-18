@@ -4223,3 +4223,14 @@
 0x80160D84
 0x80160E84
 
+# Micro-lote S1-271: Cluster de Fisica de Movimentos Especiais / Reacao Corporal.
+# - 0x801288DC:  84 bytes / 21 palavras (Raiz formal; invocada via jump table 0x801B03CC; chama 0x80128930 e 0x80128988)
+# - 0x80128930:  88 bytes / 22 palavras (Sub-rotina auxiliar de vetor; chama 0x8012B8F4 nativa)
+# - 0x80128988: 184 bytes / 46 palavras (Calculador de trajetoria e impacto; chama 0x8012B8F4 e 0x8012C628 nativas)
+# Elimina os 5 misses (364 hits) observados no combate Garuda vs Kairi (gameplay-discovery-08).
+# Preenche o intervalo 0x801288DC..0x80128A40 dentro do gap 0x80128524..0x80128D74.
+# Todas as 5 chamadas diretas JAL sao nativas ou internas; zero expansao de closure.
+# Total: 3 funcoes novas, 356 bytes / 89 palavras. Atinge 127.591 palavras (65,2359%), 1.123 funcoes nativas.
+0x801288DC
+0x80128930
+0x80128988

@@ -130,6 +130,25 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-271: Physics & Special Move Vector Calculation Cluster (Staged)
+- **Origem / Gatilho**: 5 PCs observados com 364 hits em combate ativo (Garuda vs Kairi, `gameplay-discovery-08`): `0x801288DC` (120 hits), `0x80128988` (120 hits), `0x801289D0` (120 hits), `0x80128930` (2 hits), `0x80128968` (2 hits).
+- **Invocacao / Jump Table**: A raiz `0x801288DC` e apontada pelo indice `0x801B03CC` da tabela de dispatch de acoes de combate (`0x801B03BC..0x801B03F8`).
+- **Cluster & Limites**:
+  - `0x801288DC`: 84 bytes / 21 palavras (Raiz formal; calcula parametros de vetor de acao e chama `0x80128930` e `0x80128988`).
+  - `0x80128930`: 88 bytes / 22 palavras (Sub-rotina auxiliar de vetor; chama `0x8012B8F4` nativa).
+  - `0x80128988`: 184 bytes / 46 palavras (Calculador de trajetoria e impacto; chama `0x8012B8F4` e `0x8012C628` nativas).
+- **Fechamento de Chamadas**: Todas as 5 chamadas diretas `JAL` sao nativas ou internas ao cluster. Zero expansao de closure. Zero jump tables internas, zero `jalr`, zero interacoes arriscadas com hardware/SMC.
+- **Topologia**: Ocupa de forma continua o intervalo `0x801288DC..0x80128A40` dentro do gap de fisica `0x80128524..0x80128D74`.
+- **Orcamento**: 3 funcoes novas, 356 bytes / **89 palavras**.
+- **Cobertura Final S1-271**: **127.591 palavras (65,2359%)** em **1.123 funcoes nativas** e **18.405 entradas de dispatch**. Codegen audit: **CLEAN**.
+- **Validacao em Gameplay (`gameplay-discovery-09`)**:
+  - Erradicou 100% dos 5 misses de fisica de combate (`0x801288DC`, `0x80128930`, `0x80128968`, `0x80128988`, `0x801289D0` zerados).
+  - Novos candidatos a promocao estatica no Main EXE: **EXATAMENTE 0**.
+  - Dispatch nativo subiu para **+184.536** e fallback do interprete caiu para o minimo historico de **+87.485**.
+  - Segmento Text do Main EXE em combate ativo atinge **100% de cobertura estatica nativa** (zero misses em rounds completos de Garuda vs Kairi). Apenas os monkey-patches de BIOS/SIO em `0x801AB1F4` e `0x801AB2C0` permanecem sob interpretador.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.
