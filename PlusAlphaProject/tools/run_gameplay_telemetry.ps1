@@ -3,7 +3,10 @@ $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ProjectRoot = Resolve-Path (Join-Path $ScriptDir "..")
 $GameToml = Join-Path $ProjectRoot "game.toml"
 $CuePath = Join-Path $ProjectRoot "disc-a\Street Fighter EX Plus Alpha (USA).cue"
-$ExePath = Join-Path $ProjectRoot "buildTele-s1-284\exPlusAlpha.exe"
+$ExePath = Join-Path $ProjectRoot "buildTele-s1-285\exPlusAlpha.exe"
+if (-not (Test-Path $ExePath)) {
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-284\exPlusAlpha.exe"
+}
 if (-not (Test-Path $ExePath)) {
     $ExePath = Join-Path $ProjectRoot "buildTele-s1-283\exPlusAlpha.exe"
 }

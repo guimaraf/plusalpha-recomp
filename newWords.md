@@ -17,10 +17,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-284** (Movement & Sliding Subroutines - Blair Dame: `0x8014901C`, `0x801490B4`, `0x801491C0`, totalizando 3 funcoes e 366 palavras; erradicou 100% dos candidatos de movimento e sliding observados na sessao 34; validado com sucesso em `gameplay-discovery-39` com 0 misses no Main EXE, 0 handoffs e frametime estavel).
-- **Current Active Batch**: **Homologado (S1-284)** (Baseline estavel em 70,2557% com zero misses no Main EXE).
-- **Current Main Binary Coverage**: **137,409 / 195,584 words (70.2557%)** (Baseline S1-284).
-- **Total Compiled Native Functions**: **1,208 functions**.
+- **Validated Checkpoint**: **S1-285** (Acrobatic Action, Trajectory & Combat States - Skullomania: `0x8012A7E4`, `0x801441B0`, `0x8014424C`, `0x80144398`, `0x80160790`, `0x801607E0`, totalizando 6 funcoes e 947 palavras; erradicou 100% dos 22 candidatos da sessao 40; validado com sucesso em `gameplay-discovery-41` com 0 misses no Main EXE, 0 handoffs e frametime estavel).
+- **Current Active Batch**: **Homologado (S1-285)** (Baseline estavel em 70,7400% com zero misses no Main EXE).
+- **Current Main Binary Coverage**: **138,356 / 195,584 words (70.7400%)** (Baseline S1-285).
+- **Total Compiled Native Functions**: **1,214 functions**.
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
 - **Residual Main EXE Misses**: **ZERO misses em combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
 
@@ -74,8 +74,9 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-282** | `0x80161C04..0x80161FA8` (7 funcs) | 248 | 136,119 | Processed & Validated; Telemetry 37 CLEAN |
 | **S1-283** | `0x8013E930..0x8013EB60` (3 funcs) | 924 | 137,043 | Processed & Validated; Telemetry 38 CLEAN |
 | **S1-284** | `0x8014901C..0x801491C0` (3 funcs) | 366 | 137,409 | Processed & Validated; Telemetry 39 CLEAN |
+| **S1-285** | `0x8012A7E4`, `0x801441B0..AD8`, `0x80160790..AA4` (6 funcs) | 947 | 138,356 | Processed & Validated; Telemetry 41 CLEAN |
 
-- **Total words promovidas desde S1-239**: **+31,090 words** (+15.90% absolute gain).
+- **Total words promovidas desde S1-239**: **+32,037 words** (+16.38% absolute gain).
 
 ---
 

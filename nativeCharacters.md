@@ -24,6 +24,7 @@ Este documento registra os personagens testados e homologados com **100% de exec
 | **Allen Snider** | **100% Nativo** (0 misses) | `gameplay-discovery-31` & `33` | S1-280 | Soul Force, Justice Fist, Vaulting Kick, Rising Dragon, Fire Force, Triple Break, transições de golpe e cenário. |
 | **Zangief** | **100% Nativo** (0 misses) | `gameplay-discovery-36` & `37` | S1-281 / S1-282 | Spinning Piledriver, Atomic Suplex, Final Atomic Buster, Double Lariat, Banishing Flat, tabela global de agarrões `0x801B33F0`. |
 | **Blair Dame** | **100% Nativo** (0 misses) | `gameplay-discovery-38` & `39` | S1-283 / S1-284 | Shoot Kick, Lightning Knee, Sliding D-Kick, Spin Kick, Mirage Kick, ação/combate `0x8013E930`, vetores de deslizamento `0x8014901C`. |
+| **Skullomania** | **100% Nativo** (0 misses) | `gameplay-discovery-40` & `41` | S1-285 | Skullo Crusher, Skullo Slider, Skullo Head, Skullo Dive, Skullo Dash, Super Skullo Crusher/Slider, trajetória `0x8012A7E4`, ação acrobática 3D `0x801441B0..AD8`, máquina de combate `0x80160790..AA4`. |
 
 ---
 
@@ -90,6 +91,18 @@ Durante os testes de combate de alta densidade, o isolamento de telemetria desma
   - **Comportamento em Luta Ativa**: Assim que os buffers de RAM e VRAM estão estabelecidos, o despachador de ações (`0x801AFC70`), o motor de agarroes (`0x801B33F0`), a máquina de combate (`0x8013E930..0x8013EB60`) e as sub-rotinas de movimentação/sliding (`0x8014901C..0x801495D4`) operam 100% em código de máquina nativo x64, eliminando completamente quedas de frametime por fallback do interpretador.
 - **Tratamento Planejado (Track 2)**:
   - O transitório inicial de streaming será mitigado futuramente na etapa de OVL Caching/JIT e otimização de I/O de disco.
+
+---
+
+### Caso 6: Super Combo Teatral do Skullomania (*Skullo Dream*)
+- **Comportamento Observado**: Durante as sessões `gameplay-discovery-40` e `41` (Skullomania vs Ryu), a linha de frametime permaneceu cravada e ultra-estável durante todo o combate ativo, com uma leve micro-variação transitória ocorrendo exclusivamente durante a animação cinematográfica do *Skullo Dream*.
+- **Diagnóstico Técnico**:
+  - **Main EXE 100% Isento de Misses**: Zero quedas de contexto no código estático da ROM (`candidates.txt` vazio após a promoção do S1-285).
+  - **Origem da Micro-Variação em RAM**: O golpe teatral *Skullo Dream* aciona um loop cinematográfico de poses e rastros em RAM dinâmica (`0x80020000..0x800F2000`):
+    - **`0x80093E4C`**: Despachador dinâmico de pose/animação em RAM que disparou um pico massivo de **13,9 milhões de instruções interpretadas** na sessão 40 e **8,4 milhões** na sessão 41.
+    - **`0x80092C2C` e `0x80092F00`**: Loop de atualização dos jogadores com ~5M e ~2M de instruções interpretadas cada.
+- **Tratamento Planejado (Track 2)**:
+  - Essas rotinas pertencem estritamente aos módulos dinâmicos em RAM e serão convertidas para código de máquina nativo na etapa de Overlay Cache / TCC JIT, eliminando a oscilação durante o Super.
 
 ---
 

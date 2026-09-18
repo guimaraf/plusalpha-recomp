@@ -4485,3 +4485,23 @@
 0x801490B4
 0x801491C0
 
+# Micro-lote S1-285 (Acrobatic Action, Trajectory & Combat States - Skullomania):
+# Erradica 100% dos 22 candidatos da sessao Skullomania vs Ryu (gameplay-discovery-40).
+# Composto por 3 gaps perfeitamente delimitados (6 funcoes continuas, 3.788 bytes / 947 palavras):
+# Gap 1 (Calculo de Trajetoria e Vetores Especiais):
+# - 0x8012A7E4:  656 bytes / 164 palavras (Trajetoria e vetores de salto/deslize; 457 hits na entrada e 457 hits no retorno 0x8012AA54)
+# Gap 2 (Motor de Acao Acrobatica e Transformacao 3D):
+# - 0x801441B0:  156 bytes /  39 palavras (Handler de inicio de ataque acrobatico; 238 hits)
+# - 0x8014424C:  332 bytes /  83 palavras (Transicao de mergulho / Skullo Dive; 14 hits em 0x8014424C, 0x80144358, 0x8014436C)
+# - 0x80144398: 1856 bytes / 464 palavras (Processador de rotacao de ossos e hitboxes com 73 COP2 GTE; 210 hits)
+# Gap 3 (Maquina de Estados de Ataques e Reacoes):
+# - 0x80160790:   80 bytes /  20 palavras (Despacho de propriedades de ataque; hits em 0x80160790, 0x801607C0, 0x801607CC)
+# - 0x801607E0:  708 bytes / 177 palavras (Loop central de colisao e quebra de guarda; 50 hits na entrada e multiplos blocos internos)
+# Total S1-285: 6 funcoes novas, 3.788 bytes / 947 palavras. Atinge 138.356 palavras (70,7400%), 1.214 funcoes nativas.
+0x8012A7E4
+0x801441B0
+0x8014424C
+0x80144398
+0x80160790
+0x801607E0
+

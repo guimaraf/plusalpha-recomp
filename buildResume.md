@@ -490,6 +490,34 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-285: Acrobatic Action, Trajectory & Combat States - Skullomania (Preparado & Auditado)
+- **Origem / Gatilho**: Teste inicial de Skullomania vs Ryu (`gameplay-discovery-40`), que desmascarou 22 candidatos no Main EXE e isolou o micro-ripple do *Skullo Dream* no hotspot dinâmico de RAM `0x80093E4C` (+13.966.308 insns sob interpretação).
+- **Topologia & Limites (6 funções novas, 3.788 bytes / 947 palavras distribuídas em 3 gaps contínuos)**:
+  - **Gap 1: Cálculo de Trajetória e Vetores Especiais (`0x8012A7E4..0x8012AA74`)**:
+    - `0x8012A7E4`: 656 bytes / **164 palavras** (457 hits na entrada e 457 hits no retorno `0x8012AA54`; cálculo de vetores de salto e posicionamento de deslize; 5 chamadas JAL nativas).
+  - **Gap 2: Motor de Ação Acrobática e Transformação 3D (`0x801441B0..0x80144AD8`)**:
+    - `0x801441B0`: 156 bytes / **39 palavras** (238 hits; handler inicial de ataque acrobático).
+    - `0x8014424C`: 332 bytes / **83 palavras** (14 hits na entrada e hits em `0x80144358` e `0x8014436C`; transição de mergulho / *Skullo Dive*).
+    - `0x80144398`: 1.856 bytes / **464 palavras** (210 hits; processador central de rotação de malhas, ossos e hitboxes com 73 instruções COP2 GTE).
+  - **Gap 3: Máquina de Estados de Ataques e Reações (`0x80160790..0x80160AA4`)**:
+    - `0x80160790`: 80 bytes / **20 palavras** (hits em `0x80160790`, `0x801607C0`, `0x801607CC`; despacho de propriedades de ataque).
+    - `0x801607E0`: 708 bytes / **177 palavras** (50 hits na entrada e múltiplos blocos internos `0x8016084C..0x80160A90`; loop central de estado de colisão e quebra de guarda).
+- **Encaixe e Continuidade**:
+  - Gap 1 conecta `0x8012A58C` a `0x8012AA74`.
+  - Gap 2 conecta `0x801439E4` (S1-274 F1) a `0x80144AD8`.
+  - Gap 3 conecta `0x80160480` a `0x80160AA4` (S1-270 F2).
+- **Fechamento de Chamadas**: Todas as 36 chamadas diretas `JAL` apontam para funções já nativas ou internas ao lote. Expansão de closure: **ZERO** (1.208 -> 1.214 funções cravadas). Zero saltos indiretos (`jr $ra` estrito).
+- **Orçamento Total S1-285**: 6 funções novas, 3.788 bytes / **947 palavras**.
+- **Cobertura Final S1-285**: **138.356 palavras (70,7400%)** em **1.214 funções nativas**. Codegen audit: **CLEAN**.
+- **Validação em Gameplay (`gameplay-discovery-41`)**:
+  - Erradicou 100% dos 22 candidatos da sessão 40 (`candidates.txt` vazio).
+  - Novos candidatos a promoção no Main EXE: **EXATAMENTE 0**.
+  - Native Handoffs: **0** mantidos estritamente.
+  - Linha de frametime: confirmada como extremamente estável durante todo o combate, com micro-variação restrita exclusivamente ao loop do *Skullo Dream* em RAM dinâmica (`0x80093E4C`).
+- **Conclusão de Ciclo**: **Skullomania (17º)** oficialmente homologado com **100% de execução nativa** no Main EXE.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.
