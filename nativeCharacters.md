@@ -20,6 +20,8 @@ Este documento registra os personagens testados e homologados com **100% de exec
 | **Pullum Purna** | **100% Nativo** (0 misses) | `gameplay-discovery-26` | S1-277 | Drill Purrus, Tenresuu, Prim Rose, Prapera Dance, Resall Dance, Gradus Pearl, transições e giros. |
 | **Doctrine Dark** | **100% Nativo** (0 misses) | `gameplay-discovery-28` | S1-278 | Kill Wire, Dark Wire, facadas, Dark EX-Plo (bombas), Dark Shackle, Kill Sword, transições de combate. |
 | **Darun Mister** | **100% Nativo** (0 misses) | `gameplay-discovery-30` | S1-279 | Lariat, Ganga Lariat, Brahma Lariat, Indra Bridge, Daisharin, Twilight Collar, Hasin Shake. |
+| **Cracker Jack** | **100% Nativo** (0 misses) | `gameplay-discovery-31` & `33` | S1-280 | Dash Straight, Dash Upper, Batting Hero, Soccer Ball Kick, Crazy Jack, Raging Buffalo, Home Run Hero, cenário e props. |
+| **Allen Snider** | **100% Nativo** (0 misses) | `gameplay-discovery-31` & `33` | S1-280 | Soul Force, Justice Fist, Vaulting Kick, Rising Dragon, Fire Force, Triple Break, transições de golpe e cenário. |
 
 ---
 
@@ -61,6 +63,17 @@ Durante os testes de combate de alta densidade, o isolamento de telemetria desma
     - **`0x80046EEC` e `0x800477D0`**: Pose de vitória ("Yatta!") e processamento pós-K.O. (~4 milhões de instruções).
 - **Tratamento Planejado (Track 2)**:
   - Rotinas em RAM tratadas via cache dinâmico / TCC sharding para eliminação de qualquer ripple nas bordas do round.
+
+---
+
+### Caso 4: Cenário e Action Subsystem de Cracker Jack & Allen Snider (Micro-lote S1-280)
+- **Comportamento Observado**: Micro-variações contínuas na linha de frametime durante a partida com Cracker Jack no seu cenário (`gameplay-discovery-32`), enquanto o primeiro teste (`gameplay-discovery-31`) registrou zero misses mas alto custo de overlay em RAM.
+- **Diagnóstico Técnico**:
+  - A rota do cenário e postura de P2 de Cracker Jack acionou a entrada `0x801AFC80` da Action Dispatch Table, despachando para um gap estático no Main EXE (`0x8011A8DC..0x8011B3B8`).
+  - Uma única rotina interna, **`0x8011AFBC`**, foi chamada **153.072 vezes** pelo interpretador de fallback (média de ~64 chamadas/frame), gerando chaveamento massivo entre x64 e MIPS.
+- **Resolução Implementada (S1-280)**:
+  - Promoção de 8 funções nativas (`0x8011A8DC`, `0x8011AB7C`, `0x8011ABD4`, `0x8011AC1C`, `0x8011AC50`, `0x8011AFBC`, `0x8011B180`, `0x8011B238`), totalizando +663 palavras.
+  - Validação em `gameplay-discovery-33`: **0 misses no Main EXE**, erradicação completa das 153k chamadas em fallback, queda de **-91,1%** nas instruções interpretadas e frametime 100% limpo em ambas as orientações de combate (normal e invertida).
 
 ---
 

@@ -381,6 +381,32 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-280: Cracker Jack Stage & Action Subsystem (Promovido & Validado)
+- **Origem / Gatilho**: Teste invertido de combate (Allen Snider vs Cracker Jack no Cenário do Cracker Jack, `gameplay-discovery-32`), que desmascarou o ponteiro `0x801AFC80` na Action Dispatch Table apontando para `0x8011ABD4`, e expôs a rotina `0x8011AFBC` com 153.072 chamadas interpretadas por luta gerando oscilações perceptíveis de frametime.
+- **Topologia & Limites (8 funções novas, 2.652 bytes / 663 palavras)**:
+  - **Bloco 1 (Gap de Vetores e Animação do Cenário `0x8011A8DC..0x8011AAFC`, 1 função contínua, 544 bytes / 136 palavras)**:
+    - `0x8011A8DC`: 544 bytes / **136 palavras** (processador de transformação e geometria de cenário/combate; encerra com `jr $ra` em `0x8011AAF4`; conecta perfeitamente a `0x8011AAFC`). O endereço `0x8011A9F8` com 1 hit era o retorno de `jal 0x801945F8`.
+  - **Bloco 2 (Action Dispatcher Subsystem `0x8011AB7C..0x8011B3B8`, 7 funções contínuas, 2.108 bytes / 527 palavras)**:
+    - `0x8011AB7C`: 88 bytes / **22 palavras** (3.445 hits; caller de `0x8011AFBC`).
+    - `0x8011ABD4`: 72 bytes / **18 palavras** (3.445 hits; raiz formal da Action Dispatch Table em `0x801AFC80`).
+    - `0x8011AC1C`: 52 bytes / **13 palavras** (1 hit; despachador para `0x8011A8DC`).
+    - `0x8011AC50`: 876 bytes / **219 palavras** (3.445 hits; transformações geométricas e frame updates).
+    - `0x8011AFBC`: 452 bytes / **113 palavras** (**Workhorse central de combate/cenário: 153.072 hits interpretados erradicados!**).
+    - `0x8011B180`: 184 bytes / **46 palavras** (3.445 hits; vetores de câmera e colisão).
+    - `0x8011B238`: 384 bytes / **96 palavras** (3.445 hits; finalização de buffers; conecta perfeitamente a `0x8011B3B8`).
+- **Fechamento de Chamadas**: Todas as chamadas diretas `JAL` e desvios são estritamente internos ao cluster ou apontam para código estático já nativo. Expansão de closure: **ZERO** (1.182 -> 1.190 funções cravadas).
+- **Orçamento Total S1-280**: 8 funções novas, 2.652 bytes / **663 palavras**.
+- **Cobertura Final S1-280**: **135.259 palavras (69,1565%)** em **1.190 funções nativas**. Codegen audit: **CLEAN**.
+- **Validação em Gameplay (`gameplay-discovery-33`)**:
+  - Erradicou 100% dos 9 candidatos e das 153.072 chamadas interpretadas da sessão 32.
+  - O volume de fallback interpretado caiu de 14.701.282 para 1.303.848 instruções (**-91,1%**).
+  - Novos candidatos a promoção no Main EXE: **EXATAMENTE 0**.
+  - Native Handoffs: **0** mantidos estritamente.
+  - Linha de frametime: confirmada limpa e estável em ambas as orientações (direta e invertida).
+  - Cracker Jack (13º) e Allen Snider (14º) formalmente homologados como 100% nativos no Main EXE estático.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

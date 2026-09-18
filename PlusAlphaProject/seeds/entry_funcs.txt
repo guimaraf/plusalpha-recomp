@@ -4406,3 +4406,25 @@
 0x80161830
 0x801619F8
 0x80161A3C
+
+# Micro-lote S1-280 (Cracker Jack Stage & Action Subsystem):
+# Bloco 1 (Gap 0x8011A8DC..0x8011AAFC, 1 funcao continua, 544 bytes / 136 palavras):
+# - 0x8011A8DC:  544 bytes / 136 palavras (Processador de animacao e vetores do cenario/combate, 1 hit; conecta a 0x8011AAFC)
+# Bloco 2 (Gap 0x8011AB7C..0x8011B3B8, 7 funcoes continuas, 2.108 bytes / 527 palavras):
+# - 0x8011AB7C:   88 bytes /  22 palavras (Caller intermediario de 0x8011AFBC; 3.445 hits)
+# - 0x8011ABD4:   72 bytes /  18 palavras (Raiz formal da Action Dispatch Table em 0x801AFC80; 3.445 hits)
+# - 0x8011AC1C:   52 bytes /  13 palavras (Despachador de sub-rotina para 0x8011A8DC; 1 hit)
+# - 0x8011AC50:  876 bytes / 219 palavras (Processador de frames e transformacoes geometricas; 3.445 hits)
+# - 0x8011AFBC:  452 bytes / 113 palavras (Workhorse do motor de combate/cenario com 153.072 hits interpretados!)
+# - 0x8011B180:  184 bytes /  46 palavras (Configurador de vetores de camera e colisao; 3.445 hits)
+# - 0x8011B238:  384 bytes /  96 palavras (Handler de finalizacao de frame e buffers; 3.445 hits; conecta a 0x8011B3B8)
+# Erradica 100% dos 9 candidatos da sessao Allen vs C.Jack (gameplay-discovery-32).
+# Total S1-280: 8 funcoes novas, 2.652 bytes / 663 palavras. Atinge 135.259 palavras (69,1565%), 1.190 funcoes nativas.
+0x8011A8DC
+0x8011AB7C
+0x8011ABD4
+0x8011AC1C
+0x8011AC50
+0x8011AFBC
+0x8011B180
+0x8011B238
