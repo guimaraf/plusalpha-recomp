@@ -4304,5 +4304,28 @@
 0x80146C10
 0x80146E18
 
-
-
+# Micro-lote S1-275: Combat Action Subsystem (Carga/Hold) & Overlay Support Leaf.
+# Bloco 1 (Gap 0x8011F5F0..0x801202EC, 9 funcoes continuas, 3.324 bytes / 831 palavras):
+# - 0x8011F5F0:  116 bytes /  29 palavras (Setup de registradores e vetores de carga)
+# - 0x8011F664:   76 bytes /  19 palavras (Atualizador de flags de estado)
+# - 0x8011F6B0:   52 bytes /  13 palavras (Limpeza de buffers de ataque)
+# - 0x8011F6E4:  128 bytes /  32 palavras (Loop de despacho com JALR via tabela 0x801AFF08)
+# - 0x8011F764:   72 bytes /  18 palavras (Raiz formal do Action Dispatcher 10 em 0x801AFC98)
+# - 0x8011F7AC:   52 bytes /  13 palavras (Transicao de frames e animacao)
+# - 0x8011F7E0:  444 bytes / 111 palavras (Gerenciador de cancelamento e timing de carga)
+# - 0x8011F99C: 1164 bytes / 291 palavras (Processador de frames ativos, alvo 0 de 0x801AFF08)
+# - 0x8011FE28: 1220 bytes / 305 palavras (Finalizador e transicao pos-ataque, alvo 1 de 0x801AFF08)
+# Bloco 2 (Micro-gap 0x80167ED4..0x80167EF8, 1 funcao folha, 36 bytes / 9 palavras):
+# - 0x80167ED4:   36 bytes /   9 palavras (Leaf de controle invocado por Overlay 0x8008FEF4..0x80090040)
+# Erradica 100% dos 12 candidatos e 48.935 misses da sessao Chun-Li vs Guile (gameplay-discovery-18).
+# Total S1-275: 10 funcoes novas, 3.360 bytes / 840 palavras. Atinge 132.170 palavras (67,5771%), 1.155 funcoes nativas.
+0x8011F5F0
+0x8011F664
+0x8011F6B0
+0x8011F6E4
+0x8011F764
+0x8011F7AC
+0x8011F7E0
+0x8011F99C
+0x8011FE28
+0x80167ED4

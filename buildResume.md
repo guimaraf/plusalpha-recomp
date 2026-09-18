@@ -238,6 +238,35 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-275: Combat Action Subsystem (Carga/Hold) & Overlay Support Leaf (Promovido e Validado)
+- **Origem / Gatilho**: Teste Chun-Li vs Guile no cenario do Guile (`gameplay-discovery-18`), revelando 12 PCs candidatos no Main EXE Text com um total de **48.935 hits interpretados**.
+- **Bloco 1 (Gap de Carga/Hold `0x8011F5F0..0x801202EC`, 9 funcoes continuas, 3.324 bytes / 831 palavras)**:
+  - `0x8011F5F0`: 116 bytes / **29 palavras** (1 hit; setup de registradores e vetores de carga).
+  - `0x8011F664`: 76 bytes / **19 palavras** (201 hits; atualizador de flags de estado).
+  - `0x8011F6B0`: 52 bytes / **13 palavras** (185 hits; limpeza de buffers de ataque).
+  - `0x8011F6E4`: 128 bytes / **32 palavras** (3.290 hits; loop de despacho com `jalr ra, v0` via tabela `0x801AFF08`).
+  - `0x8011F764`: 72 bytes / **18 palavras** (3.290 hits; **Raiz formal** apontada pelo indice 10 da tabela de acoes de combate `0x801AFC70` no offset `0x801AFC98`).
+  - `0x8011F7AC`: 52 bytes / **13 palavras** (1 hit; transicao de frames e animacao).
+  - `0x8011F7E0`: 444 bytes / **111 palavras** (3.290 hits; gerenciador de cancelamento e timing de carga).
+  - `0x8011F99C`: 1.164 bytes / **291 palavras** (**34.426 hits**; processador ativo de frames de golpes rapidos e carga, alvo 0 da tabela `0x801AFF08`; contem o sub-caminho `0x8011FA88` com 236 hits).
+  - `0x8011FE28`: 1.220 bytes / **305 palavras** (**3.044 hits**; finalizador e transicao pos-ataque, alvo 1 da tabela `0x801AFF08`; contem o sub-caminho `0x8011FF24` com 166 hits).
+  - Topologia: Conecta de forma continua e sem qualquer folga a funcao nativa `0x8011F084` ao inicio do lote S1-272 (`0x801202EC`).
+- **Bloco 2 (Micro-gap Leaf `0x80167ED4..0x80167EF8`, 1 funcao folha, 36 bytes / 9 palavras)**:
+  - `0x80167ED4`: 36 bytes / **9 palavras** (**1.092 hits**; leaf puro sem stack frame chamado por 8 pontos da engine de overlay dinamico em RAM `0x8008FEF4..0x80090040`).
+  - Topologia: Conecta perfeitamente a funcao nativa `0x80167E34` a `0x80167EF8`.
+- **Fechamento de Chamadas**: Todas as 16 chamadas diretas `JAL` apontam para funcoes ja compiladas no Main EXE (`0x801938B0`, `0x8019DF20`, `0x80194990`, `0x801945F8`, `0x801946C8`, `0x801948DC`, `0x8019CE70`, `0x8019D740`, `0x8019D7D0`, `0x8010C72C`). Zero saltos externos; expansao de closure ZERO.
+- **Resolucao do JALR em `0x8011F734`**: O salto indireto consulta a tabela `0x801AFF08` cujos dois unicos destinos (`0x8011F99C` e `0x8011FE28`) foram promovidos no proprio lote, garantindo resolucao nativa direta via `call_by_address`.
+- **Orcamento Total S1-275**: 10 funcoes novas, 3.360 bytes / **840 palavras**.
+- **Cobertura Final S1-275**: **132.170 palavras (67,5771%)** em **1.155 funcoes nativas** e **20.129 entradas de dispatch**. Codegen audit: **CLEAN**.
+- **Validacao em Gameplay (`gameplay-discovery-20`)**:
+  - Erradicou 100% dos 12 candidatos e 48.935 misses observados em Chun-Li vs Guile.
+  - Novos candidatos a promocao no Main EXE: **EXATAMENTE 0**.
+  - Dispatches nativos saltaram para **+168.827 hits**.
+  - Fallback interpretado despencou de +9.149.650 para +111.159 (-9.038.491 instrucoes interpretadas eliminadas; queda de 98,8%).
+  - Confirmado frametime cravado e ultra-estavel a 60 FPS durante todo o combate ativo. As variacoes transitorias nas bordas da luta (inicio do round e K.O./replay/pose de vitoria) decorrem das rotinas em RAM dinamica dos overlays (Track 2: `0x80048960`, `0x80046EEC`, `0x800477D0`).
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

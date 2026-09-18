@@ -14,6 +14,7 @@ Este documento registra os personagens testados e homologados com **100% de exec
 | **Kairi** | **100% Nativo** (0 misses) | `gameplay-discovery-08` | S1-270 | Shinki Hatsu Dou, Maryu Rekkou, Shoushuu Renbu, recuo e cancelamentos de ataque. |
 | **Akuma (Gouki)** | **100% Nativo** (0 misses) | `gameplay-discovery-13` & `16` | S1-273 / S1-274 | Gou-Hadouken, Shakunetsu, Gou-Shoryuken, Tatsumaki aéreo/chão, Messatsu Gou Shoryu. |
 | **M. Bison (Vega)** | **100% Nativo** (0 misses) | `gameplay-discovery-15`, `16`, `17` | S1-274 | Psycho Shot, Double Knee Press, Head Press, Somersault Skull Diver, Knee Press Nightmare. |
+| **Chun-Li** | **100% Nativo** (0 misses) | `gameplay-discovery-20` | S1-275 | Hyakuretsu Kyaku, Kikoken, Spinning Bird Kick, Hazan Tenshou Kyaku, Senretsu Kyaku, cancelamentos e golpes de carga. |
 
 ---
 
@@ -43,6 +44,18 @@ Durante os testes de combate de alta densidade, o isolamento de telemetria desma
     - **`0x80093588` e `0x80093D70`**: Renderizador dinâmico de sprites/efeitos em RAM (~16,4 milhões de instruções).
 - **Tratamento Planejado (Track 2)**:
   - O conjunto `0x80044xxx` compõe o módulo de habilidades exclusivas do Bison em RAM e será tratado no lote de overlays de personagens.
+
+---
+
+### Caso 3: Poses de Introdução, Comemoração e Replay da Chun-Li
+- **Comportamento Observado**: Leve variação transitória na linha de frametime nas bordas da luta (início do round e tela de K.O./vitória), com frametime cravado e ultra-estável a 60 FPS durante todo o combate ativo (`gameplay-discovery-20`).
+- **Diagnóstico Técnico**:
+  - O Main EXE registrou **EXATAMENTE 0 MISSES** e o fallback interpretado despencou de 9,15M para apenas 111k instruções (-98,8%).
+  - A variação transitória decorre das rotinas em RAM dinâmica:
+    - **`0x80048960`**: Inicialização de esqueleto/animação de entrada (~8,9 milhões de instruções interpretadas em RAM).
+    - **`0x80046EEC` e `0x800477D0`**: Pose de vitória ("Yatta!") e processamento pós-K.O. (~4 milhões de instruções).
+- **Tratamento Planejado (Track 2)**:
+  - Rotinas em RAM tratadas via cache dinâmico / TCC sharding para eliminação de qualquer ripple nas bordas do round.
 
 ---
 
