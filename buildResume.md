@@ -285,6 +285,35 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-277: Sakura Combat Action Subsystem & Collision Vector Leaf (Promovido e Validado)
+- **Origem / Gatilho**: Teste Sakura vs Pullum Purna no cenario Plus (`gameplay-discovery-24`), revelando 16 PCs candidatos no Main EXE Text com um total de **39.516 hits interpretados**.
+- **Diagnostico Arquitetural**: O trabalho prévio de otimização na Sakura cobriu a Trilha 2 (Overlays dinâmicos em RAM `0x8004xxxx`). No Main EXE estático, a Sakura aciona o **Índice 6 da Tabela Global de Ações** (`0x801AFC70` no offset `0x801AFC88` -> `0x8011BD94`), que ainda não havia sido recompilado estaticamente.
+- **Bloco 1 (Cluster de Ação da Sakura `0x8011BD94..0x8011D030`, 8 funções contínuas, 4.764 bytes / 1.191 palavras)**:
+  - `0x8011BD94`: 104 bytes / **26 palavras** (1 hit na raiz, 1 hit em `0x8011BDE0`; **Raiz formal** apontada pelo índice 6 da tabela `0x801AFC70` no offset `0x801AFC88`; despacha para `0x8011BDFC` e `0x8011C01C`).
+  - `0x8011BDFC`: 544 bytes / **136 palavras** (1 hit; setup de propriedades, buffers de ataque e flags de física).
+  - `0x8011C01C`: 816 bytes / **204 palavras** (3.447 hits na entrada, sub-blocos `0x8011C0C4` [1 hit], `0x8011C118` [1 hit], `0x8011C144` [1 hit], `0x8011C288` [1 hit]; loop despachador com `jalr ra, v0` via tabela `0x801AFDF8`).
+  - `0x8011C34C`: 36 bytes / **9 palavras** (1 hit; limpeza de buffers e resets de comandos de combate).
+  - `0x8011C370`: 20 bytes / **5 palavras** (1 hit; handler atômico de transição de estado).
+  - `0x8011C384`: 1.368 bytes / **342 palavras** (**27.420 hits** na raiz, sub-blocos `0x8011C470` [1 hit], `0x8011C4E4` [1 hit], `0x8011C54C` [1 hit], `0x8011C774` [1 hit]; processador primário de física, combos e projéteis da Sakura; Alvo 0 da tabela `0x801AFDF8`).
+  - `0x8011C8DC`: 880 bytes / **220 palavras** (**8.636 hits**; processador de colisão corporal, timing de impacto e cancelamento; Alvo 1 da tabela `0x801AFDF8`).
+  - `0x8011CC4C`: 996 bytes / **249 palavras** (1 hit; finalizador de frame de ataque, recoil e transição para pose neutra).
+  - Topologia: Conecta perfeitamente a função nativa `0x8011B5E4` (termina em `0x8011BD94`) ao início do lote S1-246 (`0x8011D030`), fechando 100% o gap e criando um bloco contínuo nativo de mais de 23 KB entre `0x8011B3B8` e `0x80120E44`.
+- **Bloco 2 (Calculador Vetorial de Colisão Leaf `0x8015DDC4..0x8015DE60`, 1 função formal, 156 bytes / 39 palavras)**:
+  - `0x8015DDC4`: 156 bytes / **39 palavras** (1 hit; calculador vetorial 3D de distância e caixas de colisão entre lutadores, chamado por `0x8019EFD0`).
+  - Topologia: Preenche com precisão absoluta o gap entre a função nativa `0x8015DC78` (termina em `0x8015DDC4`) e `0x8015DE60`.
+- **Fechamento de Chamadas**: Todas as 51 chamadas diretas `JAL` apontam para funções já nativas no Main EXE (`0x801938B0`, `0x8019DF20`, `0x8019D740`, `0x8019D7D0`, `0x8019E870`, `0x8019E778`, `0x8019CE70`, `0x8010C72C`, etc.) ou internas ao cluster. Expansão de closure: **ZERO**.
+- **Resolução do JALR em `0x8011C1DC`**: O despacho dinâmico lê a tabela `0x801AFDF8`, cujos dois únicos ponteiros (`0x8011C384` e `0x8011C8DC`) pertencem a este próprio micro-lote, garantindo resolução nativa imediata via `call_by_address`.
+- **Orçamento Total S1-277**: 9 funções novas, 4.920 bytes / **1.230 palavras**.
+- **Cobertura Final S1-277**: **133.695 palavras (68,3568%)** em **1.166 funções nativas** e **20.129 entradas de dispatch**. Codegen audit: **CLEAN**.
+- **Validação em Gameplay (`gameplay-discovery-25`)**:
+  - Erradicou 100% dos 16 candidatos e 39.516 misses observados na sessão 24.
+  - Novos candidatos a promoção no Main EXE: **EXATAMENTE 0**.
+  - Dispatches nativos: **+147.240 hits**.
+  - Fallback interpretado despencou de +1.370.296 para apenas **+116.517** (redução de 91,5%, -1.253.779 instruções interpretadas eliminadas).
+  - Sakura formalmente homologada como a 9ª lutadora 100% nativa no Main EXE estático.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

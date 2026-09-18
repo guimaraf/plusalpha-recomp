@@ -4337,3 +4337,27 @@
 # Total S1-276: 2 funcoes novas, 1.180 bytes / 295 palavras. Atinge 132.465 palavras (67,7284%), 1.157 funcoes nativas.
 0x8011E344
 0x8011E628
+
+# Micro-lote S1-277: Sakura Combat Action Subsystem & Collision Vector Leaf.
+# Bloco 1 (Gap 0x8011BD94..0x8011D030, 8 funcoes continuas, 4.764 bytes / 1.191 palavras):
+# - 0x8011BD94:  104 bytes /  26 palavras (Raiz formal do Action Dispatcher 6 em 0x801AFC88; despacha para 0x8011BDFC e 0x8011C01C)
+# - 0x8011BDFC:  544 bytes / 136 palavras (Setup de propriedades e buffers de ataque da Sakura)
+# - 0x8011C01C:  816 bytes / 204 palavras (Loop despachador com JALR via tabela 0x801AFDF8)
+# - 0x8011C34C:   36 bytes /   9 palavras (Sub-rotina de limpeza de buffer de comando)
+# - 0x8011C370:   20 bytes /   5 palavras (Handler de transicao de estado)
+# - 0x8011C384: 1368 bytes / 342 palavras (Processador de fisica de ataque da Sakura, alvo 0 de 0x801AFDF8)
+# - 0x8011C8DC:  880 bytes / 220 palavras (Processador de colisao e cancelamentos da Sakura, alvo 1 de 0x801AFDF8)
+# - 0x8011CC4C:  996 bytes / 249 palavras (Finalizador de frame de ataque e recoil)
+# Bloco 2 (Micro-gap 0x8015DDC4..0x8015DE60, 1 funcao formal, 156 bytes / 39 palavras):
+# - 0x8015DDC4:  156 bytes /  39 palavras (Calculador vetorial de distancia e colisao corporal)
+# Erradica 100% dos 16 candidatos da sessao Sakura vs Pullum (gameplay-discovery-24).
+# Total S1-277: 9 funcoes novas, 4.920 bytes / 1.230 palavras. Atinge 133.695 palavras (68,3568%), 1.166 funcoes nativas.
+0x8011BD94
+0x8011BDFC
+0x8011C01C
+0x8011C34C
+0x8011C370
+0x8011C384
+0x8011C8DC
+0x8011CC4C
+0x8015DDC4
