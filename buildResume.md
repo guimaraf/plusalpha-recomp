@@ -200,6 +200,23 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-274 (Frente 1): Combat Action Subsystem - Cluster 1 (Promovido e Validado)
+- **Origem / Gatilho**: Teste com inversao de papeis (Bison P1 atacando com P2 inerte, `gameplay-discovery-14`), desmascarando 358 hits no Cluster 1.
+- **Topologia & Limites**:
+  - `0x8014373C`: 156 bytes / **39 palavras** (179 hits; despachador que chama `0x801437D8` e `0x801439E4`).
+  - `0x801437D8`: 524 bytes / **131 palavras** (4 hits na raiz, 4 hits em `0x80143948`; calculo de vetores e coordenadas de ataque).
+  - `0x801439E4`: 1.996 bytes / **499 palavras** (171 hits; fisica de impacto e transformacoes 3D do golpe).
+- **Fechamento de Chamadas**: Todas as 14 chamadas externas diretas JAL apontam para rotinas ja nativas (`0x8019D740`, `0x8019D7D0`, `0x8019CA30`, `0x8019EFD0`, `0x8019CE70`, `0x8010C72C`, etc.). Zero saltos indiretos; expansao de closure ZERO.
+- **Orcamento Frente 1**: 3 funcoes novas, 2.676 bytes / **669 palavras**.
+- **Cobertura Final Frente 1**: **130.646 palavras (66,7979%)** em **1.142 funcoes nativas** e **18.792 entradas de dispatch**. Codegen audit: **CLEAN**.
+- **Validacao em Gameplay (`gameplay-discovery-15`)**:
+  - Erradicou 100% dos 358 hits do Cluster 1 (`0x8014373C`, `0x801437D8`, `0x80143948`, `0x801439E4` todos zerados).
+  - Queda macica de -168.126 instrucoes interpretadas no fallback (de +547.324 para +379.198).
+  - Dispatches nativos atingiram **+108.921**.
+  - Restaram no Main EXE apenas os 4 PCs do Cluster 2 (`0x80146B74..0x80147624`, 1.455 hits), mapeados para a Frente 2. Zero novos candidatos adicionais.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

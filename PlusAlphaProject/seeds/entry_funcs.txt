@@ -4284,3 +4284,14 @@
 0x801401F4
 0x8014079C
 
+# Micro-lote S1-274 (Frente 1): Subsistema de Acao de Combate (Cluster 1).
+# - 0x8014373C:  156 bytes /  39 palavras (Raiz formal apontada pelo indice 0x801B1B70 da tabela de acoes; despacha para 0x801437D8 e 0x801439E4)
+# - 0x801437D8:  524 bytes / 131 palavras (Setup de vetores e coordenadas de ataque)
+# - 0x801439E4: 1996 bytes / 499 palavras (Fisica de impacto e transformacoes 3D do golpe)
+# Closure 100% nativa; zero expansao de closure; zero JALR.
+# Total Frente 1: 3 funcoes novas, 2.676 bytes / 669 palavras. Atinge 130.646 palavras (66,7979%), 1.142 funcoes nativas.
+0x8014373C
+0x801437D8
+0x801439E4
+
+
