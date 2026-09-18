@@ -429,6 +429,29 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-282: Grappling Engine - Zangief Command Throws (Promovido & Validado)
+- **Origem / Gatilho**: Teste inicial de Zangief vs Blair Dame (`gameplay-discovery-34`), que ativou a segunda metade da Tabela Global de Agarrões `0x801B33F0` em `0x80161C04..0x80161FE4`, desmascarando 14 candidatos (270 hits em `0x80161CCC` e 90 hits em `0x80161E5C`).
+- **Topologia & Limites (7 funções novas, 992 bytes / 248 palavras)**:
+  - `0x80161C04`: 8 bytes / **2 palavras** (stub de transição apontado por `0x801B3410`).
+  - `0x80161C0C`: 124 bytes / **31 palavras** (handler apontado por `0x801B345C`).
+  - `0x80161C88`: 68 bytes / **17 palavras** (setup de arremesso apontado por `0x801B3414; 3 hits`).
+  - `0x80161CCC`: 332 bytes / **83 palavras** (impacto corporal e colisão de *Spinning Piledriver* / *Powerbomb* em `0x801B3460`; **270 hits**).
+  - `0x80161E18`: 68 bytes / **17 palavras** (transição apontada por `0x801B3418; 1 hit`).
+  - `0x80161E5C`: 332 bytes / **83 palavras** (trajetória, elevação e impacto de *Atomic Suplex* / *Final Atomic Buster* em `0x801B3464`; **90 hits**).
+  - `0x80161FA8`: 60 bytes / **15 palavras** (recoil pós-arremesso apontado por `0x801B3438`).
+- **Encaixe e Continuidade**: Conecta diretamente com `0x80161A3C` (promovido no S1-279), estendendo a Tabela Global de Agarrões até `0x80161FE4`.
+- **Fechamento de Chamadas**: Zero saltos indiretos, zero chamadas externas não resolvidas. Expansão de closure: **ZERO** (1.195 -> 1.202 funções cravadas).
+- **Orçamento Total S1-282**: 7 funções novas, 992 bytes / **248 palavras**.
+- **Cobertura Final S1-282**: **136.119 palavras (69,5962%)** em **1.202 funções nativas**. Codegen audit: **CLEAN**.
+- **Validação em Gameplay (`gameplay-discovery-37`)**:
+  - Erradicou 100% dos 14 candidatos da Tabela de Agarrões da sessão 34.
+  - Novos candidatos a promoção no Main EXE: **EXATAMENTE 0**.
+  - Native Handoffs: **0** mantidos estritamente.
+  - Dispatches nativos alcançaram **+305.438 chamadas** em C nativo com estabilidade máxima.
+  - Linha de frametime: confirmada visualmente como extremamente limpa.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

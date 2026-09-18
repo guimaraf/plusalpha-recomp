@@ -17,10 +17,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-281** (Action Dispatcher Subsystem - Blair Dame & Zangief: `0x8011D9B4`, `0x8011DA1C`, `0x8011DC1C`, `0x8011E30C`, `0x8011E330`, totalizando 5 funcoes e 612 palavras; erradicou 100% dos 7 candidatos da sessao 35 e as 47.970 chamadas interpretadas de `0x8011E18C`; validado com sucesso em `gameplay-discovery-36` com 0 misses no Main EXE, 0 handoffs, +201.339 dispatches nativos e frametime estavel).
-- **Current Active Batch**: **Homologado (S1-281)** (Baseline estavel em 69,4694% com zero misses no Main EXE).
-- **Current Main Binary Coverage**: **135,871 / 195,584 words (69.4694%)** (Baseline S1-281).
-- **Total Compiled Native Functions**: **1,195 functions**.
+- **Validated Checkpoint**: **S1-282** (Grappling Engine - Zangief Command Throws: `0x80161C04..0x80161FA8` [7 funcs], totalizando 7 funcoes e 248 palavras; erradicou 100% dos 14 candidatos da Tabela de Agarrões 0x801B33F0 observados na sessao 34; validado com sucesso em `gameplay-discovery-37` com 0 misses no Main EXE, 0 handoffs, +305.438 dispatches nativos e frametime extremamente limpo).
+- **Current Active Batch**: **Homologado (S1-282)** (Baseline estavel em 69,5962% com zero misses no Main EXE).
+- **Current Main Binary Coverage**: **136,119 / 195,584 words (69.5962%)** (Baseline S1-282).
+- **Total Compiled Native Functions**: **1,202 functions**.
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
 - **Residual Main EXE Misses**: **ZERO misses em combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
 
@@ -71,8 +71,9 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-279** | `0x80127FB8`, `0x80128A40..D74`, `0x8012B86C`, `0x80161584..1A3C` (13 funcs) | 678 | 134,596 | Processed & Validated; Telemetry 30 CLEAN |
 | **S1-280** | `0x8011A8DC`, `0x8011AB7C..B238` (8 funcs) | 663 | 135,259 | Processed & Validated; Telemetry 33 CLEAN |
 | **S1-281** | `0x8011D9B4..0x8011E330` (5 funcs) | 612 | 135,871 | Processed & Validated; Telemetry 36 CLEAN |
+| **S1-282** | `0x80161C04..0x80161FA8` (7 funcs) | 248 | 136,119 | Processed & Validated; Telemetry 37 CLEAN |
 
-- **Total words promovidas desde S1-239**: **+29,552 words** (+15.11% absolute gain).
+- **Total words promovidas desde S1-239**: **+29,800 words** (+15.24% absolute gain).
 
 ---
 

@@ -4443,3 +4443,22 @@
 0x8011DC1C
 0x8011E30C
 0x8011E330
+
+# Micro-lote S1-282 (Grappling Engine - Zangief Command Throws):
+# Tabela Global de Agarrões 0x801B33F0 em 0x80161C04..0x80161FE4 (7 funções contínuas, 992 bytes / 248 palavras):
+# - 0x80161C04:    8 bytes /   2 palavras (Stub de transição apontado por 0x801B3410)
+# - 0x80161C0C:  124 bytes /  31 palavras (Handler apontado por 0x801B345C)
+# - 0x80161C88:   68 bytes /  17 palavras (Setup de arremesso apontado por 0x801B3414; 3 hits)
+# - 0x80161CCC:  332 bytes /  83 palavras (Impacto corporal e dano de Spinning Piledriver / Powerbomb em 0x801B3460; 270 hits)
+# - 0x80161E18:   68 bytes /  17 palavras (Transição apontada por 0x801B3418; 1 hit)
+# - 0x80161E5C:  332 bytes /  83 palavras (Trajetória, elevação e impacto de Atomic Suplex / Buster em 0x801B3464; 90 hits)
+# - 0x80161FA8:   60 bytes /  15 palavras (Recoil pós-arremesso apontado por 0x801B3438)
+# Erradica 100% dos 14 candidatos da Tabela de Agarrões da sessão Zangief vs Blair (gameplay-discovery-34).
+# Total S1-282: 7 funções novas, 992 bytes / 248 palavras. Atinge 136.119 palavras (69,5962%), 1.202 funções nativas.
+0x80161C04
+0x80161C0C
+0x80161C88
+0x80161CCC
+0x80161E18
+0x80161E5C
+0x80161FA8
