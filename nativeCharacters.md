@@ -19,6 +19,7 @@ Este documento registra os personagens testados e homologados com **100% de exec
 | **Sakura** | **100% Nativo** (0 misses) | `gameplay-discovery-25` | S1-277 | Hadoken, Shouoken (antiação), Shunpukyaku, Midare Zakura, Haru Ichiban, cancelamentos e colisões vetoriais. |
 | **Pullum Purna** | **100% Nativo** (0 misses) | `gameplay-discovery-26` | S1-277 | Drill Purrus, Tenresuu, Prim Rose, Prapera Dance, Resall Dance, Gradus Pearl, transições e giros. |
 | **Doctrine Dark** | **100% Nativo** (0 misses) | `gameplay-discovery-28` | S1-278 | Kill Wire, Dark Wire, facadas, Dark EX-Plo (bombas), Dark Shackle, Kill Sword, transições de combate. |
+| **Darun Mister** | **100% Nativo** (0 misses) | `gameplay-discovery-30` | S1-279 | Lariat, Ganga Lariat, Brahma Lariat, Indra Bridge, Daisharin, Twilight Collar, Hasin Shake. |
 
 ---
 

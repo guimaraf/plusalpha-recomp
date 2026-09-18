@@ -344,6 +344,43 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-279: Darun Mister Combat Subsystem (Lariats, Heavy Impact & Command Throw Dispatcher) (Promovido e Validado)
+- **Origem / Gatilho**: Teste com inversão de papéis (Darun Mister P1 atacando vs D.Dark P2 inerte no cenário Darun, `gameplay-discovery-29`), desmascarando 27 candidatos no Main EXE Text com um total de **2.348 hits interpretados**.
+- **Diagnóstico Arquitetural**:
+  - Os agarrões de comando, arremessos (*Indra Bridge*, *Daisharin*), *Lariats* e o especial de 720 (*Twilight Collar*) dependem de uma infraestrutura compartilhada no Main EXE: a **Tabela Global de Agarrões (`0x801B33F0`)** e os despachadores de física pesada em `0x80128xxx`.
+  - A execução não compilada dessa infraestrutura ativou 27 pontos de choque no Main EXE Text.
+- **Topologia & Limites (13 funções novas, 2.712 bytes / 678 palavras)**:
+  - **Bloco 1 (Gap de Lariat / Grab Linkage `0x80127FB8..0x80128014`, 1 função, 92 bytes / 23 palavras)**:
+    - `0x80127FB8`: 92 bytes / **23 palavras** (96 hits na raiz, 96 hits em `0x80127FF8`, 3 hits em `0x80127FF0`, 3 hits em `0x80128000`; conecta perfeitamente `0x80127D1C` a `0x80128014`).
+  - **Bloco 2 (Gap de Impacto Pesado & Lariat Engine `0x80128A40..0x80128D74` + Helper `0x8012B86C`, 5 funções, 956 bytes / 239 palavras)**:
+    - `0x80128A40`: 308 bytes / **77 palavras** (352 hits; processador primário de impacto do Lariat).
+    - `0x80128B74`: 84 bytes / **21 palavras** (352 hits em `0x80128B58`; setup de giro e impulso).
+    - `0x80128BC8`: 88 bytes / **22 palavras** (transição pós-acerto; chama `0x8012B86C`).
+    - `0x80128C20`: 340 bytes / **85 palavras** (finalizador e cálculo de recoil do Lariat; chama `0x8012B86C`).
+    - `0x8012B86C`: 136 bytes / **34 palavras** (helper vetorial de colisão pesada; preenche 100% o gap `0x8012B86C..0x8012B8F4`).
+    - Fecha 100% o gap entre `0x80128A40` e `0x80128D74`.
+  - **Bloco 3 (Tabela Global de Agarrões `0x801B33F0` em `0x80161584..0x80161C04`, 7 funções contínuas, 1.664 bytes / 416 palavras)**:
+    - `0x80161584`: 88 bytes / **22 palavras** (handler de transição apontado por `0x801B3470`).
+    - `0x801615DC`: 164 bytes / **41 palavras** (2 hits; setup de agarrão apontado por `0x801B33FC`).
+    - `0x80161680`: 364 bytes / **91 palavras** (233 hits na raiz, 135 hits em `0x801616CC`, etc.; processador de colisão corporal de agarrão apontado por `0x801B3448`).
+    - `0x801617EC`: 68 bytes / **17 palavras** (4 hits; vetores de elevação de suplex apontados por `0x801B3400`).
+    - `0x80161830`: 456 bytes / **114 palavras** (250 hits na raiz, 132 hits em `0x801618CC`, 84 hits em `0x801618F4`, 66 hits em `0x80161994`, etc.; processador de arremesso e dano apontado por `0x801B344C`).
+    - `0x801619F8`: 68 bytes / **17 palavras** (3 hits em `0x801619E0`; recoil e soltura apontados por `0x801B342C`).
+    - `0x80161A3C`: 456 bytes / **114 palavras** (impacto no chão e recuperação apontados por `0x801B3478`).
+    - Fecha 100% o gap e erradica todos os 21 candidatos da região `0x80161xxx`.
+- **Fechamento de Chamadas**: Todas as chamadas diretas `JAL` apontam para funções internas ou já nativas no Main EXE (`0x80126614`, `0x801265C0`, `0x8012B730`, `0x8012C628`, `0x8015E12C`, `0x80159E44`, `0x80115574`, etc.). Expansão de closure: **ZERO** (1.169 -> 1.182 funções cravadas).
+- **Orçamento Total S1-279**: 13 funções novas, 2.712 bytes / **678 palavras**.
+- **Cobertura Final S1-279**: **134.596 palavras (68,8175%)** em **1.182 funções nativas** e **20.129 entradas de dispatch**. Codegen audit: **CLEAN**.
+- **Validação em Gameplay (`gameplay-discovery-30`)**:
+  - Erradicou 100% dos 27 candidatos e 2.348 misses observados na sessão 29 (todos zerados no interpretador).
+  - Novos candidatos a promoção no Main EXE: **EXATAMENTE 0**.
+  - Native Handoffs: **0** mantidos estritamente.
+  - Linha de frametime: confirmada visualmente bem limpa e estável durante os agarrões e lariats.
+  - Dispatches nativos mantiveram alta taxa: **+218.855 hits** na janela.
+  - Darun Mister formalmente homologado como o 12º lutador 100% nativo no Main EXE estático.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

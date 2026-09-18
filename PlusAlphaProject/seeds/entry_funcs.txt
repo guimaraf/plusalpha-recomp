@@ -4373,3 +4373,36 @@
 0x80102B10
 0x80140CEC
 0x80140D38
+
+# Micro-lote S1-279: Darun Mister Combat Subsystem (Lariats, Heavy Impact & Command Throw Dispatcher).
+# Bloco 1 (Gap 0x80127FB8..0x80128014, 1 funcao, 92 bytes / 23 palavras):
+# - 0x80127FB8:   92 bytes /  23 palavras (Lariat Linkage & Grab Catch; conecta 0x80127D1C a 0x80128014)
+# Bloco 2 (Gap 0x80128A40..0x80128D74 + Helper 0x8012B86C, 5 funcoes, 956 bytes / 239 palavras):
+# - 0x80128A40:  308 bytes /  77 palavras (Processador primario de impacto do Lariat; 352 hits)
+# - 0x80128B74:   84 bytes /  21 palavras (Setup de giro e impulso do Lariat; 352 hits em 0x80128B58)
+# - 0x80128BC8:   88 bytes /  22 palavras (Transicao pos-acerto do Lariat)
+# - 0x80128C20:  340 bytes /  85 palavras (Finalizador e dano de impacto do Lariat)
+# - 0x8012B86C:  136 bytes /  34 palavras (Helper de fisica de impacto; preenche gap 0x8012B86C..0x8012B8F4)
+# Bloco 3 (Tabela Global de Agarrões 0x801B33F0 em 0x80161584..0x80161C04, 7 funcoes, 1.664 bytes / 416 palavras):
+# - 0x80161584:   88 bytes /  22 palavras (Entrada de transicao da tabela em 0x801B3470)
+# - 0x801615DC:  164 bytes /  41 palavras (Setup de agarrão em 0x801B33FC)
+# - 0x80161680:  364 bytes /  91 palavras (Processador de colisao de agarrão em 0x801B3448; 233 hits)
+# - 0x801617EC:   68 bytes /  17 palavras (Vetores de elevacao de suplex em 0x801B3400)
+# - 0x80161830:  456 bytes / 114 palavras (Processador de arremesso e dano em 0x801B344C; 250 hits)
+# - 0x801619F8:   68 bytes /  17 palavras (Recoil e soltura em 0x801B342C)
+# - 0x80161A3C:  456 bytes / 114 palavras (Impacto no chao e recuperacao em 0x801B3478)
+# Erradica 100% dos 27 candidatos da sessao Darun vs D.Dark (gameplay-discovery-29).
+# Total S1-279: 13 funcoes novas, 2.712 bytes / 678 palavras. Atinge 134.596 palavras (68,8175%), 1.182 funcoes nativas.
+0x80127FB8
+0x80128A40
+0x80128B74
+0x80128BC8
+0x80128C20
+0x8012B86C
+0x80161584
+0x801615DC
+0x80161680
+0x801617EC
+0x80161830
+0x801619F8
+0x80161A3C
