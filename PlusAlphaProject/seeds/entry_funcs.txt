@@ -4428,3 +4428,18 @@
 0x8011AFBC
 0x8011B180
 0x8011B238
+
+# Micro-lote S1-281 (Action Dispatcher Subsystem - Blair Dame & Zangief):
+# Gap 0x8011D9B4..0x8011E344 (5 funcoes continuas, 2.448 bytes / 612 palavras):
+# - 0x8011D9B4:  104 bytes /  26 palavras (Raiz formal da Action Dispatch Table em 0x801AFC90; 3.846 hits)
+# - 0x8011DA1C:  512 bytes / 128 palavras (Setup de propriedades e buffers de ataque; 1 hit)
+# - 0x8011DC1C: 1776 bytes / 444 palavras (Processador de estados de acao/reacao; 3.846 hits na entrada e 47.970 hits em 0x8011E18C!)
+# - 0x8011E30C:   36 bytes /   9 palavras (Handler de transicao; 734 hits)
+# - 0x8011E330:   20 bytes /   5 palavras (Conector terminal para 0x8011E344; 712 hits)
+# Erradica 100% dos 7 candidatos da sessao Blair vs Zangief (gameplay-discovery-35) e as 47.970 quedas de 0x8011E18C.
+# Total S1-281: 5 funcoes novas, 2.448 bytes / 612 palavras. Atinge 135.871 palavras (69,4693%), 1.195 funcoes nativas.
+0x8011D9B4
+0x8011DA1C
+0x8011DC1C
+0x8011E30C
+0x8011E330

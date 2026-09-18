@@ -407,6 +407,28 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-281: Action Dispatcher Subsystem - Blair Dame & Zangief (Promovido & Validado)
+- **Origem / Gatilho**: Teste invertido de combate (Blair Dame vs Zangief no Cenário do Zangief, `gameplay-discovery-35`), que desmascarou o ponteiro `0x801AFC90` na Action Dispatch Table apontando para `0x8011D9B4`, e expôs a rotina interna `0x8011E18C` com 47.970 chamadas interpretadas por luta.
+- **Topologia & Limites (5 funções novas, 2.448 bytes / 612 palavras)**:
+  - Gap contínuo `0x8011D9B4..0x8011E344`:
+    - `0x8011D9B4`: 104 bytes / **26 palavras** (3.846 hits; raiz formal da Action Table em `0x801AFC90`).
+    - `0x8011DA1C`: 512 bytes / **128 palavras** (1 hit; setup de buffers e propriedades de ataque).
+    - `0x8011DC1C`: 1.776 bytes / **444 palavras** (3.846 hits na entrada, **47.970 hits em `0x8011E18C`**; processador central de estados de combate/reação).
+    - `0x8011E30C`: 36 bytes / **9 palavras** (734 hits; handler de transição).
+    - `0x8011E330`: 20 bytes / **5 palavras** (712 hits; conector terminal; encerra com `jr $ra` em `0x8011E33C`; conecta perfeitamente a `0x8011E344`).
+- **Encaixe e Continuidade**: Conecta `0x8011D310..0x8011D9B3` (S1-245) a `0x8011E344` (S1-276), unificando toda a faixa `0x8011BD94..0x8011F5F0` como um bloco compilado contínuo no Main EXE.
+- **Fechamento de Chamadas**: Todas as chamadas diretas `JAL` apontam para funções já nativas ou internas ao bloco. Expansão de closure: **ZERO** (1.190 -> 1.195 funções cravadas).
+- **Orçamento Total S1-281**: 5 funções novas, 2.448 bytes / **612 palavras**.
+- **Cobertura Final S1-281**: **135.871 palavras (69,4694%)** em **1.195 funções nativas**. Codegen audit: **CLEAN**.
+- **Validação em Gameplay (`gameplay-discovery-36`)**:
+  - Erradicou 100% dos 7 candidatos da sessão 35 e as 47.970 chamadas interpretadas de `0x8011E18C`.
+  - O volume de fallback interpretado caiu de 8.624.913 para 1.621.746 instruções (**-81,2%**).
+  - Novos candidatos a promoção no Main EXE: **EXATAMENTE 0**.
+  - Native Handoffs: **0** mantidos estritamente.
+  - Dispatches nativos mantidos em alta taxa: **+201.339 chamadas** em C nativo.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.
