@@ -17,10 +17,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-277** (Sakura Combat Action Subsystem `0x8011BD94..0x8011D030` [8 funcs] + Collision Vector Leaf `0x8015DDC4` [1 func], totalizando 9 funcoes e 1.230 palavras; erradicou 100% dos 16 candidatos observados na sessao 24; validado com sucesso em `gameplay-discovery-25` com 0 misses no Main EXE, +147.240 dispatches nativos e reducao de 91,5% no fallback interpretado).
-- **Current Active Batch**: **Homologado (S1-277)** (Baseline estavel em 68,3568% com zero misses em combate ativo no Main EXE).
-- **Current Main Binary Coverage**: **133,695 / 195,584 words (68.3568%)** (Baseline S1-277).
-- **Total Compiled Native Functions**: **1,166 functions** (20,129 entradas de dispatch).
+- **Validated Checkpoint**: **S1-278** (Status Dispatcher `0x80102B10` [1 func] + Combat Vector Transition Cluster `0x80140CEC`, `0x80140D38` [2 funcs], totalizando 3 funcoes e 223 palavras; erradicou 100% dos 5 candidatos e 1.002 native handoffs observados na sessao 27; validado com sucesso em `gameplay-discovery-28` com 0 misses no Main EXE, 0 handoffs, +205.138 dispatches nativos e frametime 100% limpo).
+- **Current Active Batch**: **Homologado (S1-278)** (Baseline estavel em 68,4708% com zero misses e zero handoffs em combate ativo no Main EXE).
+- **Current Main Binary Coverage**: **133,918 / 195,584 words (68.4708%)** (Baseline S1-278).
+- **Total Compiled Native Functions**: **1,169 functions** (20,129 entradas de dispatch).
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
 - **Residual Main EXE Misses**: **ZERO misses em combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
 
@@ -67,8 +67,9 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-275** | `0x8011F5F0..0x801202EC` (9 funcs) + `0x80167ED4` (Leaf) | 840 | 132,170 | Processed & Validated; Telemetry 20 CLEAN |
 | **S1-276** | `0x8011E344`, `0x8011E628` (Guile Action Subsystem) | 295 | 132,465 | Processed & Validated; Telemetry 22 CLEAN |
 | **S1-277** | `0x8011BD94..0x8011D030` (8 funcs) + `0x8015DDC4` (Leaf) | 1,230 | 133,695 | Processed & Validated; Telemetry 25 CLEAN |
+| **S1-278** | `0x80102B10` + `0x80140CEC`, `0x80140D38` | 223 | 133,918 | Processed & Validated; Telemetry 28 CLEAN |
 
-- **Total words promovidas desde S1-239**: **+27,376 words** (+14.00% absolute gain).
+- **Total words promovidas desde S1-239**: **+27,599 words** (+14.11% absolute gain).
 
 ---
 

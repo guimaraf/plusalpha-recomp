@@ -4361,3 +4361,15 @@
 0x8011C8DC
 0x8011CC4C
 0x8015DDC4
+
+# Micro-lote S1-278: Gameplay Status Dispatcher & Combat Vector Transition Cluster.
+# Bloco 1 (Status Table Entry em 0x801AE884, 1 funcao, 624 bytes / 156 palavras):
+# - 0x80102B10:  624 bytes / 156 palavras (Despachador de Status/Modos de Jogo, Indice 4 da tabela 0x801AE874)
+# Bloco 2 (Gap de Combate 0x80140CEC..0x80140DF8, 2 funcoes continuas, 268 bytes / 67 palavras):
+# - 0x80140CEC:   76 bytes /  19 palavras (Setup de propriedades e vetores de combate antes de 0x80140DF8)
+# - 0x80140D38:  192 bytes /  48 palavras (Processador ativo de acoes/transicoes de combate D.Dark/Darun)
+# Erradica 100% dos 5 candidatos e 1.002 native handoffs da sessao D.Dark vs Darun (gameplay-discovery-27).
+# Total S1-278: 3 funcoes novas, 892 bytes / 223 palavras. Atinge 133.918 palavras (68,4708%), 1.169 funcoes nativas.
+0x80102B10
+0x80140CEC
+0x80140D38

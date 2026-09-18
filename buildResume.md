@@ -319,6 +319,31 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-278: Gameplay Status Dispatcher & Combat Vector Transition Cluster (Promovido e Validado)
+- **Origem / Gatilho**: Teste Doctrine Dark vs Darun Mister no cenario Darun (`gameplay-discovery-27`), revelando instabilidade e sujeira na linha de frametime causada por **+1.002 Native Handoffs** de contexto e 5 candidatos no Main EXE Text com **160 hits interpretados**.
+- **Diagnostico Arquitetural**:
+  - O trabalho prévio no D.Dark cobriu a Trilha 2 (Overlays em RAM `0x8004xxxx`, série OVL-002 de bombas e explosivos).
+  - No Main EXE estático, o combate ativo de D.Dark e Darun esbarrou em um gap de 268 bytes entre as rotinas nativas `0x80140B6C` (termina em `0x80140CE8`) e `0x80140DF8` (começa em `0x80140DF8`). A cada ataque, o código caía em interpretação no gap e retornava para o bloco nativo seguinte, gerando +1.002 handoffs por frame e oscilação de frametime.
+  - Adicionalmente, a tabela global de status do jogo em `0x801AE874` teve seu índice 4 (`0x801AE884` -> `0x80102B10`) acionado com 83 hits interpretados.
+- **Topologia & Limites (3 funções novas, 892 bytes / 223 palavras)**:
+  - **Bloco 1 (Entrada da Tabela Global de Status, 1 função, 624 bytes / 156 palavras)**:
+    - `0x80102B10`: 624 bytes / **156 palavras** (83 hits; despachador formal de modos de jogo apontado pelo índice 4 da tabela `0x801AE874` no offset `0x801AE884`; conecta `0x80102B10` até `0x80102D80`; chama `0x80101D18` nativa).
+  - **Bloco 2 (Gap de Combate D.Dark/Darun `0x80140CEC..0x80140DF8`, 2 funções contínuas, 268 bytes / 67 palavras)**:
+    - `0x80140CEC`: 76 bytes / **19 palavras** (1 hit; setup de propriedades, buffers de ataque e matrizes de colisão; chama `0x80123A94` nativa; fecha o gap entre `0x80140CE8` e `0x80140D38`).
+    - `0x80140D38`: 192 bytes / **48 palavras** (39 hits na raiz, 1 hit em `0x80140DA0` e 36 hits no epílogo `0x80140DE4`; processador ativo de ações, recoil e transições de combate; chama `0x80140DF8`, `0x80123AE0`, `0x80141454`, `0x801411D8` todas nativas; conecta com `0x80140DF8`).
+- **Fechamento de Chamadas**: Todas as 6 chamadas diretas `JAL` apontam para funções já nativas no Main EXE (`0x80101D18`, `0x80123A94`, `0x80140DF8`, `0x80123AE0`, `0x80141454`, `0x801411D8`). Zero saltos externos; expansão de closure: **ZERO**.
+- **Orçamento Total S1-278**: 3 funções novas, 892 bytes / **223 palavras**.
+- **Cobertura Final S1-278**: **133.918 palavras (68,4708%)** em **1.169 funções nativas** e **20.129 entradas de dispatch**. Codegen audit: **CLEAN**.
+- **Validação em Gameplay (`gameplay-discovery-28`)**:
+  - Erradicou 100% dos 5 candidatos e 160 misses observados na sessão 27 (`0x80102B10`, `0x80140CEC`, `0x80140D38`, `0x80140DA0`, `0x80140DE4` todos zerados).
+  - Novos candidatos a promoção no Main EXE: **EXATAMENTE 0**.
+  - Native Handoffs: despencaram de +1.002 para **0**.
+  - Linha de frametime: confirmada visualmente 100% limpa, lisa e cravada sem os micro-stutters da rodada anterior.
+  - Dispatches nativos: **+205.138 hits**.
+  - Doctrine Dark formalmente homologado como o 11º lutador 100% nativo no Main EXE estático.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.
