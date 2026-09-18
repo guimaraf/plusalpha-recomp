@@ -4199,3 +4199,27 @@
 # Todas as 13 chamadas JAL resolvem para funcoes ja nativas; zero expansao de closure.
 # Total: 1 funcao nova, 1.192 bytes / 298 palavras. Atinge 127.128 palavras (64,9991%), 1.114 funcoes nativas.
 0x8014FE30
+
+# Micro-lote S1-270 (Frente 1): Funcao Folha de Trigonometria e Rotacao 3D Matricial (Garuda Hotspot).
+# - 0x8019E6D0: 408 bytes / 102 palavras (Raiz formal; leaf frameless pura; zero JALs)
+# Elimina os 5.328 misses observados no combate Garuda vs Kairi (gameplay-discovery-06). Validado em discovery-07.
+# Conecta perfeitamente o bloco 0x8019E440 a 0x8019E870 no Main EXE.
+# Total Frente 1: 1 funcao nova, 408 bytes / 102 palavras. Atinge 127.230 palavras (65,0513%), 1.115 funcoes nativas.
+0x8019E6D0
+
+# Micro-lote S1-270 (Frente 2): Cluster de Reacao, Dano e Colisao de Combate.
+# - 0x80160B54: 240 bytes /  60 palavras (Calculo de flags/offsets de reacao)
+# - 0x80160C44: 152 bytes /  38 palavras (Atualizacao de impacto e status)
+# - 0x80160CDC: 168 bytes /  42 palavras (Tratamento de dano e frame de stun)
+# - 0x80160D84: 256 bytes /  64 palavras (Processador de colisoes e transicoes de estado)
+# - 0x80160E84: 272 bytes /  68 palavras (Mecanica de hit-stop e reacao corporal)
+# Conecta perfeitamente 0x80160AA4 a 0x80160F94 no Main EXE (elimina gap de 272 palavras).
+# Elimina os 294 misses observados na Sessao 07 (0x80160C44, 0x80160CC4, 0x80160CDC, 0x80160CFC, 0x80160D14, 0x80160D70).
+# Todas as 24 chamadas diretas JAL sao para funcoes ja nativas ou internas; zero expansao de closure.
+# Total Frente 2: 5 funcoes novas, 1.088 bytes / 272 palavras. Atinge 127.502 palavras (65,1904%), 1.120 funcoes nativas.
+0x80160B54
+0x80160C44
+0x80160CDC
+0x80160D84
+0x80160E84
+

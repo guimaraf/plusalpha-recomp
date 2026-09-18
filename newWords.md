@@ -17,12 +17,12 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-269** (3D Projectile / Particle & Effect Entity Processor `0x8014FE30` promoted; bridges `0x8014FD54` to `0x801502D8`, eradicating all 3 Ryu vs Ken combat misses; verified clean in `gameplay-discovery-05` with 0 misses and -107,853 interpreter fallbacks; confirmed frametime stability).
-- **Current Active Batch**: None (S1-269 provisionally approved).
-- **Current Main Binary Coverage**: **127,128 / 195,584 words (64.9991%)**.
-- **Total Compiled Native Functions**: **1,114 functions**.
+- **Validated Checkpoint**: **S1-270** (Frente 1 `0x8019E6D0` + Frente 2 `0x80160B54..0x80160F94`, totalizando 6 funcoes e 374 palavras; erradicou 100% dos 5.622 misses de combate observados em Garuda vs Kairi; validado com sucesso em `gameplay-discovery-08` com estabilizacao extrema de frametime).
+- **Current Active Batch**: **S1-271 (Planejamento)** (Cluster de Fisica de Movimentos Especiais / Reacao `0x80128524..0x80128D74`; 364 hits observados na Sessao 08).
+- **Current Main Binary Coverage**: **127,502 / 195,584 words (65.1904%)** (Baseline S1-270).
+- **Total Compiled Native Functions**: **1,120 functions** (18,388 entradas de dispatch).
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
-- **Residual Main EXE Misses**: 0 uncompiled misses in Main EXE text (remaining runtime hits are exclusively quarantined BIOS/SIO SMC patches at `0x801AB1F4` and `0x801AB2C0`).
+- **Residual Main EXE Misses**: Apenas 5 PCs observados na Sessao 08 pertencentes ao cluster de fisica `0x801288DC..0x801289D0` (364 hits), alem dos patches de quarentena BIOS/SIO SMC em `0x801AB1F4` e `0x801AB2C0`.
 
 ---
 
@@ -58,9 +58,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-267** | `0x80106BD4` (Round State Manager FSM; jump table `0x801AB5BC`) | 936 | 126,371 | Processed; Checkpoint S1-267 |
 | **S1-268** | `0x80117224`, `0x8011726C`, `0x80117328`, `0x80117564` (Entity / Frame Processing Cluster) | 459 | 126,830 | Processed & Validated; Checkpoint S1-268 |
 | **S1-269** | `0x8014FE30..0x801502D4` (3D Projectile/Particle Entity Processor; jump table `0x801ABDD4`) | 298 | 127,128 | Processed & Validated; Telemetry 05 CLEAN |
+| **S1-270** | `0x8019E6D0` (F1) + `0x80160B54..0x80160F94` (F2, 5 funcs) | 374 | 127,502 | Processed & Validated; Telemetry 08 CLEAN |
 
 
-- **Total words promoted since S1-239**: **+20,809 words** (+10.64% absolute gain).
+- **Total words promoted since S1-239**: **+21,183 words** (+10.83% absolute gain).
 
 ---
 
@@ -82,5 +83,5 @@ Dynamic battle overlays (`0x80020000..0x800F2000`) are compiled on-demand via th
 |---|---|---|
 | `0x801AB1F4` | SIO/Joypad status polling loop (`0x1F801044` bit `0x80`) | Retained under interpreter |
 | `0x801AB2C0` | Self-modifying code (swaps 5 instructions with BIOS in runtime) | Retained under interpreter |
-| `0x8019E6D0` | Non-reproducible historical candidate (`deferred_watchlist.txt`) | Quarantine (no seed) |
+| `0x8019E6D0` | Historical candidate (reproduced with 5,328 hits in Garuda vs Kairi) | Resolved via S1-270 |
 | `0x80103384..0x801038B4` | Global root previously quarantined under S1-261 | Resolved via S1-262 |

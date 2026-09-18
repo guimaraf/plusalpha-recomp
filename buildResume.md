@@ -105,6 +105,31 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-270: 3D Trigonometry & Combat Reaction/Collision Cluster (Frentes 1 e 2)
+- **Frente 1 (Leaf de Trigonometria e Rotacao 3D Matricial)**:
+  - **Raiz**: `0x8019E6D0..0x8019E864` (408 bytes / **102 palavras**).
+  - **Funcao**: Folha pura sem frame de pilha (`sp`), sem chamadas externas (`jal`), terminando com `jr $ra`. Executada dezenas de vezes por frame no calculo matricial de rotacao dos modelos 3D dos lutadores.
+  - **Validacao (`gameplay-discovery-07`)**: Erradicou 100% dos 5.328 misses observados em Garuda vs Kairi. Dispatches nativos saltaram de +157.489 para +269.103 (+111.614 dispatches nativos adicionais). Operador reportou estabilizacao perceptivel de frametime.
+  - **Cobertura F1**: 127.230 palavras (65,0513%) em 1.115 funcoes nativas.
+- **Frente 2 (Cluster de Reacao, Dano e Colisao)**:
+  - **Intervalo**: `0x80160B54..0x80160F94` (1.088 bytes / **272 palavras**).
+  - **Funcoes (5 continuas)**:
+    - `0x80160B54`: 240 bytes / 60 palavras (Calculo de flags/offsets de reacao)
+    - `0x80160C44`: 152 bytes / 38 palavras (Atualizacao de impacto e status)
+    - `0x80160CDC`: 168 bytes / 42 palavras (Tratamento de dano e frames de stun)
+    - `0x80160D84`: 256 bytes / 64 palavras (Processador de colisoes e transicoes de estado)
+    - `0x80160E84`: 272 bytes / 68 palavras (Mecanica de hit-stop e reacao corporal)
+  - **Topologia**: Preenche sem qualquer folga o gap de 272 palavras entre `0x80160AA4` e `0x80160F94`.
+  - **Closure**: Todas as 24 chamadas diretas `JAL` apontam para funcoes ja nativas ou internas (`0x8015D3F0`, `0x8015E12C`, `0x8011618C`, `0x80115574`, `0x80160430`, `0x801157A4`, `0x8015A0E8`, `0x8015D040`, `0x8012C288`, `0x80160C44`, `0x80101D68`, `0x80160084`, `0x801690D4`, `0x8015CF38`, `0x80158194`, `0x80159E44`). Zero expansao de closure.
+  - **Cobertura Final S1-270**: **127.502 palavras (65,1904%)** em **1.120 funcoes nativas** e **18.388 entradas de dispatch**. Codegen audit: **CLEAN**.
+  - **Validacao em Gameplay (`gameplay-discovery-08`)**:
+    - Erradicou 100% dos 294 misses do Bloco A (`0x80160C44`, `0x80160CC4`, `0x80160CDC`, `0x80160CFC`, `0x80160D14`, `0x80160D70` zerados).
+    - Queda expressiva de -21.826 instrucoes interpretadas no framework.
+    - Confirmada estabilizacao extrema e linha de frametime ultralimpa a 60 FPS reportada pelo operador.
+    - Restaram apenas 5 PCs residuais de combate (`0x801288DC..0x801289D0`), mapeados para o micro-lote S1-271.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.
