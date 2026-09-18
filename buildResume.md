@@ -452,6 +452,25 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-283: Core Combat & Action Engine - Blair Dame & Zangief (Promovido & Validado)
+- **Origem / Gatilho**: Teste inicial de Zangief vs Blair Dame (`gameplay-discovery-34`), que desmascarou o gap contínuo `0x8013E930..0x8013F7A0` responsável pelo processamento de encadeamento de ataques e colisões (mais de 1.000 hits combinados).
+- **Topologia & Limites (3 funções novas, 3.696 bytes / 924 palavras)**:
+  - `0x8013E930`: 152 bytes / **38 palavras** (transições e encadeamento de golpes de ataque; **527 hits**).
+  - `0x8013E9C8`: 408 bytes / **102 palavras** (setup de propriedades físicas e vetores de impulso; 6 hits).
+  - `0x8013EB60`: 3.136 bytes / **784 palavras** (loop central de processamento de animação e combate; **517 hits**).
+- **Encaixe e Continuidade**: Conecta `0x8013E764..0x8013E92F` (promovido no S1-146) diretamente a `0x8013F7A0` (S1-177/210), eliminando todo o gap dessa faixa de combate.
+- **Fechamento de Chamadas**: Zero saltos indiretos, zero chamadas externas não resolvidas. Expansão de closure: **ZERO** (1.202 -> 1.205 funções cravadas).
+- **Orçamento Total S1-283**: 3 funções novas, 3.696 bytes / **924 palavras**.
+- **Cobertura Final S1-283**: **137.043 palavras (70,0686%)** em **1.205 funções nativas**. Codegen audit: **CLEAN**. **Marca de 70% de cobertura do binário oficialmente atingida**.
+- **Validação em Gameplay (`gameplay-discovery-38`)**:
+  - Erradicou 100% dos candidatos de ataque da sessão 34.
+  - Novos candidatos a promoção no Main EXE: **EXATAMENTE 0**.
+  - Native Handoffs: **0** mantidos estritamente.
+  - Dispatches nativos: **+168.833 chamadas** em C nativo.
+  - Linha de frametime: confirmada visualmente como extremamente limpa.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.
