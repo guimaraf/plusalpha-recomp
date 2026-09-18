@@ -311,6 +311,11 @@ For the current baseline status, active batches, and concise tracking table, see
   - Dispatches nativos: **+147.240 hits**.
   - Fallback interpretado despencou de +1.370.296 para apenas **+116.517** (redução de 91,5%, -1.253.779 instruções interpretadas eliminadas).
   - Sakura formalmente homologada como a 9ª lutadora 100% nativa no Main EXE estático.
+- **Validação Invertida em Gameplay (`gameplay-discovery-26` - Pullum Purna P1 vs Sakura P2)**:
+  - Novos candidatos a promoção no Main EXE: **EXATAMENTE 0** (0 misses de dispatch, 0 misses no Main EXE).
+  - Dispatches nativos mantiveram alto volume: **+197.291 hits** (+285.820 delta acumulado).
+  - Fallback concentrado 100% em código dinâmico de overlay em RAM (`0x80045xxx`, `0x8008Exxx`, `0x8009xxxx`).
+  - Pullum Purna formalmente homologada como a 10ª lutadora 100% nativa no Main EXE estático.
 
 ---
 
