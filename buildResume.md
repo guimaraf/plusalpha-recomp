@@ -231,6 +231,10 @@ For the current baseline status, active batches, and concise tracking table, see
   - **Zero misses no Main EXE em combate ativo**. Os unicos registros em fallback sao a quarentena SMC BIOS/SIO (`0x801AB1F4` e `0x801AB2C0`).
   - Queda macica no fallback interpretado de +379.198 para **+75.594** (-303.604 instrucoes interpretadas eliminadas).
   - Telemetria de frametime perfeitamente estavel a 60 FPS com motor de acao/reacao inteiramente nativo.
+- **Validacao de Edge-Case: Head Press / Skull Diver de Bison (`gameplay-discovery-17`)**:
+  - Teste intensivo do pisao e mergulho com chamas de Bison (acertos e whiffs repetidos).
+  - Resultado no Main EXE: **EXATAMENTE 0 MISSES** (0 novos candidatos estaticos). Dispatches nativos: **+210.765**.
+  - Diagnostico Arquitetural: O efeito de fogo nos membros e a maquina de estados particular do golpe rodam 100% no overlay dinamico em RAM de Bison (`0x8004485C..0x80044DE8`, ~40k hits) e no despachador de animacao de overlay (`0x80093588..0x80093D70`). O arcabouco estatico no Main EXE para o confronto esta 100% saturado e nativo.
 
 ---
 
