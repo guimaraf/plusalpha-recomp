@@ -17,10 +17,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-275** (Subsistema de Acao/Carga `0x8011F5F0..0x801202EC` e Folha de Overlay `0x80167ED4`, totalizando 10 funcoes e 840 palavras; erradicou 100% dos 12 candidatos observados em Chun-Li vs Guile; validado com sucesso em `gameplay-discovery-20` com 0 misses no Main EXE e fallback reduzido de 9,15M para +111.159).
-- **Current Active Batch**: **Homologado (S1-275)** (Baseline estavel em 67,5771% com zero misses em combate ativo no Main EXE).
-- **Current Main Binary Coverage**: **132,170 / 195,584 words (67.5771%)** (Baseline S1-275).
-- **Total Compiled Native Functions**: **1,155 functions** (20,129 entradas de dispatch).
+- **Validated Checkpoint**: **S1-276** (Guile Combat Action Subsystem `0x8011E344` e `0x8011E628`, totalizando 2 funcoes e 295 palavras; erradicou 100% dos 4 candidatos observados em Guile vs Chun-Li; validado com sucesso em `gameplay-discovery-22` com 0 misses no Main EXE, +309.787 dispatches nativos e fallback reduzido para apenas +23.032).
+- **Current Active Batch**: **Homologado (S1-276)** (Baseline estavel em 67,7284% com zero misses em combate ativo no Main EXE).
+- **Current Main Binary Coverage**: **132,465 / 195,584 words (67.7284%)** (Baseline S1-276).
+- **Total Compiled Native Functions**: **1,157 functions** (20,129 entradas de dispatch).
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
 - **Residual Main EXE Misses**: **ZERO misses em combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
 
@@ -65,8 +65,9 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-274 (F1)** | `0x8014373C..0x801441B0` (Subsistema de Acao de Combate, 3 funcs) | 669 | 130,646 | Processed & Validated; Telemetry 15 CLEAN |
 | **S1-274 (F2)** | `0x80146B74..0x80147624` (Subsistema de Acao/Reacao, 3 funcs) | 684 | 131,330 | Processed & Validated; Telemetry 16 CLEAN |
 | **S1-275** | `0x8011F5F0..0x801202EC` (9 funcs) + `0x80167ED4` (Leaf) | 840 | 132,170 | Processed & Validated; Telemetry 20 CLEAN |
+| **S1-276** | `0x8011E344`, `0x8011E628` (Guile Action Subsystem) | 295 | 132,465 | Processed & Validated; Telemetry 22 CLEAN |
 
-- **Total words promovidas desde S1-239**: **+25,851 words** (+13.22% absolute gain).
+- **Total words promovidas desde S1-239**: **+26,146 words** (+13.37% absolute gain).
 
 ---
 

@@ -4329,3 +4329,11 @@
 0x8011F99C
 0x8011FE28
 0x80167ED4
+
+# Micro-lote S1-276: Guile Combat Action Subsystem (Sonic Boom, Flash Kick & Carga).
+# - 0x8011E344:  104 bytes /  26 palavras (Raiz formal apontada pelo indice 9 da tabela de acoes 0x801AFC70 no offset 0x801AFC94; despacha para 0x8011E3AC e 0x8011E628)
+# - 0x8011E628: 1076 bytes / 269 palavras (Processador de fisica, vetores de ataque e colisoes do Guile)
+# Erradica 100% dos 4 candidatos e 6.534 misses da sessao Guile vs Chun-Li (gameplay-discovery-21).
+# Total S1-276: 2 funcoes novas, 1.180 bytes / 295 palavras. Atinge 132.465 palavras (67,7284%), 1.157 funcoes nativas.
+0x8011E344
+0x8011E628

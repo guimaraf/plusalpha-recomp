@@ -267,6 +267,24 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-276: Guile Combat Action Subsystem (Sonic Boom & Flash Kick) (Promovido e Validado)
+- **Origem / Gatilho**: Teste com inversao de papeis (Guile P1 atacando com Chun-Li P2 inerte, `gameplay-discovery-21`), revelando 4 PCs candidatos no Main EXE Text com um total de **6.534 hits interpretados**.
+- **Topologia & Limites (2 funcoes novas, 1.180 bytes / 295 palavras)**:
+  - `0x8011E344`: 104 bytes / **26 palavras** (2.655 hits na entrada, 1 hit em `0x8011E390`; **Raiz formal** apontada pelo indice 9 da tabela de acoes de combate `0x801AFC70` no offset `0x801AFC94`; despacha para `0x8011E3AC` nativa e `0x8011E628`).
+  - `0x8011E628`: 1.076 bytes / **269 palavras** (2.655 hits na raiz, 1.223 hits no sub-bloco interno `0x8011E900`; processador de fisica, vetores de impacto e colisoes de golpes do Guile).
+- **Fechamento de Chamadas**: Todas as 14 chamadas diretas `JAL` apontam para rotinas ja nativas no Main EXE (`0x801938B0`, `0x8011EA5C`, `0x8019D740`, `0x8019D7D0`, `0x8011EA80`, `0x8019E870`, `0x8019CE70`, `0x80167D28`, `0x8019EA10`). Zero saltos externos, zero saltos indiretos, expansao de closure: **ZERO**.
+- **Continuidade do Main EXE**: Conecta perfeitamente o gap antes de `0x8011E3AC` e entre `0x8011E628` e `0x8011EA5C`, estabelecendo mais de 15.000 bytes ininterruptos de codigo estatico nativo entre `0x8011D030` e `0x80120E44`.
+- **Orcamento Total S1-276**: 2 funcoes novas, 1.180 bytes / **295 palavras**.
+- **Cobertura Final S1-276**: **132.465 palavras (67,7284%)** em **1.157 funcoes nativas** e **20.129 entradas de dispatch**. Codegen audit: **CLEAN**.
+- **Validacao em Gameplay (`gameplay-discovery-22`)**:
+  - Erradicou 100% dos 4 candidatos e 6.534 misses observados em Guile vs Chun-Li (`0x8011E344`, `0x8011E390`, `0x8011E628`, `0x8011E900` todos zerados).
+  - Novos candidatos a promocao no Main EXE: **EXATAMENTE 0**.
+  - Dispatches nativos mantiveram patamar altissimo: **+309.787 hits**.
+  - Fallback interpretado despencou de +2.474.813 para apenas **+23.032** (reducao de 99,1%, novo minimo historico absoluto do projeto).
+  - Guile formalmente homologado como o 8º personagem 100% nativo no Main EXE.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.
