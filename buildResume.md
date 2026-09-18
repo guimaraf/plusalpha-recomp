@@ -518,6 +518,33 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-286: GTE Vector Math Subroutine Cluster - Hokuto (Preparado & Auditado)
+- **Origem / Gatilho**: Teste inicial de Hokuto vs Ryu (`gameplay-discovery-42`), que desmascarou apenas 1 único candidato residual no Main EXE (`0x8019D9FC`, 308 hits).
+- **Topologia & Limites (10 funções folha contínuas, 500 bytes / 125 palavras)**:
+  - Gap contínuo `0x8019D860..0x8019DA54`:
+    - `0x8019D860`: 40 bytes / **10 palavras** (Transformação de rotação GTE; frameless folha; `jr $ra`).
+    - `0x8019D888`: 40 bytes / **10 palavras** (Transformação de escala GTE; frameless folha; `jr $ra`).
+    - `0x8019D8B0`: 60 bytes / **15 palavras** (Transformação de matriz composta GTE; frameless folha; `jr $ra`).
+    - `0x8019D8EC`: 36 bytes / **9 palavras** (Multiplicação vetorial GTE; frameless folha; `jr $ra`).
+    - `0x8019D910`: 40 bytes / **10 palavras** (Produto escalar GTE com clamp; frameless folha; `jr $ra`).
+    - `0x8019D938`: 40 bytes / **10 palavras** (Produto vetorial GTE; frameless folha; `jr $ra`).
+    - `0x8019D960`: 32 bytes / **8 palavras** (Projeção ortogonal GTE; frameless folha; `jr $ra`).
+    - `0x8019D980`: 36 bytes / **9 palavras** (Normalização de vetor GTE; frameless folha; `jr $ra`).
+    - `0x8019D9A4`: 88 bytes / **22 palavras** (Transformação de vértices e iluminação GTE; frameless folha; `jr $ra`).
+    - `0x8019D9FC`: 88 bytes / **22 palavras** (Transformação vetorial MVMVA GTE; 308 hits; `jr $ra`).
+- **Encaixe e Continuidade**: Conecta `0x8019D850..0x8019D85C` diretamente a `0x8019DA54..0x8019DA6C`, unificando toda a faixa `0x8019D740` até `0x8019DA6C` como um super-bloco compilado contínuo e 100% nativo.
+- **Fechamento de Chamadas**: Todas as 10 funções são folhas puras frameless sem nenhuma chamada externa `JAL`. Expansão de closure: **RIGOROSAMENTE ZERO** (1.214 -> 1.224 funções cravadas). Zero saltos indiretos (`jr $ra` estrito).
+- **Orçamento Total S1-286**: 10 funções novas, 500 bytes / **125 palavras**.
+- **Cobertura Final S1-286**: **138.481 palavras (70,8038%)** em **1.224 funções nativas**. Codegen audit: **CLEAN**.
+- **Validação em Gameplay (`gameplay-discovery-43`)**:
+  - Erradicou 100% do candidato residual `0x8019D9FC` da sessão 42 (`candidates.txt` vazio).
+  - Novos candidatos a promoção no Main EXE: **EXATAMENTE 0**.
+  - Native Handoffs: **0** mantidos estritamente.
+  - Linha de frametime: confirmada como perfeitamente estável e limpa durante toda a luta.
+- **Conclusão de Ciclo**: **Hokuto (18º)** oficialmente homologada com **100% de execução nativa** no Main EXE.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

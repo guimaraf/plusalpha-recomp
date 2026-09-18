@@ -25,6 +25,20 @@ Este documento registra os personagens testados e homologados com **100% de exec
 | **Zangief** | **100% Nativo** (0 misses) | `gameplay-discovery-36` & `37` | S1-281 / S1-282 | Spinning Piledriver, Atomic Suplex, Final Atomic Buster, Double Lariat, Banishing Flat, tabela global de agarrões `0x801B33F0`. |
 | **Blair Dame** | **100% Nativo** (0 misses) | `gameplay-discovery-38` & `39` | S1-283 / S1-284 | Shoot Kick, Lightning Knee, Sliding D-Kick, Spin Kick, Mirage Kick, ação/combate `0x8013E930`, vetores de deslizamento `0x8014901C`. |
 | **Skullomania** | **100% Nativo** (0 misses) | `gameplay-discovery-40` & `41` | S1-285 | Skullo Crusher, Skullo Slider, Skullo Head, Skullo Dive, Skullo Dash, Super Skullo Crusher/Slider, trajetória `0x8012A7E4`, ação acrobática 3D `0x801441B0..AD8`, máquina de combate `0x80160790..AA4`. |
+| **Hokuto** | **100% Nativo** (0 misses) | `gameplay-discovery-42` & `43` | S1-286 | Chuuhou, Kaishuu, Shingetsu, Kyaku Houugi, Kiren'eki, Shirase Gatana, colisões, defesas e família de vetores GTE `0x8019D860..0x8019DA54`. |
+| **Dhalsim** | *Pendente* (Próximo Alvo) | `gameplay-discovery-44` (A seguir) | S1-287 (A planejar) | Yoga Fire, Yoga Flame, Yoga Blast, Yoga Teleport, membros elásticos e colisões de alcance. |
+| **Evil Ryu** | *Pendente* (Chefe Secreto) | A planejar | A planejar | Ashura Senku, Messatsu Gou Shoryu, Shun Goku Satsu, Hadouken sombrio. |
+| **Bloody Hokuto** | *Pendente* (Chefe Secreto) | A planejar | A planejar | Versão corrompida de Hokuto, adaga permanente, ataques rápidos de sangue. |
+| **Cycloid-β** | *Pendente* (Personagem Bônus) | A planejar | A planejar | Modelo wireframe/poligonal azul, golpes emprestados do elenco Street Fighter. |
+| **Cycloid-γ** | *Pendente* (Personagem Bônus) | A planejar | A planejar | Modelo wireframe/poligonal dourado, golpes emprestados do elenco EX. |
+
+---
+
+### Resumo do Roster (Conforme Tela de Seleção Versus - 23 Personagens)
+- **Fileira Superior (8)**: Zangief [OK], Cracker Jack [OK], Hokuto [OK], Ryu [OK], Ken [OK], Chun-Li [OK], Doctrine Dark [OK], Guile [OK]
+- **Fileira Central (8)**: Pullum Purna [OK], Darun Mister [OK], Kairi [OK], Sakura [OK], **Dhalsim** [Pendente], Allen Snider [OK], Blair Dame [OK], Skullomania [OK]
+- **Fileira Inferior / Chefes & Secretos (7)**: Akuma [OK], M. Bison [OK], Garuda [OK], **Evil Ryu** [Pendente], **Bloody Hokuto** [Pendente], **Cycloid-β** [Pendente], **Cycloid-γ** [Pendente]
+- **Progresso de Homologação**: **18 / 23 personagens (78,26%)** com 100% de execução nativa.
 
 ---
 

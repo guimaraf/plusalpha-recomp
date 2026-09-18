@@ -4505,3 +4505,28 @@
 0x80160790
 0x801607E0
 
+# Micro-lote S1-286 (GTE Vector Math Subroutine Cluster - Hokuto):
+# Erradica o candidato 0x8019D9FC (308 hits) da sessao Hokuto vs Ryu (gameplay-discovery-42).
+# Fecha o gap continuo 0x8019D860..0x8019DA54 (10 funcoes folha continuas, 500 bytes / 125 palavras):
+# - 0x8019D860:  40 bytes / 10 palavras (Transformacao de rotacao GTE; frameless folha)
+# - 0x8019D888:  40 bytes / 10 palavras (Transformacao de escala GTE; frameless folha)
+# - 0x8019D8B0:  60 bytes / 15 palavras (Transformacao de matriz composta GTE; frameless folha)
+# - 0x8019D8EC:  36 bytes /  9 palavras (Multiplicacao vetorial GTE; frameless folha)
+# - 0x8019D910:  40 bytes / 10 palavras (Produto escalar GTE com clamp; frameless folha)
+# - 0x8019D938:  40 bytes / 10 palavras (Produto vetorial GTE; frameless folha)
+# - 0x8019D960:  32 bytes /  8 palavras (Projecao ortogonal GTE; frameless folha)
+# - 0x8019D980:  36 bytes /  9 palavras (Normalizacao de vetor GTE; frameless folha)
+# - 0x8019D9A4:  88 bytes / 22 palavras (Transformacao de vertices e iluminacao GTE; frameless folha)
+# - 0x8019D9FC:  88 bytes / 22 palavras (Transformacao MVMVA GTE; 308 hits em gameplay-discovery-42)
+# Total S1-286: 10 funcoes novas, 500 bytes / 125 palavras. Atinge 138.481 palavras (70,8038%), 1.224 funcoes nativas.
+0x8019D860
+0x8019D888
+0x8019D8B0
+0x8019D8EC
+0x8019D910
+0x8019D938
+0x8019D960
+0x8019D980
+0x8019D9A4
+0x8019D9FC
+
