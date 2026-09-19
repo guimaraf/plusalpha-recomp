@@ -4590,4 +4590,16 @@
 0x8013C04C
 0x8013C06C
 
+# Micro-lote S1-290 (Training Stage 3D Grid & Camera Pipeline - Cluster 2):
+# Preenche 100% da lacuna [0x80148678..0x8014901C] e erradica os candidatos do Cluster 2 (gameplay-discovery-58).
+# Promove 3 funcoes discretas (2.468 bytes / 617 palavras):
+#   * 0x80148678:  152 bytes /  38 palavras (Despachante do ambiente 3D do Training Stage; 102 hits)
+#   * 0x80148710: 1.108 bytes / 277 palavras (Projecao de camera, frustum e perspectiva do cenario; 3 hits; engloba retornos 0x801487DC e 0x801487F8)
+#   * 0x80148B64: 1.208 bytes / 302 palavras (Iluminacao e transformacao de vertices do grid do chao via GTE; 93 hits; engloba retorno 0x80148C74)
+# Total S1-290: 3 funcoes novas, 2.468 bytes / 617 palavras. Atinge 141.053 palavras (72,1188%), 1.247 funcoes nativas.
+0x80148678
+0x80148710
+0x80148B64
+
+
 

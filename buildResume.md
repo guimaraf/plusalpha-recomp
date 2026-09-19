@@ -647,7 +647,32 @@ For the current baseline status, active batches, and concise tracking table, see
   - Chamadas internas ao cluster: `0x8013BFA8` chama `0x8013C04C` e `0x8013C06C`.
   - Expansão de closure: **RIGOROSAMENTE ZERO**.
 - **Orçamento Total S1-289**: 3 funções novas, 812 bytes / **203 palavras**.
-- **Meta de Cobertura S1-289**: **140.436 palavras (71,8034%)** em **1.244 funções nativas**.
+- **Cobertura Final S1-289**: **140.436 palavras (71,8034%)** em **1.244 funções nativas**. Codegen audit: **CLEAN**.
+- **Validação em Gameplay (`gameplay-discovery-58`)**:
+  - Erradicação de 100% dos candidatos do Cluster 1 (`candidates.txt` sem qualquer registro de `0x8013BFA8`, `0x8013C04C`, `0x8013C06C` ou seus retornos).
+  - Mais de 28.000 chamadas interpretadas convertidas para execução nativa C.
+  - 511.834 static hits nativos sem nenhum miss ou handoff.
+
+---
+
+### Micro-Lote S1-290: Training Stage 3D Grid & Camera Pipeline (Cluster 2)
+
+- **Origem da Descoberta**: Telemetria de combate e treino em `gameplay-discovery-57` e `gameplay-discovery-58`.
+- **Topologia & Limites**:
+  - Preenche integralmente a lacuna contígua `[0x80148678..0x8014901C]` (2.468 bytes / 617 palavras) entre os blocos já nativos `[0x80148184..0x80148678]` e `[0x8014901C..0x801491C0]`.
+- **Funções Promovidas no S1-290 (3 funções, 2.468 bytes / 617 palavras)**:
+  - `0x80148678`: 152 bytes / **38 palavras** (Despachante raiz do ambiente 3D do Training Stage; 102 hits).
+  - `0x80148710`: 1.108 bytes / **277 palavras** (Projeção de câmera, frustum e perspectiva do cenário; 3 hits).
+  - `0x80148B64`: 1.208 bytes / **302 palavras** (Iluminação e transformação de vértices do grid do chão via GTE; 93 hits).
+- **Desmistificação de Retornos de Chamada**:
+  - A promoção de `0x80148710` absorve os retornos de `jal 0x801945F8` (GTE) em `0x801487DC` e `0x801487F8`.
+  - A promoção de `0x80148B64` absorve o retorno de `jal 0x8019C0B8` (GTE) em `0x80148C74`.
+  - Erradica 6 registros observados na telemetria.
+- **Fechamento de Chamadas (Closure)**:
+  - Todas as chamadas `jal` (`0x80148710`, `0x80148B64`, `0x80123AE0`, `0x801938B0`, `0x80194990`, `0x801948DC`, `0x801945F8`, `0x801946C8`, `0x80194904`, `0x8019DF20`, `0x8019D270`, `0x8019D7D0`, `0x8019D740`, `0x8019C0B8`, `0x8019C184`, `0x8019DA70`, `0x8010C72C`) já são nativas.
+  - Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-290**: 3 funções novas, 2.468 bytes / **617 palavras**.
+- **Meta de Cobertura S1-290**: **141.053 palavras (72,1188%)** em **1.247 funções nativas**. Supera o marco histórico de 141.000 palavras.
 
 ---
 
