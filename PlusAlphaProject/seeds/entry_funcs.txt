@@ -4556,3 +4556,26 @@
 0x80194CB8
 0x80194E38
 
+# Micro-lote S1-288 (Boot Sequence & Attract/Demo Presentation Pipeline):
+# Erradica todos os 14 registros de candidatos da sessao boot/intro (gameplay-discovery-51).
+# Promove 8 funcoes discretas em 2 clusters perfeitamente fechados (3.888 bytes / 972 palavras):
+# - Cluster Setup de Video / Display Pos-Boot (0x80102488..0x80102838):
+#   * 0x80102488: 944 bytes / 236 palavras (Setup inicial de buffers de display pos-boot; engloba retornos 0x8010250C e 0x80102520)
+# - Cluster Cadeia Continua de Attract & Demo Play (0x80136648..0x801371C8, 2.944 bytes / 736 palavras):
+#   * 0x80136648: 156 bytes /  39 palavras (Sequenciador principal do modo Attract / Demo; 1.134 hits)
+#   * 0x801366E4: 320 bytes /  80 palavras (Controle de camera, projecao e frustum da apresentacao; 3 hits)
+#   * 0x80136824: 676 bytes / 169 palavras (Render e matrizes 3D do logotipo do jogo; 1.134 hits)
+#   * 0x80136AC8: 156 bytes /  39 palavras (Dispatcher de combate da demonstracao automatica; 478 hits)
+#   * 0x80136B64: 468 bytes / 117 palavras (Cinematica e colisoes da luta demo; engloba retornos 0x80136C44 e 0x80136C8C)
+#   * 0x80136D38: 548 bytes / 137 palavras (Rotina de IA e selecao de acoes na demo; engloba retorno 0x80136DEC)
+#   * 0x80136F5C: 620 bytes / 155 palavras (Resolvedor de animacoes e matrizes na demo; engloba retorno 0x8013701C)
+# Total S1-288: 8 funcoes novas, 3.888 bytes / 972 palavras. Atinge 140.233 palavras (71,6996%), 1.241 funcoes nativas.
+0x80102488
+0x80136648
+0x801366E4
+0x80136824
+0x80136AC8
+0x80136B64
+0x80136D38
+0x80136F5C
+

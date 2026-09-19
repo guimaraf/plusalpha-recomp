@@ -17,12 +17,12 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-287** (Dhalsim Mechanics & Bone Animation Pipeline: `0x8014B21C..6B0`, `0x8015A530`, `0x80194BB4..E38`, totalizando 9 funcoes e 780 palavras; validado em `gameplay-discovery-46`, `47`, `48`, `49` e `50` com 0 misses no Main EXE, 0 handoffs; 100% do elenco de 23 personagens homologado e nativo).
-- **Current Active Batch**: **Homologado (S1-287)** (Baseline estavel em 71,2026% com zero misses no Main EXE; 23 de 23 personagens 100% nativos).
-- **Current Main Binary Coverage**: **139,261 / 195,584 words (71.2026%)** (Baseline S1-287).
-- **Total Compiled Native Functions**: **1,233 functions**.
+- **Validated Checkpoint**: **S1-288** (Boot Sequence & Attract/Demo Presentation Pipeline: `0x80102488`, `0x80136648..71C8`, totalizando 8 funcoes e 972 palavras; erradicou 100% dos 14 candidatos da sessao 51; validado com sucesso em `gameplay-discovery-52` com 0 misses no Main EXE, 0 handoffs e frametime estavel em todas as telas).
+- **Current Active Batch**: **Homologado (S1-288)** (Baseline estavel em 71,6996% com zero misses no Main EXE no boot, attract mode e combate).
+- **Current Main Binary Coverage**: **140,233 / 195,584 words (71.6996%)** (Baseline S1-288).
+- **Total Compiled Native Functions**: **1,241 functions**.
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
-- **Residual Main EXE Misses**: **ZERO misses em combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
+- **Residual Main EXE Misses**: **ZERO misses no boot, apresentação e combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
 
 ---
 
@@ -77,8 +77,9 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-285** | `0x8012A7E4`, `0x801441B0..AD8`, `0x80160790..AA4` (6 funcs) | 947 | 138,356 | Processed & Validated; Telemetry 41 CLEAN |
 | **S1-286** | `0x8019D860..0x8019D9FC` (10 funcs) | 125 | 138,481 | Processed & Validated; Telemetry 43 CLEAN |
 | **S1-287** | `0x8014B21C..BA4C` (3 funcs), `0x8015A530` (1 func), `0x80194BB4..EE4` (5 funcs) | 780 | 139,261 | Processed & Validated; Telemetry 46 CLEAN |
+| **S1-288** | `0x80102488` (1 func), `0x80136648..71C8` (7 funcs) | 972 | 140,233 | Processed & Validated; Telemetry 52 CLEAN |
 
-- **Total words promovidas desde S1-239**: **+32,942 words** (+16.84% absolute gain).
+- **Total words promovidas desde S1-239**: **+33,914 words** (+17.34% absolute gain).
 
 ---
 

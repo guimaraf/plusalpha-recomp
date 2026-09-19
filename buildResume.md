@@ -590,6 +590,39 @@ For the current baseline status, active batches, and concise tracking table, see
   - Como Evil Ryu compartilha a base cinemática, dispatches de projéteis (Hadouken) e transformadas de animação com Ryu e Akuma, ele executou 100% nativo sem nenhum miss.
   - **MARCO HISTÓRICO CONCLUÍDO**: **100% dos 23 personagens de Street Fighter EX Plus Alpha estão oficialmente homologados e executam de forma nativa no Main EXE!**
 
+### S1-288: Boot Sequence & Attract/Demo Presentation Pipeline (Preparado & Auditado)
+- **Origem / Gatilho**: Varredura de "pente fino" do boot e attract mode (`gameplay-discovery-51`, rota: Boot -> Logos Capcom/Arika -> Vídeo/Render 3D de Apresentação -> Tela Título), que revelou 14 registros residuais no Main EXE:
+  - `0x80136648` (1.134 hits), `0x80136824` (1.134 hits), `0x80136AC8` (478 hits), `0x80136D38` (450 hits), `0x80136F5C` (350 hits), `0x8013701C` (350 hits), `0x80102488` (85 hits), `0x80136B64` (16 hits), `0x80136DEC` (16 hits), `0x80136C44` (8 hits), `0x80136C8C` (8 hits), `0x8010250C` (3 hits), `0x80102520` (3 hits), `0x801366E4` (3 hits).
+- **Desmistificação dos Endereços de Retorno**:
+  - 6 dos 14 registros são sítios de retorno de chamadas `jal` nativas dentro das funções que estavam no interpretador:
+    - `0x8010250C` e `0x80102520` (retornos de `jal 0x80194B00` dentro de `0x80102488`).
+    - `0x80136C44` e `0x80136C8C` (retornos de `jal 0x801945F8` dentro de `0x80136B64`).
+    - `0x80136DEC` (retorno de `jal 0x8016864C` dentro de `0x80136D38`).
+    - `0x8013701C` (retorno de `jal 0x8019C0B8` dentro de `0x80136F5C`).
+- **Topologia & Limites (8 funções em 2 clusters, 3.888 bytes / 972 palavras)**:
+  - **Cluster Setup de Vídeo / Display Pós-Boot (`0x80102488..0x80102838`, 944 bytes / 236 palavras)**:
+    - `0x80102488`: 944 bytes / **236 palavras** (Setup inicial de buffers de pacotes de display e inicialização de rendering contexts; fecha perfeitamente o gap entre `0x801021B0` e `0x80102838`).
+  - **Cluster Cadeia Contínua de Attract & Demo Play (`0x80136648..0x801371C8`, 2.944 bytes / 736 palavras)**:
+    - `0x80136648`: 156 bytes / **39 palavras** (Sequenciador principal do modo Attract / Demo; 1.134 hits).
+    - `0x801366E4`: 320 bytes / **80 palavras** (Controle de câmera, projeção e frustum da apresentação; 3 hits).
+    - `0x80136824`: 676 bytes / **169 palavras** (Render e matrizes 3D do logotipo do jogo; 1.134 hits).
+    - `0x80136AC8`: 156 bytes / **39 palavras** (Dispatcher de combate da demonstração automática; 478 hits).
+    - `0x80136B64`: 468 bytes / **117 palavras** (Cinemática e colisões da luta demo; 16 hits).
+    - `0x80136D38`: 548 bytes / **137 palavras** (Rotina de IA e seleção de ações na demo; 450 hits).
+    - `0x80136F5C`: 620 bytes / **155 palavras** (Resolvedor de animações e matrizes na demo; 350 hits).
+- **Fechamento de Chamadas (Closure)**:
+  - Todas as chamadas `jal` externas são para rotinas já nativas (`0x80194B00`, `0x80194A44`, `0x801948DC`, `0x80194828`, `0x80123BF4`, `0x8019DF20`, `0x8019CD60`, `0x8019CE70`, `0x8019D740`, `0x8019D7D0`, `0x8019D7A0`, `0x8019D770`, `0x8010D1E8`, `0x80194990`, `0x801946C8`, `0x801945F8`, `0x8016864C`, `0x8010C72C`, `0x8019C0B8`, `0x8019C184`).
+  - Chamadas internas ao lote: `0x801366E4`, `0x80136824`, `0x80136B64`, `0x80136D38`, `0x80136F5C`. Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-288**: 8 funções novas, 3.888 bytes / **972 palavras**.
+- **Cobertura Final S1-288**: **140.233 palavras (71,6996%)** em **1.241 funções nativas**. Codegen audit: **CLEAN**.
+- **Validação em Gameplay / Boot (`gameplay-discovery-52`)**:
+  - Erradicou 100% dos 14 candidatos residuais da sessão 51 (`candidates.txt` vazio).
+  - Novos candidatos a promoção no Main EXE: **EXATAMENTE 0**.
+  - Native Handoffs: **0** mantidos estritamente.
+  - Páginas Divergidas: **0**.
+  - Linha de frametime: confirmada como extremamente estável e limpa em todas as telas testadas (logos, render intro, demo fight e tela título).
+- **Conclusão de Ciclo**: Inicialização e modo attract 100% nativos no Main EXE. Cobertura estática ultrapassa o marco histórico de 140.000 palavras (71,6996%).
+
 ---
 
 ## 3. Dynamic Overlay Track History
