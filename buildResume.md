@@ -706,7 +706,25 @@ For the current baseline status, active batches, and concise tracking table, see
   - Chamada interna: `0x801569B0` chama `0x80156AD0`.
   - Expansão de closure: **RIGOROSAMENTE ZERO**.
 - **Orçamento Total S1-291**: 7 funções novas, 1.000 bytes / **250 palavras**.
-- **Meta de Cobertura S1-291**: **141.303 palavras (72,2467%)** em **1.254 funções nativas**.
+- **Cobertura Final S1-291**: **141.303 palavras (72,2467%)** em **1.254 funções nativas**. Codegen audit: **CLEAN**.
+- **Validação em Gameplay (`gameplay-discovery-60`)**:
+  - Erradicação de 100% dos candidatos do Cluster 3 (14 candidatos a menos em `candidates.txt`).
+  - Mais de 610.000 static hits nativos (marca recorde de 610.907 hits) sem nenhum miss ou handoff.
+
+---
+
+### Micro-Lote S1-292: Combat Callback Stub Pipeline
+
+- **Origem da Descoberta**: Telemetria de combate em `gameplay-discovery-60`.
+- **Topologia & Estrutura**:
+  - `0x80162680`: 8 bytes / **2 palavras** (Stub folha `jr ra; nop` na tabela de callbacks `0x801B3408`; 2 hits).
+  - Abutment perfeito: conecta-se ao range nativo `[0x80162688..0x801627A4]`.
+- **Decisão Arquitetural do Menu de Pausa**:
+  - O subsistema de Menu de Pausa (`0x80172DD0..0x8017566C`, ~2.599 palavras / 10 funções) foi intencionalmente postergado por solicitação do operador para uma bateria de testes dedicada focada em explorar as telas de pausa de todos os modos de jogo.
+- **Fechamento de Chamadas (Closure)**:
+  - Função folha pura sem filhas. Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-292**: 1 função nova, 8 bytes / **2 palavras**.
+- **Meta de Cobertura S1-292**: **141.305 palavras (72,2477%)** em **1.255 funções nativas**.
 
 ---
 

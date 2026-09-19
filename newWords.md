@@ -17,10 +17,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-290** (Cluster 2 - Training Stage 3D Grid & Camera: `0x80148678`, `0x80148710`, `0x80148B64`, totalizando 3 funcoes e 617 palavras; validado com sucesso em `gameplay-discovery-59` com 0 misses no Cluster 2).
-- **Current Active Batch**: **S1-291** (Cluster 3 - Dummy AI, Recovery & Damage Tracking: `0x801555A8`, `0x801555BC`, `0x801556E4`, `0x80156190`, `0x80156458`, `0x801569B0`, `0x80156AD0`, totalizando 7 funcoes e 250 palavras).
-- **Current Main Binary Coverage**: **141,303 / 195,584 words (72.2467%)** (Target S1-291).
-- **Total Compiled Native Functions**: **1,254 functions**.
+- **Validated Checkpoint**: **S1-292** (Combat Callback Stub: `0x80162680`, totalizando 1 funcao e 2 palavras; validado com sucesso em `gameplay-discovery-61` com ZERO candidatos no Main EXE e 436k hits nativos).
+- **Current Active Batch**: Nenhum lote ativo (Preparando campanha de testes dos Menus de Pausa).
+- **Current Main Binary Coverage**: **141,305 / 195,584 words (72.2477%)** (Validated S1-292).
+- **Total Compiled Native Functions**: **1,255 functions**.
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
 - **Residual Main EXE Misses**: **ZERO misses no boot, apresentação e combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
 
@@ -80,9 +80,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-288** | `0x80102488` (1 func), `0x80136648..71C8` (7 funcs) | 972 | 140,233 | Processed & Validated; Telemetry 52 CLEAN |
 | **S1-289** | `0x8013BFA8`, `0x8013C04C`, `0x8013C06C` (3 funcs) | 203 | 140,436 | Processed & Validated; Telemetry 58 CLEAN |
 | **S1-290** | `0x80148678`, `0x80148710`, `0x80148B64` (3 funcs) | 617 | 141,053 | Processed & Validated; Telemetry 59 CLEAN |
-| **S1-291** | `0x801555A8..6AD0` (7 funcs) | 250 | 141,303 | In Progress (Cluster 3 - Dummy AI & Damage) |
+| **S1-291** | `0x801555A8..6AD0` (7 funcs) | 250 | 141,303 | Processed & Validated; Telemetry 60 CLEAN |
+| **S1-292** | `0x80162680` (1 func) | 2 | 141,305 | Processed & Validated; Telemetry 61 CLEAN |
 
-- **Total words promovidas desde S1-239**: **+34,984 words** (+17.89% absolute gain).
+- **Total words promovidas desde S1-239**: **+34,986 words** (+17.89% absolute gain).
 
 ---
 

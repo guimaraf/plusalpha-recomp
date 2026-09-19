@@ -4620,6 +4620,14 @@
 0x801569B0
 0x80156AD0
 
+# Micro-lote S1-292 (Combat Callback Stub Pipeline):
+# Erradica o candidato 0x80162680 observado na telemetria de combate (gameplay-discovery-60).
+# Promove 1 funcao discreta folha (8 bytes / 2 palavras):
+#   * 0x80162680: 8 bytes / 2 palavras (Callback stub folha jr ra; nop na tabela 0x801B3408; 2 hits)
+# Total S1-292: 1 funcao nova, 8 bytes / 2 palavras. Atinge 141.305 palavras (72,2477%), 1.255 funcoes nativas.
+0x80162680
+
+
 
 
 
