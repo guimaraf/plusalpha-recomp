@@ -4579,3 +4579,15 @@
 0x80136D38
 0x80136F5C
 
+# Micro-lote S1-289 (Training Mode HUD & Input Processing Pipeline):
+# Erradica os candidatos do Cluster 1 observados na telemetria de gameplay (gameplay-discovery-57).
+# Promove 3 funcoes discretas (812 bytes / 203 palavras):
+#   * 0x8013BFA8: 164 bytes /  41 palavras (Loop principal de inputs e HUD do modo treino; 7.510 hits)
+#   * 0x8013C04C:  32 bytes /   8 palavras (Limpeza e reset dos buffers de texto/quadros do HUD; 1 hit)
+#   * 0x8013C06C: 616 bytes / 154 palavras (Renderizador de dano acumulado, contagem de combo e inputs; 6.856 hits; engloba retornos 0x8013C108, 0x8013C160, 0x8013C188)
+# Total S1-289: 3 funcoes novas, 812 bytes / 203 palavras. Atinge 140.436 palavras (71,8034%), 1.244 funcoes nativas.
+0x8013BFA8
+0x8013C04C
+0x8013C06C
+
+

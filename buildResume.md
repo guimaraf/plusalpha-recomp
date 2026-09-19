@@ -625,6 +625,32 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### Micro-Lote S1-289: Training Mode HUD & Input Processing Pipeline (Cluster 1)
+
+- **Origem da Descoberta**: Telemetria de combate e treino em `gameplay-discovery-57` (Evil Ryu x Ken no Cenário Training).
+- **Diagnóstico Preliminar**:
+  - Foram observados 25 candidatos no Main EXE, distribuídos em 4 clusters distintos.
+  - Para manter a segurança estrita do projeto e evitar sobrecarga de quase 2.000 palavras (especialmente o risco de closure do Cluster 4 / Pause Menu), adotou-se a estratégia de isolamento por cluster independente.
+  - O Micro-Lote S1-289 foca exclusivamente no **Cluster 1** (HUD de comandos, contagem de combo e dano).
+- **Funções Promovidas no S1-289 (3 funções, 812 bytes / 203 palavras)**:
+  - `0x8013BFA8`: 164 bytes / **41 palavras** (Loop principal de inputs e HUD do modo treino; 7.510 hits).
+  - `0x8013C04C`: 32 bytes / **8 palavras** (Limpeza e reset dos buffers de texto/quadros do HUD; 1 hit).
+  - `0x8013C06C`: 616 bytes / **154 palavras** (Renderizador de dano acumulado, contagem de combo e inputs; 6.856 hits).
+- **Desmistificação de Retornos de Chamada**:
+  - A promoção de `0x8013C06C` absorve e elimina 3 registros de retorno de `jal 0x80193A18` (render de fonte na tela):
+    - `0x8013C108` (6.856 hits)
+    - `0x8013C160` (6.856 hits)
+    - `0x8013C188` (6.856 hits)
+  - Abutment perfeito: o fim de `0x8013C06C` conecta-se diretamente ao range compilado existente em `0x8013C2D4`.
+- **Fechamento de Chamadas (Closure)**:
+  - Chamadas externas de `0x8013C06C`: `0x80193A18` (render de fontes, já nativo) e `0x80125154` (já nativo).
+  - Chamadas internas ao cluster: `0x8013BFA8` chama `0x8013C04C` e `0x8013C06C`.
+  - Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-289**: 3 funções novas, 812 bytes / **203 palavras**.
+- **Meta de Cobertura S1-289**: **140.436 palavras (71,8034%)** em **1.244 funções nativas**.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

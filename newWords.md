@@ -17,10 +17,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-288** (Boot Sequence & Attract/Demo Presentation Pipeline: `0x80102488`, `0x80136648..71C8`, totalizando 8 funcoes e 972 palavras; erradicou 100% dos 14 candidatos da sessao 51; validado com sucesso em `gameplay-discovery-52` com 0 misses no Main EXE, 0 handoffs e frametime estavel em todas as telas).
-- **Current Active Batch**: **Homologado (S1-288)** (Baseline estavel em 71,6996% com zero misses no Main EXE no boot, attract mode e combate).
-- **Current Main Binary Coverage**: **140,233 / 195,584 words (71.6996%)** (Baseline S1-288).
-- **Total Compiled Native Functions**: **1,241 functions**.
+- **Validated Checkpoint**: **S1-288** (Boot Sequence & Attract/Demo Presentation Pipeline: `0x80102488`, `0x80136648..71C8`, totalizando 8 funcoes e 972 palavras; validado com sucesso em `gameplay-discovery-52` com 0 misses no Main EXE).
+- **Current Active Batch**: **S1-289** (Cluster 1 - Training Mode HUD & Input Processing Pipeline: `0x8013BFA8`, `0x8013C04C`, `0x8013C06C`, totalizando 3 funcoes e 203 palavras).
+- **Current Main Binary Coverage**: **140,436 / 195,584 words (71.8034%)** (Target S1-289).
+- **Total Compiled Native Functions**: **1,244 functions**.
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
 - **Residual Main EXE Misses**: **ZERO misses no boot, apresentação e combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
 
@@ -78,8 +78,9 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-286** | `0x8019D860..0x8019D9FC` (10 funcs) | 125 | 138,481 | Processed & Validated; Telemetry 43 CLEAN |
 | **S1-287** | `0x8014B21C..BA4C` (3 funcs), `0x8015A530` (1 func), `0x80194BB4..EE4` (5 funcs) | 780 | 139,261 | Processed & Validated; Telemetry 46 CLEAN |
 | **S1-288** | `0x80102488` (1 func), `0x80136648..71C8` (7 funcs) | 972 | 140,233 | Processed & Validated; Telemetry 52 CLEAN |
+| **S1-289** | `0x8013BFA8`, `0x8013C04C`, `0x8013C06C` (3 funcs) | 203 | 140,436 | In Progress (Cluster 1 - Training HUD) |
 
-- **Total words promovidas desde S1-239**: **+33,914 words** (+17.34% absolute gain).
+- **Total words promovidas desde S1-239**: **+34,117 words** (+17.44% absolute gain).
 
 ---
 
