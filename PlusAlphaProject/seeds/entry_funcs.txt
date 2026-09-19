@@ -4530,3 +4530,29 @@
 0x8019D9A4
 0x8019D9FC
 
+# Micro-lote S1-287 (Mecanica de Dhalsim e Pipeline de Animacao de Ossos):
+# Erradica todos os 8 candidatos da sessao Dhalsim vs Ryu (gameplay-discovery-45, 2.002 hits).
+# Promove 9 funcoes discretas em 3 clusters perfeitamente fechados (3.120 bytes / 780 palavras):
+# - Cluster Dhalsim (Fisica de alcance elastico e colisoes):
+#   * 0x8014B21C: 152 bytes /  38 palavras (Dispatch raiz de combate de Dhalsim na tabela 0x801B1BA8; 46 hits)
+#   * 0x8014B2B4: 1020 bytes / 255 palavras (Calculo cinematico de alcance de membros; engloba retornos 0x8014B430, 0x8014B524 e 0x8014B580)
+#   * 0x8014B6B0: 924 bytes / 231 palavras (Atualizacao de posturas e caixas de contato do Dhalsim; 40 hits)
+# - Cluster Yoga Fire (Colisao de projetil):
+#   * 0x8015A530: 208 bytes /  52 palavras (Colisao e fisica de projetil de fogo; folha pura; 31 hits)
+# - Cluster Animacao (Pipeline de transformacao e matrizes de ossos 0x80194BB4..0x80194EE4):
+#   * 0x80194BB4:  96 bytes /  24 palavras (Calculo de ossos de animacao de alta frequencia; folha pura; 1.728 hits)
+#   * 0x80194C14: 108 bytes /  27 palavras (Matriz de orientacao de ossos; folha pura)
+#   * 0x80194C80:  56 bytes /  14 palavras (Indexacao e limites de joints; folha pura)
+#   * 0x80194CB8: 384 bytes /  96 palavras (Aplicacao de transformadas e callbacks)
+#   * 0x80194E38: 172 bytes /  43 palavras (Aplicacao de transformada secundaria)
+# Total S1-287: 9 funcoes novas, 3.120 bytes / 780 palavras. Atinge 139.261 palavras (71,2026%), 1.233 funcoes nativas.
+0x8014B21C
+0x8014B2B4
+0x8014B6B0
+0x8015A530
+0x80194BB4
+0x80194C14
+0x80194C80
+0x80194CB8
+0x80194E38
+

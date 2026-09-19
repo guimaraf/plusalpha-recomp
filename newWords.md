@@ -17,10 +17,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-286** (GTE Vector Math Subroutine Cluster - Hokuto: `0x8019D860..0x8019D9FC`, totalizando 10 funcoes e 125 palavras; erradicou 100% dos candidatos da sessao 42; validado com sucesso em `gameplay-discovery-43` com 0 misses no Main EXE, 0 handoffs e frametime estavel).
-- **Current Active Batch**: **Homologado (S1-286)** (Baseline estavel em 70,8038% com zero misses no Main EXE).
-- **Current Main Binary Coverage**: **138,481 / 195,584 words (70.8038%)** (Baseline S1-286).
-- **Total Compiled Native Functions**: **1,224 functions**.
+- **Validated Checkpoint**: **S1-287** (Dhalsim Mechanics & Bone Animation Pipeline: `0x8014B21C..6B0`, `0x8015A530`, `0x80194BB4..E38`, totalizando 9 funcoes e 780 palavras; erradicou 100% dos 8 candidatos da sessao 45; validado com sucesso em `gameplay-discovery-46` com 0 misses no Main EXE, 0 handoffs e frametime estavel).
+- **Current Active Batch**: **Homologado (S1-287)** (Baseline estavel em 71,2026% com zero misses no Main EXE; Dhalsim 19º personagem 100% nativo).
+- **Current Main Binary Coverage**: **139,261 / 195,584 words (71.2026%)** (Baseline S1-287).
+- **Total Compiled Native Functions**: **1,233 functions**.
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
 - **Residual Main EXE Misses**: **ZERO misses em combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
 
@@ -76,8 +76,9 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-284** | `0x8014901C..0x801491C0` (3 funcs) | 366 | 137,409 | Processed & Validated; Telemetry 39 CLEAN |
 | **S1-285** | `0x8012A7E4`, `0x801441B0..AD8`, `0x80160790..AA4` (6 funcs) | 947 | 138,356 | Processed & Validated; Telemetry 41 CLEAN |
 | **S1-286** | `0x8019D860..0x8019D9FC` (10 funcs) | 125 | 138,481 | Processed & Validated; Telemetry 43 CLEAN |
+| **S1-287** | `0x8014B21C..BA4C` (3 funcs), `0x8015A530` (1 func), `0x80194BB4..EE4` (5 funcs) | 780 | 139,261 | Processed & Validated; Telemetry 46 CLEAN |
 
-- **Total words promovidas desde S1-239**: **+32,162 words** (+16.44% absolute gain).
+- **Total words promovidas desde S1-239**: **+32,942 words** (+16.84% absolute gain).
 
 ---
 

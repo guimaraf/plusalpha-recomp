@@ -543,6 +543,36 @@ For the current baseline status, active batches, and concise tracking table, see
   - Linha de frametime: confirmada como perfeitamente estável e limpa durante toda a luta.
 - **Conclusão de Ciclo**: **Hokuto (18º)** oficialmente homologada com **100% de execução nativa** no Main EXE.
 
+### S1-287: Dhalsim Mechanics & Bone Animation Pipeline (Preparado & Auditado)
+- **Origem / Gatilho**: Teste inicial de Dhalsim vs Ryu (`gameplay-discovery-45`), que revelou exatamente 8 registros residuais no Main EXE (total de 2.002 hits):
+  - `0x80194BB4` (1.728 hits), `0x8014B430` (72 hits), `0x8014B21C` (46 hits), `0x8014B6B0` (40 hits), `0x8014B524` (36 hits), `0x8014B580` (36 hits), `0x8015A530` (31 hits), `0x8014B2B4` (2 hits).
+- **Desmistificação dos Endereços de Retorno**:
+  - A auditoria de desmonte MIPS revelou que `0x8014B430`, `0x8014B524` e `0x8014B580` não são raízes de funções, mas sim sítios de retorno de chamadas `jal` (`0x801945F8` e `0x8019C0B8`) situados dentro da função `0x8014B2B4`. Com o chamador no interpretador e o callee nativo, o retorno ativava o fallback no PC seguinte.
+- **Topologia & Limites (9 funções em 3 clusters, 3.120 bytes / 780 palavras)**:
+  - **Cluster Dhalsim (`0x8014B21C..0x8014BA4C`, 2.096 bytes / 524 palavras)**:
+    - `0x8014B21C`: 152 bytes / **38 palavras** (Dispatch raiz de Dhalsim na tabela `0x801B1BA8`; chama `0x8014B2B4`, `0x8014B6B0` e `0x80123AE0`).
+    - `0x8014B2B4`: 1.020 bytes / **255 palavras** (Cálculo cinemático de alcance e deformação elástica dos membros).
+    - `0x8014B6B0`: 924 bytes / **231 palavras** (Atualização de posturas e caixas de colisão elásticas do Dhalsim).
+  - **Cluster Yoga Fire (`0x8015A530..0x8015A600`, 208 bytes / 52 palavras)**:
+    - `0x8015A530`: 208 bytes / **52 palavras** (Física e colisão de projétil de fogo; folha pura com epílogo `jr $ra` em `0x8015A5F8`).
+  - **Cluster Pipeline de Animação (`0x80194BB4..0x80194EE4`, 816 bytes / 204 palavras)**:
+    - `0x80194BB4`: 96 bytes / **24 palavras** (Cálculo de ossos de animação; folha pura; 1.728 hits).
+    - `0x80194C14`: 108 bytes / **27 palavras** (Matriz de orientação de ossos; folha pura).
+    - `0x80194C80`: 56 bytes / **14 palavras** (Indexação e limites de joints; folha pura).
+    - `0x80194CB8`: 384 bytes / **96 palavras** (Aplicação de transformadas e chamadas a `0x8019528C`).
+    - `0x80194E38`: 172 bytes / **43 palavras** (Aplicação de transformada secundária).
+- **Fechamento de Chamadas (Closure)**:
+  - Todos os 13 alvos de saltos `jal` mapeados já são nativos (`0x80123AE0`, `0x801938B0`, `0x80194990`, `0x801948DC`, `0x801946C8`, `0x801945F8`, `0x8019C184`, `0x8019C0B8`, `0x8019CE70`, `0x8019D740`, `0x8019D7D0`, `0x8010C72C`, `0x8019528C`) ou estão inclusos no lote (`0x8014B2B4`, `0x8014B6B0`). Expansão de closure: **ZERO**.
+- **Orçamento Total S1-287**: 9 funções novas, 3.120 bytes / **780 palavras**.
+- **Cobertura Final S1-287**: **139.261 palavras (71,2026%)** em **1.233 funções nativas**. Codegen audit: **CLEAN**.
+- **Validação em Gameplay (`gameplay-discovery-46`)**:
+  - Erradicou 100% dos 8 candidatos residuais da sessão 45 (`candidates.txt` vazio).
+  - Novos candidatos a promoção no Main EXE: **EXATAMENTE 0**.
+  - Native Handoffs: **0** mantidos estritamente.
+  - Páginas Divergidas: **0**.
+  - Linha de frametime: confirmada como extremamente limpa e estável durante toda a luta.
+- **Conclusão de Ciclo**: **Dhalsim (19º)** oficialmente homologado com **100% de execução nativa** no Main EXE. Todo o elenco padrão (18 personagens base + M. Bison) está 100% nativo. Restam apenas os 4 personagens secretos: Evil Ryu, Bloody Hokuto, Cycloid-β e Cycloid-γ.
+
 ---
 
 ## 3. Dynamic Overlay Track History
