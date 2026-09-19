@@ -672,7 +672,41 @@ For the current baseline status, active batches, and concise tracking table, see
   - Todas as chamadas `jal` (`0x80148710`, `0x80148B64`, `0x80123AE0`, `0x801938B0`, `0x80194990`, `0x801948DC`, `0x801945F8`, `0x801946C8`, `0x80194904`, `0x8019DF20`, `0x8019D270`, `0x8019D7D0`, `0x8019D740`, `0x8019C0B8`, `0x8019C184`, `0x8019DA70`, `0x8010C72C`) já são nativas.
   - Expansão de closure: **RIGOROSAMENTE ZERO**.
 - **Orçamento Total S1-290**: 3 funções novas, 2.468 bytes / **617 palavras**.
-- **Meta de Cobertura S1-290**: **141.053 palavras (72,1188%)** em **1.247 funções nativas**. Supera o marco histórico de 141.000 palavras.
+- **Cobertura Final S1-290**: **141.053 palavras (72,1188%)** em **1.247 funções nativas**. Codegen audit: **CLEAN**.
+- **Validação em Gameplay (`gameplay-discovery-59`)**:
+  - Erradicação de 100% dos candidatos do Cluster 2 (`candidates.txt` sem qualquer registro de `0x80148678`, `0x80148710`, `0x80148B64` ou seus retornos GTE).
+  - Lacuna `[0x80148678..0x8014901C]` 100% preenchida.
+  - 497.503 static hits nativos sem nenhum miss ou handoff.
+  - Marco histórico de 141.000 palavras compiladas estaticamente superado.
+
+---
+
+### Micro-Lote S1-291: Training Mode Dummy AI, Recovery & Damage Tracking Pipeline (Cluster 3)
+
+- **Origem da Descoberta**: Telemetria de combate e treino em `gameplay-discovery-57`, `58` e `59` (Evil Ryu x Ken no Cenário Training).
+- **Mecanismo de Despacho**:
+  - Despachado dinamicamente via tabela indireta `0x801B2E64` (chamada via `jalr` em `0x801551BC` e `0x80158038`).
+  - Controla o ciclo de IA do boneco de treino (Ken), detecção de postura, auto-bloqueio (guard), recuperação de queda e acúmulo de dano de combos.
+- **Funções Promovidas no S1-291 (7 funções, 1.000 bytes / 250 palavras)**:
+  - `0x801555A8`: 20 bytes / **5 palavras** (Incrementador de timer e estado da IA do dummy; 1.047 hits).
+  - `0x801555BC`: 76 bytes / **19 palavras** (Lookup de postura e ação na tabela `0x801B3088`; 1.933 hits).
+  - `0x801556E4`: 104 bytes / **26 palavras** (Handler de estado de ação secundária do dummy; 26 hits).
+  - `0x80156190`: 172 bytes / **43 palavras** (Rotina de recuperação de knockdown e levantada; 1.645 hits).
+  - `0x80156458`: 164 bytes / **41 palavras** (Lógica de auto-bloqueio / guard inteligente do dummy; 1.168 hits).
+  - `0x801569B0`: 288 bytes / **72 palavras** (Acúmulo de dano e reação a impactos; 1.334 hits).
+  - `0x80156AD0`: 176 bytes / **44 palavras** (Gestão da barra de super do dummy; 267 hits).
+- **Desmistificação de Retornos de Chamada (7 retornos absorvidos)**:
+  - A promoção de `0x80156190` absorve o retorno de `jal 0x8015E12C` em `0x80156210`.
+  - A promoção de `0x80156458` absorve os retornos de `jal 0x8015E12C` em `0x801564AC` e `0x801564D8`.
+  - A promoção de `0x801569B0` absorve os retornos de `jal 0x8015D8E4` em `0x80156A1C` e `0x80156A6C`, e de `jal 0x8015E12C` em `0x80156A94`.
+  - A promoção de `0x80156AD0` absorve o retorno de `jal 0x8015E12C` em `0x80156B70`.
+  - Erradica **14 candidatos de uma só vez** em `candidates.txt`.
+- **Fechamento de Chamadas (Closure)**:
+  - Todas as sub-rotinas chamadas (`0x8015E12C`, `0x8015D474`, `0x8015D8E4`) já são nativas no Main EXE.
+  - Chamada interna: `0x801569B0` chama `0x80156AD0`.
+  - Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-291**: 7 funções novas, 1.000 bytes / **250 palavras**.
+- **Meta de Cobertura S1-291**: **141.303 palavras (72,2467%)** em **1.254 funções nativas**.
 
 ---
 
