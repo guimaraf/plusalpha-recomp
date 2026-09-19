@@ -571,7 +571,24 @@ For the current baseline status, active batches, and concise tracking table, see
   - Native Handoffs: **0** mantidos estritamente.
   - Páginas Divergidas: **0**.
   - Linha de frametime: confirmada como extremamente limpa e estável durante toda a luta.
-- **Conclusão de Ciclo**: **Dhalsim (19º)** oficialmente homologado com **100% de execução nativa** no Main EXE. Todo o elenco padrão (18 personagens base + M. Bison) está 100% nativo. Restam apenas os 4 personagens secretos: Evil Ryu, Bloody Hokuto, Cycloid-β e Cycloid-γ.
+- **Conclusão de Ciclo**: **Dhalsim (19º)** oficialmente homologado com **100% de execução nativa** no Main EXE.
+- **Homologação Imediata: Cycloid-β (20º Personagem Nativo)**:
+  - Testado na sessão `gameplay-discovery-47` (Cycloid-β vs Ryu, Cenário Ryu).
+  - Resultados: **EXATAMENTE 0 candidatos no Main EXE** (`candidates.txt` vazio), 0 native handoffs, 0 páginas divergidas, frametime estável e limpo.
+  - Como o moveset de Cycloid-β compartilha dispatches e mecânicas cinemáticas já promovidas, ele rodou 100% nativo logo no primeiro teste.
+- **Homologação: Cycloid-γ (21º Personagem Nativo)**:
+  - Testado na sessão `gameplay-discovery-48` (Cycloid-γ vs Ryu, Cenário Ryu).
+  - Resultados no Main EXE: **EXATAMENTE 0 candidatos a promoção estática** (`candidates.txt` vazio), 339.883 static hits (100% de dispatches estáticos nativos), 0 native handoffs, 0 páginas divergidas.
+  - Diagnóstico Técnico do Frametime: A oscilação na linha de frametime não proveio do Main EXE (Track 1, que rodou 100% nativo), mas sim do **Overlay Dinâmico em RAM (Track 2, `0x80040000..0x80090000`)**, cujo total de instruções interpretadas saltou para 40,85 milhões (+6,7M em relação ao Beta), com novos hotspots pesados em `0x80048930` (462k insns) e `0x8004880C` (177k insns) devido aos golpes especiais e teleports do personagem.
+- **Homologação Imediata: Bloody Hokuto (22º Personagem Nativo)**:
+  - Testado na sessão `gameplay-discovery-49` (Bloody Hokuto vs Ryu, Cenário Ryu).
+  - Resultados: **EXATAMENTE 0 candidatos no Main EXE** (`candidates.txt` vazio), 195.889 static hits, 0 native handoffs, 0 páginas divergidas, frametime estável e limpo (volume interpretado em RAM caiu para apenas 25,4M insns).
+  - Como Bloody Hokuto compartilha integralmente as sub-rotinas de matriz e cinemática da Hokuto padrão (promovidas em S1-286), ela executou 100% nativa sem nenhum miss.
+- **Homologação Imediata: Evil Ryu (23º Personagem Nativo - ELENCO 100% COMPLETO)**:
+  - Testado na sessão `gameplay-discovery-50` (Evil Ryu vs Ryu, Cenário Ryu).
+  - Resultados: **EXATAMENTE 0 candidatos no Main EXE** (`candidates.txt` vazio), 219.488 static hits, 0 native handoffs, 0 páginas divergidas, frametime perfeitamente limpo e estável.
+  - Como Evil Ryu compartilha a base cinemática, dispatches de projéteis (Hadouken) e transformadas de animação com Ryu e Akuma, ele executou 100% nativo sem nenhum miss.
+  - **MARCO HISTÓRICO CONCLUÍDO**: **100% dos 23 personagens de Street Fighter EX Plus Alpha estão oficialmente homologados e executam de forma nativa no Main EXE!**
 
 ---
 

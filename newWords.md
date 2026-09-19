@@ -17,8 +17,8 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-287** (Dhalsim Mechanics & Bone Animation Pipeline: `0x8014B21C..6B0`, `0x8015A530`, `0x80194BB4..E38`, totalizando 9 funcoes e 780 palavras; erradicou 100% dos 8 candidatos da sessao 45; validado com sucesso em `gameplay-discovery-46` com 0 misses no Main EXE, 0 handoffs e frametime estavel).
-- **Current Active Batch**: **Homologado (S1-287)** (Baseline estavel em 71,2026% com zero misses no Main EXE; Dhalsim 19º personagem 100% nativo).
+- **Validated Checkpoint**: **S1-287** (Dhalsim Mechanics & Bone Animation Pipeline: `0x8014B21C..6B0`, `0x8015A530`, `0x80194BB4..E38`, totalizando 9 funcoes e 780 palavras; validado em `gameplay-discovery-46`, `47`, `48`, `49` e `50` com 0 misses no Main EXE, 0 handoffs; 100% do elenco de 23 personagens homologado e nativo).
+- **Current Active Batch**: **Homologado (S1-287)** (Baseline estavel em 71,2026% com zero misses no Main EXE; 23 de 23 personagens 100% nativos).
 - **Current Main Binary Coverage**: **139,261 / 195,584 words (71.2026%)** (Baseline S1-287).
 - **Total Compiled Native Functions**: **1,233 functions**.
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
