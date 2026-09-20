@@ -4717,3 +4717,19 @@
 0x80156F3C
 0x80157014
 
+# Micro-lote S1-299 (CPU AI Core Engine - Gap 6 Parte 2: Dash, Vantagem de Frames, Especiais & Reversais):
+# Erradica os candidatos 0x8015754C (187 hits), 0x80157334 (70 hits), 0x80157278 (39 hits), 0x80157624 (17 hits), 0x8015718C (4 hits), 0x801576E4 (3 hits) e offsets.
+# Promove 6 funcoes discretas (1.580 bytes / 395 palavras):
+#   * 0x8015718C: 236 bytes / 59 palavras (Seletor de aproximação por dash e buffer de comando; 4 hits)
+#   * 0x80157278: 188 bytes / 47 palavras (Avaliador de frames de vantagem e recovery do oponente; 39 hits)
+#   * 0x80157334: 536 bytes / 134 palavras (Dispatcher de rotas de ataques especiais; 70 hits)
+#   * 0x8015754C: 216 bytes / 54 palavras (Decisor de reversais e antiaéreo em reação rápida; 187 hits)
+#   * 0x80157624: 192 bytes / 48 palavras (Helper de controle de cooldown e reset de IA; 17 hits)
+#   * 0x801576E4: 212 bytes / 53 palavras (Helper de verificação de proximidade das bordas; 3 hits)
+# Total S1-299: 6 funcoes novas, 1.580 bytes / 395 palavras. Atinge 143.316 palavras (73,2759%), 1.290 funcoes nativas.
+0x8015718C
+0x80157278
+0x80157334
+0x8015754C
+0x80157624
+0x801576E4

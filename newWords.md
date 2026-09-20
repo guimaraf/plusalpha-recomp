@@ -17,10 +17,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-298** (CPU AI Core Engine - Gap 6 Parte 1: `0x80156B80..0x80157014`, totalizando 7 funcoes e 387 palavras; validado com sucesso em `gameplay-discovery-72` com erradicacao de 100% dos 7 alvos promovidos e 1.059+ hits eliminados; candidatos residuais no Main EXE reduzidos para 23).
+- **Validated Checkpoint**: **S1-299** (CPU AI Core Engine - Gap 6 Parte 2: `0x8015718C..0x801576E4`, totalizando 6 funcoes e 395 palavras; validado com sucesso em `gameplay-discovery-73` com erradicacao de 100% dos 6 alvos promovidos e 320+ hits eliminados; candidatos residuais no Main EXE reduzidos para apenas 13).
 - **Current Active Batch**: Nenhum lote ativo (Preparando proximo micro-lote da CPU AI).
-- **Current Main Binary Coverage**: **142,921 / 195,584 words (73.0740%)** (Validated S1-298).
-- **Total Compiled Native Functions**: **1,284 functions**.
+- **Current Main Binary Coverage**: **143,316 / 195,584 words (73.2759%)** (Validated S1-299).
+- **Total Compiled Native Functions**: **1,290 functions**.
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
 - **Residual Main EXE Misses**: **ZERO misses no boot, apresentação e combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
 
@@ -88,8 +88,9 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-296** | `0x8015574C..5A58` (7 funcs) | 244 | 142,121 | Processed & Validated; Telemetry 70 CLEAN |
 | **S1-297** | `0x80155B1C`, `0x80155DB4`, `0x80155F98` (3 funcs) | 413 | 142,534 | Processed & Validated; Telemetry 71 CLEAN |
 | **S1-298** | `0x80156B80..7014` (7 funcs) | 387 | 142,921 | Processed & Validated; Telemetry 72 CLEAN |
+| **S1-299** | `0x8015718C..76E4` (6 funcs) | 395 | 143,316 | Processed & Validated; Telemetry 73 CLEAN |
 
-- **Total words promovidas desde S1-239**: **+36,602 words** (+18.71% absolute gain).
+- **Total words promovidas desde S1-239**: **+36,997 words** (+18.92% absolute gain).
 
 ---
 

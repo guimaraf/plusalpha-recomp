@@ -871,6 +871,31 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### Micro-Lote S1-299: CPU AI Core Engine Pipeline (Gap 6 Parte 2: Dash, Vantagem de Frames, Especiais & Reversais)
+
+- **Origem da Descoberta**: Telemetria de combate da CPU Level 8 em `gameplay-discovery-72` (320+ hits nos alvos do lote).
+- **Topologia & Estrutura**:
+  - `0x8015718C`: 236 bytes / **59 palavras** (Seletor de aproximação por dash e buffer de comando; 4 hits).
+  - `0x80157278`: 188 bytes / **47 palavras** (Avaliador de frames de vantagem e recovery do oponente; 39 hits).
+  - `0x80157334`: 536 bytes / **134 palavras** (Dispatcher de rotas de ataques especiais - Hadoken/Tatsu; 70 hits).
+  - `0x8015754C`: 216 bytes / **54 palavras** (Decisor de reversais e antiaéreo em reação rápida; 187 hits).
+  - `0x80157624`: 192 bytes / **48 palavras** (Helper de controle de cooldown e reset de IA; 17 hits).
+  - `0x801576E4`: 212 bytes / **53 palavras** (Helper de verificação de proximidade das bordas de tela; 3 hits).
+- **Abutment Estrutural**:
+  - Conecta com precisão linear em `0x8015718C` ao término do cluster nativo `0x801550C8..0x8015718C` (S1-298), estendendo-o continuamente até `0x801577B8`.
+- **Fechamento de Chamadas (Closure)**:
+  - Todas as chamadas convergem para funções já nativas ou pertencentes a este sub-lote. Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-299**: 6 funções novas, 1.580 bytes / **395 palavras**.
+- **Meta de Cobertura S1-299**: **143.316 palavras (73,2759%)** em **1.290 funções nativas**.
+- **Validação em Gameplay (`gameplay-discovery-73`)**:
+  - Validado em combate direto contra Ryu CPU Level 8.
+  - Erradicação de 100% dos 6 alvos promovidos (`0x8015718C..0x801576E4` caíram para ZERO hits), além dos offsets internos.
+  - Mais de 320 hits de especiais, reversais e dash transferidos para execução nativa.
+  - Candidatos residuais no Main EXE reduzidos para apenas 13 (todos contidos na reta final de Gap 6: `0x801577B8..0x80157F2C`).
+  - Codegen audit: **CLEAN**. Status: **PROCESSED & VALIDATED**.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.
