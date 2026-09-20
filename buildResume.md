@@ -728,6 +728,30 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### Micro-Lote S1-293: CPU AI Core Engine Pipeline (Clusters 1 e 2)
+
+- **Origem da Descoberta**: Telemetria de combate da CPU Level 8 (Ryu vs Ryu, Suzaku Castle) em `gameplay-discovery-65`.
+- **Topologia & Estrutura**:
+  - **Cluster 1 (Gap 2)**:
+    - `0x80155608`: 220 bytes / **55 palavras** (Ponte entre `0x801555BC` e `0x801556E4`; 40 hits; única chamada externa é `jal 0x80123910`, que já é 100% nativa).
+  - **Cluster 2 (Gap 7)**:
+    - `0x80158050`: 68 bytes / **17 palavras** (Despachante e helper central de ataque da CPU; 216 hits; invocado por 25 rotinas de ataque do Cluster 6; chama internamente `0x80158094`).
+    - `0x80158094`: 224 bytes / **56 palavras** (Loop folha de verificação de timers e frames de golpes da CPU; 57 hits; zero chamadas externas).
+    - `0x80158174`: 32 bytes / **8 palavras** (Rotina folha de incremento e contagem de estado de ação da CPU; 74 hits; zero chamadas externas).
+- **Abutment Estrutural**:
+  - `0x80155608` encaixa-se exatamente entre as nativas `0x801555BC..0x80155608` e `0x801556E4..0x8015574C`.
+  - `0x80158050..0x80158194` conecta diretamente as nativas `0x80157F2C..0x80158050` e `0x80158194..0x801582B8`.
+- **Fechamento de Chamadas (Closure)**:
+  - Todas as chamadas são para funções já nativas ou internas ao cluster. Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-293**: 4 funções novas, 544 bytes / **136 palavras**.
+- **Meta de Cobertura S1-293**: **141.441 palavras (72,3172%)** em **1.259 funções nativas**.
+- **Validação em Gameplay (`gameplay-discovery-66`)**:
+  - Validado em combate direto contra Ryu CPU Level 8.
+  - Erradicação de 100% dos 4 alvos promovidos (`0x80155608`, `0x80158050`, `0x80158094`, `0x80158174` caíram para ZERO hits).
+  - Codegen audit: **CLEAN**. Status: **PROCESSED & VALIDATED**.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

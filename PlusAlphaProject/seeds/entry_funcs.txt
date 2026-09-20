@@ -4627,7 +4627,16 @@
 # Total S1-292: 1 funcao nova, 8 bytes / 2 palavras. Atinge 141.305 palavras (72,2477%), 1.255 funcoes nativas.
 0x80162680
 
-
-
-
-
+# Micro-lote S1-293 (CPU AI Core Engine - Clusters 1 e 2):
+# Erradica os candidatos 0x80155608 (Gap 2) e 0x80158050, 0x80158094, 0x80158174 (Gap 7)
+# observados na telemetria de gameplay (gameplay-discovery-65).
+# Promove 4 funcoes discretas (544 bytes / 136 palavras):
+#   * 0x80155608: 220 bytes / 55 palavras (Ponte entre 0x801555BC e 0x801556E4; 40 hits; chama apenas a nativa 0x80123910)
+#   * 0x80158050:  68 bytes / 17 palavras (Helper de despacho de ataque da CPU; 216 hits; chama 0x80158094)
+#   * 0x80158094: 224 bytes / 56 palavras (Loop folha de frames de ataque da CPU; 57 hits)
+#   * 0x80158174:  32 bytes /  8 palavras (Folha de contagem e estado de acao da CPU; 74 hits)
+# Total S1-293: 4 funcoes novas, 544 bytes / 136 palavras. Atinge 141.441 palavras (72,3172%), 1.259 funcoes nativas.
+0x80155608
+0x80158050
+0x80158094
+0x80158174
