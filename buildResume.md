@@ -752,6 +752,26 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### Micro-Lote S1-294: CPU AI Core Engine Pipeline (Cluster 3 / Gap 4)
+
+- **Origem da Descoberta**: Telemetria de combate da CPU Level 8 em `gameplay-discovery-66` (382 hits).
+- **Topologia & Estrutura**:
+  - `0x8015623C`: 216 bytes / **54 palavras** (Rotina folha de guarda e temporização defensiva da CPU; 139 hits; zero chamadas externas).
+  - `0x80156314`: 324 bytes / **81 palavras** (Cálculo de espaçamento neutro e reação a projéteis; 243 hits; única chamada externa é `jal 0x80123910`, já nativa).
+- **Abutment Estrutural**:
+  - Preenche 100% da lacuna entre a função nativa `0x80156190..0x8015623C` e a função nativa `0x80156458..0x801564FC`.
+- **Fechamento de Chamadas (Closure)**:
+  - Nenhuma nova dependência externa. Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-294**: 2 funções novas, 540 bytes / **135 palavras**.
+- **Meta de Cobertura S1-294**: **141.576 palavras (72,3862%)** em **1.261 funções nativas**.
+- **Validação em Gameplay (`gameplay-discovery-67`)**:
+  - Validado em combate direto contra Ryu CPU Level 8.
+  - Erradicação de 100% dos 2 alvos promovidos (`0x8015623C` e `0x80156314` caíram para ZERO hits).
+  - Total de candidatos residuais no Main EXE caiu de 49 para 40 candidatos.
+  - Codegen audit: **CLEAN**. Status: **PROCESSED & VALIDATED**.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

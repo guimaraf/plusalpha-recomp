@@ -17,10 +17,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-293** (CPU AI Core Engine - Clusters 1 e 2: `0x80155608`, `0x80158050`, `0x80158094`, `0x80158174`, totalizando 4 funcoes e 136 palavras; validado com sucesso em `gameplay-discovery-66` com erradicacao de 100% dos 4 alvos promovidos).
+- **Validated Checkpoint**: **S1-294** (CPU AI Core Engine - Cluster 3 / Gap 4: `0x8015623C`, `0x80156314`, totalizando 2 funcoes e 135 palavras; validado com sucesso em `gameplay-discovery-67` com erradicacao de 100% dos 2 alvos promovidos e reducao de candidatos residuais).
 - **Current Active Batch**: Nenhum lote ativo (Preparando proximo micro-lote da CPU AI).
-- **Current Main Binary Coverage**: **141,441 / 195,584 words (72.3172%)** (Validated S1-293).
-- **Total Compiled Native Functions**: **1,259 functions**.
+- **Current Main Binary Coverage**: **141,576 / 195,584 words (72.3862%)** (Validated S1-294).
+- **Total Compiled Native Functions**: **1,261 functions**.
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
 - **Residual Main EXE Misses**: **ZERO misses no boot, apresentação e combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
 
@@ -83,8 +83,9 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-291** | `0x801555A8..6AD0` (7 funcs) | 250 | 141,303 | Processed & Validated; Telemetry 60 CLEAN |
 | **S1-292** | `0x80162680` (1 func) | 2 | 141,305 | Processed & Validated; Telemetry 61 CLEAN |
 | **S1-293** | `0x80155608`, `0x80158050`, `0x80158094`, `0x80158174` (4 funcs) | 136 | 141,441 | Processed & Validated; Telemetry 66 CLEAN |
+| **S1-294** | `0x8015623C`, `0x80156314` (2 funcs) | 135 | 141,576 | Processed & Validated; Telemetry 67 CLEAN |
 
-- **Total words promovidas desde S1-239**: **+35,122 words** (+17.96% absolute gain).
+- **Total words promovidas desde S1-239**: **+35,257 words** (+18.03% absolute gain).
 
 ---
 

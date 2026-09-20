@@ -4640,3 +4640,13 @@
 0x80158050
 0x80158094
 0x80158174
+
+# Micro-lote S1-294 (CPU AI Core Engine - Cluster 3 / Gap 4):
+# Erradica os candidatos 0x8015623C e 0x80156314 (Gap 4)
+# observados na telemetria de gameplay (gameplay-discovery-66, 382 hits).
+# Promove 2 funcoes discretas (540 bytes / 135 palavras):
+#   * 0x8015623C: 216 bytes / 54 palavras (Rotina folha de guarda e temporizacao defensiva da CPU; 139 hits)
+#   * 0x80156314: 324 bytes / 81 palavras (Calculo de espacamento e reacao a projeteis; 243 hits; chama a nativa 0x80123910)
+# Total S1-294: 2 funcoes novas, 540 bytes / 135 palavras. Atinge 141.576 palavras (72,3862%), 1.261 funcoes nativas.
+0x8015623C
+0x80156314
