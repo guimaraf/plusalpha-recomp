@@ -772,6 +772,30 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### Micro-Lote S1-295: CPU AI Core Engine Pipeline (Cluster 4 / Gap 5)
+
+- **Origem da Descoberta**: Telemetria de combate da CPU Level 8 em `gameplay-discovery-67`.
+- **Topologia & Estrutura**:
+  - `0x801564FC`: 152 bytes / **38 palavras** (Helper de lookup de alvos de combate; sem chamadas externas).
+  - `0x80156594`: 164 bytes / **41 palavras** (Despacho de aproximação da CPU; 10 hits; chama internamente `0x801566E4`).
+  - `0x80156638`: 172 bytes / **43 palavras** (Despacho de recuo tático da CPU; chama internamente `0x801566E4`).
+  - `0x801566E4`: 296 bytes / **74 palavras** (Rotina central de tracking horizontal e movimentação; 60 hits; sem chamadas externas).
+  - `0x8015680C`: 236 bytes / **59 palavras** (Verificação de colisão e corner pressure; 50 hits; chama internamente `0x801566E4`).
+  - `0x801568F8`: 184 bytes / **46 palavras** (Temporizador de pulo e lógica anti-air; 1 hit; sem chamadas externas).
+- **Abutment Estrutural**:
+  - Preenche 100% da lacuna entre a função nativa `0x80156458..0x801564FC` e a função nativa `0x801569B0..0x80156AD0`.
+- **Fechamento de Chamadas (Closure)**:
+  - Todas as chamadas são estritamente internas para `0x801566E4`. Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-295**: 6 funções novas, 1.204 bytes / **301 palavras**.
+- **Meta de Cobertura S1-295**: **141.877 palavras (72,5401%)** em **1.267 funções nativas**.
+- **Validação em Gameplay (`gameplay-discovery-68`)**:
+  - Validado em combate direto contra Ryu CPU Level 8.
+  - Erradicação de 100% dos 6 alvos promovidos (`0x801564FC..0x801568F8` caíram para ZERO hits), além dos offsets internos associados.
+  - Conexão contígua de todo o segmento `0x80156190..0x80156B80` (quase 2,5 KB) 100% nativo.
+  - Codegen audit: **CLEAN**. Status: **PROCESSED & VALIDATED**.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

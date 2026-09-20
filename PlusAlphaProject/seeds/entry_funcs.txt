@@ -4650,3 +4650,20 @@
 # Total S1-294: 2 funcoes novas, 540 bytes / 135 palavras. Atinge 141.576 palavras (72,3862%), 1.261 funcoes nativas.
 0x8015623C
 0x80156314
+
+# Micro-lote S1-295 (CPU AI Core Engine - Cluster 4 / Gap 5):
+# Erradica os candidatos do Gap 5 observados na telemetria (gameplay-discovery-67).
+# Promove 6 funcoes discretas (1.204 bytes / 301 palavras):
+#   * 0x801564FC: 152 bytes / 38 palavras (Helper de lookup de alvos de combate)
+#   * 0x80156594: 164 bytes / 41 palavras (Despacho de aproximacao da CPU; 10 hits; chama 0x801566E4)
+#   * 0x80156638: 172 bytes / 43 palavras (Despacho de recuo tatico da CPU; chama 0x801566E4)
+#   * 0x801566E4: 296 bytes / 74 palavras (Rotina central de tracking horizontal e movimentacao; 60 hits)
+#   * 0x8015680C: 236 bytes / 59 palavras (Verificacao de colisao e corner pressure; 50 hits; chama 0x801566E4)
+#   * 0x801568F8: 184 bytes / 46 palavras (Temporizador de pulo e logica anti-air; 1 hit)
+# Total S1-295: 6 funcoes novas, 1.204 bytes / 301 palavras. Atinge 141.877 palavras (72,5401%), 1.267 funcoes nativas.
+0x801564FC
+0x80156594
+0x80156638
+0x801566E4
+0x8015680C
+0x801568F8
