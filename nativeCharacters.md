@@ -26,19 +26,19 @@ Este documento registra os personagens testados e homologados com **100% de exec
 | **Blair Dame** | **100% Nativo** (0 misses) | `gameplay-discovery-38` & `39` | S1-283 / S1-284 | Shoot Kick, Lightning Knee, Sliding D-Kick, Spin Kick, Mirage Kick, ação/combate `0x8013E930`, vetores de deslizamento `0x8014901C`. |
 | **Skullomania** | **100% Nativo** (0 misses) | `gameplay-discovery-40` & `41` | S1-285 | Skullo Crusher, Skullo Slider, Skullo Head, Skullo Dive, Skullo Dash, Super Skullo Crusher/Slider, trajetória `0x8012A7E4`, ação acrobática 3D `0x801441B0..AD8`, máquina de combate `0x80160790..AA4`. |
 | **Hokuto** | **100% Nativo** (0 misses) | `gameplay-discovery-42` & `43` | S1-286 | Chuuhou, Kaishuu, Shingetsu, Kyaku Houugi, Kiren'eki, Shirase Gatana, colisões, defesas e família de vetores GTE `0x8019D860..0x8019DA54`. |
-| **Dhalsim** | *Pendente* (Próximo Alvo) | `gameplay-discovery-44` (A seguir) | S1-287 (A planejar) | Yoga Fire, Yoga Flame, Yoga Blast, Yoga Teleport, membros elásticos e colisões de alcance. |
-| **Evil Ryu** | *Pendente* (Chefe Secreto) | A planejar | A planejar | Ashura Senku, Messatsu Gou Shoryu, Shun Goku Satsu, Hadouken sombrio. |
-| **Bloody Hokuto** | *Pendente* (Chefe Secreto) | A planejar | A planejar | Versão corrompida de Hokuto, adaga permanente, ataques rápidos de sangue. |
-| **Cycloid-β** | *Pendente* (Personagem Bônus) | A planejar | A planejar | Modelo wireframe/poligonal azul, golpes emprestados do elenco Street Fighter. |
-| **Cycloid-γ** | *Pendente* (Personagem Bônus) | A planejar | A planejar | Modelo wireframe/poligonal dourado, golpes emprestados do elenco EX. |
+| **Dhalsim** | **100% Nativo** (0 misses) | `gameplay-discovery-46` | S1-287 | Yoga Fire (`0x8015A530`), Yoga Flame, Yoga Blast, deformação elástica dos membros (`0x8014B2B4`), caixas de colisão elásticas (`0x8014B6B0`) e ossos de animação (`0x80194BB4..EE4`). |
+| **Cycloid-β** | **100% Nativo** (0 misses) | `gameplay-discovery-47` | S1-287 | Modelo poligonal azul; moveset híbrido do elenco SF totalmente compartilhado com rotinas nativas pré-existentes. |
+| **Cycloid-γ** | **100% Nativo** (0 misses) | `gameplay-discovery-48` | S1-287 | Modelo poligonal dourado; moveset híbrido do elenco EX e teleports (100% de dispatches estáticos nativos no Main EXE; variações restritas ao overlay dinâmico em RAM). |
+| **Bloody Hokuto** | **100% Nativo** (0 misses) | `gameplay-discovery-49` | S1-287 | Versão corrompida de Hokuto, adaga permanente e ataques rápidos de sangue; compartilha 100% das sub-rotinas cinemáticas e matrizes da Hokuto padrão (S1-286). |
+| **Evil Ryu** | **100% Nativo** (0 misses) | `gameplay-discovery-50` | S1-287 | Ashura Senku, Messatsu Gou Shoryu, Shun Goku Satsu, Hadouken sombrio; compartilha matrizes cinemáticas, transformadas e dispatches de projéteis de Ryu e Akuma. |
 
 ---
 
 ### Resumo do Roster (Conforme Tela de Seleção Versus - 23 Personagens)
 - **Fileira Superior (8)**: Zangief [OK], Cracker Jack [OK], Hokuto [OK], Ryu [OK], Ken [OK], Chun-Li [OK], Doctrine Dark [OK], Guile [OK]
-- **Fileira Central (8)**: Pullum Purna [OK], Darun Mister [OK], Kairi [OK], Sakura [OK], **Dhalsim** [Pendente], Allen Snider [OK], Blair Dame [OK], Skullomania [OK]
-- **Fileira Inferior / Chefes & Secretos (7)**: Akuma [OK], M. Bison [OK], Garuda [OK], **Evil Ryu** [Pendente], **Bloody Hokuto** [Pendente], **Cycloid-β** [Pendente], **Cycloid-γ** [Pendente]
-- **Progresso de Homologação**: **18 / 23 personagens (78,26%)** com 100% de execução nativa.
+- **Fileira Central (8)**: Pullum Purna [OK], Darun Mister [OK], Kairi [OK], Sakura [OK], Dhalsim [OK], Allen Snider [OK], Blair Dame [OK], Skullomania [OK]
+- **Fileira Inferior / Chefes & Secretos (7)**: Akuma [OK], M. Bison [OK], Garuda [OK], Evil Ryu [OK], Bloody Hokuto [OK], Cycloid-β [OK], Cycloid-γ [OK]
+- **Progresso de Homologação**: **23 / 23 personagens (100,00%)** com 100% de execução nativa no Main EXE!
 
 ---
 
@@ -120,7 +120,55 @@ Durante os testes de combate de alta densidade, o isolamento de telemetria desma
 
 ---
 
-## 3. Quarentena Obrigatória no Main EXE (Interpretação Segura)
+### Caso 7: Cinemática de Membros Elásticos do Dhalsim e Pipeline de Animação de Ossos (Micro-lote S1-287)
+- **Comportamento Observado**: Durante a sessão `gameplay-discovery-45` (Dhalsim vs Ryu), foram detectados 8 candidatos residuais (2.002 hits) ao acionar ataques com membros estendidos.
+- **Diagnóstico Técnico**:
+  - A mecânica única do Dhalsim de esticar braços e pernas mobiliza sub-rotinas cinemáticas específicas de deformação e caixas de contato móveis:
+    - `0x8014B21C` (Root dispatch de combate na tabela `0x801B1BA8`).
+    - `0x8014B2B4` (Cálculo cinemático de alcance e deformação elástica dos membros).
+    - `0x8014B6B0` (Atualização de posturas e caixas de colisão móveis).
+    - `0x8015A530` (Projétil Yoga Fire).
+    - `0x80194BB4..0x80194EE4` (Pipeline de orientação de matrizes e interpolação de ossos de animação 3D).
+- **Resolução Implementada (S1-287)**:
+  - Promoção de 9 funções nativas (+780 palavras).
+  - Validação em `gameplay-discovery-46`: **0 candidatos no Main EXE**, frametime cravado e homologação oficial do Dhalsim como 19º lutador 100% nativo.
+
+---
+
+### Caso 8: Compartilhamento Estrutural de Movesets em Chefes e Personagens Bônus (Cycloids, Bloody Hokuto, Evil Ryu)
+- **Comportamento Observado**: Testes de combate com Cycloid-β (`gameplay-discovery-47`), Cycloid-γ (`gameplay-discovery-48`), Bloody Hokuto (`gameplay-discovery-49`) e Evil Ryu (`gameplay-discovery-50`).
+- **Diagnóstico Técnico**:
+  - Todas as sessões registraram **EXATAMENTE 0 CANDIDATOS NO MAIN EXE** (`candidates.txt` vazio) logo no primeiro teste.
+  - **Herança Cinemática**:
+    - **Cycloid-β**: Reutiliza integralmente as tabelas e rotinas de golpes normais/especiais já compiladas do elenco Street Fighter.
+    - **Cycloid-γ**: Reutiliza a base de combate dos lutadores EX. As flutuações de frametime observadas concentram-se no overlay dinâmico em RAM (`0x80048930` e `0x8004880C`), sem nenhum miss na ROM estática.
+    - **Bloody Hokuto**: Herda 100% das sub-rotinas cinemáticas, matrizes de rotação e vetores da Hokuto padrão (promovidas em S1-286).
+    - **Evil Ryu**: Compartilha dispatches cinemáticos, rotas de Hadouken e colisões com Ryu e Akuma.
+- **Conclusão de Ciclo**: Todos os 23 lutadores do jogo foram homologados com **100% de execução nativa** no Main EXE.
+
+---
+
+## 3. Homologação do Core AI Engine (Lotes S1-291 a S1-300)
+
+Após a homologação completa dos 23 personagens sob controle humano (P1), iniciou-se a campanha de homologação dos personagens operados pela CPU (Level 8 / Hardest).
+
+- **O Desafio do Core AI Engine (`0x80155000..0x80158500`)**:
+  - Quando operados pela IA no nível máximo de agressividade, os lutadores acionam árvores profundas de avaliação de neutro, *hit-confirms*, cancelamentos sequenciais, simulação de inputs e reversais.
+- **Campanha de Promoção em Micro-Lotes (S1-291 a S1-300)**:
+  - **S1-291 / S1-292**: Configuração de dummies de treino e flags de transição neutra.
+  - **S1-293**: Gap 2 e Gap 7 (Helpers de recovery e transição de bloqueio).
+  - **S1-294**: Gap 4 (Aproximação e temporização de pulos).
+  - **S1-295**: Gap 5 (Seleção de supers e cancelamentos).
+  - **S1-296 / S1-297**: Gap 3 Parte 1 e Parte 2 (Posicionamento, evasão, hit-confirms e combos; erradicação de 1.500+ hits).
+  - **S1-298 / S1-299 / S1-300**: Gap 6 Partes 1, 2 e 3 (Curta distância, dashes, vantagens de frames, reversais, matriz de projéteis e finalizadores; erradicação de 1.540+ hits).
+- **Resultado na Sessão `gameplay-discovery-74`**:
+  - **0 CANDIDATOS NO MAIN EXE TEXT**.
+  - O Core AI Engine agora forma um **bloco contíguo de 13.368 bytes (3.342 palavras)** de código C11 nativo de `0x801550C8` até `0x80158500`.
+  - Garante que todo o elenco, seja controlado por humanos ou pela IA de alta dificuldade, execute com **zero fallbacks no Main EXE**.
+
+---
+
+## 4. Quarentena Obrigatória no Main EXE (Interpretação Segura)
 
 Os únicos endereços dentro do espaço do executável principal (`0x80100000..0x801BF000`) mantidos intencionalmente sob interpretação são:
 
