@@ -896,6 +896,32 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### Micro-Lote S1-300: CPU AI Core Engine Pipeline (Gap 6 Parte 3: Conclusão do Core AI)
+
+- **Origem da Descoberta**: Telemetria de combate da CPU Level 8 em `gameplay-discovery-73` (167 hits residuais).
+- **Topologia & Estrutura**:
+  - `0x801577B8`: 244 bytes / **61 palavras** (Dispatcher de decisão de ataque médio/longo alcance; 70 hits).
+  - `0x801578AC`: 624 bytes / **156 palavras** (Matriz de probabilidade de reação a projéteis/hadoken; 1 hit).
+  - `0x80157B1C`: 304 bytes / **76 palavras** (Seletor de finalizadores de round e punições; 31 hits + 32 off).
+  - `0x80157C4C`: 320 bytes / **80 palavras** (Helper de sincronização de buffers de inputs simulados; 0 hits).
+  - `0x80157D8C`: 192 bytes / **48 palavras** (Seletor de postura de guarda em wake-up; 5 hits).
+  - `0x80157E4C..0x80157F0C` (7 funções folha): 224 bytes / **56 palavras** (Folhas vetoriais de cálculo de distância e bounds; 8 palavras cada; 28 hits).
+- **Abutment Estrutural**:
+  - Conecta com precisão cirúrgica em `0x801577B8` ao término do cluster nativo e fecha em `0x80157F2C`, conectando-se diretamente ao bloco `0x80157F2C..0x80158500`.
+  - Unifica todo o Core AI Engine (`0x801550C8..0x80158500`): **13.368 bytes / 3.342 palavras contíguas** 100% nativas.
+- **Fechamento de Chamadas (Closure)**:
+  - Todas as chamadas convergem exclusivamente para funções nativas. Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-300**: 12 funções novas, 1.908 bytes / **477 palavras**.
+- **Meta de Cobertura S1-300**: **143.793 palavras (73,5200%)** em **1.302 funções nativas**.
+- **Validação em Gameplay (`gameplay-discovery-74`)**:
+  - Validado em combate direto contra Ryu CPU Level 8.
+  - Erradicação de 100% de todos os 12 alvos promovidos (`0x801577B8..0x80157F0C` caíram para ZERO hits).
+  - Candidatos residuais no Main EXE Text reduzidos para **ZERO** (0 candidatos, 0 hits).
+  - Core AI Engine (`0x801550C8..0x80158500`) totalmente unificado e contíguo (13.368 bytes / 3.342 palavras nativas).
+  - Codegen audit: **CLEAN**. Status: **PROCESSED & VALIDATED**.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

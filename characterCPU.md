@@ -44,7 +44,7 @@ Para isolar o comportamento da CPU sem dependência de aleatoriedade dos modos A
 
 | # | Personagem | Status CPU | Sessão Telemetria | Candidatos Main EXE | Observações |
 |:---:|:---|:---:|:---:|:---:|:---|
-| 1 | **Ryu** | Em Homologação | `discovery-73` | S1-299 validado (+6 funcs, +395 pal; 320+ hits erradicados); Gap 6 em reta final; restam apenas 13 candidatos | Shoryuken, Hadoken, Tatsumaki, Shinku Hadoken. |
+| 1 | **Ryu** | Homologado (Core AI) | `discovery-74` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | Core AI Engine (`0x801550C8..0x80158500`) 100% nativo. Próximo alvo: dispatches específicos de outros lutadores. |
 | 2 | **Ken** | Pendente | — | — | Shoryuken flamejante, Shoryu Reppa, Shinryuken. |
 | 3 | **Chun-Li** | Pendente | — | — | Hyakuretsukyaku, Kikoken, Senretsukyaku, Hazanshou. |
 | 4 | **Guile** | Pendente | — | — | Sonic Boom, Flash Kick, Somersault Strike. |

@@ -4733,3 +4733,32 @@
 0x8015754C
 0x80157624
 0x801576E4
+
+# Micro-lote S1-300 (CPU AI Core Engine - Gap 6 Parte 3: Longo Alcance, Reacao a Projeteis & Finalizadores):
+# Erradica 100% dos candidatos residuais no Main EXE Text (0x801577B8, 0x80157B1C, 0x80157D8C, 0x80157E4C..F0C; 167 hits).
+# Promove 12 funcoes discretas (1.908 bytes / 477 palavras):
+#   * 0x801577B8: 244 bytes / 61 palavras (Dispatcher de ataque medio/longo alcance; 70 hits)
+#   * 0x801578AC: 624 bytes / 156 palavras (Matriz de probabilidade de reacao a projeteis; 1 hit)
+#   * 0x80157B1C: 304 bytes / 76 palavras (Seletor de finalizadores de round e punicoes; 31 hits + 32 off)
+#   * 0x80157C4C: 320 bytes / 80 palavras (Helper de sincronizacao de buffers de input; 0 hits)
+#   * 0x80157D8C: 192 bytes / 48 palavras (Seletor de postura de guarda em wake-up; 5 hits)
+#   * 0x80157E4C: 32 bytes / 8 palavras (Folha vetorial de distancia 1; 5 hits)
+#   * 0x80157E6C: 32 bytes / 8 palavras (Folha vetorial de distancia 2; 4 hits)
+#   * 0x80157E8C: 32 bytes / 8 palavras (Folha vetorial de distancia 3; 4 hits)
+#   * 0x80157EAC: 32 bytes / 8 palavras (Folha vetorial de distancia 4; 4 hits)
+#   * 0x80157ECC: 32 bytes / 8 palavras (Folha vetorial de distancia 5; 1 hit)
+#   * 0x80157EEC: 32 bytes / 8 palavras (Folha vetorial de distancia 6; 5 hits)
+#   * 0x80157F0C: 32 bytes / 8 palavras (Folha vetorial de distancia 7; 5 hits)
+# Total S1-300: 12 funcoes novas, 1.908 bytes / 477 palavras. Atinge 143.793 palavras (73,5200%), 1.302 funcoes nativas.
+0x801577B8
+0x801578AC
+0x80157B1C
+0x80157C4C
+0x80157D8C
+0x80157E4C
+0x80157E6C
+0x80157E8C
+0x80157EAC
+0x80157ECC
+0x80157EEC
+0x80157F0C
