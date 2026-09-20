@@ -4686,3 +4686,14 @@
 0x801558CC
 0x80155984
 0x80155A58
+
+# Micro-lote S1-297 (CPU AI Core Engine - Gap 3 Parte 2: Combos, Cancels & Input Simulation):
+# Erradica os candidatos 0x80155B1C, 0x80155DB4, 0x80155F98 e seus offsets internos (1.135+ hits).
+# Promove 3 funcoes discretas (1.652 bytes / 413 palavras):
+#   * 0x80155B1C: 664 bytes / 166 palavras (Hit-confirm e sequenciamento de combos da CPU; 399 hits)
+#   * 0x80155DB4: 484 bytes / 121 palavras (Selecao de super cancels e reversais; 50 hits)
+#   * 0x80155F98: 504 bytes / 126 palavras (Loop de agressividade e input simulation; 686 hits)
+# Total S1-297: 3 funcoes novas, 1.652 bytes / 413 palavras. Atinge 142.534 palavras (72,8761%), 1.277 funcoes nativas.
+0x80155B1C
+0x80155DB4
+0x80155F98

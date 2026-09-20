@@ -822,6 +822,29 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### Micro-Lote S1-297: CPU AI Core Engine Pipeline (Gap 3 Parte 2: Combos, Cancels & Input Simulation)
+
+- **Origem da Descoberta**: Telemetria de combate da CPU Level 8 em `gameplay-discovery-70` (1.135+ hits nos 3 alvos primários).
+- **Topologia & Estrutura**:
+  - `0x80155B1C`: 664 bytes / **166 palavras** (Hit-confirm e encadeamento sequencial de combos normais e especiais; 399 hits).
+  - `0x80155DB4`: 484 bytes / **121 palavras** (Seleção de Super Cancels e reversais com barra cheia; 50 hits).
+  - `0x80155F98`: 504 bytes / **126 palavras** (Loop de agressividade, leitura de buffers e simulação de input do controle P2; 686 hits).
+- **Abutment Estrutural**:
+  - Conecta diretamente à função nativa `0x80155A58` (S1-296) em `0x80155B1C` e fecha com precisão cirúrgica em `0x80156190`, conectando-se ao início do cluster `0x80156190..0x80156B80`.
+  - Fecha 100% do **Gap 3 (`0x8015574C..0x80156190`)**, unificando um bloco contíguo de quase 7 KB (`0x801550C8..0x80156B80`) 100% nativo.
+- **Fechamento de Chamadas (Closure)**:
+  - Todas as chamadas internas (`0x80155608`, `0x8015574C`, `0x801558CC`, etc.) já estão compiladas nativamente nos lotes S1-291 a S1-296. Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-297**: 3 funções novas, 1.652 bytes / **413 palavras**.
+- **Meta de Cobertura S1-297**: **142.534 palavras (72,8761%)** em **1.277 funções nativas**.
+- **Validação em Gameplay (`gameplay-discovery-71`)**:
+  - Validado em combate direto contra Ryu CPU Level 8.
+  - Erradicação de 100% dos 3 alvos promovidos (`0x80155B1C`, `0x80155DB4`, `0x80155F98` caíram para ZERO hits).
+  - Mais de 1.135 hits de combos, cancels e input simulation transferidos para execução nativa.
+  - Candidatos residuais no Main EXE reduzidos para 29 (todos situados estritamente no Gap 6: `0x80156B80..0x80157F2C`).
+  - Codegen audit: **CLEAN**. Status: **PROCESSED & VALIDATED**.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.
