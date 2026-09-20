@@ -4667,3 +4667,22 @@
 0x801566E4
 0x8015680C
 0x801568F8
+
+# Micro-lote S1-296 (CPU AI Core Engine - Gap 3 Parte 1: Posicionamento e Evasao):
+# Erradica os candidatos 0x8015574C, 0x801557A4, 0x801557F0, 0x80155840 observados na telemetria (371 hits).
+# Promove 7 funcoes discretas (976 bytes / 244 palavras):
+#   * 0x8015574C:  88 bytes / 22 palavras (Rotina folha de calculo de distancia media; 92 hits)
+#   * 0x801557A4:  76 bytes / 19 palavras (Rotina folha de checagem de cornering; 22 hits)
+#   * 0x801557F0:  80 bytes / 20 palavras (Rotina folha de evasao rapida e dash back; 251 hits)
+#   * 0x80155840: 140 bytes / 35 palavras (Rotina folha de guarda alta/baixa; 6 hits)
+#   * 0x801558CC: 184 bytes / 46 palavras (Helper de lookup de frame data de golpes normais)
+#   * 0x80155984: 212 bytes / 53 palavras (Helper de prioridade de botoes socos/chutes)
+#   * 0x80155A58: 196 bytes / 49 palavras (Temporizador de neutro e reset de postura)
+# Total S1-296: 7 funcoes novas, 976 bytes / 244 palavras. Atinge 142.121 palavras (72,6649%), 1.274 funcoes nativas.
+0x8015574C
+0x801557A4
+0x801557F0
+0x80155840
+0x801558CC
+0x80155984
+0x80155A58

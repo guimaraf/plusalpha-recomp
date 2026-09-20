@@ -796,6 +796,32 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### Micro-Lote S1-296: CPU AI Core Engine Pipeline (Gap 3 Parte 1: Posicionamento e Evasão)
+
+- **Origem da Descoberta**: Telemetria de combate da CPU Level 8 em `gameplay-discovery-68` (371 hits).
+- **Topologia & Estrutura**:
+  - `0x8015574C`: 88 bytes / **22 palavras** (Rotina folha de cálculo de distância média; 92 hits).
+  - `0x801557A4`: 76 bytes / **19 palavras** (Rotina folha de checagem de cornering e parede; 22 hits).
+  - `0x801557F0`: 80 bytes / **20 palavras** (Rotina folha de evasão rápida e dash back; 251 hits).
+  - `0x80155840`: 140 bytes / **35 palavras** (Rotina folha de temporização de guarda alta/baixa; 6 hits).
+  - `0x801558CC`: 184 bytes / **46 palavras** (Helper de lookup de frame data de golpes normais; sem chamadas externas).
+  - `0x80155984`: 212 bytes / **53 palavras** (Helper de prioridade de botões socos/chutes; sem chamadas externas).
+  - `0x80155A58`: 196 bytes / **49 palavras** (Temporizador de neutro e reset de postura; sem chamadas externas).
+- **Abutment Estrutural**:
+  - Conecta diretamente à função nativa `0x801556E4..0x8015574C`, avançando linearmente de `0x8015574C` até `0x80155B1C`.
+- **Fechamento de Chamadas (Closure)**:
+  - Todas as 7 funções são folhas puras ou helpers autocontidos. Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-296**: 7 funções novas, 976 bytes / **244 palavras**.
+- **Meta de Cobertura S1-296**: **142.121 palavras (72,6649%)** em **1.274 funções nativas**.
+- **Validação em Gameplay (`gameplay-discovery-70`)**:
+  - Validado em combate direto contra Ryu CPU Level 8.
+  - Erradicação de 100% dos 7 alvos promovidos (`0x8015574C..0x80155A58` caíram para ZERO hits).
+  - Mais de 370 hits de posicionamento e evasão transferidos para execução nativa.
+  - Total de candidatos residuais no Main EXE reduzido para 38.
+  - Codegen audit: **CLEAN**. Status: **PROCESSED & VALIDATED**.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.
