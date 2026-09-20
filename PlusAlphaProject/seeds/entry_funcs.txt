@@ -4697,3 +4697,23 @@
 0x80155B1C
 0x80155DB4
 0x80155F98
+
+# Micro-lote S1-298 (CPU AI Core Engine - Gap 6 Parte 1: Curta Distancia, Pulo vs Corrida & Golpes Normais):
+# Erradica os candidatos 0x80156F3C (789 hits), 0x80157014 (204 hits), 0x80156B80 (39 hits), 0x80156DB8 (27 hits) e offsets internos.
+# Promove 7 funcoes discretas (1.548 bytes / 387 palavras):
+#   * 0x80156B80: 292 bytes / 73 palavras (Dispatcher neutro -> ataque; 39 hits)
+#   * 0x80156CA4: 108 bytes / 27 palavras (Helper folha temporizacao frame buffer; 0 hits)
+#   * 0x80156D10: 168 bytes / 42 palavras (Helper verificacao de distancia curta/projeteis; 0 hits)
+#   * 0x80156DB8: 168 bytes / 42 palavras (Seletor aproximacao pulo vs corrida; 27 hits)
+#   * 0x80156E60: 220 bytes / 55 palavras (Seletor antiaereo e tracking vertical; 0 hits)
+#   * 0x80156F3C: 216 bytes / 54 palavras (Decisor de ataque de curta distancia da CPU; 789 hits)
+#   * 0x80157014: 376 bytes / 94 palavras (Rotina de encadeamento de golpes normais rapidos; 204 hits)
+# Total S1-298: 7 funcoes novas, 1.548 bytes / 387 palavras. Atinge 142.921 palavras (73,0740%), 1.284 funcoes nativas.
+0x80156B80
+0x80156CA4
+0x80156D10
+0x80156DB8
+0x80156E60
+0x80156F3C
+0x80157014
+
