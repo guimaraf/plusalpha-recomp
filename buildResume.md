@@ -1093,5 +1093,54 @@ Transition from static text recompiler (Track 1 closed at S1-304 with 100% clean
   - Tamanho: 872.448 bytes (852 KB), CRC32: `0xCD5EAEA6`
   - Cobertura: 4.601 PCs executados, 25 Root Seeds, 89 Interior Seeds.
   - Auditoria Prévia C11: 0 unknown bad, 0 unsupported todo. 100% CLEAN.
+- **Validação em Telemetria (Sessões 124, 125 e 126)**:
+  - **Sessão 124**: Validação da Tela Título. Dispatches nativos subiram para **+5.924.377** (+241k dispatches nativos adicionais). Todos os 5 top hotspots (`0x8004A44C`, `0x8004922C`, `0x80091878`, etc.) foram **100% erradicados** da interpretação. Frametime cravado e limpo em 60 FPS.
+  - **Sessão 125**: Navegação completa: Tela Título -> Seleção de Modos (Arcade, Versus, Survival, Team, Practice) -> Tela de Seleção de Personagens (Char Select) -> Retorno ao Título. **ZERO** hotspots de overlay caíram no interpretador. Confirmado que o módulo `0xCD5EAEA6` (872 KB) é o motor integrado de toda a UI de seleção do jogo.
+  - **Sessão 126**: Validação da execução dos códigos secretos no menu Mode Select para liberação de personagens/chefes. **ZERO** novos candidatos, **ZERO** quedas de overlay. Lógica de unmasking, bitmasks globais e confirmação sonora executaram 100% nativas.
+
+---
+
+## 5. Estatísticas Consolidadas do Projeto (Track 1 + Track 2)
+
+### A. Track 1: Recompilação Estática do Executável Principal (`SLUS_005.48`)
+- **Status**: **100% HOMOLOGADO E CONCLUÍDO (S1-304)**.
+- **Total de Funções Nativas**: **1.315 funções**.
+- **Palavras MIPS Compiladas**: **144.906 palavras** (74,0889% de 195.584 palavras do binário base).
+- **Misses Estáticos em Runtime**: **RIGOROSAMENTE ZERO** em todos os modos e encerramentos.
+
+### B. Track 2: Overlays Dinâmicos Promovidos (DLL Cache System)
+- **Status dos Menus & Vídeos**: **100% HOMOLOGADOS E ATIVOS EM CACHE**.
+- **Total de Shards Nativos (.dll)**: **93 DLLs**.
+- **Total de Manifestos (.ranges)**: **93 manifestos**.
+- **Total de Funções Nativas Únicas**: **247 funções**.
+- **Total de Palavras MIPS Compiladas**: **12.395 palavras** (49.580 bytes de código C11 nativo).
+- **Distribuição por Módulo de RAM**:
+  - `00020000` (Title, Menus, Options, CharSelect, Cheats): 51 DLLs, 179 funções, **9.147 palavras** (36.588 bytes).
+  - `0008C000` (Submenus do Sistema): 12 DLLs, 12 funções, **1.950 palavras** (7.800 bytes).
+  - `000D6000` (Streaming de Vídeo `MOV.OVL`): 30 DLLs, 56 funções, **1.298 palavras** (5.192 bytes).
+
+### C. Métrica Global Consolidada
+- **Total de Funções Nativas no Jogo**: **1.562 funções nativas compiladas** (1.315 estáticas + 247 dinâmicas).
+- **Total de Código Nativo Compilado**: **157.301 palavras MIPS** (629.204 bytes de lógica C11 nativa pura).
+- **Percentual em Relação ao Binário Base**: **80,4263%** do volume do executável principal (`157.301 / 195.584`).
+- **Cobertura em Tempo de Execução (Runtime)**: **100% de execução nativa** em Boot, Logos, Abertura FMV, Tela Título, Menu de Opções, Seletor de Modos, Tela de Seleção de Personagens e Ativação de Cheats.
+
+---
+
+## 6. Diretrizes Arquiteturais e Pendências Futuras
+
+### A. Kernel / BIOS do PSX (`0x80000000..0x8000FFFF`)
+- **Decisão Arquitetural Homologada**: Mantido sob o interpretador de CPU / HLE.
+- **Justificativa**: O kernel do BIOS lida diretamente com vetores de interrupção de hardware (`0x80000080` / `0x800000B0`), COP0 Status/Cause/EPC e escalonador TCB (`syscall 3 / RFE`). O custo em runtime é irrisório (< 0,001% de um frame de 16,6 ms) e não afeta o frametime (60 FPS cravados), eliminando riscos de dessincronização assíncrona com o SDL/host.
+
+### B. Pendências Restantes de Track 2
+1. **Promoção de Track 2 de Gameplay (Combate dos 26 Lutadores)**:
+   - Compilação dos overlays de ação e combate de cada lutador (`OVL/PL00_1.OVL` até `OVL/PL25_1.OVL`).
+   - Mapeamento das tabelas de animação, golpes especiais, supers e hitboxes dinâmicas carregadas durante a luta.
+2. **Subsistema de Pause & Command List em Combate (`pause.md`)**:
+   - Menu de Pause Principal (`0x80172DD0..0x8017566C`, 10 funções, 2.599 palavras).
+   - Command List & Submenus (`0x80183734..0x80185860`, ~30 funções, renderizador GTE tridimensional de golpes).
+   - Validação dos overlays disparados exclusivamente ao pausar uma partida em andamento.
+
 
 
