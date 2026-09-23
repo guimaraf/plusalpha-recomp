@@ -59,12 +59,12 @@ Para isolar o comportamento da CPU sem dependência de aleatoriedade dos modos A
 | 13 | **Sakura** | Homologado | `discovery-93` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 982.944 static hits, 0 misses no Main EXE em 3 lutas. Erradicação de 100% dos 9 candidatos legados de `discovery-63` (Core AI promovido em S1-293..S1-300). Hadoken, Shouoken, Shunpukyaku e Haru Ichiban 100% nativos. Micro-oscilações isoladas em RAM dinâmica (164,6M insns em overlay catalogadas para Track 2). |
 | 14 | **Blair Dame** | Homologado | `discovery-94` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 416.982 static hits, 0 misses no Main EXE. Shoot Upper, Slider, Mirage Kick, Spinning Knee e Super Mirage Combination 100% nativos. 55,4M insns em overlay dinâmico arquivadas para Track 2. |
 | 15 | **Allen Snider** | Homologado | `discovery-95` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 210.044 static hits, 0 misses no Main EXE. Soul Force, Rising Dragon, Justice Fist, Vaulting Kick e Fire Force 100% nativos. 29,5M insns em overlay dinâmico arquivadas para Track 2. |
-| 16 | **Skullomania** | Pendente | — | — | Skullo Crusher, Skullo Slider, Super Skullo Crusher. |
-| 17 | **Akuma** | Pendente | — | — | Gou Hadoken, Shakunetsu, Messatsu Gou Shoryu, Shun Goku Satsu. |
-| 18 | **Garuda** | Pendente | — | — | Shusui, Kizan, Raiga, Soukon Dan. |
-| 19 | **M. Bison** | Pendente | — | — | Psycho Crusher, Scissor Kick, Head Press, Knee Press Nightmare. |
-| 20 | **Cycloid-β** | Pendente | — | — | Moveset híbrido estático. |
-| 21 | **Cycloid-γ** | Pendente | — | — | Moveset híbrido dinâmico. |
+| 16 | **Skullomania** | Homologado | `discovery-96` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 306.039 static hits, 0 misses no Main EXE. Skullo Crusher, Skullo Slider, Skullo Head, Skullo Dive, Skullo Dash e Super Skullo Slider 100% nativos. 35,3M insns em overlay dinâmico arquivadas para Track 2. |
+| 17 | **Akuma** | Homologado | `discovery-97` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 455.919 static hits, 0 misses no Main EXE. Gou Hadoken (solo/ar), Shakunetsu, Gou Shoryuken e Tatsumaki 100% nativos. 82,4M insns em overlay dinâmico arquivadas para Track 2. |
+| 18 | **Garuda** | Homologado | `discovery-98` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 289.224 static hits, 0 misses no Main EXE. Shusui, Kizan, Raiga, Soukon Dan e Kienshou 100% nativos. 48,7M insns em overlay dinâmico arquivadas para Track 2 (spin de lâminas 0x80092294). |
+| 19 | **M. Bison** | Homologado | `discovery-99` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 564.441 static hits, 0 misses no Main EXE em 2 lutas. Psycho Crusher, Scissor Kick, Head Press e Knee Press Nightmare 100% nativos. 67,9M insns em overlay dinâmico arquivadas para Track 2. |
+| 20 | **Cycloid-β** | Homologado | `discovery-100` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 376.839 static hits, 0 misses no Main EXE. Moveset híbrido e Super de facas/lâminas 100% nativos. 43,0M insns em overlay dinâmico arquivadas para Track 2. |
+| 21 | **Cycloid-γ** | Homologado | `discovery-101` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 294.501 static hits, 0 misses no Main EXE. Moveset híbrido, teleporte e Super de chutes aéreos 100% nativos. 33,8M insns em overlay dinâmico arquivadas para Track 2. |
 | 22 | **Bloody Hokuto** | Pendente | — | — | Moveset agressivo e cancels rápidos. |
 | 23 | **Evil Ryu** | Pendente | — | — | Shun Goku Satsu, Messatsu Gou Shoryu variante. |
 | 24 | **Akuma (CPU / Boss)** | Pendente | — | — | Variante desbloqueável (Expert Mode / Save 100%). IA ultra-agressiva de chefe, Zanku Hadoken duplo, velocidade e frames alterados. |
