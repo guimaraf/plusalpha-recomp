@@ -17,10 +17,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-300** (CPU AI Core Engine - Gap 6 Parte 3: `0x801577B8..0x80157F0C`, totalizando 12 funcoes e 477 palavras; validado com sucesso em `gameplay-discovery-74` com erradicacao de 100% de todos os candidatos residuais do Main EXE Text; Core AI Engine `0x801550C8..0x80158500` integralmente nativo; zero candidatos residuais no Main EXE).
-- **Current Active Batch**: Nenhum lote ativo (Homologação completa do Core AI Engine alcançada).
-- **Current Main Binary Coverage**: **143,793 / 195,584 words (73.5200%)** (Validated S1-300).
-- **Total Compiled Native Functions**: **1,302 functions**.
+- **Validated Checkpoint**: **S1-302** (Pipeline de Armas/Props - Despachador e Variante ID 25: `0x80164D9C`, `0x80165DAC`, 2 funções, 330 palavras / 1.320 bytes; validado com sucesso em `gameplay-discovery-85` com erradicação de 100% dos candidatos no Main EXE; 1.305 funções nativas, 144.389 palavras, 73,8245%).
+- **Current Active Batch**: Nenhum lote ativo (Homologação de armas/props concluída).
+- **Current Main Binary Coverage**: **144,389 / 195,584 words (73.8245%)** (Validated S1-302).
+- **Total Compiled Native Functions**: **1,305 functions**.
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
 - **Residual Main EXE Misses**: **ZERO misses no boot, apresentação e combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
 
@@ -90,8 +90,10 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-298** | `0x80156B80..7014` (7 funcs) | 387 | 142,921 | Processed & Validated; Telemetry 72 CLEAN |
 | **S1-299** | `0x8015718C..76E4` (6 funcs) | 395 | 143,316 | Processed & Validated; Telemetry 73 CLEAN |
 | **S1-300** | `0x801577B8..7F0C` (12 funcs) | 477 | 143,793 | Processed & Validated; Telemetry 74 CLEAN (0 residual) |
+| **S1-301** | `0x80165130` (1 func) | 266 | 144,059 | Processed & Validated; Checkpoint S1-301 (discovery-84) |
+| **S1-302** | `0x80164D9C`, `0x80165DAC` (2 funcs) | 330 | 144,389 | Processed & Validated; Telemetry 85 CLEAN (0 residual) |
 
-- **Total words promovidas desde S1-239**: **+37,474 words** (+19.16% absolute gain).
+- **Total words promovidas desde S1-239**: **+38,070 words** (+19.46% absolute gain).
 
 ---
 

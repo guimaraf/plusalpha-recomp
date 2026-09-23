@@ -922,6 +922,57 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### Micro-Lote S1-301: Pipeline Cinemático de Armas/Props (Renderizador 3D da Adaga de Hokuto)
+
+- **Origem da Descoberta**: Telemetria de combate contra Hokuto CPU Level 8 em `gameplay-discovery-83` (7 candidatos residuais, 108 hits).
+- **Descoberta de Engenharia Reversa (Regra 1 - Observed PC $\neq$ Function Root)**:
+  - Dos 7 candidatos observados, 5 são estritamente **return sites (continuações pós-JAL)** de loops de cálculo matricial dentro da função raiz `0x80165130`:
+    - `0x80165190`: Ponto de retorno de `jal 0x801945F8` (4 hits).
+    - `0x80165280`, `0x80165304`, `0x80165368`, `0x801653C4`: Pontos de retorno de `jal 0x8019C0B8` (24 hits cada; loop executado 6 vezes por ativação).
+  - Apenas 2 endereços constituem raízes de função canônicas com prólogo MIPS: `0x80164D9C` (89 palavras) e `0x80165130` (266 palavras).
+- **Topologia & Estrutura de S1-301**:
+  - `0x80165130`: 1.064 bytes / **266 palavras** (Renderizador cinemático 3D da arma/adaga *Shirase Gatana* da Hokuto).
+- **Abutment Estrutural Cirúrgico**:
+  - Inicia exatamente em `0x80165130`, colado ao término do bloco compilado `0x80164F00` (`+0x230`).
+  - Termina exatamente em `0x80165554` (`jr ra` + delay slot `nop`), encostando com precisão de byte no bloco compilado `0x80165558`.
+- **Fechamento de Chamadas (Closure Audit)**:
+  - Contém 12 chamadas `JAL`: `0x801945F8`, `0x801946C8`, `0x8019C184` (6x), `0x8019C0B8` (4x), `0x801948DC`.
+  - **100% das 12 chamadas convergem para funções nativas já compiladas**.
+  - Saltos indiretos (`jr $reg` não-ra): **0**.
+  - Desvios para fora da função: **0**.
+  - Expansão descontrolada de closure: **ZERO**.
+- **Orçamento Total S1-301**: 1 função nova, 1.064 bytes / **266 palavras**.
+- **Meta de Cobertura S1-301**: **144.059 palavras (73,6558%)** em **1.303 funções nativas**.
+- **Impacto Imediato**: Resolve 6 dos 7 candidatos e 104 dos 108 hits (96,3%) da sessão de combate. O despachador `0x80164D9C` (89 palavras) e sua ramificação `0x80165DAC` (241 palavras) ficam isolados para o lote sequencial S1-302 conforme o Hard Budget Gate.
+
+---
+
+### Micro-Lote S1-302: Pipeline Cinemático de Armas/Props (Despachador e Variante ID 25)
+
+- **Origem & Propósito**: Conclusão da homologação do subsistema de armas/props da Hokuto (iniciado em S1-301).
+- **Topologia & Estrutura de S1-302**:
+  - `0x80164D9C`: 356 bytes / **89 palavras** (Despachador de armas/props por Character ID: ID 1/19 Hokuto e ID 25).
+  - `0x80165DAC`: 964 bytes / **241 palavras** (Renderizador cinemático 3D de arma/prop para Character ID 25).
+- **Abutment Estrutural Cirúrgico**:
+  - `0x80164D9C`: Preenche perfeitamente o gap entre `0x80164CC8` (`+0xD4`) e `0x80164F00`.
+  - `0x80165DAC`: Preenche perfeitamente o gap entre `0x80165558` (`+0x854`) e `0x80166170`.
+  - Conecta todo o intervalo `0x80164CC8..0x80166170` em um bloco contíguo de código estático 100% nativo.
+- **Fechamento de Chamadas (Closure Audit)**:
+  - `0x80164D9C`: chama `0x80165130` (promovido em S1-301) e `0x80165DAC` (promovido neste lote). Zero chamadas pendentes.
+  - `0x80165DAC`: contém 11 chamadas `JAL` (`0x801945F8`, `0x801946C8`, `0x8019C184`, `0x8019C0B8`, `0x8019CB60`, `0x801948DC`), todas 100% nativas.
+  - Saltos indiretos (`jr $reg` não-ra): **0**.
+  - Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-302**: 2 funções novas, 1.320 bytes / **330 palavras**.
+- **Meta de Cobertura S1-302**: **144.389 palavras (73,8245%)** em **1.305 funções nativas**.
+- **Impacto**: Erradicação definitiva de 100% dos candidatos de armas/props de combate.
+- **Validação em Gameplay (`gameplay-discovery-85`)**:
+  - Validado em 3 lutas completas contra Hokuto CPU Level 8 na build `buildTele-s1-302`.
+  - **993.384 static hits nativos**, **ZERO misses**, **ZERO novos candidatos**.
+  - Erradicação completa de `0x80164D9C`, `0x80165130` e todos os pontos de retorno matriciais do Main EXE.
+  - Codegen audit: **CLEAN**. Status: **PROCESSED & VALIDATED**.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.

@@ -4762,3 +4762,20 @@
 0x80157ECC
 0x80157EEC
 0x80157F0C
+
+# Micro-lote S1-301 (Pipeline Cinemático de Armas/Props - Renderizador 3D da Adaga de Hokuto):
+# Descoberto na sessão gameplay-discovery-83 (Hokuto CPU Level 8; 108 hits residuais).
+# Resolve a raiz 0x80165130 e elimina 5 pontos de retorno de JAL (0x80165190, 0x80165280, 0x80165304, 0x80165368, 0x801653C4), totalizando 104 hits (96,3%).
+# Promove 1 funcao discreta (1.064 bytes / 266 palavras):
+#   * 0x80165130: 1.064 bytes / 266 palavras (Renderizador 3D de arma/adaga; closure 100% nativa em 12 JALs; 0 indiretos)
+# Total S1-301: 1 funcao nova, 1.064 bytes / 266 palavras. Atinge 144.059 palavras (73,6558%), 1.303 funcoes nativas.
+0x80165130
+
+# Micro-lote S1-302 (Pipeline Cinemático de Armas/Props - Despachador de Armas e Variante ID 25):
+# Conclusão do subsistema de armas/props da Hokuto iniciado em S1-301.
+# Promove 2 funcoes discretas (1.320 bytes / 330 palavras):
+#   * 0x80164D9C: 356 bytes / 89 palavras (Despachador de armas por Character ID; chama 0x80165130 e 0x80165DAC)
+#   * 0x80165DAC: 964 bytes / 241 palavras (Renderizador 3D de arma/prop para Character ID 25; 11 JALs 100% nativos)
+# Total S1-302: 2 funcoes novas, 1.320 bytes / 330 palavras. Atinge 144.389 palavras (73,8245%), 1.305 funcoes nativas.
+0x80164D9C
+0x80165DAC
