@@ -4797,3 +4797,18 @@
 0x80162458
 0x80162568
 0x80162570
+
+# Micro-lote S1-304 (Tabela Global de Interações/Agarrões 0x801B33F0 - Contragolpe Garuda e Gaps 1 e 18):
+# Descoberto na sessão gameplay-discovery-107 (P1 = Garuda Boss CPU vs P2 = Ryu COM).
+# Erradica os 5 novos candidatos (0x80161450, 0x80161474, 0x8016147C, 0x80161494, 0x80161540),
+# correspondentes à raiz, pontos de JAL, teste de counter e epílogo do golpe defensivo exclusivo de Garuda.
+# Promove 4 funções contíguas da tabela 0x801B33F0 (984 bytes / 246 palavras), selando os gaps contíguos entre S1-279, S1-282 e S1-303:
+#   * 0x801613B8: 8 bytes / 2 palavras (Stub folha de retorno rápido; Tabela 0x801B33F0 slot 1 setup; jr $ra)
+#   * 0x801613C0: 104 bytes / 26 palavras (Handler de ação; Tabela 0x801B33F0 slot 1 ação; closure 100% nativa)
+#   * 0x80161450: 264 bytes / 66 palavras (Handler de contragolpe exclusivo de Garuda; Tabela 0x801B33F0 slot 12 ação; 5 candidatos; 76 hits)
+#   * 0x80161FE4: 608 bytes / 152 palavras (Handler de cinemática/arremesso; Tabela 0x801B33F0 slot 18 ação; cola S1-282 a S1-303; closure 100% nativa)
+# Total S1-304: 4 funções novas, 984 bytes / 246 palavras. Atinge 144.906 palavras (74,0889%), 1.315 funções nativas.
+0x801613B8
+0x801613C0
+0x80161450
+0x80161FE4

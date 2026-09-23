@@ -93,8 +93,9 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-301** | `0x80165130` (1 func) | 266 | 144,059 | Processed & Validated; Checkpoint S1-301 (discovery-84) |
 | **S1-302** | `0x80164D9C`, `0x80165DAC` (2 funcs) | 330 | 144,389 | Processed & Validated; Telemetry 85 CLEAN (0 residual) |
 | **S1-303** | `0x80162244..2570` (6 funcs) | 271 | 144,660 | Processed & Validated; Telemetry 92 CLEAN (0 residual) |
+| **S1-304** | `0x801613B8..C0`, `0x80161450`, `0x80161FE4` (4 funcs) | 246 | 144,906 | Processed & Validated; Telemetry 108 CLEAN (0 residual) |
 
-- **Total words promovidas desde S1-239**: **+38,341 words** (+19.60% absolute gain).
+- **Total words promovidas desde S1-239**: **+38,587 words** (+19.73% absolute gain).
 
 ---
 

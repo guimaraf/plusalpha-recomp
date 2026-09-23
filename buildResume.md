@@ -1000,6 +1000,38 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### S1-304 (Tabela Global 0x801B33F0 - Contragolpe do Garuda & Gaps 1 e 18)
+- **Origem / Gatilho**:
+  - Descoberto na sessão `gameplay-discovery-107` com P1 = Garuda Boss CPU vs P2 = Ryu COM exercitando a mecânica defensiva exclusiva de contragolpe.
+  - A telemetria acusou 5 candidatos (`0x80161450`, `0x80161474`, `0x8016147C`, `0x80161494`, `0x80161540`) com 76 hits.
+- **Diagnóstico Arquitetural e Desmontagem MIPS**:
+  - Auditoria MIPS revelou que os 5 endereços pertencem rigorosamente a **uma única função contígua**: `0x80161450` (264 bytes / 66 palavras), correspondente ao handler de ação do contragolpe exclusivo do Garuda (Slot 12 da Tabela Global `0x801B33F0`, apontado em `0x801B346C`).
+  - `0x80161450`: Raiz da função (37 dispatches).
+  - `0x80161474` e `0x8016147C`: Chamada interna `jal 0x8011618C` e teste de intercepção `lh $v1, 474($s0)`.
+  - `0x80161494`: Chamada do contra-ataque `jal 0x80123BA8` (1 hit quando o golpe conectou).
+  - `0x80161540`: Epílogo de restauração de registradores (`lw $ra, 24($sp)`).
+- **Cluster Coeso da Tabela 0x801B33F0 Promovido**:
+  - `0x801613B8`: 8 bytes / **2 palavras** (Stub folha de retorno rápido; Slot 1 Setup).
+  - `0x801613C0`: 104 bytes / **26 palavras** (Handler de ação; Slot 1 Ação).
+  - `0x80161450`: 264 bytes / **66 palavras** (Contragolpe de Garuda; Slot 12 Ação).
+  - `0x80161FE4`: 608 bytes / **152 palavras** (Handler de arremesso/cinemática; Slot 18 Ação, selando a conexão entre S1-282 e S1-303).
+- **Abutment Estrutural Contíguo**:
+  - Sela 100% contíguo o intervalo `0x80160FB4..0x80161A3C` (zero gaps estáticos).
+  - Sela 100% contíguo o intervalo `0x80161C04..0x801627A4` (zero gaps estáticos).
+- **Fechamento de Chamadas (Closure Audit)**:
+  - Todas as chamadas `JAL` (20 chamadas externas) já estavam 100% resolvidas em código nativo.
+  - Saltos indiretos (`jr $reg` não-ra): **0**.
+  - Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-304**: 4 funções novas, 984 bytes / **246 palavras**.
+- **Meta de Cobertura S1-304**: **144.906 palavras (74,0889%)** em **1.315 funções nativas**.
+- **Validação em Gameplay (`gameplay-discovery-108`)**:
+  - Validado em combate P1 = Garuda Boss CPU vs P2 = Ryu COM na build `buildTele-s1-304`.
+  - **3.484.378 static hits nativos**, **ZERO misses**, **ZERO novos candidatos**.
+  - Erradicação completa de 100% dos 5 candidatos de `gameplay-discovery-107`.
+  - Codegen audit: **CLEAN**. Status: **PROCESSED & VALIDATED**.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.
