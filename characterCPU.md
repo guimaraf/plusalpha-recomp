@@ -66,10 +66,10 @@ Para isolar o comportamento da CPU sem dependência de aleatoriedade dos modos A
 | 20 | **Cycloid-β** | Homologado | `discovery-100` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 376.839 static hits, 0 misses no Main EXE. Moveset híbrido e Super de facas/lâminas 100% nativos. 43,0M insns em overlay dinâmico arquivadas para Track 2. |
 | 21 | **Cycloid-γ** | Homologado | `discovery-101` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 294.501 static hits, 0 misses no Main EXE. Moveset híbrido, teleporte e Super de chutes aéreos 100% nativos. 33,8M insns em overlay dinâmico arquivadas para Track 2. |
 | 22 | **Bloody Hokuto** | Homologado | `discovery-102` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 235.842 static hits, 0 misses no Main EXE. Pipeline de adagas, cortes rápidos e 2 Supers 100% nativos (S1-301/S1-302). 27,6M insns em overlay dinâmico arquivadas para Track 2. |
-| 23 | **Evil Ryu** | Pendente | — | — | Shun Goku Satsu, Messatsu Gou Shoryu variante. |
-| 24 | **Akuma (CPU / Boss)** | Pendente | — | — | Variante desbloqueável (Expert Mode / Save 100%). IA ultra-agressiva de chefe, Zanku Hadoken duplo, velocidade e frames alterados. |
-| 25 | **Garuda (CPU / Boss)** | Pendente | — | — | Variante desbloqueável (Expert Mode / Save 100%). IA de chefe, armadura/super armor, projéteis reforçados. |
-| 26 | **M. Bison (CPU / Boss)** | Pendente | — | — | Variante desbloqueável (Expert Mode / Save 100%). IA de chefe final, teleporte agressivo contínuo, Psycho Cannon / prioridade reforçada. |
+| 23 | **Evil Ryu** | Homologado | `discovery-103` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 360.870 static hits, 0 misses no Main EXE. Hadouken sombrio, Shoryuken, Ashura Senku e 2 Supers 100% nativos. 71,1M insns em overlay dinâmico arquivadas para Track 2. |
+| 24 | **Akuma (CPU / Boss)** | Homologado | `discovery-104` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 415.845 static hits, 0 misses no Main EXE em 2 lutas. Variante de chefe, Zanku Hadoken duplo e 2 Supers 100% nativos. 74,6M insns em overlay dinâmico arquivadas para Track 2. |
+| 25 | **Garuda (CPU / Boss)** | Homologado | `discovery-105` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 356.634 static hits, 0 misses no Main EXE. Variante de chefe, super armor, lâminas e Super Kienshou 100% nativos. 60,1M insns em overlay dinâmico arquivadas para Track 2. |
+| 26 | **M. Bison (CPU / Boss)** | Homologado | `discovery-106` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 297.756 static hits, 0 misses no Main EXE. Chefe final, teleporte contínuo, Psycho Crusher e Super 100% nativos. 34,5M insns em overlay dinâmico arquivadas para Track 2. |
 
 ---
 
