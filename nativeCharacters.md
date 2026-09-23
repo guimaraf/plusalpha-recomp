@@ -25,11 +25,11 @@ Este documento registra os personagens testados e homologados com **100% de exec
 | **Zangief** | **100% Nativo** (0 misses) | `gameplay-discovery-36` & `37` | S1-281 / S1-282 | Spinning Piledriver, Atomic Suplex, Final Atomic Buster, Double Lariat, Banishing Flat, tabela global de agarrões `0x801B33F0`. |
 | **Blair Dame** | **100% Nativo** (0 misses) | `gameplay-discovery-38` & `39` | S1-283 / S1-284 | Shoot Kick, Lightning Knee, Sliding D-Kick, Spin Kick, Mirage Kick, ação/combate `0x8013E930`, vetores de deslizamento `0x8014901C`. |
 | **Skullomania** | **100% Nativo** (0 misses) | `gameplay-discovery-40` & `41` | S1-285 | Skullo Crusher, Skullo Slider, Skullo Head, Skullo Dive, Skullo Dash, Super Skullo Crusher/Slider, trajetória `0x8012A7E4`, ação acrobática 3D `0x801441B0..AD8`, máquina de combate `0x80160790..AA4`. |
-| **Hokuto** | **100% Nativo** (0 misses) | `gameplay-discovery-42` & `43` | S1-286 | Chuuhou, Kaishuu, Shingetsu, Kyaku Houugi, Kiren'eki, Shirase Gatana, colisões, defesas e família de vetores GTE `0x8019D860..0x8019DA54`. |
+| **Hokuto** | **100% Nativo** (0 misses) | `gameplay-discovery-42`, `43` & `85` | S1-286 / S1-302 | Chuuhou, Kaishuu, Shingetsu, Kyaku Houugi, Kiren'eki, Shirase Gatana, colisões, defesas, família GTE `0x8019D860..0x8019DA54` e pipeline de armas/adagas 3D (`0x80164D9C..0x80165DAC`). |
 | **Dhalsim** | **100% Nativo** (0 misses) | `gameplay-discovery-46` | S1-287 | Yoga Fire (`0x8015A530`), Yoga Flame, Yoga Blast, deformação elástica dos membros (`0x8014B2B4`), caixas de colisão elásticas (`0x8014B6B0`) e ossos de animação (`0x80194BB4..EE4`). |
 | **Cycloid-β** | **100% Nativo** (0 misses) | `gameplay-discovery-47` | S1-287 | Modelo poligonal azul; moveset híbrido do elenco SF totalmente compartilhado com rotinas nativas pré-existentes. |
 | **Cycloid-γ** | **100% Nativo** (0 misses) | `gameplay-discovery-48` | S1-287 | Modelo poligonal dourado; moveset híbrido do elenco EX e teleports (100% de dispatches estáticos nativos no Main EXE; variações restritas ao overlay dinâmico em RAM). |
-| **Bloody Hokuto** | **100% Nativo** (0 misses) | `gameplay-discovery-49` | S1-287 | Versão corrompida de Hokuto, adaga permanente e ataques rápidos de sangue; compartilha 100% das sub-rotinas cinemáticas e matrizes da Hokuto padrão (S1-286). |
+| **Bloody Hokuto** | **100% Nativo** (0 misses) | `gameplay-discovery-49` & `85` | S1-287 / S1-302 | Versão corrompida de Hokuto, adaga permanente e ataques rápidos de sangue; compartilha 100% das sub-rotinas cinemáticas, matrizes e pipeline de props (S1-286 / S1-302). |
 | **Evil Ryu** | **100% Nativo** (0 misses) | `gameplay-discovery-50` | S1-287 | Ashura Senku, Messatsu Gou Shoryu, Shun Goku Satsu, Hadouken sombrio; compartilha matrizes cinemáticas, transformadas e dispatches de projéteis de Ryu e Akuma. |
 
 ---
@@ -145,6 +145,18 @@ Durante os testes de combate de alta densidade, o isolamento de telemetria desma
     - **Bloody Hokuto**: Herda 100% das sub-rotinas cinemáticas, matrizes de rotação e vetores da Hokuto padrão (promovidas em S1-286).
     - **Evil Ryu**: Compartilha dispatches cinemáticos, rotas de Hadouken e colisões com Ryu e Akuma.
 - **Conclusão de Ciclo**: Todos os 23 lutadores do jogo foram homologados com **100% de execução nativa** no Main EXE.
+
+---
+
+### Caso 9: Pipeline de Armas/Props e Renderizador 3D de Adagas da Hokuto (Micro-lotes S1-301 e S1-302)
+- **Comportamento Observado**: Durante a campanha de CPU AI (`gameplay-discovery-83` e `84`), foram descobertos candidatos ao redor do pipeline de props da Hokuto (`0x80164D9C..0x80165DAC`).
+- **Diagnóstico Técnico**:
+  - A Hokuto (e variantes como Bloody Hokuto) utiliza um despachador global de acessórios/props de armas que verifica o Character ID (`0x80164D9C`, 89 palavras).
+  - O renderizador poligonal 3D de adagas e leque opera nas sub-rotinas `0x80165130` (266 palavras) e `0x80165DAC` (241 palavras), com chamadas GTE nativas.
+- **Resolução Implementada (S1-301 e S1-302)**:
+  - **S1-301**: Promoção de `0x80165130` (266 palavras).
+  - **S1-302**: Promoção de `0x80164D9C` e `0x80165DAC` (330 palavras).
+  - Validado em `gameplay-discovery-85` com **zero candidatos e 993.384 static hits** no Main EXE.
 
 ---
 

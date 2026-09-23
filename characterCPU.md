@@ -45,15 +45,15 @@ Para isolar o comportamento da CPU sem dependência de aleatoriedade dos modos A
 | # | Personagem | Status CPU | Sessão Telemetria | Candidatos Main EXE | Observações |
 |:---:|:---|:---:|:---:|:---:|:---|
 | 1 | **Ryu** | Homologado (Core AI) | `discovery-74` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | Core AI Engine (`0x801550C8..0x80158500`) 100% nativo. Próximo alvo: dispatches específicos de outros lutadores. |
-| 2 | **Ken** | Pendente | — | — | Shoryuken flamejante, Shoryu Reppa, Shinryuken. |
-| 3 | **Chun-Li** | Pendente | — | — | Hyakuretsukyaku, Kikoken, Senretsukyaku, Hazanshou. |
-| 4 | **Guile** | Pendente | — | — | Sonic Boom, Flash Kick, Somersault Strike. |
-| 5 | **Zangief** | Pendente | — | — | Spinning Piledriver, Double Lariat, Final Atomic Buster. |
-| 6 | **Dhalsim** | Pendente | — | — | Yoga Fire, Yoga Flame, Yoga Blast, Yoga Inferno. |
-| 7 | **Hokuto** | Pendente | — | — | Chirenki, Gekhou, Kyakuho, Shirase Ondo. |
-| 8 | **Cracker Jack** | Pendente | — | — | Batting Hero, Final Punch, Crazy Jack, Raging Buffalo. |
-| 9 | **Doctrine Dark** | Pendente | — | — | Kill Wire, Dark Shackle, Kill Blade, EX-prominence. |
-| 10 | **Pullum Purna** | Pendente | — | — | Prim Doll, Drill Purrus, Resarc Dance, Pra ダンス. |
+| 2 | **Ken** | Homologado | `discovery-75` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 276.036 static hits, 0 misses no Main EXE. Shoryuken flamejante, Shoryu Reppa e Shinryuken 100% cobertos no binário estático. |
+| 3 | **Chun-Li** | Homologado | `discovery-76` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 279.897 static hits, 0 misses no Main EXE. Hyakuretsukyaku, Kikoken, Senretsukyaku e Hazanshou 100% nativos. Micro-oscilações isoladas em RAM dinâmica (52,6M insns em overlay catalogadas para Track 2). |
+| 4 | **Guile** | Homologado | `discovery-78` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 1.134.699 static hits, 0 misses no Main EXE em 4 lutas. Ambos os Supers de carga (*Somersault Strike* e *Opening Gambit*) confirmados e 100% nativos. |
+| 5 | **Zangief** | Homologado | `discovery-79` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 778.583 static hits, 0 misses no Main EXE em 3 lutas. Spinning Piledriver, Double Lariat, Banishing Flat e Final Atomic Buster 100% nativos. |
+| 6 | **Dhalsim** | Homologado | `discovery-81` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 1.054.833 static hits, 0 misses no Main EXE em 3 lutas. Membros elásticos, Yoga Fire e Yoga Inferno 100% nativos (cinemática de Drill já coberta no S1-287). |
+| 7 | **Hokuto** | Homologado | `discovery-85` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 993.384 static hits, 0 misses no Main EXE em 3 lutas. Pipeline de armas e props (`0x80164D9C..0x80166170`) 100% promovido via S1-301 e S1-302. |
+| 8 | **Cracker Jack** | Homologado | `discovery-86` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 360.153 static hits, 0 misses no Main EXE. Investidas de boxe, tacadas de beisebol e supers 100% nativos (cinemática de upper coberta em S1-280). |
+| 9 | **Doctrine Dark** | Homologado | `discovery-87` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 376.111 static hits, 0 misses no Main EXE. Kill Wire, cabo/choque elétrico, facas (Kill Blade), minas terrestres e supers 100% nativos no binário estático. |
+| 10 | **Pullum Purna** | Homologado | `discovery-89` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 649.143 static hits, 0 misses no Main EXE em 2 lutas. Piruetas, Drill Purrus e danças acrobáticas 100% nativos (motor cinemático de membros compartilhado). |
 | 11 | **Darun Mister** | Pendente | — | — | Lariat, Ganges DDT, Brahma Stomp, Twilight Collar. |
 | 12 | **Kairi** | Pendente | — | — | Shinki Hatsu Dou, Maryu Rekkou, Garyu Hishou. |
 | 13 | **Sakura** | Em Investigação | `discovery-63` | 9 funções detectadas | Hadoken, Shouoken, Haru Ichiban, Midare Zakura. |
