@@ -1051,3 +1051,30 @@ Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fight
   - Addressed bomb placement, timing, guard checks, and detonation handlers (`0x80045E30`, `0x80045F00`, `0x80045F80`, `0x80045F94`, `0x80045FF8`).
   - Total 2,563 words verified clean across 4 test phases (unhit, hit, blocked, and special).
 - **OVL-002H (`0x800465A8`)**: Super explosive bomb throw handler (239 words, jump table `0x8004A610` with 6 targets). Telemetry verified CLEAN with zero fallback.
+
+---
+
+## 4. Track 2 - Dynamic Overlays Promotion (DLL Cache System)
+
+Transition from static text recompiler (Track 1 closed at S1-304 with 100% clean baseline) to dynamic isolated shard compilation in RAM via `compile_overlays.py`.
+
+### Alvo A: Vídeo Streaming Overlay (`MOV.OVL` - `0x000D6000:0xF06249FB`)
+- **Objetivo**: Erradicação do hotspot `0x800E78DC` (~226M de instruções interpretadas no streaming de FMV).
+- **Compilação**: 30 shards nativos (.dll) e 30 manifestos (.ranges) gerados em `cache/SLUS-00548/gcc/win-x64/cg5_562d908f/`.
+- **Validação em Telemetria (Sessão 119)**:
+  - Hotspot `0x800E78DC` caiu de 226M para **rigorosamente 0 no interpretador**.
+  - **+13.974.887 dispatches nativos** executados com sucesso via DLLs.
+  - Linha de frametime estabilizada em 60 FPS cravados durante reprodução de vídeo.
+
+### Alvo B: Menus do Jogo (`OVL3/OPTS.OVL` - `0x00020000:0xD955BA78`)
+- **Primeira Iteração (Sessão 120)**:
+  - Loop principal de opções (`0x80021FB0`) rodou nativo com 0 quedas.
+  - Navegação em submenus profundos (som, controles, etc.) revelou 15 rotinas não exploradas anteriormente na faixa `0x80024xxx` (`0x800246E8`, `0x80024248`, `0x80024638`, etc.), gerando 1.266.643 instruções interpretadas.
+- **Recompilação com Interior Fragments**:
+  - `overlay_captures.json` expandido de 910 para 1.637 PCs executados.
+  - Compilação de 24 `DISPATCH_INTERIOR` points diretamente no shard `00020000_D955BA78.dll`.
+  - Manifesto `00020000_D955BA78.ranges` expandido para **81 funções nativas mapeadas**.
+- **Validação em Telemetria (Sessão 121)**:
+  - **100% de erradicação** de todos os 15 hotspots em `0x8002xxxx` no interpretador (0 fallbacks na faixa de opções).
+  - Identificação de residual interpretado (~2,93M insns) concentrado exclusivamente nos 4 PCs `0x800D6614`, `0x800D662C`, `0x800D6644`, `0x800D665C` na transição para a tela de Seleção de Personagens / Motor de Luta.
+
