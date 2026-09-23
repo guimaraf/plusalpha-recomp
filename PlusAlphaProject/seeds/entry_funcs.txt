@@ -4779,3 +4779,21 @@
 # Total S1-302: 2 funcoes novas, 1.320 bytes / 330 palavras. Atinge 144.389 palavras (73,8245%), 1.305 funcoes nativas.
 0x80164D9C
 0x80165DAC
+
+# Micro-lote S1-303 (Sub-Cluster de Ação e Golpes de Kairi - Tabela 0x801B3400):
+# Descoberto na sessão gameplay-discovery-91 (Kairi CPU Level 8; 344 hits residuais).
+# Resolve as raízes 0x80162568 e 0x80162570, eliminando 7 pontos de retorno de JAL (0x801625A8, 0x801625C4, 0x801625F0, 0x80162608, 0x8016262C, 0x8016263C, 0x80162664).
+# Promove o sub-cluster contíguo de 6 funcoes discretas (1.084 bytes / 271 palavras) até colar em 0x80162680:
+#   * 0x80162244: 224 bytes / 56 palavras (Handler cinemático da tabela 0x801B3400; 100% nativo)
+#   * 0x80162324: 300 bytes / 75 palavras (Handler cinemático da tabela 0x801B3400; 100% nativo)
+#   * 0x80162450: 8 bytes / 2 palavras (Stub nulo de retorno rápido; jr $ra)
+#   * 0x80162458: 272 bytes / 68 palavras (Variante simétrica de ataque; closure 100% nativa)
+#   * 0x80162568: 8 bytes / 2 palavras (Stub nulo de retorno rápido; 2 hits)
+#   * 0x80162570: 272 bytes / 68 palavras (Dispatcher de ataque acionado no teste; 112 hits)
+# Total S1-303: 6 funcoes novas, 1.084 bytes / 271 palavras. Atinge 144.660 palavras (73,9631%), 1.311 funcoes nativas.
+0x80162244
+0x80162324
+0x80162450
+0x80162458
+0x80162568
+0x80162570

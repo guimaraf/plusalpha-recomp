@@ -973,6 +973,33 @@ For the current baseline status, active batches, and concise tracking table, see
 
 ---
 
+### Micro-Lote S1-303: Sub-Cluster de Ação e Golpes de Kairi (Tabela 0x801B3400)
+
+- **Origem & Propósito**: Descoberto na sessão `gameplay-discovery-91` (Kairi CPU Level 8, 5 lutas; 344 hits residuais). Resolve as raízes de ataque e fecha o sub-cluster contíguo até colar em `0x80162680`.
+- **Topologia & Estrutura de S1-303**:
+  - `0x80162244`: 224 bytes / **56 palavras** (Handler cinemático da tabela `0x801B3400`).
+  - `0x80162324`: 300 bytes / **75 palavras** (Handler cinemático da tabela `0x801B3400`).
+  - `0x80162450`: 8 bytes / **2 palavras** (Stub nulo de retorno rápido; `jr $ra`).
+  - `0x80162458`: 272 bytes / **68 palavras** (Variante simétrica de ataque de `0x80162570`).
+  - `0x80162568`: 8 bytes / **2 palavras** (Stub nulo de retorno rápido; acionado com 2 hits).
+  - `0x80162570`: 272 bytes / **68 palavras** (Dispatcher de ataque acionado no teste com 112 hits).
+- **Abutment Estrutural Cirúrgico**:
+  - Forma um bloco contíguo de 1.084 bytes (271 palavras) de `0x80162244` até `0x80162680`, conectando-se diretamente ao bloco nativo `0x80162680..0x80162688`.
+- **Fechamento de Chamadas (Closure Audit)**:
+  - Todas as chamadas `JAL` apontam para funções 100% nativas já compiladas (`0x80159F3C`, `0x8015A080`, `0x8011618C`, `0x8015D3F0`, `0x8015D040`, `0x8012C288`, `0x801154EC`, `0x8015E12C`).
+  - Saltos indiretos (`jr $reg` não-ra): **0**.
+  - Expansão de closure: **RIGOROSAMENTE ZERO**.
+- **Orçamento Total S1-303**: 6 funções novas, 1.084 bytes / **271 palavras**.
+- **Meta de Cobertura S1-303**: **144.660 palavras (73,9631%)** em **1.311 funções nativas**.
+- **Impacto**: Erradica 100% dos 344 hits e 9 candidatos da sessão 91 (eliminando 7 pontos de retorno falsos).
+- **Validação em Gameplay (`gameplay-discovery-92`)**:
+  - Validado em 2 lutas completas contra Kairi CPU Level 8 na build `buildTele-s1-303`.
+  - **481.577 static hits nativos**, **ZERO misses**, **ZERO novos candidatos**.
+  - Erradicação completa de 100% dos 9 candidatos residuais da sessão 91.
+  - Codegen audit: **CLEAN**. Status: **PROCESSED & VALIDATED**.
+
+---
+
 ## 3. Dynamic Overlay Track History
 
 Overlays are dynamically loaded into RAM (`0x80020000..0x800F2000`) during fights and character-specific modes.
