@@ -166,6 +166,21 @@ Durante os testes de combate de alta densidade, o isolamento de telemetria desma
 
 ---
 
+### Caso 10: Churn de Loop Dinâmico em RAM durante Combate CPU (Sakura #13 - Sessão `gameplay-discovery-93`)
+- **Comportamento Observado**: Durante o teste de combate em 3 lutas contra a Sakura Level 8 (`gameplay-discovery-93`), observou-se alta ocorrência de micro-variações no frametime, com zero novos candidatos no Main EXE.
+- **Diagnóstico Técnico**:
+  - **Main EXE 100% Isento de Misses**: 982.944 static hits nativos e 0 misses.
+  - **Origem do Jitter em RAM Dinâmica**: Saturação do interpretador em fallback em código dinâmico com **+164.611.395 instruções interpretadas** e **+7.318.116 hits** em overlay:
+    - **`0x80092280`**: 42.114.686 instruções (88.170 hits) — frame update / loop dinâmico de combate.
+    - **`0x8004A44C`**: 39.595.929 instruções (88.170 hits) — shared battle engine (`OVL-001A`), operando em sincronia direta com `0x80092280`.
+    - **`0x8004922C`**: 23.867.322 instruções (15.499 hits) — cinemática e renderizador de golpes em RAM.
+    - **`0x80049500`**: 10.625.735 instruções (15.499 hits) — partículas e emissores de efeitos especiais.
+    - **`0x80091334`**: 10.067.308 instruções (15.499 hits) — despachador de colisão dinâmica.
+- **Tratamento Planejado (Track 2)**:
+  - Catalogado no pipeline de Overlays para geração de DLLs de shard via TCC/JIT, eliminando os handoffs entre x64 e MIPS.
+
+---
+
 ## 3. Homologação do Core AI Engine (Lotes S1-291 a S1-300)
 
 Após a homologação completa dos 23 personagens sob controle humano (P1), iniciou-se a campanha de homologação dos personagens operados pela CPU (Level 8 / Hardest).

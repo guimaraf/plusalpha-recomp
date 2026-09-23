@@ -56,9 +56,9 @@ Para isolar o comportamento da CPU sem dependência de aleatoriedade dos modos A
 | 10 | **Pullum Purna** | Homologado | `discovery-89` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 649.143 static hits, 0 misses no Main EXE em 2 lutas. Piruetas, Drill Purrus e danças acrobáticas 100% nativos (motor cinemático de membros compartilhado). |
 | 11 | **Darun Mister** | Homologado | `discovery-90` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 697.776 static hits, 0 misses no Main EXE em 3 lutas. Lariats, Ganges DDT, Indra Bridge e supers de agarrão 100% nativos (tabela global 0x801B33F0 e física de grapplers). |
 | 12 | **Kairi** | Homologado | `discovery-92` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 481.577 static hits, 0 misses no Main EXE em 2 lutas. Shinki Hatsu Dou, Maryu Rekkou e sub-cluster de combate (`0x80162244..0x80162570`) 100% nativos via S1-303. |
-| 13 | **Sakura** | Em Investigação | `discovery-63` | 9 funções detectadas | Hadoken, Shouoken, Haru Ichiban, Midare Zakura. |
-| 14 | **Blair Dame** | Pendente | — | — | Shoot Upper, Slider, Mirage Kick, Spinning Knee. |
-| 15 | **Allen Snider** | Pendente | — | — | Soul Force, Rising Dragon, Triple Break, Fire Force. |
+| 13 | **Sakura** | Homologado | `discovery-93` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 982.944 static hits, 0 misses no Main EXE em 3 lutas. Erradicação de 100% dos 9 candidatos legados de `discovery-63` (Core AI promovido em S1-293..S1-300). Hadoken, Shouoken, Shunpukyaku e Haru Ichiban 100% nativos. Micro-oscilações isoladas em RAM dinâmica (164,6M insns em overlay catalogadas para Track 2). |
+| 14 | **Blair Dame** | Homologado | `discovery-94` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 416.982 static hits, 0 misses no Main EXE. Shoot Upper, Slider, Mirage Kick, Spinning Knee e Super Mirage Combination 100% nativos. 55,4M insns em overlay dinâmico arquivadas para Track 2. |
+| 15 | **Allen Snider** | Homologado | `discovery-95` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 210.044 static hits, 0 misses no Main EXE. Soul Force, Rising Dragon, Justice Fist, Vaulting Kick e Fire Force 100% nativos. 29,5M insns em overlay dinâmico arquivadas para Track 2. |
 | 16 | **Skullomania** | Pendente | — | — | Skullo Crusher, Skullo Slider, Super Skullo Crusher. |
 | 17 | **Akuma** | Pendente | — | — | Gou Hadoken, Shakunetsu, Messatsu Gou Shoryu, Shun Goku Satsu. |
 | 18 | **Garuda** | Pendente | — | — | Shusui, Kizan, Raiga, Soukon Dan. |
