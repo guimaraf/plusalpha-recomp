@@ -65,7 +65,7 @@ Para isolar o comportamento da CPU sem dependência de aleatoriedade dos modos A
 | 19 | **M. Bison** | Homologado | `discovery-99` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 564.441 static hits, 0 misses no Main EXE em 2 lutas. Psycho Crusher, Scissor Kick, Head Press e Knee Press Nightmare 100% nativos. 67,9M insns em overlay dinâmico arquivadas para Track 2. |
 | 20 | **Cycloid-β** | Homologado | `discovery-100` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 376.839 static hits, 0 misses no Main EXE. Moveset híbrido e Super de facas/lâminas 100% nativos. 43,0M insns em overlay dinâmico arquivadas para Track 2. |
 | 21 | **Cycloid-γ** | Homologado | `discovery-101` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 294.501 static hits, 0 misses no Main EXE. Moveset híbrido, teleporte e Super de chutes aéreos 100% nativos. 33,8M insns em overlay dinâmico arquivadas para Track 2. |
-| 22 | **Bloody Hokuto** | Pendente | — | — | Moveset agressivo e cancels rápidos. |
+| 22 | **Bloody Hokuto** | Homologado | `discovery-102` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 235.842 static hits, 0 misses no Main EXE. Pipeline de adagas, cortes rápidos e 2 Supers 100% nativos (S1-301/S1-302). 27,6M insns em overlay dinâmico arquivadas para Track 2. |
 | 23 | **Evil Ryu** | Pendente | — | — | Shun Goku Satsu, Messatsu Gou Shoryu variante. |
 | 24 | **Akuma (CPU / Boss)** | Pendente | — | — | Variante desbloqueável (Expert Mode / Save 100%). IA ultra-agressiva de chefe, Zanku Hadoken duplo, velocidade e frames alterados. |
 | 25 | **Garuda (CPU / Boss)** | Pendente | — | — | Variante desbloqueável (Expert Mode / Save 100%). IA de chefe, armadura/super armor, projéteis reforçados. |
