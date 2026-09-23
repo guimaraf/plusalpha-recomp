@@ -1,6 +1,6 @@
 # Homologação de Personagens Controlados por CPU (IA de Combate)
 
-Este documento acompanha a evolução da cobertura e homologação nativa de todos os 23 personagens de *Street Fighter EX Plus Alpha* (`SLUS-005.48`) quando operados pela Inteligência Artificial da CPU.
+Este documento acompanha a evolução da cobertura e homologação nativa de todos os 26 personagens (23 padrão + 3 variantes de chefes CPU desbloqueáveis) de *Street Fighter EX Plus Alpha* (`SLUS-005.48`) quando operados pela Inteligência Artificial da CPU.
 
 ---
 
@@ -54,8 +54,8 @@ Para isolar o comportamento da CPU sem dependência de aleatoriedade dos modos A
 | 8 | **Cracker Jack** | Homologado | `discovery-86` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 360.153 static hits, 0 misses no Main EXE. Investidas de boxe, tacadas de beisebol e supers 100% nativos (cinemática de upper coberta em S1-280). |
 | 9 | **Doctrine Dark** | Homologado | `discovery-87` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 376.111 static hits, 0 misses no Main EXE. Kill Wire, cabo/choque elétrico, facas (Kill Blade), minas terrestres e supers 100% nativos no binário estático. |
 | 10 | **Pullum Purna** | Homologado | `discovery-89` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 649.143 static hits, 0 misses no Main EXE em 2 lutas. Piruetas, Drill Purrus e danças acrobáticas 100% nativos (motor cinemático de membros compartilhado). |
-| 11 | **Darun Mister** | Pendente | — | — | Lariat, Ganges DDT, Brahma Stomp, Twilight Collar. |
-| 12 | **Kairi** | Pendente | — | — | Shinki Hatsu Dou, Maryu Rekkou, Garyu Hishou. |
+| 11 | **Darun Mister** | Homologado | `discovery-90` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 697.776 static hits, 0 misses no Main EXE em 3 lutas. Lariats, Ganges DDT, Indra Bridge e supers de agarrão 100% nativos (tabela global 0x801B33F0 e física de grapplers). |
+| 12 | **Kairi** | Homologado | `discovery-92` | **ZERO CANDIDATOS** (100% nativo no Main EXE) | 481.577 static hits, 0 misses no Main EXE em 2 lutas. Shinki Hatsu Dou, Maryu Rekkou e sub-cluster de combate (`0x80162244..0x80162570`) 100% nativos via S1-303. |
 | 13 | **Sakura** | Em Investigação | `discovery-63` | 9 funções detectadas | Hadoken, Shouoken, Haru Ichiban, Midare Zakura. |
 | 14 | **Blair Dame** | Pendente | — | — | Shoot Upper, Slider, Mirage Kick, Spinning Knee. |
 | 15 | **Allen Snider** | Pendente | — | — | Soul Force, Rising Dragon, Triple Break, Fire Force. |
@@ -67,6 +67,9 @@ Para isolar o comportamento da CPU sem dependência de aleatoriedade dos modos A
 | 21 | **Cycloid-γ** | Pendente | — | — | Moveset híbrido dinâmico. |
 | 22 | **Bloody Hokuto** | Pendente | — | — | Moveset agressivo e cancels rápidos. |
 | 23 | **Evil Ryu** | Pendente | — | — | Shun Goku Satsu, Messatsu Gou Shoryu variante. |
+| 24 | **Akuma (CPU / Boss)** | Pendente | — | — | Variante desbloqueável (Expert Mode / Save 100%). IA ultra-agressiva de chefe, Zanku Hadoken duplo, velocidade e frames alterados. |
+| 25 | **Garuda (CPU / Boss)** | Pendente | — | — | Variante desbloqueável (Expert Mode / Save 100%). IA de chefe, armadura/super armor, projéteis reforçados. |
+| 26 | **M. Bison (CPU / Boss)** | Pendente | — | — | Variante desbloqueável (Expert Mode / Save 100%). IA de chefe final, teleporte agressivo contínuo, Psycho Cannon / prioridade reforçada. |
 
 ---
 

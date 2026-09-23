@@ -31,14 +31,20 @@ Este documento registra os personagens testados e homologados com **100% de exec
 | **Cycloid-γ** | **100% Nativo** (0 misses) | `gameplay-discovery-48` | S1-287 | Modelo poligonal dourado; moveset híbrido do elenco EX e teleports (100% de dispatches estáticos nativos no Main EXE; variações restritas ao overlay dinâmico em RAM). |
 | **Bloody Hokuto** | **100% Nativo** (0 misses) | `gameplay-discovery-49` & `85` | S1-287 / S1-302 | Versão corrompida de Hokuto, adaga permanente e ataques rápidos de sangue; compartilha 100% das sub-rotinas cinemáticas, matrizes e pipeline de props (S1-286 / S1-302). |
 | **Evil Ryu** | **100% Nativo** (0 misses) | `gameplay-discovery-50` | S1-287 | Ashura Senku, Messatsu Gou Shoryu, Shun Goku Satsu, Hadouken sombrio; compartilha matrizes cinemáticas, transformadas e dispatches de projéteis de Ryu e Akuma. |
+| **Akuma (CPU / Boss)** | **Pendente** | — | — | Variante desbloqueável via Expert Mode / Save 100%. IA reforçada, Zanku Hadoken duplo e parâmetros especiais. |
+| **Garuda (CPU / Boss)** | **Pendente** | — | — | Variante desbloqueável via Expert Mode / Save 100%. IA de chefe, armadura/super armor e projéteis reforçados. |
+| **M. Bison (CPU / Boss)** | **Pendente** | — | — | Variante desbloqueável via Expert Mode / Save 100%. IA de chefe final, teleporte agressivo e Psycho Cannon. |
 
 ---
 
-### Resumo do Roster (Conforme Tela de Seleção Versus - 23 Personagens)
+### Resumo do Roster (23 Personagens Base + 3 Chefes CPU Desbloqueáveis)
 - **Fileira Superior (8)**: Zangief [OK], Cracker Jack [OK], Hokuto [OK], Ryu [OK], Ken [OK], Chun-Li [OK], Doctrine Dark [OK], Guile [OK]
 - **Fileira Central (8)**: Pullum Purna [OK], Darun Mister [OK], Kairi [OK], Sakura [OK], Dhalsim [OK], Allen Snider [OK], Blair Dame [OK], Skullomania [OK]
 - **Fileira Inferior / Chefes & Secretos (7)**: Akuma [OK], M. Bison [OK], Garuda [OK], Evil Ryu [OK], Bloody Hokuto [OK], Cycloid-β [OK], Cycloid-γ [OK]
-- **Progresso de Homologação**: **23 / 23 personagens (100,00%)** com 100% de execução nativa no Main EXE!
+- **Variantes Especiais de Chefes CPU (3)**: Akuma (CPU) [Pendente], Garuda (CPU) [Pendente], M. Bison (CPU) [Pendente]
+- **Progresso de Homologação**:
+  - **Elenco Base Versus**: **23 / 23 personagens (100,00%)** com 100% de execução nativa no Main EXE!
+  - **Variantes Chefes CPU**: **0 / 3 (Pendentes)** para homologação em Versus após a conclusão da campanha de CPU AI.
 
 ---
 
