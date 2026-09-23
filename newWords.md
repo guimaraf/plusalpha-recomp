@@ -105,6 +105,8 @@ Dynamic battle overlays (`0x80020000..0x800F2000`) are compiled on-demand via th
 - **OVL-001A (`0xAC1FF1A4`)**: 4,563 words compiled (64 entries). Validated clean at 60 FPS over 3 complete matches.
 - **OVL-001B (`0x94E6122F`)**: 5,313 words compiled (122 entries). Integrated under S1-261 clean baseline.
 - **OVL-MOV (`0x000D6000:0xF06249FB` / `OVL3/MOV.OVL`)**: 30 shards nativos em DLL (80 KB) compilados via GCC. Validado limpo na sessão 119 (+13,97M dispatches nativos, erradicação de 100% dos 226,5M de instruções interpretadas em `0x800E78DC`, frametime perfeitamente plano a 60 FPS nos vídeos).
+- **OVL-OPTS (`0x00020000:0xD955BA78` / `OVL3/OPTS.OVL`)**: 46 funções nativas compiladas via GCC (28 KB). Cobre o loop de atualização do menu de opções `0x80021FB0` e subsistemas de navegação de opções.
+- **OVL-MENUS (`0x0008C000:0xD67A9445`)**: 12 shards nativos (388 KB) compilados via GCC. Cobre controle de telas de sistema e seleção de modos de jogo.
 - **OVL-002 Series (Character Fight Logic)**:
   - `OVL-002A` / `OVL-002B`: Player frame update roots (`0x80092C2C`, `0x80092F00`).
   - `OVL-002C` .. `OVL-002G`: Doctrine Dark bomb weapon family (2,563 words).
