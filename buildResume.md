@@ -1074,7 +1074,24 @@ Transition from static text recompiler (Track 1 closed at S1-304 with 100% clean
   - `overlay_captures.json` expandido de 910 para 1.637 PCs executados.
   - Compilação de 24 `DISPATCH_INTERIOR` points diretamente no shard `00020000_D955BA78.dll`.
   - Manifesto `00020000_D955BA78.ranges` expandido para **81 funções nativas mapeadas**.
-- **Validação em Telemetria (Sessão 121)**:
-  - **100% de erradicação** de todos os 15 hotspots em `0x8002xxxx` no interpretador (0 fallbacks na faixa de opções).
-  - Identificação de residual interpretado (~2,93M insns) concentrado exclusivamente nos 4 PCs `0x800D6614`, `0x800D662C`, `0x800D6644`, `0x800D665C` na transição para a tela de Seleção de Personagens / Motor de Luta.
+- **Validação em Telemetria (Sessões 121 e 122)**:
+  - **Sessão 122 (Options Puro)**: Navegação completa por todas as opções (Button Config, Sound Test, Ranking, Memory Card, Dificuldade, Volume). **100% de erradicação** de todos os hotspots em `0x8002xxxx` no interpretador (0 fallbacks na faixa de opções).
+  - Linha de frametime permaneceu perfeitamente lisa e cravada a 60 FPS. Alvo B homologado com sucesso.
+
+### Alvo C: Tela Título & Attract Mode (`0x00020000:0xCD5EAEA6`)
+- **Origem / Descoberta (Sessão 123)**:
+  - Cold boot completo: Logos da Capcom e Arika -> Abertura/Intro FMV reproduzida integralmente sem cortes (+5.682.976 dispatches nativos via `MOV.OVL`, 0 misses) -> Transição para a Tela Título ("Press Start").
+  - Identificação de hotspot concentrado de ~8,7 milhões de instruções interpretadas na renderização e controle de estado da Tela Título.
+- **Top Hotspots Descobertos**:
+  - `0x8004A44C`: 4.253.319 insns, 11.742 hits (Loop Mestre da Tela Título / Attract).
+  - `0x8004922C`: 2.178.743 insns, 1.957 hits (Dispatcher de Quadros / Animação).
+  - `0x80091878`: 1.115.060 insns, 1.957 hits (Render / Transformação de Vértices).
+  - `0x8004AF94`: 974.649 insns, 1.957 hits (Controle de Estado / Input do Menu).
+  - `0x80049500`: 207.477 insns, 1.957 hits (Subrotina de Atualização de UI).
+- **Especificações do Módulo Capturado (`buildTele-s1-304/overlay_captures.json`)**:
+  - Endereço Base: `0x80020000` (Físico: `0x00020000`)
+  - Tamanho: 872.448 bytes (852 KB), CRC32: `0xCD5EAEA6`
+  - Cobertura: 4.601 PCs executados, 25 Root Seeds, 89 Interior Seeds.
+  - Auditoria Prévia C11: 0 unknown bad, 0 unsupported todo. 100% CLEAN.
+
 
