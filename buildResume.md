@@ -1133,8 +1133,8 @@ Transition from static text recompiler (Track 1 closed at S1-304 with 100% clean
 - **Decisão Arquitetural Homologada**: Mantido sob o interpretador de CPU / HLE.
 - **Justificativa**: O kernel do BIOS lida diretamente com vetores de interrupção de hardware (`0x80000080` / `0x800000B0`), COP0 Status/Cause/EPC e escalonador TCB (`syscall 3 / RFE`). O custo em runtime é irrisório (< 0,001% de um frame de 16,6 ms) e não afeta o frametime (60 FPS cravados), eliminando riscos de dessincronização assíncrona com o SDL/host.
 
-### B. Status da Campanha de Overlays de Gameplay (Track 2 - 18/26 Lutadores Homologados)
-A campanha de compilação dinâmica do módulo de combate (`0x80020000..0x800F2000`, 840 KB) atingiu 18 lutadores homologados e 1.432 DLLs no cache ativo:
+### B. Status da Campanha de Overlays de Gameplay (Track 2 - 26/26 Lutadores Homologados)
+A campanha de compilação dinâmica do módulo de combate (`0x80020000..0x800F2000`, 840 KB) atingiu **100% de cobertura do elenco (26/26 lutadores)** e **1.943 DLLs** ativas no cache:
 - **Lote 1 (Ryu & Ken)**: HOMOLOGADO (Sessões 127/128).
 - **Lote 2A (Guile & Chun-Li)**: HOMOLOGADO (Sessões 129/131).
 - **Lote 2B (Zangief & Dhalsim)**: HOMOLOGADO (Sessões 133/134).
@@ -1144,15 +1144,19 @@ A campanha de compilação dinâmica do módulo de combate (`0x80020000..0x800F2
 - **Lote 6 (Kairi & Darun Mister)**: HOMOLOGADO (Sessões 142/143, erradicação de 7,86M de instruções em `0x80048190`, +159 DLLs, cache em 1.138 DLLs).
 - **Lote 7 (Sakura & Pullum Purna)**: HOMOLOGADO (Sessões 144/145, erradicação de 29M de instruções, +121 novas DLLs, cache em 1.259 DLLs).
 - **Lote 8 (Garuda & Akuma)**: HOMOLOGADO (Sessões 146/147, erradicação de 50M de instruções de combate e teleportes, marco de >1M dispatches nativos, +173 novas DLLs, cache em 1.432 DLLs).
+- **Lote 9 (M. Bison & Evil Ryu)**: HOMOLOGADO (Sessões 148/149, erradicação de 32M de instruções, teleportes e Psycho Power nativos, cache em 1.544 DLLs).
+- **Lote 10A (Bloody Hokuto & Cycloid-β)**: HOMOLOGADO (Sessões 150/151, erradicação de hotspots residuais de adagas e modelo poligonal, cache em 1.688 DLLs).
+- **Lote 10B (Cycloid-γ)**: HOMOLOGADO (Sessões 152/153, moveset dourado e teleporte nativos, cache em 1.742 DLLs — 23/23 lutadores jogáveis selados).
+- **Lote 11A (Garuda Boss & Akuma Boss CPU)**: HOMOLOGADO (Sessões 154/155, super armor e variantes de chefes seladas, cache em 1.743 DLLs).
+- **Lote 11B (M. Bison Boss CPU)**: HOMOLOGADO (Sessões 156/157, erradicação de 20M de instruções de chefe final, novo recorde de 1,42M dispatches nativos, cache em 1.888 DLLs — 26/26 lutadores selados).
+- **Lote 12 (Motor de Projéteis & Fogo do Dhalsim)**: HOMOLOGADO (Sessões 158/159/160/161, erradicação de colisões de magias e 18M de chamas/Yoga Inferno, recorde de 2,88M dispatches nativos, cache em 1.943 DLLs — 14/14 rotinas de `projecteisHit.md` 100% cobertas em DLLs).
 
-### C. Pendências Restantes de Track 2
-1. **Lotes de Lutadores Restantes**:
-   - Lote 9: M. Bison (`PL18_1`) vs Evil Ryu (`PL19_1`).
-   - Lote 10: Bloody Hokuto, Cycloid-β, Cycloid-γ e variantes de chefes.
-2. **Subsistema de Pause & Command List em Combate (`pause.md`)**:
+### C. A Única Fronteira Restante de Track 2
+1. **Subsistema de Pause & Command List em Combate (`pause.md`)**:
    - Menu de Pause Principal (`0x80172DD0..0x8017566C`, 10 funções, 2.599 palavras).
    - Command List & Submenus (`0x80183734..0x80185860`, ~30 funções, renderizador GTE tridimensional de golpes).
    - Validação dos overlays disparados exclusivamente ao pausar uma partida em andamento.
+
 
 
 

@@ -53,3 +53,29 @@ Essas rotinas serão compiladas e promovidas de forma consolidada após o mapeam
 | **Kairi** | *Shinki Hatsu Dou* | Projétil espiritual com trajetória retilínea. |
 | **Garuda** | *Soukon Dan* | Projéteis múltiplos teleguiados. |
 | **M. Bison** | *Psycho Shot* | Projétil espiral com carga. |
+
+---
+
+### 4. Homologação e Auditoria Definitiva em DLLs (100% Coberto)
+
+Auditoria geométrica exata executada contra os **1.943 manifestos `.ranges`** do cache nativo (`buildTele-s1-304\cache\SLUS-00548\gcc\win-x64\cg5_562d908f\`):
+
+| PC | Papel Arquitetural | Status | DLLs Cobrindo (Amostra) |
+|:---|:---|:---:|:---|
+| `0x8008E25C` | Handler mestre de colisão e anulação mútua | **COBERTO (100%)** | `00020000_1B719044.dll`, `00020000_2ED0DEE9.dll`, `00020000_341654DA.dll` (8 DLLs) |
+| `0x8008FC6C` | Processador de hit-stop de projétil | **COBERTO (100%)** | `00020000_012D1980.dll`, `00020000_14AFBCFA.dll` (43 DLLs) |
+| `0x80091F24` | DMA de partículas para Scratchpad (`0x1F800008`) | **COBERTO (100%)** | `00020000_0475815F.dll`, `00020000_18CC20AA.dll` (17 DLLs) |
+| `0x80091C60` | Dissipação de partículas pós-choque | **COBERTO (100%)** | `00020000_02CAF9C0.dll`, `00020000_1AF11F1E.dll` (19 DLLs) |
+| `0x80090BF0` | Atualizador de flags de frame em voo | **COBERTO (100%)** | `00020000_0094214B.dll`, `00020000_09FB3781.dll` (29 DLLs) |
+| `0x8008E714` | Emissor balístico de fogo (*Yoga Fire*) | **COBERTO (100%)** | `00020000_13AE697C.dll`, `00020000_1B719044.dll` (9 DLLs) |
+| `0x8008E99C` | Renderizador de sprites de fogo (*Yoga Flame*) | **COBERTO (100%)** | `00020000_09CB7DD2.dll`, `00020000_0FA5970F.dll` (25 DLLs) |
+| `0x8008FA1C` | Loop de persistência e expiração de fogo | **COBERTO (100%)** | `00020000_0031F42F.dll`, `00020000_012D1980.dll` (57 DLLs) |
+| `0x8008E6C0` | Verificador de alcance de fogo | **COBERTO (100%)** | `00020000_1B719044.dll`, `00020000_270A1DC6.dll` (13 DLLs) |
+| `0x8008E398` | Parâmetros de impacto de fogo | **COBERTO (100%)** | `00020000_1B719044.dll`, `00020000_2906ED7E.dll` (6 DLLs) |
+| `0x80047EFC` | Detonação de minas/armadilhas (*D. Dark*) | **COBERTO (100%)** | `00020000_7113C787.dll`, `00020000_8ADC0BC2.dll` (6 DLLs) |
+| `0x8008E798` | Atualizador de bombas em RAM | **COBERTO (100%)** | `00020000_1B719044.dll`, `00020000_7113C787.dll` (8 DLLs) |
+| `0x80047DE8` | Plantio e contagem de minas | **COBERTO (100%)** | `00020000_0A559C58.dll`, `00020000_0FD5B73C.dll` (21 DLLs) |
+| `0x8008E394` | Impacto e reflexão (*Soul Force* / *Batting Hero*) | **COBERTO (100%)** | `00020000_1B719044.dll`, `00020000_2906ED7E.dll` (6 DLLs) |
+
+**Conclusão de Auditoria**: **14 de 14 rotinas (100%) HOMOLOGADAS E VALIDADAS EM DLLs NATIVAS.**
+
