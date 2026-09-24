@@ -4812,3 +4812,19 @@
 0x801613C0
 0x80161450
 0x80161FE4
+
+# Micro-lote S1-305 (Cinematica e Setup de Camera 3D do Skullo Dream - 0x8013B070..0x8013BFA8):
+# Descoberto na sessao gameplay-discovery-138 durante o especial cinematografico do Skullomania (Skullo Dream).
+# Erradica os 5 novos candidatos (0x8013B070, 0x8013B328, 0x8013B10C, 0x8013B2F0, 0x8013B304),
+# selando completamente o gap entre a Action Table 0x801B1B48 e o Modo Treino 0x8013BFA8:
+#   * 0x8013B070: 8 bytes / 2 palavras (Stub de transicao / Action Table 0x801B1B48 slot 0; jr $ra)
+#   * 0x8013B078: 148 bytes / 37 palavras (Avaliador de estado e temporizador de frames da cinematica)
+#   * 0x8013B10C: 8 bytes / 2 palavras (Stub de retorno de sub-rotina; jr $ra)
+#   * 0x8013B114: 532 bytes / 133 palavras (Setup vetorial de matrizes de camera 3D / GTE)
+#   * 0x8013B328: 3.200 bytes / 800 palavras (Pipeline de rastros teatrais e finalizador cinematico)
+# Total S1-305: 5 funcoes novas, 4.592 bytes / 1.148 palavras. Atinge 146.054 palavras (74,6758%), 1.320 funcoes nativas.
+0x8013B070
+0x8013B078
+0x8013B10C
+0x8013B114
+0x8013B328

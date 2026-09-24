@@ -17,12 +17,12 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-303** (Sub-Cluster de Ação e Golpes de Kairi - Tabela `0x801B3400`: `0x80162244`, `0x80162324`, `0x80162450`, `0x80162458`, `0x80162568`, `0x80162570`, 6 funções, 271 palavras / 1.084 bytes; validado com sucesso em `gameplay-discovery-92` com erradicação de 100% dos candidatos no Main EXE; 1.311 funções nativas, 144.660 palavras, 73,9631%).
-- **Current Active Batch**: Nenhum lote ativo (Homologação de Kairi concluída).
-- **Current Main Binary Coverage**: **144,660 / 195,584 words (73.9631%)** (Validated S1-303).
-- **Total Compiled Native Functions**: **1,311 functions**.
+- **Validated Checkpoint**: **S1-305** (Cinemática e Setup de Câmera 3D do Skullo Dream - `0x8013B070..0x8013BFA8`: `0x8013B070`, `0x8013B078`, `0x8013B10C`, `0x8013B114`, `0x8013B328`, 5 funções, 1.148 palavras / 4.592 bytes; validado com sucesso em `gameplay-discovery-139` com erradicação de 100% dos candidatos no Main EXE; 1.320 funções nativas, 146.054 palavras, 74,6758%).
+- **Current Active Batch**: Nenhum lote ativo (Homologação de S1-305 concluída).
+- **Current Main Binary Coverage**: **146,054 / 195,584 words (74.6758%)** (Validated S1-305).
+- **Total Compiled Native Functions**: **1,320 functions**.
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
-- **Residual Main EXE Misses**: **ZERO misses no boot, apresentação e combate ativo**. Os unicos PCs em fallback no Main EXE sao os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
+- **Residual Main EXE Misses**: **ZERO misses no boot, apresentação e combate ativo**. Os únicos PCs em fallback no Main EXE são os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
 
 ---
 
@@ -94,8 +94,9 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-302** | `0x80164D9C`, `0x80165DAC` (2 funcs) | 330 | 144,389 | Processed & Validated; Telemetry 85 CLEAN (0 residual) |
 | **S1-303** | `0x80162244..2570` (6 funcs) | 271 | 144,660 | Processed & Validated; Telemetry 92 CLEAN (0 residual) |
 | **S1-304** | `0x801613B8..C0`, `0x80161450`, `0x80161FE4` (4 funcs) | 246 | 144,906 | Processed & Validated; Telemetry 108 CLEAN (0 residual) |
+| **S1-305** | `0x8013B070..B328` (5 funcs) | 1,148 | 146,054 | Processed & Validated; Telemetry 139 CLEAN (0 residual) |
 
-- **Total words promovidas desde S1-239**: **+38,587 words** (+19.73% absolute gain).
+- **Total words promovidas desde S1-239**: **+39,735 words** (+20.32% absolute gain).
 
 ---
 

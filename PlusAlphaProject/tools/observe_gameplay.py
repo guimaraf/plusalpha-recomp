@@ -396,6 +396,7 @@ def main():
     (run_dir / "after.json").write_text(json.dumps(after, indent=2), encoding="utf-8")
 
     possible_cap_paths = [
+        project_root / "buildTele-s1-304" / "overlay_captures.json",
         project_root / "build-telemetry" / "overlay_captures.json",
         project_root / "overlay_captures.json",
         pathlib.Path.cwd() / "overlay_captures.json",

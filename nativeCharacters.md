@@ -115,15 +115,13 @@ Durante os testes de combate de alta densidade, o isolamento de telemetria desma
 
 ---
 
-### Caso 6: Super Combo Teatral do Skullomania (*Skullo Dream*)
-- **Comportamento Observado**: Durante as sessões `gameplay-discovery-40` e `41` (Skullomania vs Ryu), a linha de frametime permaneceu cravada e ultra-estável durante todo o combate ativo, com uma leve micro-variação transitória ocorrendo exclusivamente durante a animação cinematográfica do *Skullo Dream*.
+### Caso 6: Super Combo Teatral do Skullomania (*Skullo Dream*) - Resolvido (S1-285, S1-305 & Track 2)
+- **Comportamento Observado**: Durante as sessões `gameplay-discovery-40`, `41`, `137`, `138` e `139`, a linha de frametime permaneceu cravada a 60 FPS durante todo o combate ativo. Ao acionar o especial teatral cinematográfico (*Skullo Dream*), identificou-se a divisão exata entre ROM estática e overlay em RAM.
 - **Diagnóstico Técnico**:
-  - **Main EXE 100% Isento de Misses**: Zero quedas de contexto no código estático da ROM (`candidates.txt` vazio após a promoção do S1-285).
-  - **Origem da Micro-Variação em RAM**: O golpe teatral *Skullo Dream* aciona um loop cinematográfico de poses e rastros em RAM dinâmica (`0x80020000..0x800F2000`):
-    - **`0x80093E4C`**: Despachador dinâmico de pose/animação em RAM que disparou um pico massivo de **13,9 milhões de instruções interpretadas** na sessão 40 e **8,4 milhões** na sessão 41.
-    - **`0x80092C2C` e `0x80092F00`**: Loop de atualização dos jogadores com ~5M e ~2M de instruções interpretadas cada.
-- **Tratamento Planejado (Track 2)**:
-  - Essas rotinas pertencem estritamente aos módulos dinâmicos em RAM e serão convertidas para código de máquina nativo na etapa de Overlay Cache / TCC JIT, eliminando a oscilação durante o Super.
+  - **Main EXE Text (S1-305)**: O *Skullo Dream* acionou a entrada 0 da Action Table (`0x801B1B48 -> 0x8013B070`), com JALs internos para setup de matrizes de câmera 3D e GTE (`0x8013B070..0x8013B328`).
+  - **Resolução Implementada (S1-305)**: Promoção de 5 funções nativas (+1.148 palavras: `0x8013B070`, `0x8013B078`, `0x8013B10C`, `0x8013B114`, `0x8013B328`), selando o gap até o Modo Treino (`0x8013BFA8`).
+  - **Validação em `gameplay-discovery-139`**: **0 CANDIDATOS NO MAIN EXE**, erradicação de 100% dos misses estáticos, +380.190 dispatches nativos e absorção plena do impacto de processamento da cinemática.
+  - **Track 2 (RAM Overlay)**: O módulo de combate em RAM (`0x00020000:0x2906ED7E`) foi compilado em 263 DLLs de shard, erradicando os 10,3M de instruções de movimentação acrobática do Skullomania e chutes de Blair Dame.
 
 ---
 
