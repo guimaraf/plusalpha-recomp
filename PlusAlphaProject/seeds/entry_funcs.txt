@@ -4828,3 +4828,61 @@
 0x8013B10C
 0x8013B114
 0x8013B328
+
+# Micro-lote S1-306 (Subsistema de Pause - Menu de Pause Principal 0x80172DD0..0x8017566C):
+# Despachante mestre e handlers da interface disparada ao pressionar START em combate (pause.md).
+# Sela o gap contiguo exato entre 0x801727E4 e 0x801758C8 (uniao com S1-258), sem expansao de closure:
+#   * 0x80172DD0: 3.264 bytes / 816 palavras (Despachante raiz do menu de pause; jump table 0x801AC91C de 5 casos)
+#   * 0x80173A90: 260 bytes / 65 palavras (Setup de viewports e display lists do menu)
+#   * 0x80173B94: 684 bytes / 171 palavras (Alocacao de buffers de texto e listas de renderizacao)
+#   * 0x80173E40: 600 bytes / 150 palavras (Selecao e navegacao dos itens do menu: Exit, Reset, Button Config)
+#   * 0x80174098: 152 bytes / 38 palavras (Disparo de audio e efeitos sonoros de cursor)
+#   * 0x80174130: 1.540 bytes / 385 palavras (Processamento de transicoes e estados de botoes)
+#   * 0x80174734: 2.104 bytes / 526 palavras (Renderizador grafico de caixas, fontes e textos na tela)
+#   * 0x80174F6C: 268 bytes / 67 palavras (Limpeza e teardown de buffers ao fechar a interface)
+#   * 0x80175078: 648 bytes / 162 palavras (Handler de transicao de retorno ao combate)
+#   * 0x80175300: 876 bytes / 219 palavras (Confirmacao de Reset de partida "YES / NO")
+# Total S1-306: 10 funcoes novas, 10.396 bytes / 2.599 palavras. Atinge 148.653 palavras (76,0047%), 1.330 funcoes nativas.
+0x80172DD0
+0x80173A90
+0x80173B94
+0x80173E40
+0x80174098
+0x80174130
+0x80174734
+0x80174F6C
+0x80175078
+0x80175300
+
+# Micro-lote S1-307 (Subsistema de Pause - Command List e Pipeline 3D GTE 0x80183734..0x80185CC0 e 0x8019):
+# Despachante mestre, decodificador de golpes e renderizadores vetoriais GTE da Command List (pause.md).
+# Sela o gap contiguo exato entre 0x80183734 e 0x80185CC0 e as rotinas vetoriais GTE 0x8019C224..0x8019C4B8 e 0x8019DAD0:
+#   * 0x80183734: 1.460 bytes / 365 palavras (Despachante principal e setup de estado da Command List)
+#   * 0x80183CE8: 868 bytes / 217 palavras (Gerenciador de abas de lutadores e paginacao)
+#   * 0x8018404C: 236 bytes / 59 palavras (Gestao de input de navegacao para cima/baixo)
+#   * 0x80184138: 324 bytes / 81 palavras (Gestao de input de selecao e troca de jogador)
+#   * 0x8018427C: 364 bytes / 91 palavras (Calculo de scroll e layout de texto)
+#   * 0x801843E8: 1.332 bytes / 333 palavras (Parser de strings de nomes de golpes e propriedades)
+#   * 0x8018491C: 1.252 bytes / 313 palavras (Decodificador de sequencias direcionais e icones de botoes)
+#   * 0x80184E00: 816 bytes / 204 palavras (Formatador de caixas de comandos e delimitadores visuais)
+#   * 0x80185130: 468 bytes / 117 palavras (Handler de cursor e animacoes da interface)
+#   * 0x80185304: 788 bytes / 197 palavras (Conversor de coordenadas e fontes tipograficas)
+#   * 0x80185618: 1.704 bytes / 426 palavras (Renderizador grafico mestre de comandos, caixas e icones 3D)
+#   * 0x8019C224: 464 bytes / 116 palavras (Pipeline GTE vetorial de projecao de icones de golpes)
+#   * 0x8019C3F4: 196 bytes / 49 palavras (Transformador vetorial de vertices e poligonos de interface)
+#   * 0x8019DAD0: 120 bytes / 30 palavras (Rotina GTE vetorial de carga de vetores e iluminacao)
+# Total S1-307: 14 funcoes novas, 10.392 bytes / 2.598 palavras. Atinge 151.251 palavras (77,3330%), 1.344 funcoes nativas.
+0x80183734
+0x80183CE8
+0x8018404C
+0x80184138
+0x8018427C
+0x801843E8
+0x8018491C
+0x80184E00
+0x80185130
+0x80185304
+0x80185618
+0x8019C224
+0x8019C3F4
+0x8019DAD0

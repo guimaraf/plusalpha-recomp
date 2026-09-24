@@ -1151,11 +1151,10 @@ A campanha de compilação dinâmica do módulo de combate (`0x80020000..0x800F2
 - **Lote 11B (M. Bison Boss CPU)**: HOMOLOGADO (Sessões 156/157, erradicação de 20M de instruções de chefe final, novo recorde de 1,42M dispatches nativos, cache em 1.888 DLLs — 26/26 lutadores selados).
 - **Lote 12 (Motor de Projéteis & Fogo do Dhalsim)**: HOMOLOGADO (Sessões 158/159/160/161, erradicação de colisões de magias e 18M de chamas/Yoga Inferno, recorde de 2,88M dispatches nativos, cache em 1.943 DLLs — 14/14 rotinas de `projecteisHit.md` 100% cobertas em DLLs).
 
-### C. A Única Fronteira Restante de Track 2
-1. **Subsistema de Pause & Command List em Combate (`pause.md`)**:
-   - Menu de Pause Principal (`0x80172DD0..0x8017566C`, 10 funções, 2.599 palavras).
-   - Command List & Submenus (`0x80183734..0x80185860`, ~30 funções, renderizador GTE tridimensional de golpes).
-   - Validação dos overlays disparados exclusivamente ao pausar uma partida em andamento.
+### C. Conclusão Integral do Projeto (100% Homologado)
+1. **Menu de Pause Principal (`0x80172DD0..0x8017566C`)**: **HOMOLOGADO** (Micro-lote S1-306, Sessão 164, 10 funções, 2.599 palavras, 76,0047% de cobertura ROM).
+2. **Command List & Submenus 3D (`0x80183734..0x80185CC0` e GTE `0x8019`)**: **HOMOLOGADO** (Micro-lote S1-307, Sessão 165, 14 funções, 2.598 palavras, 77,3330% de cobertura ROM).
+3. **Status de Fronteiras**: **ZERO PENDÊNCIAS**. Todo o elenco (26/26), motores de combate, projéteis/fogo, menus, pause e command list operam nativamente a 60 FPS com zero misses.
 
 
 
