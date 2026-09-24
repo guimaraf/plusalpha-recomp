@@ -33,6 +33,7 @@ Essas rotinas serão compiladas e promovidas de forma consolidada após o mapeam
 | `0x80047EFC` | 904.415 insns (460 hits) | **Detonação e dano em área de minas / armadilhas** (*Dark EX-Plo* / *Dark Shackle*). | `discovery-135` | D. Dark x Hokuto |
 | `0x8008E798` | 594.897 insns (5.836 hits) | **Atualizador de entidades de bombas em RAM** (`struct Entity` tipo `0x13`). | `discovery-135` | D. Dark x Hokuto |
 | `0x80047DE8` | 158.622 insns (6.070 hits) | Sub-rotina de plantio, armamento e contagem regressiva de minas terrestres. | `discovery-135` | D. Dark x Hokuto |
+| `0x8008E394` | 370.004 insns (5.208 hits) | **Parâmetros de impacto, contato e reflexão de projéteis** (*Soul Force* / *Batting Hero*). | `discovery-140` | Jack x Allen |
 
 ---
 

@@ -1133,14 +1133,27 @@ Transition from static text recompiler (Track 1 closed at S1-304 with 100% clean
 - **Decisão Arquitetural Homologada**: Mantido sob o interpretador de CPU / HLE.
 - **Justificativa**: O kernel do BIOS lida diretamente com vetores de interrupção de hardware (`0x80000080` / `0x800000B0`), COP0 Status/Cause/EPC e escalonador TCB (`syscall 3 / RFE`). O custo em runtime é irrisório (< 0,001% de um frame de 16,6 ms) e não afeta o frametime (60 FPS cravados), eliminando riscos de dessincronização assíncrona com o SDL/host.
 
-### B. Pendências Restantes de Track 2
-1. **Promoção de Track 2 de Gameplay (Combate dos 26 Lutadores)**:
-   - Compilação dos overlays de ação e combate de cada lutador (`OVL/PL00_1.OVL` até `OVL/PL25_1.OVL`).
-   - Mapeamento das tabelas de animação, golpes especiais, supers e hitboxes dinâmicas carregadas durante a luta.
+### B. Status da Campanha de Overlays de Gameplay (Track 2 - 14/26 Lutadores Homologados)
+A campanha de compilação dinâmica do módulo de combate (`0x80020000..0x800F2000`, 840 KB) atingiu 14 lutadores homologados e 1.138 DLLs no cache ativo:
+- **Lote 1 (Ryu & Ken)**: HOMOLOGADO (Sessões 127/128).
+- **Lote 2A (Guile & Chun-Li)**: HOMOLOGADO (Sessões 129/131).
+- **Lote 2B (Zangief & Dhalsim)**: HOMOLOGADO (Sessões 133/134).
+- **Lote 3 (Doctrine Dark & Hokuto)**: HOMOLOGADO (Sessões 135/136).
+- **Lote 4 (Skullomania & Blair Dame)**: HOMOLOGADO (Sessões 137/138/139, acompanhado da promoção S1-305 no Main EXE).
+- **Lote 5 (Cracker Jack & Allen Snider)**: HOMOLOGADO (Sessões 140/141, erradicação de 23M de instruções interpretadas, cache em 979 DLLs).
+- **Lote 6 (Kairi & Darun Mister)**: HOMOLOGADO (Sessões 142/143, erradicação de 7,86M de instruções em `0x80048190`, +159 DLLs, cache em 1.138 DLLs).
+
+### C. Pendências Restantes de Track 2
+1. **Lotes de Lutadores Restantes**:
+   - Lote 7: Sakura (`PL15_1`) vs Pullum Purna (`PL14_1` / `PL09_1`).
+   - Lote 8: Garuda vs Akuma.
+   - Lote 9: M. Bison vs Evil Ryu.
+   - Lote 10: Bloody Hokuto, Cycloid-β, Cycloid-γ e variantes de chefes.
 2. **Subsistema de Pause & Command List em Combate (`pause.md`)**:
    - Menu de Pause Principal (`0x80172DD0..0x8017566C`, 10 funções, 2.599 palavras).
    - Command List & Submenus (`0x80183734..0x80185860`, ~30 funções, renderizador GTE tridimensional de golpes).
    - Validação dos overlays disparados exclusivamente ao pausar uma partida em andamento.
+
 
 
 
