@@ -1133,8 +1133,8 @@ Transition from static text recompiler (Track 1 closed at S1-304 with 100% clean
 - **Decisão Arquitetural Homologada**: Mantido sob o interpretador de CPU / HLE.
 - **Justificativa**: O kernel do BIOS lida diretamente com vetores de interrupção de hardware (`0x80000080` / `0x800000B0`), COP0 Status/Cause/EPC e escalonador TCB (`syscall 3 / RFE`). O custo em runtime é irrisório (< 0,001% de um frame de 16,6 ms) e não afeta o frametime (60 FPS cravados), eliminando riscos de dessincronização assíncrona com o SDL/host.
 
-### B. Status da Campanha de Overlays de Gameplay (Track 2 - 14/26 Lutadores Homologados)
-A campanha de compilação dinâmica do módulo de combate (`0x80020000..0x800F2000`, 840 KB) atingiu 14 lutadores homologados e 1.138 DLLs no cache ativo:
+### B. Status da Campanha de Overlays de Gameplay (Track 2 - 18/26 Lutadores Homologados)
+A campanha de compilação dinâmica do módulo de combate (`0x80020000..0x800F2000`, 840 KB) atingiu 18 lutadores homologados e 1.432 DLLs no cache ativo:
 - **Lote 1 (Ryu & Ken)**: HOMOLOGADO (Sessões 127/128).
 - **Lote 2A (Guile & Chun-Li)**: HOMOLOGADO (Sessões 129/131).
 - **Lote 2B (Zangief & Dhalsim)**: HOMOLOGADO (Sessões 133/134).
@@ -1142,12 +1142,12 @@ A campanha de compilação dinâmica do módulo de combate (`0x80020000..0x800F2
 - **Lote 4 (Skullomania & Blair Dame)**: HOMOLOGADO (Sessões 137/138/139, acompanhado da promoção S1-305 no Main EXE).
 - **Lote 5 (Cracker Jack & Allen Snider)**: HOMOLOGADO (Sessões 140/141, erradicação de 23M de instruções interpretadas, cache em 979 DLLs).
 - **Lote 6 (Kairi & Darun Mister)**: HOMOLOGADO (Sessões 142/143, erradicação de 7,86M de instruções em `0x80048190`, +159 DLLs, cache em 1.138 DLLs).
+- **Lote 7 (Sakura & Pullum Purna)**: HOMOLOGADO (Sessões 144/145, erradicação de 29M de instruções, +121 novas DLLs, cache em 1.259 DLLs).
+- **Lote 8 (Garuda & Akuma)**: HOMOLOGADO (Sessões 146/147, erradicação de 50M de instruções de combate e teleportes, marco de >1M dispatches nativos, +173 novas DLLs, cache em 1.432 DLLs).
 
 ### C. Pendências Restantes de Track 2
 1. **Lotes de Lutadores Restantes**:
-   - Lote 7: Sakura (`PL15_1`) vs Pullum Purna (`PL14_1` / `PL09_1`).
-   - Lote 8: Garuda vs Akuma.
-   - Lote 9: M. Bison vs Evil Ryu.
+   - Lote 9: M. Bison (`PL18_1`) vs Evil Ryu (`PL19_1`).
    - Lote 10: Bloody Hokuto, Cycloid-β, Cycloid-γ e variantes de chefes.
 2. **Subsistema de Pause & Command List em Combate (`pause.md`)**:
    - Menu de Pause Principal (`0x80172DD0..0x8017566C`, 10 funções, 2.599 palavras).
