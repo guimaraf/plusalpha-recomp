@@ -44,3 +44,14 @@ vaddr_base = "0x80101000"
 
 [audit.normalize]
 kseg_mask = "0x1FFFFFFF"
+
+[[overlays]]
+load_addr = "0x80020000"
+function_entries = [
+    "0x80047E78",
+    "0x80046BC8",
+    "0x8004649C",
+    "0x80044818"
+]
+
+

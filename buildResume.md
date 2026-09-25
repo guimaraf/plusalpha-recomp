@@ -1176,6 +1176,7 @@ A campanha de compilação dinâmica do módulo de combate (`0x80020000..0x800F2
 2. **Command List & Submenus 3D (`0x80183734..0x80185CC0` e GTE `0x8019`)**: **HOMOLOGADO** (Micro-lote S1-307, Sessão 165, 14 funções, 2.598 palavras, 77,3330% de cobertura ROM).
 3. **Bonus Stage Barrel Break, Transição Option→Bonus e Tela de Recorde/Iniciais (`0x801495D4..0x8014B21C`, `0x8016F668..0x8016FB64`, `0x80181F7C..0x80183734`)**: **HOMOLOGADO EM TRACK 1 E TRACK 2** (Micro-lote S1-308 + Shards Lote 1 & Lote 2 Dual-Base, Testes 168-171, erradicação de >300M de instruções, 0 misses estáticos e +4,09M dispatches nativos de overlay).
 4. **Expert Mode (Desafios 1 a 8, Avaliador de Combos e HUD de Metas) (`0x8014C6E0`, `0x80047E78`, `0x800E64D8`..`0x800E724C`)**: **HOMOLOGADO EM TRACK 1 E TRACK 2** (Micro-lote S1-309 + Shards do Expert Mode, Testes 172-174, erradicação de 99,833% das instruções de overlay, 0 misses estáticos e +590k dispatches nativos adicionais).
+5. **Training Mode (Ken x Ryu, Combos, Arena de Treino e Menu Estendido de Pause) (`0x80047E78`, `0x8004809C`, `0x80046BC8`, `0x8004649C`, `0x80044818`)**: **HOMOLOGADO EM TRACK 1 E TRACK 2** (Testes 176-179, erradicação total de 100% das instruções de overlay de jogo, 0 native handoffs, 0 misses estáticos e cache consolidado em 2.219 DLLs).
 
 
 

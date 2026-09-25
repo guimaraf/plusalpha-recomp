@@ -17,11 +17,12 @@
 - **Motores de Projéteis / Fogo**: 14/14 rotinas validadas (100%)
 - **Bonus Stage (Barril) & Replay (Track 2)**: 100% HOMOLOGADO (Teste 171 — +4,09M dispatches nativos, 0 misses estáticos, erradicação dos 288M de instruções de overlay).
 - **Expert Mode (Desafios do Ken & Lógica de Combos - Track 2)**: 100% HOMOLOGADO (Teste 174 — +590k dispatches nativos, erradicação de 99,83% das instruções de overlay, 0x80047E78 e 0x800E64D8 zerados).
+- **Training Mode (Ken x Ryu & Combos & Pause - Track 2)**: 100% HOMOLOGADO (Teste 179 — +675k dispatches nativos, 0 native handoffs, 0 misses estáticos, 0 instruções de código de jogo interpretadas, 4 raízes em game.toml: 0x80047E78, 0x80046BC8, 0x8004649C, 0x80044818).
 
 ## 3. Total Nativo Consolidado (Track 1 + Track 2)
-- **Total de Funções Nativas**: 5.198 (1.358 estáticas + 3.840 dinâmicas)
-- **Total de Código Nativo**: 1.358 funções estáticas + 2.216 DLLs ativas no cache
-- **Status Geral do Projeto**: Track 1 100% Homologada; Track 2 (Elenco 26/26 + Projéteis + Bonus Stage + Expert Mode) 100% Homologado. 60.0 FPS sólido em todos os modos.
+- **Total de Funções Nativas**: 5.201 (1.358 estáticas + 3.843 dinâmicas)
+- **Total de Código Nativo**: 1.358 funções estáticas + 2.219 DLLs ativas no cache
+- **Status Geral do Projeto**: Track 1 100% Homologada; Track 2 (Elenco 26/26 + Projéteis + Bonus Stage + Expert Mode + Training Mode) 100% Homologado. 60.0 FPS sólido em todos os modos.
 
 
 
