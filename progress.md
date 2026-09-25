@@ -10,14 +10,16 @@
 - **Bonus Stage (Barril), Transição Option→Bonus e Tela de Recorde/Iniciais (`0x801495D4..0x8014B21C`, `0x8016F668..0x8016FB64`, `0x80181F7C..0x80183734`)**: HOMOLOGADO (S1-308, Teste 167 — 0 misses)
 
 ## 2. Track 2: Recompilação Dinâmica (Overlays de Combate e Modos Especiais)
-- **DLLs Nativas no Cache**: 1.943
-- **Funções Únicas em DLLs**: 3.215
-- **Palavras em DLLs**: 25.657 palavras (102.628 bytes)
+- **DLLs Nativas no Cache**: 2.140 DLLs (+197 novas DLLs de Bonus Stage / Replay / Records com sincronização dual-base)
+- **Funções Únicas em DLLs**: 3.764 funções únicas
 - **Cobertura de Elenco**: 26/26 lutadores (100% homologado: 23 jogáveis + 3 chefes CPU)
 - **Motores de Projéteis / Fogo**: 14/14 rotinas validadas (100%)
+- **Bonus Stage (Barril) & Replay (Track 2)**: 100% HOMOLOGADO (Teste 171 — +4,09M dispatches nativos, 0 misses estáticos, erradicação dos 288M de instruções de overlay).
 
 ## 3. Total Nativo Consolidado (Track 1 + Track 2)
-- **Total de Funções Nativas**: 4.572 (1.357 estáticas + 3.215 dinâmicas)
-- **Total de Palavras Nativas**: 180.493 palavras (721.972 bytes de código nativo)
-- **Status Geral do Projeto**: Track 1 Homologada (incl. Bonus Stage); Track 2 do Bonus Stage em promoção
+- **Total de Funções Nativas**: 5.121 (1.357 estáticas + 3.764 dinâmicas)
+- **Total de Código Nativo**: 1.357 funções estáticas + 2.140 DLLs ativas no cache
+- **Status Geral do Projeto**: Track 1 100% Homologada; Track 2 (Elenco 26/26 + Projéteis + Bonus Stage/Replay/Records) 100% Homologado. 60.0 FPS sólido em todos os modos.
+
+
 

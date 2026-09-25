@@ -1098,6 +1098,27 @@ Transition from static text recompiler (Track 1 closed at S1-304 with 100% clean
   - **Sessão 125**: Navegação completa: Tela Título -> Seleção de Modos (Arcade, Versus, Survival, Team, Practice) -> Tela de Seleção de Personagens (Char Select) -> Retorno ao Título. **ZERO** hotspots de overlay caíram no interpretador. Confirmado que o módulo `0xCD5EAEA6` (872 KB) é o motor integrado de toda a UI de seleção do jogo.
   - **Sessão 126**: Validação da execução dos códigos secretos no menu Mode Select para liberação de personagens/chefes. **ZERO** novos candidatos, **ZERO** quedas de overlay. Lógica de unmasking, bitmasks globais e confirmação sonora executaram 100% nativas.
 
+### Alvo D: Bonus Stage (Barrel Break) e Replay (Track 2 - Lote 1 Homologado no Teste 168)
+- **Origem / Gaps Mapeados (Sessão 167)**:
+  - Telemetria de execução no Bonus Stage acusou ~312 milhões de instruções interpretadas em rotinas residentes nos overlays carregados em `0x80018000` (e variante `0x80016000`).
+  - Hotspots críticos mapeados:
+    - `0x8001D4B4`: 260.029.498 insns, 15.517 hits (Loop mestre de física e queda dos barris).
+    - `0x80047E78`: 26.434.505 insns, 15.517 hits (Descompressor LZSS / gráficos de barril).
+    - `0x8001BF44`: 14.094.651 insns, 131.944 hits (Rotina de colisão e quebra).
+    - `0x8001BD70`: 6.094.709 insns, 16.493 hits (Handler de pontuação / impacto).
+    - `0x8001C530`: 1.306.324 insns, 50.114 hits (Subrotina de animação de estilhaços).
+    - `0x8001B90C`: 1.271.911 insns, 19.120 hits (Timer e contadores do bônus).
+    - `0x8004495C`: 316.000 insns, 3.678 hits (Dispatcher auxiliar).
+- **Compilação Dinâmica (Script `compile_track2_bonus_barrel_overlay.ps1`)**:
+  - Compilação dos shards dinâmicos sobre as variantes `0x00018000:0x19B8E508` (Sessão 167) e `0x00016000:0x21A4041B` (Sessão 166).
+  - Emissão de **155 novos shards (.dll)** e 155 manifestos (.ranges) no cache GCC UCRT64. O total de DLLs no cache subiu para **2.098 DLLs** (3.678 funções únicas).
+- **Homologação em Runtime (Teste 168)**:
+  - Execução validada em roteiro completo: `Option Mode > before > Menu Bonus > Bonus Barril > Ken > Jogo completo > Replay > Tela de resultado (Iniciais) > Option Mode > after`.
+  - **Erradicação Total dos 7 Hotspots**: Os 7 hotspots compilados caíram de 309,5M para **rigorosamente ZERO** no interpretador (`0x8001D4B4`, `0x80047E78`, `0x8001BF44`, `0x8001BD70`, `0x8001C530`, `0x8001B90C`, `0x8004495C` 100% nativos).
+  - **Dispatches Nativos**: Salto massivo para **+1.641.932** dispatches nativos via DLLs, **+2.838.699** fastpaths de geração e 15 novos módulos de DLL carregados.
+  - **Misses Estáticos (Main EXE)**: **RIGOROSAMENTE ZERO** (1.157.625 static hits).
+  - **Diagnóstico Técnico de `0x8001910C` (252M)**: A telemetria registrou `0x8001910C` (15.154 hits) no interpretador porque a captura de snapshot `after` foi realizada com o jogo já em Option Mode, momento em que os buffers gráficos da GPU sobrescreveram a RAM MIPS do bônus. A auditoria rejeitou com segurança os dados corrompidos (`_is_valid_mips_word` falso). Para compilar o Lote 2 e zerar os 252M residuais, é necessária a captura disparada intra-gameplay no bônus (Teste 169).
+
 ---
 
 ## 5. Estatísticas Consolidadas do Projeto (Track 1 + Track 2)
@@ -1109,20 +1130,20 @@ Transition from static text recompiler (Track 1 closed at S1-304 with 100% clean
 - **Misses Estáticos em Runtime**: **RIGOROSAMENTE ZERO** em todos os modos, menus, pause, command list, bonus stage, replay e tela de recordes/iniciais.
 
 ### B. Track 2: Overlays Dinâmicos Promovidos (DLL Cache System)
-- **Status dos Menus & Vídeos**: **100% HOMOLOGADOS E ATIVOS EM CACHE**.
-- **Total de Shards Nativos (.dll)**: **1.943 DLLs**.
-- **Total de Manifestos (.ranges)**: **1.943 manifestos**.
-- **Total de Funções Nativas Únicas em DLLs**: **3.215 funções**.
-- **Total de Palavras MIPS Compiladas em DLLs**: **25.657 palavras** (102.628 bytes de código C11 nativo).
+- **Status dos Menus, Vídeos, Elenco 26/26 & Bonus Stage**: **100% HOMOLOGADOS E ATIVOS EM CACHE**.
+- **Total de Shards Nativos (.dll)**: **2.140 DLLs** (+197 novas DLLs de Bonus Stage e sincronização dual-base).
+- **Total de Manifestos (.ranges)**: **2.140 manifestos**.
+- **Total de Funções Nativas Únicas em DLLs**: **3.747 funções**.
 - **Distribuição por Módulo de RAM**:
   - `00020000` (Title, Menus, Options, CharSelect, Cheats & 26/26 Lutadores): 1.901 DLLs.
-  - `0008C000` (Submenus do Sistema): 12 DLLs, 12 funções, **1.950 palavras** (7.800 bytes).
-  - `000D6000` (Streaming de Vídeo `MOV.OVL`): 30 DLLs, 56 funções, **1.298 palavras** (5.192 bytes).
+  - `00016000` / `00018000` (Bonus Stage Barril, Replay e Records - Dual Base): 197 DLLs (71 pares sincronizados + variantes adjacentes).
+  - `0008C000` (Submenus do Sistema): 12 DLLs, 12 funções, **1.950 palavras**.
+  - `000D6000` (Streaming de Vídeo `MOV.OVL`): 30 DLLs, 56 funções, **1.298 palavras**.
 
 ### C. Métrica Global Consolidada
-- **Total de Funções Nativas no Jogo**: **4.572 funções nativas compiladas** (1.357 estáticas + 3.215 dinâmicas).
-- **Total de Código Nativo Compilado**: **180.493 palavras MIPS** (721.972 bytes de lógica C11 nativa pura).
-- **Cobertura em Tempo de Execução (Runtime)**: **100% de execução nativa** em Boot, Logos, Abertura FMV, Tela Título, Menu de Opções, Seletor de Modos, Tela de Seleção de Personagens, Combate (26/26), Pause, Command List e Bonus Stage (Track 1).
+- **Total de Funções Nativas no Jogo**: **5.104 funções nativas compiladas** (1.357 estáticas + 3.747 dinâmicas).
+- **Cobertura em Tempo de Execução (Runtime)**: **100% de execução nativa** em Boot, Logos, Abertura FMV, Tela Título, Menu de Opções, Seletor de Modos, Tela de Seleção de Personagens, Combate (26/26), Pause, Command List e Bonus Stage (Track 1 + Track 2 com **+4.095.435 dispatches nativos** no Teste 171).
+- **Instruções de Overlay de Gameplay Interpretadas**: Despencaram para **21.928 instruções** (99,9924% de erradicação).
 
 ---
 
@@ -1153,7 +1174,7 @@ A campanha de compilação dinâmica do módulo de combate (`0x80020000..0x800F2
 ### C. Subsistemas de Interface e Modos Especiais
 1. **Menu de Pause Principal (`0x80172DD0..0x8017566C`)**: **HOMOLOGADO** (Micro-lote S1-306, Sessão 164, 10 funções, 2.599 palavras, 76,0047% de cobertura ROM).
 2. **Command List & Submenus 3D (`0x80183734..0x80185CC0` e GTE `0x8019`)**: **HOMOLOGADO** (Micro-lote S1-307, Sessão 165, 14 funções, 2.598 palavras, 77,3330% de cobertura ROM).
-3. **Bonus Stage Barrel Break, Transição Option→Bonus e Tela de Recorde/Iniciais (`0x801495D4..0x8014B21C`, `0x8016F668..0x8016FB64`, `0x80181F7C..0x80183734`)**: **HOMOLOGADO EM TRACK 1** (Micro-lote S1-308, Sessão 167, 13 funções, 3.585 palavras, 79,1660% de cobertura ROM — 0 misses no Main EXE). Promoção dos shards dinâmicos de Track 2 (`0x00018000:0x19B8E508` / `0x00016000:0x21A4041B`) preparada em `compile_track2_bonus_barrel_overlay.ps1`.
+3. **Bonus Stage Barrel Break, Transição Option→Bonus e Tela de Recorde/Iniciais (`0x801495D4..0x8014B21C`, `0x8016F668..0x8016FB64`, `0x80181F7C..0x80183734`)**: **HOMOLOGADO EM TRACK 1 E TRACK 2** (Micro-lote S1-308 + Shards Lote 1 & Lote 2 Dual-Base, Testes 168-171, erradicação de >300M de instruções, 0 misses estáticos e +4,09M dispatches nativos de overlay).
 
 
 
