@@ -1103,27 +1103,26 @@ Transition from static text recompiler (Track 1 closed at S1-304 with 100% clean
 ## 5. Estatísticas Consolidadas do Projeto (Track 1 + Track 2)
 
 ### A. Track 1: Recompilação Estática do Executável Principal (`SLUS_005.48`)
-- **Status**: **100% HOMOLOGADO E CONCLUÍDO (S1-304)**.
-- **Total de Funções Nativas**: **1.315 funções**.
-- **Palavras MIPS Compiladas**: **144.906 palavras** (74,0889% de 195.584 palavras do binário base).
-- **Misses Estáticos em Runtime**: **RIGOROSAMENTE ZERO** em todos os modos e encerramentos.
+- **Status**: **100% HOMOLOGADO E CONCLUÍDO (S1-308)**.
+- **Total de Funções Nativas**: **1.357 funções**.
+- **Palavras MIPS Compiladas**: **154.836 palavras** (79,1660% de 195.584 palavras do binário base).
+- **Misses Estáticos em Runtime**: **RIGOROSAMENTE ZERO** em todos os modos, menus, pause, command list, bonus stage, replay e tela de recordes/iniciais.
 
 ### B. Track 2: Overlays Dinâmicos Promovidos (DLL Cache System)
 - **Status dos Menus & Vídeos**: **100% HOMOLOGADOS E ATIVOS EM CACHE**.
-- **Total de Shards Nativos (.dll)**: **93 DLLs**.
-- **Total de Manifestos (.ranges)**: **93 manifestos**.
-- **Total de Funções Nativas Únicas**: **247 funções**.
-- **Total de Palavras MIPS Compiladas**: **12.395 palavras** (49.580 bytes de código C11 nativo).
+- **Total de Shards Nativos (.dll)**: **1.943 DLLs**.
+- **Total de Manifestos (.ranges)**: **1.943 manifestos**.
+- **Total de Funções Nativas Únicas em DLLs**: **3.215 funções**.
+- **Total de Palavras MIPS Compiladas em DLLs**: **25.657 palavras** (102.628 bytes de código C11 nativo).
 - **Distribuição por Módulo de RAM**:
-  - `00020000` (Title, Menus, Options, CharSelect, Cheats): 51 DLLs, 179 funções, **9.147 palavras** (36.588 bytes).
+  - `00020000` (Title, Menus, Options, CharSelect, Cheats & 26/26 Lutadores): 1.901 DLLs.
   - `0008C000` (Submenus do Sistema): 12 DLLs, 12 funções, **1.950 palavras** (7.800 bytes).
   - `000D6000` (Streaming de Vídeo `MOV.OVL`): 30 DLLs, 56 funções, **1.298 palavras** (5.192 bytes).
 
 ### C. Métrica Global Consolidada
-- **Total de Funções Nativas no Jogo**: **1.562 funções nativas compiladas** (1.315 estáticas + 247 dinâmicas).
-- **Total de Código Nativo Compilado**: **157.301 palavras MIPS** (629.204 bytes de lógica C11 nativa pura).
-- **Percentual em Relação ao Binário Base**: **80,4263%** do volume do executável principal (`157.301 / 195.584`).
-- **Cobertura em Tempo de Execução (Runtime)**: **100% de execução nativa** em Boot, Logos, Abertura FMV, Tela Título, Menu de Opções, Seletor de Modos, Tela de Seleção de Personagens e Ativação de Cheats.
+- **Total de Funções Nativas no Jogo**: **4.572 funções nativas compiladas** (1.357 estáticas + 3.215 dinâmicas).
+- **Total de Código Nativo Compilado**: **180.493 palavras MIPS** (721.972 bytes de lógica C11 nativa pura).
+- **Cobertura em Tempo de Execução (Runtime)**: **100% de execução nativa** em Boot, Logos, Abertura FMV, Tela Título, Menu de Opções, Seletor de Modos, Tela de Seleção de Personagens, Combate (26/26), Pause, Command List e Bonus Stage (Track 1).
 
 ---
 
@@ -1151,10 +1150,11 @@ A campanha de compilação dinâmica do módulo de combate (`0x80020000..0x800F2
 - **Lote 11B (M. Bison Boss CPU)**: HOMOLOGADO (Sessões 156/157, erradicação de 20M de instruções de chefe final, novo recorde de 1,42M dispatches nativos, cache em 1.888 DLLs — 26/26 lutadores selados).
 - **Lote 12 (Motor de Projéteis & Fogo do Dhalsim)**: HOMOLOGADO (Sessões 158/159/160/161, erradicação de colisões de magias e 18M de chamas/Yoga Inferno, recorde de 2,88M dispatches nativos, cache em 1.943 DLLs — 14/14 rotinas de `projecteisHit.md` 100% cobertas em DLLs).
 
-### C. Conclusão Integral do Projeto (100% Homologado)
+### C. Subsistemas de Interface e Modos Especiais
 1. **Menu de Pause Principal (`0x80172DD0..0x8017566C`)**: **HOMOLOGADO** (Micro-lote S1-306, Sessão 164, 10 funções, 2.599 palavras, 76,0047% de cobertura ROM).
 2. **Command List & Submenus 3D (`0x80183734..0x80185CC0` e GTE `0x8019`)**: **HOMOLOGADO** (Micro-lote S1-307, Sessão 165, 14 funções, 2.598 palavras, 77,3330% de cobertura ROM).
-3. **Status de Fronteiras**: **ZERO PENDÊNCIAS**. Todo o elenco (26/26), motores de combate, projéteis/fogo, menus, pause e command list operam nativamente a 60 FPS com zero misses.
+3. **Bonus Stage Barrel Break, Transição Option→Bonus e Tela de Recorde/Iniciais (`0x801495D4..0x8014B21C`, `0x8016F668..0x8016FB64`, `0x80181F7C..0x80183734`)**: **HOMOLOGADO EM TRACK 1** (Micro-lote S1-308, Sessão 167, 13 funções, 3.585 palavras, 79,1660% de cobertura ROM — 0 misses no Main EXE). Promoção dos shards dinâmicos de Track 2 (`0x00018000:0x19B8E508` / `0x00016000:0x21A4041B`) preparada em `compile_track2_bonus_barrel_overlay.ps1`.
+
 
 
 

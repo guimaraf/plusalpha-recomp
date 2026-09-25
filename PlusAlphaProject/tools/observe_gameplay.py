@@ -395,22 +395,17 @@ def main():
 
     (run_dir / "after.json").write_text(json.dumps(after, indent=2), encoding="utf-8")
 
-    possible_cap_paths = [
-        project_root / "buildTele-s1-304" / "overlay_captures.json",
-        project_root / "build-telemetry" / "overlay_captures.json",
+    candidate_caps = list(project_root.glob("build*/overlay_captures.json")) + [
         project_root / "overlay_captures.json",
         pathlib.Path.cwd() / "overlay_captures.json",
     ]
-    captured_file = None
-    for p in possible_cap_paths:
-        if p.is_file():
-            captured_file = p
-            break
+    existing_caps = [p for p in candidate_caps if p.is_file()]
+    captured_file = max(existing_caps, key=lambda p: p.stat().st_mtime) if existing_caps else None
 
     if captured_file:
         dest_cap = run_dir / "overlay_captures.json"
         shutil.copyfile(captured_file, dest_cap)
-        print(f"[+] Arquivo de overlays preservado em: {dest_cap}")
+        print(f"[+] Arquivo de overlays preservado de {captured_file.parent.name} em: {dest_cap}")
 
     print("\n[+] Processando analise diferencial (Deltas)...")
     res = analyze(before, after, funcs, ranges)

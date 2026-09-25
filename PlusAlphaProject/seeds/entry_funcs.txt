@@ -4886,3 +4886,38 @@
 0x8019C224
 0x8019C3F4
 0x8019DAD0
+
+# Micro-lote S1-308 (Bonus Stage Barrel Break, Transicao Menu Bonus e Tela de Recorde / Iniciais):
+# Sela integralmente as lacunas contiguas exercitadas no Teste 166 (Option Mode -> Bonus Barril -> Replay -> Iniciais):
+#   1) Lacuna 0x801495D4..0x8014B21C (7.240 bytes / 1.810 palavras - Engine do Bonus Stage e Barris):
+#      * 0x801495D4: 152 bytes / 38 palavras (Inicializador e despachante de estado do Bonus Stage)
+#      * 0x8014966C: 1.944 bytes / 486 palavras (Spawner de barris, trajetoria 3D e parametros fisicos)
+#      * 0x80149E04: 4.900 bytes / 1.225 palavras (Maquina de estados do Bonus Barril, colisao, pontuacao e camera de replay; jump table 0x801ABD94 de 5 casos)
+#      * 0x8014B128: 244 bytes / 61 palavras (Finalizador de estado e sincronizacao de HUD do Bonus)
+#   2) Lacunas 0x8016F668..0x8016F7C0 e 0x8016F8B8..0x8016FB64 (1.028 bytes / 257 palavras - Helpers e Transicao Option -> Bonus Mode):
+#      * 0x8016F668: 124 bytes / 31 palavras (Helper de transicao de estado de submodo)
+#      * 0x8016F6E4: 220 bytes / 55 palavras (Folha de controle chamada diretamente por 0x80149E04)
+#      * 0x8016F8B8: 336 bytes / 84 palavras (Preparacao de parametros de selecao de submodo em Option)
+#      * 0x8016FA08: 144 bytes / 36 palavras (Handler de entrada e confirmacao do Menu Bonus)
+#      * 0x8016FA98: 204 bytes / 51 palavras (Configuracao de transicao de cena Option -> Bonus)
+#   3) Lacuna 0x80181F7C..0x80183734 (6.072 bytes / 1.518 palavras - Tela de Resultado do Bonus e Iniciais de Recorde):
+#      * 0x80181F7C: 372 bytes / 93 palavras (Despachante raiz da tela de resultado e ranking do Bonus)
+#      * 0x801820F0: 2.460 bytes / 615 palavras (Setup de layout, tabelas de pontuacao e geometria 2D/3D do placar)
+#      * 0x80182A8C: 1.256 bytes / 314 palavras (Maquina de estados de digitacao de iniciais de recorde; jump table 0x801ACAF0 de 5 casos)
+#      * 0x80182F74: 1.984 bytes / 496 palavras (Renderizador de caracteres, cursor alfabetico e animacoes de ranking)
+# Total S1-308: 13 funcoes novas, 14.340 bytes / 3.585 palavras. Atinge 154.836 palavras (79,1660%), 1.357 funcoes nativas.
+0x801495D4
+0x8014966C
+0x80149E04
+0x8014B128
+0x8016F668
+0x8016F6E4
+0x8016F8B8
+0x8016FA08
+0x8016FA98
+0x80181F7C
+0x801820F0
+0x80182A8C
+0x80182F74
+
+
