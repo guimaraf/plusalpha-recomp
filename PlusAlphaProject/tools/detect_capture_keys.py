@@ -13,13 +13,18 @@ def main():
     with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
+    filter_bases = [int(x, 16) for x in sys.argv[2:]] if len(sys.argv) > 2 else None
+
     for c in data:
         raw = base64.b64decode(c["bytes_b64"])
         crc = zlib.crc32(raw)
         load_addr = int(c["load_addr"], 16) if isinstance(c["load_addr"], str) else c["load_addr"]
         phys = load_addr & 0x1FFFFFFF
-        if phys in (0x00018000, 0x00016000):
-            print(f"0x{phys:08X}:0x{crc:08X}")
+        if phys == 0:
+            continue
+        if filter_bases is not None and phys not in filter_bases:
+            continue
+        print(f"0x{phys:08X}:0x{crc:08X}")
 
 if __name__ == "__main__":
     main()

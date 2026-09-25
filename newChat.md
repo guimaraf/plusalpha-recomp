@@ -47,13 +47,29 @@
       - `0x8001C1C0` (1.745.409 insns) -> **ZERO** (100% nativo)
       - `0x8001B4C8`, `0x8001C260`, `0x8001C1EC`, `0x8001B6C0`, `0x8001C180`, `0x8001B740`, `0x8001B598`, `0x8001B604`, `0x8001B7C0`, `0x8001B670` -> **TODOS ZERADOS** (100% nativos).
     - **Instruções de Overlay de Jogo no Delta**: Despencaram de **288.770.000** (Teste 170) para **21.928** (Teste 171) — **99,9924% de redução**.
-    - O restante das instruções interpretadas no delta (1.305.494 insns) restringe-se exclusivamente a rotinas de interrupção e timer de baixo nível da BIOS/Kernel PSX (`0x80004498`, `0x800000B0`, `0x80000C80`), sem impacto no framerate estável de 60.0 FPS.
+- **Campanha do Expert Mode (Desafios do Ken 1 a 8 - Testes 172 a 174)**:
+  - **Descoberta (Teste 172)**: Identificou 13M de instruções interpretadas em `0x80047E78` (11.2M LZSS/desafios) e na lógica do modo (`0x800E7xxx` / `0x80044xxx`), além de revelar o dispatcher formal de Main EXE `0x8014C6E0` (6.744 hits).
+  - **Micro-Lote S1-309 em Track 1 (Teste 173)**: Promoveu `0x8014C6E0` (10 palavras MIPS, 0 closure expansion), zerando integralmente os hits de fallback no Main EXE (1.358 funções estáticas, 154.846 palavras, 79,1711% da ROM, 0 misses).
+  - **Compilação de Shards & Homologação Definitiva de Track 2 (Teste 174)**:
+    - O script `compile_track2_expert_mode.ps1` compilou +76 DLLs para o Expert Mode (`0x00020000:0xEB53F947` e `0x00020000:0x9FD855A9`), elevando o cache para **2.216 DLLs nativas**.
+    - **+590.585 dispatches nativos** e **1.018.470 fastpaths de geração** executados no Expert Mode.
+    - **ERRADICAÇÃO DE 100% DOS HOTSPOTS DO EXPERT MODE**:
+      - `0x80047E78` (11.291.376 insns) -> **ZERO** (100% nativo)
+      - `0x800E724C` (677.888 insns) -> **ZERO** (100% nativo)
+      - `0x800E64D8` (271.145 insns) -> **ZERO** (100% nativo)
+      - `0x800E71BC` (362.576 insns) -> **ZERO** (100% nativo)
+      - `0x800E713C` (163.744 insns) -> **ZERO** (100% nativo)
+      - `0x8004495C` .. `0x80044EE4` (11 hotspots de input/combo) -> **TODOS ZERADOS** (100% nativos).
+    - **Volume de Jogo Interpretado**: Despencou para **21.828 instruções** (**99,833% de erradicação**).
+    - As instruções interpretadas restantes restringem-se ao kernel/BIOS PSX (472k insns em `0x80004498`, `0x80000C80`, `0x800000B0`, `0x8000641C`).
 
 ---
 
 ## 4. Estado da Arte e Conclusão de Metas
-- **Track 1 (Main EXE SLUS-005.48)**: 100% Homologado, 0 misses estáticos.
+- **Track 1 (Main EXE SLUS-005.48)**: 100% Homologado (1.358 funções, 154.846 palavras MIPS, 0 misses estáticos).
 - **Track 2 (Personagens & Combate 26/26)**: 100% Homologado.
 - **Track 2 (Bonus Stage Barril, Replay, Records)**: 100% Homologado.
-- **Total de Shards Nativos Ativos**: 2.140 DLLs e 2.140 manifestos `.ranges`.
+- **Track 2 (Expert Mode - Desafios 1 a 8)**: 100% Homologado.
+- **Total de Shards Nativos Ativos**: 2.216 DLLs e 2.216 manifestos `.ranges`.
 - **Frametime**: 60.0 FPS sólido em todos os modos de jogo.
+

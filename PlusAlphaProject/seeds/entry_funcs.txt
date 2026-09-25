@@ -4920,4 +4920,13 @@
 0x80182A8C
 0x80182F74
 
+# Micro-lote S1-309 (Expert Mode Dispatcher - Main EXE Text):
+# Despachante formal de tick/frame do Expert Mode exercitado no Teste 172 (6.744 hits):
+#   * 0x8014C6E0: 40 bytes / 10 palavras (0x8014C6E0..0x8014C707).
+#     Carrega o ponteiro do overlay em 0x800E6480 e despacha via jalr $v0.
+#     Contigua a 0x8014C708 (promovida em S1-251). Zero chamadas jal, zero expansao de closure.
+# Total S1-309: 1 funcao nova, 40 bytes / 10 palavras. Atinge 154.846 palavras (79,1711%), 1.358 funcoes nativas.
+0x8014C6E0
+
+
 

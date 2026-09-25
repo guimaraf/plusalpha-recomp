@@ -1127,23 +1127,23 @@ Transition from static text recompiler (Track 1 closed at S1-304 with 100% clean
 - **Status**: **100% HOMOLOGADO E CONCLUÍDO (S1-308)**.
 - **Total de Funções Nativas**: **1.357 funções**.
 - **Palavras MIPS Compiladas**: **154.836 palavras** (79,1660% de 195.584 palavras do binário base).
-- **Misses Estáticos em Runtime**: **RIGOROSAMENTE ZERO** em todos os modos, menus, pause, command list, bonus stage, replay e tela de recordes/iniciais.
+- **Misses Estáticos em Runtime**: **RIGOROSAMENTE ZERO** em todos os modos, menus, pause, command list, bonus stage, replay, tela de recordes/iniciais e Expert Mode.
 
 ### B. Track 2: Overlays Dinâmicos Promovidos (DLL Cache System)
-- **Status dos Menus, Vídeos, Elenco 26/26 & Bonus Stage**: **100% HOMOLOGADOS E ATIVOS EM CACHE**.
-- **Total de Shards Nativos (.dll)**: **2.140 DLLs** (+197 novas DLLs de Bonus Stage e sincronização dual-base).
-- **Total de Manifestos (.ranges)**: **2.140 manifestos**.
-- **Total de Funções Nativas Únicas em DLLs**: **3.747 funções**.
+- **Status dos Menus, Vídeos, Elenco 26/26, Bonus Stage & Expert Mode**: **100% HOMOLOGADOS E ATIVOS EM CACHE**.
+- **Total de Shards Nativos (.dll)**: **2.216 DLLs** (+76 novas DLLs de Expert Mode).
+- **Total de Manifestos (.ranges)**: **2.216 manifestos**.
+- **Total de Funções Nativas Únicas em DLLs**: **3.840 funções**.
 - **Distribuição por Módulo de RAM**:
-  - `00020000` (Title, Menus, Options, CharSelect, Cheats & 26/26 Lutadores): 1.901 DLLs.
+  - `00020000` (Title, Menus, Options, CharSelect, Cheats, 26/26 Lutadores & Expert Mode): 1.977 DLLs.
   - `00016000` / `00018000` (Bonus Stage Barril, Replay e Records - Dual Base): 197 DLLs (71 pares sincronizados + variantes adjacentes).
   - `0008C000` (Submenus do Sistema): 12 DLLs, 12 funções, **1.950 palavras**.
   - `000D6000` (Streaming de Vídeo `MOV.OVL`): 30 DLLs, 56 funções, **1.298 palavras**.
 
 ### C. Métrica Global Consolidada
-- **Total de Funções Nativas no Jogo**: **5.104 funções nativas compiladas** (1.357 estáticas + 3.747 dinâmicas).
-- **Cobertura em Tempo de Execução (Runtime)**: **100% de execução nativa** em Boot, Logos, Abertura FMV, Tela Título, Menu de Opções, Seletor de Modos, Tela de Seleção de Personagens, Combate (26/26), Pause, Command List e Bonus Stage (Track 1 + Track 2 com **+4.095.435 dispatches nativos** no Teste 171).
-- **Instruções de Overlay de Gameplay Interpretadas**: Despencaram para **21.928 instruções** (99,9924% de erradicação).
+- **Total de Funções Nativas no Jogo**: **5.198 funções nativas compiladas** (1.358 estáticas + 3.840 dinâmicas).
+- **Cobertura em Tempo de Execução (Runtime)**: **100% de execução nativa** em Boot, Logos, Abertura FMV, Tela Título, Menu de Opções, Seletor de Modos, Tela de Seleção de Personagens, Combate (26/26), Pause, Command List, Bonus Stage e Expert Mode (Track 1 + Track 2 com zero misses estáticos e +590k dispatches nativos adicionais no Teste 174).
+- **Instruções de Overlay de Gameplay Interpretadas no Expert Mode**: Despencaram para **21.828 instruções** (99,833% de erradicação).
 
 ---
 
@@ -1175,6 +1175,8 @@ A campanha de compilação dinâmica do módulo de combate (`0x80020000..0x800F2
 1. **Menu de Pause Principal (`0x80172DD0..0x8017566C`)**: **HOMOLOGADO** (Micro-lote S1-306, Sessão 164, 10 funções, 2.599 palavras, 76,0047% de cobertura ROM).
 2. **Command List & Submenus 3D (`0x80183734..0x80185CC0` e GTE `0x8019`)**: **HOMOLOGADO** (Micro-lote S1-307, Sessão 165, 14 funções, 2.598 palavras, 77,3330% de cobertura ROM).
 3. **Bonus Stage Barrel Break, Transição Option→Bonus e Tela de Recorde/Iniciais (`0x801495D4..0x8014B21C`, `0x8016F668..0x8016FB64`, `0x80181F7C..0x80183734`)**: **HOMOLOGADO EM TRACK 1 E TRACK 2** (Micro-lote S1-308 + Shards Lote 1 & Lote 2 Dual-Base, Testes 168-171, erradicação de >300M de instruções, 0 misses estáticos e +4,09M dispatches nativos de overlay).
+4. **Expert Mode (Desafios 1 a 8, Avaliador de Combos e HUD de Metas) (`0x8014C6E0`, `0x80047E78`, `0x800E64D8`..`0x800E724C`)**: **HOMOLOGADO EM TRACK 1 E TRACK 2** (Micro-lote S1-309 + Shards do Expert Mode, Testes 172-174, erradicação de 99,833% das instruções de overlay, 0 misses estáticos e +590k dispatches nativos adicionais).
+
 
 
 

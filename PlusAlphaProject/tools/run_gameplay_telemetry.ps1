@@ -3,111 +3,111 @@ $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ProjectRoot = Resolve-Path (Join-Path $ScriptDir "..")
 $GameToml = Join-Path $ProjectRoot "game.toml"
 $CuePath = Join-Path $ProjectRoot "disc-a\Street Fighter EX Plus Alpha (USA).cue"
-$ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+$ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308-f2\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309-f2\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-308\exPlusAlpha.exe"
+    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
 }
 if (-not (Test-Path $ExePath)) {
     $ExePath = Join-Path $ProjectRoot "build-telemetry\StreetFighterEXPlusAlphaRecomp.exe"
