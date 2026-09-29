@@ -1,0 +1,2 @@
+// SDL2 on Windows uses the first embedded icon for its window class.
+1 ICON "@PSX_APP_ICON_RESOURCE_PATH@"

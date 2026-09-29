@@ -21,6 +21,19 @@ set(GAME_GENERATED_DISPATCH
     "${CMAKE_CURRENT_SOURCE_DIR}/generated/SLUS_005.48_dispatch.c")
 
 option(BUILD_DECOUPLED_LAUNCHER "Build decoupled clean-room launcher (0 proprietary bytes; loads game_core.dll dynamically)" OFF)
+option(PSX_OVERLAY_PRELOAD_ALL "Map all cached overlay DLLs before gameplay (Windows experiment)" OFF)
+set(PSX_STATIC_OVERLAY_DIR "" CACHE PATH "Generated static overlay experiment directory")
+if(PSX_STATIC_OVERLAY_DIR)
+    if(BUILD_DECOUPLED_LAUNCHER OR PSX_OVERLAY_PRELOAD_ALL)
+        message(FATAL_ERROR "Static overlays require monolithic runtime without DLL preload")
+    endif()
+    include("${PSX_STATIC_OVERLAY_DIR}/sources.cmake")
+    set_source_files_properties(${PSX_STATIC_OVERLAY_SOURCES} PROPERTIES
+        COMPILE_DEFINITIONS "PSX_NO_DEBUG_TOOLS=1")
+endif()
+if(PSX_OVERLAY_PRELOAD_ALL AND (NOT WIN32 OR BUILD_DECOUPLED_LAUNCHER))
+    message(FATAL_ERROR "PSX_OVERLAY_PRELOAD_ALL requires the Windows monolithic runtime")
+endif()
 
 if(BUILD_DECOUPLED_LAUNCHER)
     # Decoupled clean-room launcher target: 0 bytes of proprietary game code.
@@ -101,6 +114,8 @@ else()
     psxrecomp_add_runtime_target(psx-runtime
         GAME_GENERATED_FULL_C "${GAME_GENERATED_FULL}"
         GAME_GENERATED_DISPATCH_C "${GAME_GENERATED_DISPATCH}"
+        GAME_OVERLAY_STATIC_C "${PSX_STATIC_OVERLAY_DISPATCH}"
+        EXTRAS_SOURCES ${PSX_STATIC_OVERLAY_SOURCES}
         DEBUG_PORT 4531
         WINDOW_TITLE "Ex Plus Alpha"
         EXE_NAME "exPlusAlpha"
@@ -112,6 +127,10 @@ else()
         WIN32_EXECUTABLE TRUE
         OUTPUT_NAME "exPlusAlpha"
     )
+
+    if(PSX_OVERLAY_PRELOAD_ALL)
+        target_compile_definitions(psx-runtime PRIVATE PSX_OVERLAY_PRELOAD_ALL=1)
+    endif()
 
     if(MINGW)
         target_link_options(psx-runtime PRIVATE "-Wl,--export-all-symbols")
@@ -144,6 +163,27 @@ else()
                 )
             endif()
         endforeach()
+    endif()
+endif()
+
+set(PSX_APP_ICON "" CACHE FILEPATH "Windows executable and SDL window icon")
+if(PSX_APP_ICON)
+    if(NOT WIN32 OR CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+        message(FATAL_ERROR "PSX_APP_ICON requires a desktop Windows build")
+    endif()
+    if(NOT EXISTS "${PSX_APP_ICON}")
+        message(FATAL_ERROR "Icon not found: ${PSX_APP_ICON}")
+    endif()
+    enable_language(RC)
+    file(TO_CMAKE_PATH "${PSX_APP_ICON}" PSX_APP_ICON_RESOURCE_PATH)
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/../icon/exPlusAlpha.rc.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/exPlusAlpha.rc" @ONLY)
+    set_source_files_properties("${CMAKE_CURRENT_BINARY_DIR}/exPlusAlpha.rc"
+        PROPERTIES OBJECT_DEPENDS "${PSX_APP_ICON}")
+    if(BUILD_DECOUPLED_LAUNCHER)
+        target_sources(exPlusAlpha PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/exPlusAlpha.rc")
+    else()
+        target_sources(psx-runtime PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/exPlusAlpha.rc")
     endif()
 endif()
 
