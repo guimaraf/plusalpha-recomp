@@ -17,12 +17,12 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-- **Validated Checkpoint**: **S1-305** (Cinemática e Setup de Câmera 3D do Skullo Dream - `0x8013B070..0x8013BFA8`: `0x8013B070`, `0x8013B078`, `0x8013B10C`, `0x8013B114`, `0x8013B328`, 5 funções, 1.148 palavras / 4.592 bytes; validado com sucesso em `gameplay-discovery-139` com erradicação de 100% dos candidatos no Main EXE; 1.320 funções nativas, 146.054 palavras, 74,6758%).
-- **Current Active Batch**: Nenhum lote ativo (Homologação de S1-305 concluída).
+- **Validated Checkpoint**: **S1-305** (Skullo Dream cinematics and 3D camera setup - `0x8013B070..0x8013BFA8`: `0x8013B070`, `0x8013B078`, `0x8013B10C`, `0x8013B114`, `0x8013B328`, 5 functions, 1.148 words / 4.592 bytes; successfully validated in `gameplay-discovery-139`, eliminating 100% of Main EXE candidates; 1.320 native functions, 146.054 words, 74,6758%).
+- **Active Batch**: None (S1-305 validation complete).
 - **Current Main Binary Coverage**: **146,054 / 195,584 words (74.6758%)** (Validated S1-305).
 - **Total Compiled Native Functions**: **1,320 functions**.
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
-- **Residual Main EXE Misses**: **ZERO misses no boot, apresentação e combate ativo**. Os únicos PCs em fallback no Main EXE são os monkey-patches de quarentena BIOS/SIO SMC (`0x801AB1F4` e `0x801AB2C0`).
+- **Residual Main EXE Misses**: **ZERO misses during boot, introduction, and active combat**. The only Main EXE PCs in fallback are the quarantined BIOS/SIO SMC monkey-patches (`0x801AB1F4` and `0x801AB2C0`).
 
 ---
 
@@ -62,8 +62,8 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-271** | `0x801288DC`, `0x80128930`, `0x80128988` (Physics & Special Move Vector Cluster) | 89 | 127,591 | Processed & Validated; Telemetry 09 CLEAN |
 | **S1-272** | `0x801202EC..0x80120E44` (Defender Hit-Stun, Recoil & Damage Physics Cluster, 8 funcs) | 726 | 128,317 | Processed & Validated; Telemetry 11 CLEAN |
 | **S1-273** | `0x8011721C` (A) + `0x801338B8..0x8013497C` (B) + `0x8013FF34..0x80140858` (C, 8 funcs) | 1,660 | 129,977 | Processed & Validated; Telemetry 13 CLEAN |
-| **S1-274 (F1)** | `0x8014373C..0x801441B0` (Subsistema de Acao de Combate, 3 funcs) | 669 | 130,646 | Processed & Validated; Telemetry 15 CLEAN |
-| **S1-274 (F2)** | `0x80146B74..0x80147624` (Subsistema de Acao/Reacao, 3 funcs) | 684 | 131,330 | Processed & Validated; Telemetry 16 CLEAN |
+| **S1-274 (F1)** | `0x8014373C..0x801441B0` (Combat Action Subsystem, 3 funcs) | 669 | 130,646 | Processed & Validated; Telemetry 15 CLEAN |
+| **S1-274 (F2)** | `0x80146B74..0x80147624` (Action/Reaction Subsystem, 3 funcs) | 684 | 131,330 | Processed & Validated; Telemetry 16 CLEAN |
 | **S1-275** | `0x8011F5F0..0x801202EC` (9 funcs) + `0x80167ED4` (Leaf) | 840 | 132,170 | Processed & Validated; Telemetry 20 CLEAN |
 | **S1-276** | `0x8011E344`, `0x8011E628` (Guile Action Subsystem) | 295 | 132,465 | Processed & Validated; Telemetry 22 CLEAN |
 | **S1-277** | `0x8011BD94..0x8011D030` (8 funcs) + `0x8015DDC4` (Leaf) | 1,230 | 133,695 | Processed & Validated; Telemetry 25 CLEAN |
@@ -96,7 +96,7 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 | **S1-304** | `0x801613B8..C0`, `0x80161450`, `0x80161FE4` (4 funcs) | 246 | 144,906 | Processed & Validated; Telemetry 108 CLEAN (0 residual) |
 | **S1-305** | `0x8013B070..B328` (5 funcs) | 1,148 | 146,054 | Processed & Validated; Telemetry 139 CLEAN (0 residual) |
 
-- **Total words promovidas desde S1-239**: **+39,735 words** (+20.32% absolute gain).
+- **Total words promoted since S1-239**: **+39,735 words** (+20.32% absolute gain).
 
 ---
 
@@ -105,9 +105,9 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 Dynamic battle overlays (`0x80020000..0x800F2000`) are compiled on-demand via the overlay cache framework:
 - **OVL-001A (`0xAC1FF1A4`)**: 4,563 words compiled (64 entries). Validated clean at 60 FPS over 3 complete matches.
 - **OVL-001B (`0x94E6122F`)**: 5,313 words compiled (122 entries). Integrated under S1-261 clean baseline.
-- **OVL-MOV (`0x000D6000:0xF06249FB` / `OVL3/MOV.OVL`)**: 30 shards nativos em DLL (80 KB) compilados via GCC. Validado limpo na sessão 119 (+13,97M dispatches nativos, erradicação de 100% dos 226,5M de instruções interpretadas em `0x800E78DC`, frametime perfeitamente plano a 60 FPS nos vídeos).
-- **OVL-OPTS (`0x00020000:0xD955BA78` / `OVL3/OPTS.OVL`)**: 46 funções nativas compiladas via GCC (28 KB). Cobre o loop de atualização do menu de opções `0x80021FB0` e subsistemas de navegação de opções.
-- **OVL-MENUS (`0x0008C000:0xD67A9445`)**: 12 shards nativos (388 KB) compilados via GCC. Cobre controle de telas de sistema e seleção de modos de jogo.
+- **OVL-MOV (`0x000D6000:0xF06249FB` / `OVL3/MOV.OVL`)**: 30 native DLL shards (80 KB) compiled through GCC. Validated clean in session 119 (+13,97M native dispatches, elimination of all 226,5M interpreted instructions at `0x800E78DC`, perfectly flat frametime at 60 FPS during videos).
+- **OVL-OPTS (`0x00020000:0xD955BA78` / `OVL3/OPTS.OVL`)**: 46 native functions compiled through GCC (28 KB). Covers the options-menu update loop `0x80021FB0` and option-navigation subsystems.
+- **OVL-MENUS (`0x0008C000:0xD67A9445`)**: 12 native shards (388 KB) compiled through GCC. Covers system-screen control and game-mode selection.
 - **OVL-002 Series (Character Fight Logic)**:
   - `OVL-002A` / `OVL-002B`: Player frame update roots (`0x80092C2C`, `0x80092F00`).
   - `OVL-002C` .. `OVL-002G`: Doctrine Dark bomb weapon family (2,563 words).

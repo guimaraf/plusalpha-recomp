@@ -4,7 +4,23 @@ This document defines the mandatory protocol for promoting native code, generati
 
 Its purpose is to guarantee execution stability, prevent uncontrolled closure expansion, eliminate frametime jitter, and ensure any developer or AI assistant can resume work without relying on conversational context.
 
-For candidate tracking and historical micro-batch logs, refer to [`newWords.md`](newWords.md) and [`buildResume.md`](buildResume.md).
+For candidate tracking and historical micro-batch logs, refer to [`newWords.md`](docs/newWords.md) and [`buildResume.md`](docs/buildResume.md).
+
+
+## Project Documentation
+
+Supporting documents are kept in `docs/`:
+
+- [Build architecture and validation results](docs/BUILDS.md)
+- [Build and reverse engineering history](docs/buildResume.md)
+- [Candidate registry and promotion tracking](docs/newWords.md)
+- [Project progress](docs/progress.md)
+- [Briefing for continuing work](docs/newChat.md)
+- [Native character coverage](docs/nativeCharacters.md)
+- [CPU-controlled character validation](docs/characterCPU.md)
+- [Character ending validation](docs/ending.md)
+- [Pause menu and Command List architecture](docs/pause.md)
+- [Projectile collision and interaction catalog](docs/projecteisHit.md)
 
 ---
 
@@ -15,7 +31,7 @@ For candidate tracking and historical micro-batch logs, refer to [`newWords.md`]
 3. **Three-Script Decoupling**: Every micro-batch must feature independent scripts with isolated responsibilities: source generation, compilation, and telemetry. A script must never combine multiple stages.
 4. **Collector Independence**: The telemetry collector must never build, launch, or terminate the game.
 5. **Two-Stage Promotion**: Telemetry approval provides provisional acceptance only. Permanent promotion requires an independent clean Release checkpoint (`buildClean-ucrt-*`).
-6. **Single Source of Truth**: [`newWords.md`](newWords.md) is the sole authoritative registry for candidates, boundaries, closures, measured budgets, evidence, and promotion decisions.
+6. **Single Source of Truth**: [`newWords.md`](docs/newWords.md) is the sole authoritative registry for candidates, boundaries, closures, measured budgets, evidence, and promotion decisions.
 
 ---
 
@@ -35,7 +51,7 @@ For candidate tracking and historical micro-batch logs, refer to [`newWords.md`]
 
 ## 3. Mandatory Candidate Pre-Audit
 
-No observed program counter is ever promoted directly as a seed. Before preparing micro-batch scripts, the following must be documented in [`newWords.md`](newWords.md):
+No observed program counter is ever promoted directly as a seed. Before preparing micro-batch scripts, the following must be documented in [`newWords.md`](docs/newWords.md):
 
 1. **Formal Boundary**: Entry address, epilogue address, exact byte length, word count, and body SHA-256 hash.
 2. **Callers and Aliases**: Distinguish function entry points from internal basic blocks, return sites, jump table targets, and trampolines.
@@ -142,7 +158,7 @@ Telemetry scenarios must be chosen based on target code evidence rather than rou
 
 ## 9. Error Recovery Protocol
 
-- **Closure Exceeds Budget**: Do not build. Roll back sources to last approved baseline seed list. Document the expansion in [`newWords.md`](newWords.md).
+- **Closure Exceeds Budget**: Do not build. Roll back sources to last approved baseline seed list. Document the expansion in [`newWords.md`](docs/newWords.md).
 - **Abnormal Game Exit During Test**: Discard state. Remove collector state token and restart test from `prepare`.
 - **Telemetry Disconnection**: Retain run folder. Do not overwrite logs. Report error trace.
 - **Safety Restriction**: Never execute destructive commands (`git clean -fdX`, `git reset --hard`) on work directories without explicit authorization and verified file targets.
