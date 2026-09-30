@@ -41,6 +41,9 @@ disc/
 *.mcr
 *.sav
 *.state
+gametime.save
+gametime.save.tmp.*
+gametime.save.lock
 
 # Diagnósticos e preferências locais
 *.log

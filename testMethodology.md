@@ -21,6 +21,7 @@ Supporting documents are kept in `docs/`:
 - [Character ending validation](docs/ending.md)
 - [Pause menu and Command List architecture](docs/pause.md)
 - [Projectile collision and interaction catalog](docs/projecteisHit.md)
+- [Encrypted play-time persistence on Windows, Linux, and macOS](docs/playTime.md)
 
 ---
 
