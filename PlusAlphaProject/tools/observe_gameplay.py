@@ -14,11 +14,13 @@ import os
 import time
 import socket
 import json
+import hashlib
 import pathlib
 import shutil
 from datetime import datetime
 
 DEFAULT_PORT = 4531
+BASELINE_BUILD = "buildTele-s1-309-fps"
 
 JOYPAD_SMC_QUARANTINE = {
     0x801AB1F4: "0x801AB1F4 (Quarentena SIO/BIOS Monkey-Patch - Interprete obrigatorio)",
@@ -35,7 +37,7 @@ def parse_args():
     return port
 
 def read_debug_port_from_config(project_root):
-    game_toml = project_root / "game.toml"
+    game_toml = project_root / BASELINE_BUILD / "game.toml"
     if not game_toml.is_file():
         return DEFAULT_PORT
     try:
@@ -318,6 +320,12 @@ def main():
     project_root = script_dir.parent
     ranges_file = project_root / "generated" / "SLUS_005.48_full.ranges"
     telemetry_base = project_root / "local" / "telemetry"
+    build_dir = project_root / BASELINE_BUILD
+    config_file = build_dir / "game.toml"
+    exe_file = build_dir / "exPlusAlpha.exe"
+    for required in (exe_file, config_file, ranges_file):
+        if not required.is_file():
+            raise SystemExit(f"[ERRO] Arquivo da base de telemetria ausente: {required}")
 
     port = parse_args()
     if port == DEFAULT_PORT:
@@ -334,6 +342,25 @@ def main():
     print("======================================================================")
 
     funcs, ranges = load_ranges(ranges_file)
+    native_words = sum(hi - lo for lo, hi in ranges) // 4
+    if len(funcs) != 1358 or native_words != 154846:
+        raise SystemExit("[ERRO] Manifesto atual difere da base S1-309 (1358 funcoes / 154846 palavras).")
+    metadata = {
+        "target_build_expected": BASELINE_BUILD,
+        "target_executable": str(exe_file),
+        "target_executable_bytes": exe_file.stat().st_size,
+        "target_executable_mtime_ns": exe_file.stat().st_mtime_ns,
+        "config_path": str(config_file),
+        "config_sha256": hashlib.sha256(config_file.read_bytes()).hexdigest(),
+        "ranges_path": str(ranges_file),
+        "ranges_sha256": hashlib.sha256(ranges_file.read_bytes()).hexdigest(),
+        "native_functions": len(funcs),
+        "native_words": native_words,
+        "port": port,
+        "identity_note": "Base esperada; a conexao TCP nao autentica o executavel remoto.",
+    }
+    print(f"Base esperada     : {build_dir}")
+    print("[!] Inicie manualmente o EXE desta base; nao conecte outra build na mesma porta.")
     print(f"[+] Carregadas {len(funcs)} funcoes nativas e {len(ranges)} ranges de codigo.")
 
     if not wait_for_debug_server(port):
@@ -364,6 +391,7 @@ def main():
     run_dir = create_run_directory(telemetry_base, prefix="gameplay-discovery")
     print(f"[+] Sessao criada em: {run_dir}")
 
+    (run_dir / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     (run_dir / "before.json").write_text(json.dumps(before, indent=2), encoding="utf-8")
 
     print("\n" + "=" * 70)
@@ -386,8 +414,11 @@ def main():
     after = capture_full_snapshot(port)
     print(f"[+] SNAPSHOT AFTER CAPTURADO EM {after['elapsed_ms']:.1f} ms!")
 
+    capture_requested_at = time.time_ns()
+    capture_dump_ok = False
     try:
         cap_dump = send_command(port, {"id": 99, "cmd": "overlay_capture_dump"})
+        capture_dump_ok = cap_dump.get("ok", False)
         entries_count = cap_dump.get("capture_entries", 0)
         print(f"[+] Comando overlay_capture_dump enviado ({entries_count} regiao/regioes registradas).")
     except Exception as e:
@@ -395,12 +426,12 @@ def main():
 
     (run_dir / "after.json").write_text(json.dumps(after, indent=2), encoding="utf-8")
 
-    candidate_caps = list(project_root.glob("build*/overlay_captures.json")) + [
-        project_root / "overlay_captures.json",
-        pathlib.Path.cwd() / "overlay_captures.json",
-    ]
-    existing_caps = [p for p in candidate_caps if p.is_file()]
-    captured_file = max(existing_caps, key=lambda p: p.stat().st_mtime) if existing_caps else None
+    # Nao reutiliza capturas de outra build ou de outra pasta.
+    target_capture = build_dir / "overlay_captures.json"
+    captured_file = (
+        target_capture if capture_dump_ok and target_capture.is_file()
+        and target_capture.stat().st_mtime_ns >= capture_requested_at else None
+    )
 
     if captured_file:
         dest_cap = run_dir / "overlay_captures.json"
@@ -485,6 +516,14 @@ def main():
 
     summary_lines = [
         "# Telemetria: Descoberta de Gameplay e Combate",
+        "",
+        f"- **Base esperada**: `{BASELINE_BUILD}` (identidade do processo TCP nao verificada)",
+        f"- **Configuracao**: `{config_file}`",
+        f"- **Porta TCP**: {port}",
+        "- **Metadados**: `metadata.json` (inclui hashes da configuracao e do manifesto)",
+        "- PCs listados sao triagem; exigem auditoria de limites, fluxo, chamadas e closure.",
+        "- Ausencia de candidatos nao prova execucao exclusivamente nativa da tela.",
+        "",
         "",
         f"- **Data/Hora**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
         f"- **Snapshot Before**: {before['elapsed_ms']:.1f} ms",

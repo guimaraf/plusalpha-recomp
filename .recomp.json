@@ -1,0 +1,13 @@
+{
+  "$schema": "https://recomp.fyi/schema/v1.json",
+  "game": "Street Fighter EX Plus Alpha",
+  "system": "PS1",
+  "type": "recomp",
+  "status": "released",
+  "targets": ["Windows"],
+  "toolchain": "psxrecomp",
+  "original": {
+    "region": "USA",
+    "serial": "SLUS-00548"
+  }
+}

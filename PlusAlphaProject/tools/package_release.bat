@@ -54,6 +54,7 @@ if %ERRORLEVEL% EQU 0 (
 
 echo [RELEASE] Copying config files and launcher UI assets...
 copy /Y "%PROJECT_ROOT%\game.toml" "%OUT_DIR%\game.toml" >nul
+copy /Y "%PROJECT_ROOT%\..\sfexp.png" "%OUT_DIR%\sfexp.png" >nul
 if exist "%PROJECT_ROOT%\overlay_captures.json" copy /Y "%PROJECT_ROOT%\overlay_captures.json" "%OUT_DIR%\compileBuild\overlay_captures.json" >nul
 if exist "%PROJECT_ROOT%\keybinds.ini" copy /Y "%PROJECT_ROOT%\keybinds.ini" "%OUT_DIR%\keybinds.ini" >nul
 xcopy /E /I /Y "%PROJECT_ROOT%\..\psxrecomp\runtime\launcher\assets\*" "%OUT_DIR%\" >nul

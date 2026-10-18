@@ -1,126 +1,24 @@
+# Inicializacao manual da base de telemetria; nao compila nem gera fontes.
 $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$ProjectRoot = Resolve-Path (Join-Path $ScriptDir "..")
-$GameToml = Join-Path $ProjectRoot "game.toml"
+$ProjectRoot = (Resolve-Path (Join-Path $ScriptDir "..")).Path
+$BuildDir = Join-Path $ProjectRoot "buildTele-s1-309-fps"
+$GameToml = Join-Path $BuildDir "game.toml"
 $CuePath = Join-Path $ProjectRoot "disc-a\Street Fighter EX Plus Alpha (USA).cue"
-$ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309-f2\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "buildTele-s1-309\exPlusAlpha.exe"
-}
-if (-not (Test-Path $ExePath)) {
-    $ExePath = Join-Path $ProjectRoot "build-telemetry\StreetFighterEXPlusAlphaRecomp.exe"
+$ExePath = Join-Path $BuildDir "exPlusAlpha.exe"
+foreach ($RequiredPath in @($ExePath, $GameToml)) {
+    if (-not (Test-Path -LiteralPath $RequiredPath -PathType Leaf)) {
+        throw "Arquivo da base de telemetria ausente: $RequiredPath"
+    }
 }
 
-if (-not (Test-Path $ExePath)) {
-    throw "Executavel de telemetria nao encontrado em: $ExePath"
-}
-
+# Mantem o diretorio de trabalho do projeto para os assets relativos do game.toml.
+# O runtime ancora settings e capturas na pasta do executavel.
 Push-Location $ProjectRoot
 try {
-    Write-Host "Iniciando Street Fighter EX Plus Alpha (Telemetria Port 4531)..." -ForegroundColor Cyan
-    if (Test-Path $CuePath) {
+    Write-Host "Base de telemetria: $BuildDir" -ForegroundColor Cyan
+    Write-Host "Configuracao: $GameToml"
+    if (Test-Path -LiteralPath $CuePath -PathType Leaf) {
         & $ExePath --game $GameToml --disc $CuePath
     } else {
         & $ExePath --game $GameToml

@@ -62,6 +62,7 @@ if ($strip) {
 # 3. Copiar assets da interface e configuracoes
 Write-Host "[3/5] Copiando configuracoes e assets visuais..." -ForegroundColor Green
 Copy-Item (Join-Path $ProjectRoot "game.toml") (Join-Path $OutDir "game.toml") -Force
+Copy-Item (Join-Path $ProjectRoot "..\sfexp.png") (Join-Path $OutDir "sfexp.png") -Force
 if (Test-Path (Join-Path $ProjectRoot "settings.toml")) {
     Copy-Item (Join-Path $ProjectRoot "settings.toml") (Join-Path $OutDir "settings.toml") -Force
 }

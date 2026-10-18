@@ -187,6 +187,23 @@ if(PSX_APP_ICON)
     endif()
 endif()
 
+if(BUILD_DECOUPLED_LAUNCHER)
+    set(PSX_BEZEL_TARGET exPlusAlpha)
+else()
+    set(PSX_BEZEL_TARGET psx-runtime)
+endif()
+add_custom_command(TARGET ${PSX_BEZEL_TARGET} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/../sfexp.png"
+        "$<TARGET_FILE_DIR:${PSX_BEZEL_TARGET}>/sfexp.png"
+    COMMENT "Copying fullscreen bezel next to ${PSX_BEZEL_TARGET}")
+if(CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+    set(PSX_BEZEL_ASSET "${CMAKE_CURRENT_SOURCE_DIR}/../sfexp.png")
+    target_sources(psx-runtime PRIVATE "${PSX_BEZEL_ASSET}")
+    set_property(SOURCE "${PSX_BEZEL_ASSET}" PROPERTY VS_DEPLOYMENT_CONTENT 1)
+    set_property(SOURCE "${PSX_BEZEL_ASSET}" PROPERTY VS_DEPLOYMENT_LOCATION ".")
+endif()
+
 if(CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
     message(STATUS "Configuring Xbox-only UWP AppX properties for psx-runtime")
 
