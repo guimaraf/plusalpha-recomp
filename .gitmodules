@@ -1,3 +1,6 @@
 [submodule "psxrecomp"]
 	path = psxrecomp
 	url = https://github.com/guimaraf/psxrecomp-plusalpha.git
+[submodule "recomp-ui"]
+	path = recomp-ui
+	url = https://github.com/RetroPortingToolKit/recomp-ui.git

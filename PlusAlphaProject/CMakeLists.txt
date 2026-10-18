@@ -1,241 +1,91 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.24)
 project(StreetFighterEXPlusAlphaRecomp C CXX)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
+set(PSXRECOMP_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../psxrecomp" CACHE PATH "PSXRecomp framework")
+set(RECOMP_UI_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../recomp-ui" CACHE PATH "Shared launcher")
+option(PSX_NETPLAY "Enable online lobby and rollback" ON)
+option(PSX_RECOMP_UI "Build the shared launcher" ON)
+option(PSX_SETUP_WIZARD "Enable local generation wizard" ON)
+option(BUILD_DECOUPLED_LAUNCHER "Build the official setup host without game C" OFF)
+set(PSX_NET_LOBBY_DEFAULT_URL "ws://netplay.retcomm.net:8765" CACHE STRING "Default lobby server")
+set(PSX_STATIC_OVERLAY_DIR "" CACHE PATH "Static overlays regenerated with this framework")
+set(PSX_APP_ICON "${CMAKE_CURRENT_SOURCE_DIR}/../icon/alpha256.ico" CACHE FILEPATH "Application icon")
 
-set(PSXRECOMP_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../psxrecomp" CACHE PATH
-    "Caminho para o snapshot independente do PSXRecomp")
+if(CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+    message(FATAL_ERROR "This migration targets desktop netplay. Use the versioned baseline for UWP.")
+endif()
+if(PSX_NETPLAY AND NOT PSX_RECOMP_UI)
+    message(FATAL_ERROR "PSX_NETPLAY requires PSX_RECOMP_UI for the lobby.")
+endif()
+foreach(_dep "${PSXRECOMP_ROOT}/runtime/runtime.cmake"
+             "${RECOMP_UI_ROOT}/recomp_ui.cmake")
+    if(NOT EXISTS "${_dep}")
+        message(FATAL_ERROR "Missing ${_dep}. Run git submodule update --init --recursive.")
+    endif()
+endforeach()
+if(PSX_NETPLAY)
+    foreach(_dep "${PSXRECOMP_ROOT}/lib/recomp-net/CMakeLists.txt"
+                 "${PSXRECOMP_ROOT}/lib/retcomm-rbengine/CMakeLists.txt")
+        if(NOT EXISTS "${_dep}")
+            message(FATAL_ERROR "Missing ${_dep}. Run git submodule update --init --recursive.")
+        endif()
+    endforeach()
+endif()
 
-if(NOT EXISTS "${PSXRECOMP_ROOT}/runtime/runtime.cmake")
-    message(FATAL_ERROR
-        "PSXRecomp não encontrado em '${PSXRECOMP_ROOT}'. "
-        "Mantenha o framework no diretório irmão ../psxrecomp.")
+# Keep the old S1-309 generated C and caches separate: their ABI differs.
+set(_generated "${CMAKE_CURRENT_SOURCE_DIR}/generated-online")
+set(_dispatch "${_generated}/SLUS_005.48_dispatch.c")
+if(BUILD_DECOUPLED_LAUNCHER)
+    set(PSXRECOMP_FORCE_SETUP_HOST ON CACHE BOOL "Build setup host" FORCE)
+else()
+    set(PSXRECOMP_FORCE_SETUP_HOST OFF CACHE BOOL "Build setup host" FORCE)
+    set(PSXRECOMP_REQUIRE_GAME_C ON CACHE BOOL "Require current game C" FORCE)
+    if(NOT EXISTS "${_dispatch}")
+        message(FATAL_ERROR "Generate current sources into generated-online first. See ONLINE.md. Do not reuse S1-309 generated/.")
+    endif()
+endif()
+
+set(_overlay_args)
+if(PSX_STATIC_OVERLAY_DIR)
+    file(REAL_PATH "${PSX_STATIC_OVERLAY_DIR}" _static_dir)
+    if(_static_dir MATCHES "[Ss]1[-_]309")
+        message(FATAL_ERROR "S1-309 overlays use the old ABI. Regenerate with this framework.")
+    endif()
+    if(NOT EXISTS "${_static_dir}/overlays_static.c")
+        message(FATAL_ERROR "PSX_STATIC_OVERLAY_DIR must contain current overlays_static.c and shards.")
+    endif()
+    list(APPEND _overlay_args GAME_OVERLAY_STATIC_C "${_static_dir}/overlays_static.c")
 endif()
 
 include("${PSXRECOMP_ROOT}/runtime/runtime.cmake")
-
-set(GAME_GENERATED_FULL
-    "${CMAKE_CURRENT_SOURCE_DIR}/generated/SLUS_005.48_full.c")
-set(GAME_GENERATED_DISPATCH
-    "${CMAKE_CURRENT_SOURCE_DIR}/generated/SLUS_005.48_dispatch.c")
-
-option(BUILD_DECOUPLED_LAUNCHER "Build decoupled clean-room launcher (0 proprietary bytes; loads game_core.dll dynamically)" OFF)
-option(PSX_OVERLAY_PRELOAD_ALL "Map all cached overlay DLLs before gameplay (Windows experiment)" OFF)
-set(PSX_STATIC_OVERLAY_DIR "" CACHE PATH "Generated static overlay experiment directory")
-if(PSX_STATIC_OVERLAY_DIR)
-    if(BUILD_DECOUPLED_LAUNCHER OR PSX_OVERLAY_PRELOAD_ALL)
-        message(FATAL_ERROR "Static overlays require monolithic runtime without DLL preload")
-    endif()
-    include("${PSX_STATIC_OVERLAY_DIR}/sources.cmake")
-    set_source_files_properties(${PSX_STATIC_OVERLAY_SOURCES} PROPERTIES
-        COMPILE_DEFINITIONS "PSX_NO_DEBUG_TOOLS=1")
+if(PSX_NETPLAY AND (NOT PSXRECOMP_HAS_RECOMP_NET OR NOT PSXRECOMP_HAS_RBENGINE OR NOT PSXRECOMP_HAS_LOBBY_CLIENT))
+    message(FATAL_ERROR "Online requested but the complete transport, rollback and lobby stack is unavailable.")
 endif()
-if(PSX_OVERLAY_PRELOAD_ALL AND (NOT WIN32 OR BUILD_DECOUPLED_LAUNCHER))
-    message(FATAL_ERROR "PSX_OVERLAY_PRELOAD_ALL requires the Windows monolithic runtime")
+psxrecomp_add_game_runtime(psx-runtime
+    GEN_MARKER "${_dispatch}"
+    GEN_FULL_GLOB "${_generated}/SLUS_005.48_full_*.c"
+    GEN_FULL_FALLBACK "${_generated}/SLUS_005.48_full.c"
+    VERSION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/VERSION"
+    MAX_PLAYERS 2
+    DEBUG_PORT 4531
+    WINDOW_TITLE "Ex Plus Alpha"
+    EXE_NAME "exPlusAlpha"
+    APP_ICON "${PSX_APP_ICON}"
+    DEFAULT_GAME_CONFIG_PATH "game.toml"
+    PRELOADED_MODS_DIR NONE
+    NETPLAY_LOBBY_URL "${PSX_NET_LOBBY_DEFAULT_URL}"
+    ${_overlay_args}
+    CODEGEN_SETUP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/codegen_setup.c"
+)
+set_target_properties(psx-runtime PROPERTIES ENABLE_EXPORTS TRUE WIN32_EXECUTABLE TRUE)
+if(MINGW)
+    target_link_options(psx-runtime PRIVATE "-Wl,--export-all-symbols")
 endif()
-
-if(BUILD_DECOUPLED_LAUNCHER)
-    # Decoupled clean-room launcher target: 0 bytes of proprietary game code.
-    # The game core is compiled dynamically from extracted disc C via embedded TinyCC.
-    psxrecomp_add_runtime_target(exPlusAlpha
-        DEBUG_PORT 4531
-        WINDOW_TITLE "Ex Plus Alpha"
-        EXE_NAME "exPlusAlpha"
-        DEFAULT_GAME_CONFIG_PATH "game.toml"
-    )
-
-    set_target_properties(exPlusAlpha PROPERTIES
-        ENABLE_EXPORTS TRUE
-        WIN32_EXECUTABLE TRUE
-        OUTPUT_NAME "exPlusAlpha"
-    )
-
-    if(MINGW)
-        target_link_options(exPlusAlpha PRIVATE "-Wl,--export-all-symbols")
-    endif()
-
-    add_custom_command(TARGET exPlusAlpha POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${CMAKE_CURRENT_SOURCE_DIR}/game.toml"
-            "$<TARGET_FILE_DIR:exPlusAlpha>/game.toml"
-        COMMAND ${CMAKE_COMMAND} -E make_directory
-            "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild"
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${CMAKE_CURRENT_SOURCE_DIR}/overlay_captures.json"
-            "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/overlay_captures.json"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${CMAKE_CURRENT_SOURCE_DIR}/overlay_toolchain"
-            "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/overlay_toolchain"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${CMAKE_CURRENT_SOURCE_DIR}/tools"
-            "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/tools"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${PSXRECOMP_ROOT}/runtime/include"
-            "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/psxrecomp/runtime/include"
-        COMMAND ${CMAKE_COMMAND} -E make_directory
-            "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/psxrecomp/tools"
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${PSXRECOMP_ROOT}/tools/compile_overlays.py"
-            "$<TARGET_FILE_DIR:exPlusAlpha>/compileBuild/psxrecomp/tools/compile_overlays.py"
-        COMMENT "Copying game config to launcher directory, and toolchain into compileBuild/"
-    )
-
-    if(WIN32)
-        get_filename_component(_cxx_dir "${CMAKE_CXX_COMPILER}" DIRECTORY)
-        find_file(RUNTIME_SDL2_DLL "SDL2.dll"
-            PATHS
-                "${_cxx_dir}"
-                "C:/msys64/ucrt64/bin"
-                "C:/msys64/mingw64/bin"
-        )
-        if(RUNTIME_SDL2_DLL)
-            add_custom_command(TARGET exPlusAlpha POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    "${RUNTIME_SDL2_DLL}"
-                    "$<TARGET_FILE_DIR:exPlusAlpha>/SDL2.dll"
-                COMMENT "Copying SDL2.dll to $<TARGET_FILE_DIR:exPlusAlpha>"
-            )
-        endif()
-
-        foreach(_dep libgcc_s_seh-1.dll libstdc++-6.dll libwinpthread-1.dll)
-            if(EXISTS "${_cxx_dir}/${_dep}")
-                add_custom_command(TARGET exPlusAlpha POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                        "${_cxx_dir}/${_dep}"
-                        "$<TARGET_FILE_DIR:exPlusAlpha>/${_dep}"
-                    COMMENT "Copying ${_dep} to $<TARGET_FILE_DIR:exPlusAlpha>"
-                )
-            endif()
-        endforeach()
-    endif()
-else()
-    # Monolithic full recompilation target (for telemetry & baseline gameplay)
-    psxrecomp_add_runtime_target(psx-runtime
-        GAME_GENERATED_FULL_C "${GAME_GENERATED_FULL}"
-        GAME_GENERATED_DISPATCH_C "${GAME_GENERATED_DISPATCH}"
-        GAME_OVERLAY_STATIC_C "${PSX_STATIC_OVERLAY_DISPATCH}"
-        EXTRAS_SOURCES ${PSX_STATIC_OVERLAY_SOURCES}
-        DEBUG_PORT 4531
-        WINDOW_TITLE "Ex Plus Alpha"
-        EXE_NAME "exPlusAlpha"
-        DEFAULT_GAME_CONFIG_PATH "game.toml"
-    )
-
-    set_target_properties(psx-runtime PROPERTIES
-        ENABLE_EXPORTS TRUE
-        WIN32_EXECUTABLE TRUE
-        OUTPUT_NAME "exPlusAlpha"
-    )
-
-    if(PSX_OVERLAY_PRELOAD_ALL)
-        target_compile_definitions(psx-runtime PRIVATE PSX_OVERLAY_PRELOAD_ALL=1)
-    endif()
-
-    if(MINGW)
-        target_link_options(psx-runtime PRIVATE "-Wl,--export-all-symbols")
-    endif()
-
-    if(WIN32)
-        get_filename_component(_cxx_dir "${CMAKE_CXX_COMPILER}" DIRECTORY)
-        find_file(RUNTIME_SDL2_DLL "SDL2.dll"
-            PATHS
-                "${_cxx_dir}"
-                "C:/msys64/ucrt64/bin"
-                "C:/msys64/mingw64/bin"
-        )
-        if(RUNTIME_SDL2_DLL)
-            add_custom_command(TARGET psx-runtime POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                    "${RUNTIME_SDL2_DLL}"
-                    "$<TARGET_FILE_DIR:psx-runtime>/SDL2.dll"
-                COMMENT "Copying SDL2.dll to $<TARGET_FILE_DIR:psx-runtime>"
-            )
-        endif()
-
-        foreach(_dep libgcc_s_seh-1.dll libstdc++-6.dll libwinpthread-1.dll)
-            if(EXISTS "${_cxx_dir}/${_dep}")
-                add_custom_command(TARGET psx-runtime POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                        "${_cxx_dir}/${_dep}"
-                        "$<TARGET_FILE_DIR:psx-runtime>/${_dep}"
-                    COMMENT "Copying ${_dep} to $<TARGET_FILE_DIR:psx-runtime>"
-                )
-            endif()
-        endforeach()
-    endif()
-endif()
-
-set(PSX_APP_ICON "" CACHE FILEPATH "Windows executable and SDL window icon")
-if(PSX_APP_ICON)
-    if(NOT WIN32 OR CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
-        message(FATAL_ERROR "PSX_APP_ICON requires a desktop Windows build")
-    endif()
-    if(NOT EXISTS "${PSX_APP_ICON}")
-        message(FATAL_ERROR "Icon not found: ${PSX_APP_ICON}")
-    endif()
-    enable_language(RC)
-    file(TO_CMAKE_PATH "${PSX_APP_ICON}" PSX_APP_ICON_RESOURCE_PATH)
-    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/../icon/exPlusAlpha.rc.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/exPlusAlpha.rc" @ONLY)
-    set_source_files_properties("${CMAKE_CURRENT_BINARY_DIR}/exPlusAlpha.rc"
-        PROPERTIES OBJECT_DEPENDS "${PSX_APP_ICON}")
-    if(BUILD_DECOUPLED_LAUNCHER)
-        target_sources(exPlusAlpha PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/exPlusAlpha.rc")
-    else()
-        target_sources(psx-runtime PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/exPlusAlpha.rc")
-    endif()
-endif()
-
-if(BUILD_DECOUPLED_LAUNCHER)
-    set(PSX_BEZEL_TARGET exPlusAlpha)
-else()
-    set(PSX_BEZEL_TARGET psx-runtime)
-endif()
-add_custom_command(TARGET ${PSX_BEZEL_TARGET} POST_BUILD
+add_custom_command(TARGET psx-runtime POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_CURRENT_SOURCE_DIR}/../sfexp.png"
-        "$<TARGET_FILE_DIR:${PSX_BEZEL_TARGET}>/sfexp.png"
-    COMMENT "Copying fullscreen bezel next to ${PSX_BEZEL_TARGET}")
-if(CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
-    set(PSX_BEZEL_ASSET "${CMAKE_CURRENT_SOURCE_DIR}/../sfexp.png")
-    target_sources(psx-runtime PRIVATE "${PSX_BEZEL_ASSET}")
-    set_property(SOURCE "${PSX_BEZEL_ASSET}" PROPERTY VS_DEPLOYMENT_CONTENT 1)
-    set_property(SOURCE "${PSX_BEZEL_ASSET}" PROPERTY VS_DEPLOYMENT_LOCATION ".")
-endif()
-
-if(CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
-    message(STATUS "Configuring Xbox-only UWP AppX properties for psx-runtime")
-
-    set_property(TARGET psx-runtime PROPERTY VS_WINRT_APPLICATION TRUE)
-    set_property(TARGET psx-runtime PROPERTY WIN32_EXECUTABLE TRUE)
-    target_sources(psx-runtime PRIVATE
-        "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/Package.appxmanifest"
-        "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/SDL_winrt_main_NonXAML.cpp"
-    )
-    set_property(SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/SDL_winrt_main_NonXAML.cpp"
-                 PROPERTY COMPILE_OPTIONS "/ZW")
-    set_property(SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/Package.appxmanifest"
-                 PROPERTY VS_DEPLOYMENT_CONTENT 1)
-
-    # These read-only package files seed LocalState/config on first launch.
-    foreach(CONFIG_FILE game.toml settings.toml input.ini keybinds.ini)
-        configure_file(
-            "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/${CONFIG_FILE}"
-            "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_FILE}"
-            COPYONLY)
-        target_sources(psx-runtime PRIVATE
-            "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_FILE}")
-        set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_FILE}"
-                     PROPERTY VS_DEPLOYMENT_CONTENT 1)
-        set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_FILE}"
-                     PROPERTY VS_DEPLOYMENT_LOCATION ".")
-    endforeach()
-
-    file(GLOB_RECURSE UWP_ASSETS "${CMAKE_CURRENT_SOURCE_DIR}/../UWP/Assets/*.*")
-    target_sources(psx-runtime PRIVATE ${UWP_ASSETS})
-    foreach(ASSET_FILE ${UWP_ASSETS})
-        set_property(SOURCE ${ASSET_FILE} PROPERTY VS_DEPLOYMENT_CONTENT 1)
-        set_property(SOURCE ${ASSET_FILE} PROPERTY VS_DEPLOYMENT_LOCATION "Assets")
-    endforeach()
-endif()
+        "${CMAKE_CURRENT_SOURCE_DIR}/game.toml" "$<TARGET_FILE_DIR:psx-runtime>/game.toml"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/../sfexp.png" "$<TARGET_FILE_DIR:psx-runtime>/sfexp.png"
+)

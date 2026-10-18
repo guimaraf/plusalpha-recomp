@@ -4,6 +4,8 @@
 /PlusAlphaProject/local/
 /PlusAlphaProject/saves/
 /PlusAlphaProject/cache/
+/PlusAlphaProject/generated-online/
+/PlusAlphaProject/prepared-online/
 
 # Builds e pacotes locais
 /PlusAlphaProject/build*/

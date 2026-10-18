@@ -1,6 +1,10 @@
 [game]
 name = "Street Fighter EX Plus Alpha"
 id = "SLUS-00548"
+players = 2
+region = "USA"
+disc_crc = "0xC7F78B70"
+disc_sha1 = "4a25dab2bdc11372ab8496c807c28d49a476137d"
 exe = "local/SLUS_005.48"
 disc = "disc-a/Street Fighter EX Plus Alpha (USA).cue"
 load_address = "0x80101000"
@@ -10,9 +14,22 @@ stack_base = "0x801FFFF0"
 
 [recompiler]
 seeds = "seeds/entry_funcs.txt"
-out_dir = "generated"
+out_dir = "generated-online"
 strict = true
 discovery = "reachable"
+
+[prepare_disc]
+data_track_size = 528049872
+data_track_md5 = "2a57b43b0b2f3f094ce203d32e910e2a"
+data_track_sha1 = "4a25dab2bdc11372ab8496c807c28d49a476137d"
+out_dir = "prepared-online"
+
+[netplay]
+require_cue = true
+required_tracks = 1
+required_leadout_lba = 224511
+required_disc_fp = "f48895bdbba364c4839bddf2bb9291fe42ec7dee020294a040f665b94995d1e5"
+content_negotiation = false
 
 [runtime]
 debug_port = 4531

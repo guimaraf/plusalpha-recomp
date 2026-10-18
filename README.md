@@ -1,5 +1,10 @@
 # Street Fighter EX Plus Alpha Recomp
 
+> A branch de migração online usa PSXRecomp atualizado, recomp-ui e rollback.
+> Build e partidas ainda aguardam validação local. Consulte
+> [PlusAlphaProject/ONLINE.md](PlusAlphaProject/ONLINE.md) e use
+> `PlusAlphaProject/tools/build_online.ps1`, sem reutilizar os scripts S1-309.
+
 Independent static/hybrid port of **Street Fighter EX Plus Alpha** for PlayStation, dedicated exclusively to the North American edition `SLUS-00548`.
 
 The repository contains only source code, configuration, and discovery data necessary to generate the port. It does not contain BIOS, game images, extracted executables, saves, or code generated from these files.
