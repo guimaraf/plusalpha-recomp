@@ -4,12 +4,16 @@
 param(
     [switch]$Generate,
     [switch]$SetupHost,
+    [switch]$Release,
     [string]$Msys2Root = 'C:\msys64',
     [ValidateSet('SDL3', 'SDL2')]
     [string]$SdlBackend = 'SDL3',
     [ValidateRange(1, 64)]
     [int]$Jobs = 4,
     [string]$BiosPath = '',
+    [string]$RetainedOverlayDir = '',
+    [ValidatePattern('^build-[A-Za-z0-9_-]+$')]
+    [string]$BuildDirName = 'build-online-static',
     [string]$StaticOverlayDir = ''
 )
 
@@ -17,17 +21,36 @@ $ErrorActionPreference = 'Stop'
 $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $RepositoryRoot = Split-Path $ProjectRoot -Parent
 $Framework = Join-Path $RepositoryRoot 'psxrecomp'
-$BuildName = if ($SetupHost) { 'build-online-setup' } else { 'build-online' }
+$BuildName = if ($SetupHost) { 'build-online-setup' } else { $BuildDirName }
 $BuildDir = Join-Path $ProjectRoot $BuildName
 $UcrtBin = Join-Path $Msys2Root 'ucrt64\bin'
 $CMake = Join-Path $UcrtBin 'cmake.exe'
 $Python = (Get-Command python -ErrorAction Stop).Source
-if ($BiosPath) {
-    if (-not $Generate) { throw '-BiosPath requer -Generate.' }
-    $BiosPath = (Resolve-Path -LiteralPath $BiosPath).Path
+if ($Release -and $SetupHost) { throw '-Release requer o runtime completo.' }
+if ($Release -and $BuildDirName -ne 'build-release-online') {
+    throw '-Release requer -BuildDirName build-release-online para preservar a build de diagnostico.'
 }
-if ($StaticOverlayDir) {
-    $StaticOverlayDir = (Resolve-Path -LiteralPath $StaticOverlayDir).Path
+if ($BiosPath -and -not $Generate) { throw '-BiosPath requer -Generate.' }
+if ($Generate) {
+    if (-not $BiosPath) { $BiosPath = Join-Path $RepositoryRoot 'bios\SCPH1001.BIN' }
+    if (-not (Test-Path -LiteralPath $BiosPath -PathType Leaf)) {
+        throw 'Este port requer sua propria SCPH1001.BIN em bios\SCPH1001.BIN, ou informe -BiosPath.'
+    }
+    $BiosPath = (Resolve-Path -LiteralPath $BiosPath).Path
+    $ExpectedBiosSha256 = '71AF94D1E47A68C11E8FDB9F8368040601514A42A5A399CDA48C7D3BFF1E99D3'
+    if ((Get-FileHash -LiteralPath $BiosPath -Algorithm SHA256).Hash -ne $ExpectedBiosSha256) {
+        throw 'A BIOS nao corresponde a SCPH-1001 validada para este port. O arquivo foi preservado.'
+    }
+}
+if (-not $SetupHost) {
+    if (-not $RetainedOverlayDir) {
+        $RetainedOverlayDir = Join-Path $ProjectRoot 'buildTele-s1-309-bezeus\static_overlays'
+    }
+    $RetainedOverlayDir = (Resolve-Path -LiteralPath $RetainedOverlayDir).Path
+    if (-not $StaticOverlayDir) {
+        $StaticOverlayDir = Join-Path $ProjectRoot 'generated-online\retained-overlays'
+    }
+    $StaticOverlayDir = [IO.Path]::GetFullPath($StaticOverlayDir)
 }
 
 foreach ($Name in @('cmake.exe', 'gcc.exe', 'c++.exe', 'ninja.exe', 'windres.exe', 'pkg-config.exe')) {
@@ -63,13 +86,25 @@ try {
             if ($LASTEXITCODE -ne 0) { throw "Geracao falhou: $LASTEXITCODE" }
         }
 
+        if (-not $SetupHost) {
+            & $Python (Join-Path $PSScriptRoot 'check_main_coverage.py') `
+                (Join-Path $ProjectRoot 'generated-online\SLUS_005.48_dispatch.c')
+            if ($LASTEXITCODE -ne 0) { throw 'Cobertura do EXE incompleta. Execute novamente com -Generate.' }
+            & $Python (Join-Path $PSScriptRoot 'prepare_retained_overlays.py') `
+                --source $RetainedOverlayDir --output $StaticOverlayDir --framework $Framework
+            if ($LASTEXITCODE -ne 0) { throw "Preparacao da cobertura retida falhou: $LASTEXITCODE" }
+        }
+
         $ToolPath = $UcrtBin.Replace('\', '/')
         $Setup = if ($SetupHost) { 'ON' } else { 'OFF' }
         $Version = (Get-Content -LiteralPath (Join-Path $ProjectRoot 'VERSION') -Raw).Trim()
+        $BuildType = if ($Release) { 'Release' } else { 'RelWithDebInfo' }
+        $DebugTools = if ($Release) { 'OFF' } else { 'ON' }
+        $SetupWizard = if ($Release) { 'OFF' } else { 'ON' }
         $ConfigureArgs = @('-S', $ProjectRoot, '-B', $BuildDir, '-G', 'Ninja',
-            '-DCMAKE_BUILD_TYPE=RelWithDebInfo', "-DBUILD_DECOUPLED_LAUNCHER=$Setup",
-            '-DPSX_NETPLAY=ON', '-DPSX_RECOMP_UI=ON', '-DPSX_SETUP_WIZARD=ON',
-            '-DPSX_DEBUG_TOOLS=ON', '-DPSX_STATIC_RUNTIME=ON', '-DRNET_ENABLE_ICE=ON',
+            "-DCMAKE_BUILD_TYPE=$BuildType", "-DBUILD_DECOUPLED_LAUNCHER=$Setup",
+            '-DPSX_NETPLAY=ON', '-DPSX_RECOMP_UI=ON', "-DPSX_SETUP_WIZARD=$SetupWizard",
+            "-DPSX_DEBUG_TOOLS=$DebugTools", '-DPSX_STATIC_RUNTIME=ON', '-DRNET_ENABLE_ICE=ON',
             "-DPSX_SDL_BACKEND=$SdlBackend", "-DPSX_GAME_VERSION=$Version",
             "-DPSX_STATIC_OVERLAY_DIR=$StaticOverlayDir",
             "-DCMAKE_C_COMPILER=$ToolPath/gcc.exe", "-DCMAKE_CXX_COMPILER=$ToolPath/c++.exe",

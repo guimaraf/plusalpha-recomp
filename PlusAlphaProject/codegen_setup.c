@@ -10,7 +10,7 @@ static const PsxrecompCodegenHostConfig kCodegenConfig = {
     .seed_cfg_relpath = "game.toml",
     .game_toml_relpath = "game.toml",
     .gen_marker_relpath = "generated-online/SLUS_005.48_dispatch.c",
-    .build_dir_name = "build-online",
+    .build_dir_name = "build-online-static",
     .cmake_target = "psx-runtime",
     .exe_basename = "exPlusAlpha",
 };

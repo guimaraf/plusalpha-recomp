@@ -1,9 +1,10 @@
 # Street Fighter EX Plus Alpha Recomp
 
 > A branch de migração online usa PSXRecomp atualizado, recomp-ui e rollback.
-> Build e partidas ainda aguardam validação local. Consulte
+> Build Windows/SDL3 concluído; partidas offline e online ainda aguardam validação. Consulte
 > [PlusAlphaProject/ONLINE.md](PlusAlphaProject/ONLINE.md) e use
 > `PlusAlphaProject/tools/build_online.ps1`, sem reutilizar os scripts S1-309.
+> Este port exige a própria BIOS SCPH-1001 do jogador; OpenBIOS está desabilitada.
 
 Independent static/hybrid port of **Street Fighter EX Plus Alpha** for PlayStation, dedicated exclusively to the North American edition `SLUS-00548`.
 

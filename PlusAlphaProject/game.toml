@@ -13,6 +13,7 @@ text_size = "0x000BF000"
 stack_base = "0x801FFFF0"
 
 [recompiler]
+bios_config = "../psxrecomp/bios/SCPH1001.toml"
 seeds = "seeds/entry_funcs.txt"
 out_dir = "generated-online"
 strict = true
@@ -32,6 +33,7 @@ required_disc_fp = "f48895bdbba364c4839bddf2bb9291fe42ec7dee020294a040f665b94995
 content_negotiation = false
 
 [runtime]
+openbios = false
 debug_port = 4531
 window_title = "Ex Plus Alpha"
 controller = "digital"
@@ -39,9 +41,10 @@ memcard_dir = "saves"
 disc_speed = "1x"
 turbo_loads = true
 bios_hle = true
-overlay_cache = true
+overlay_cache = false
 
 [video]
+renderer = "software"
 vsync = "immediate"
 low_latency_input = true
 exclusive_fullscreen = false

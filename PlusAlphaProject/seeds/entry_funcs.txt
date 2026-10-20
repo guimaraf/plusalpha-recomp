@@ -4928,5 +4928,37 @@
 # Total S1-309: 1 funcao nova, 40 bytes / 10 palavras. Atinge 154.846 palavras (79,1711%), 1.358 funcoes nativas.
 0x8014C6E0
 
+# Recuperacao da cobertura do EXE estavel buildTele-s1-309-bezeus.
+# Entradas existentes no EXE anterior que a descoberta atual nao recuperou.
+0x801504CC
+0x80150808
+0x80154978
+0x80154B24
+0x80154C7C
+0x80154E14
+0x80154FA8
+0x801550C8
+0x801551D4
+0x80169384
+0x8016AE18
+0x8016B7A8
+0x8016BAE4
+0x8016C334
+0x8016C748
+0x8016CEB8
+0x8016D0B8
+0x8016D430
+0x8016D898
+0x8016E784
+0x8018B360
+0x8018C010
+0x801910A4
+0x801914C0
+0x80191C84
+0x80192D6C
+0x80194274
+0x801942C4
+0x801A6654
+
 
 
