@@ -72,3 +72,6 @@ input.ini
 .pytest_cache/
 Thumbs.db
 .DS_Store
+
+# Saidas temporarias dos testes locais
+/.codex-test-tmp/

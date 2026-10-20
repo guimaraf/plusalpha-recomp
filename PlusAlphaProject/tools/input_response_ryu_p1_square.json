@@ -1,0 +1,20 @@
+{
+  "verified": true,
+  "game": "SLUS-00548 / Ryu P1 / standing light punch",
+  "player": 1,
+  "button": "square",
+  "evidence_file": "../captures/input-response-20261020-151623/capture.json",
+  "evidence_sha256": "23a3c81f04273fcd8811df306ff1916ca29b56d769c6dc1710c6c7fd612a0d59",
+  "review_notes": "Perfil restrito ao cenario Ryu P1 parado, Square configurado para soco fraco. Mesmos campos/valores em 150537, 151046 e 151623; rotina 80115574 seleciona animacao e grava ID em actor+0x1D6 no PC 80115604. Input 80101910 grava o pad processado. Nao validado para outros personagens, botoes, estados ou online. Mede SIO ate selecao interna, nao pixels/contato fisico. Controles com outro ataque ainda nao coletados.",
+  "state_addr": "0x1D5076",
+  "state_width": 2,
+  "idle_value": "0x032D",
+  "attack_value": "0x0200",
+  "state_pc": "0x80115604",
+  "idle_return_pc": "0x80115604",
+  "input_addr": "0x1E9968",
+  "input_width": 2,
+  "input_mask": "0x80",
+  "input_value": "0x80",
+  "input_pc": "0x80101910"
+}

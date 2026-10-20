@@ -5,17 +5,19 @@ param(
     [switch]$PackageOnly,
     [ValidateRange(1, 64)][int]$Jobs = 4,
     [string]$Msys2Root = 'C:\msys64',
+    [string]$BiosPath = '',
     [string]$OutputDir = ''
 )
 $ErrorActionPreference = 'Stop'
 $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 if ($Generate -and $PackageOnly) { throw '-Generate nao pode ser usado com -PackageOnly.' }
+if ($BiosPath -and $PackageOnly) { throw '-BiosPath nao se aplica a -PackageOnly; nenhuma compilacao ocorre nesse modo.' }
 if (-not $OutputDir) {
     $OutputDir = Join-Path $ProjectRoot ('dist\exPlusAlpha-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
 }
 if (-not $PackageOnly) {
     & (Join-Path $PSScriptRoot 'build_online.ps1') -Release -BuildDirName build-release-online `
-        -Generate:$Generate -Jobs $Jobs -Msys2Root $Msys2Root
+        -Generate:$Generate -Jobs $Jobs -Msys2Root $Msys2Root -BiosPath $BiosPath
 }
 $Python = (Get-Command python -ErrorAction Stop).Source
 & $Python -B (Join-Path $PSScriptRoot 'package_release.py') `

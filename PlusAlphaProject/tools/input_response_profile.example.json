@@ -1,0 +1,20 @@
+{
+  "verified": false,
+  "game": "SLUS-00548 / Ryu P1 / standing light punch",
+  "player": 1,
+  "button": "square",
+  "evidence_file": null,
+  "evidence_sha256": null,
+  "review_notes": "Preencher somente depois de revisar a captura e o codigo do jogo. Nao existem PCs confirmados neste exemplo.",
+  "state_addr": null,
+  "state_width": null,
+  "idle_value": null,
+  "attack_value": null,
+  "state_pc": null,
+  "idle_return_pc": null,
+  "input_addr": null,
+  "input_width": null,
+  "input_mask": null,
+  "input_value": null,
+  "input_pc": null
+}

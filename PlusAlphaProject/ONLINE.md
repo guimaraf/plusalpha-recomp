@@ -23,6 +23,80 @@ fork; dependências regeneráveis não fazem parte desta alteração.
 
 ## Build feito pelo usuário
 
+Os scripts normal e release validam sempre `../bios/SCPH1001.BIN` (relativo
+ao projeto), SHA-256 `71af94d1e47a68c11e8fdb9f8368040601514a42a5a399cda48c7d3bff1e99d3`.
+Ambos fixam somente o backend SCPH1001 e recusam fontes de BIOS com fingerprint
+desatualizado. A definição genérica `PSX_BUNDLED_BIOS_PATH` do framework não
+seleciona o backend nem prova uso de OpenBIOS; o registro deste port é retail.
+
+Para regenerar os fontes com essa BIOS e refazer as duas builds, execute na raiz:
+
+```powershell
+.\PlusAlphaProject\tools\build_online.ps1 -Generate -Jobs 2
+.\PlusAlphaProject\tools\build_release.ps1 -Jobs 2
+```
+
+A geração é compartilhada entre as builds; não precisa repetir `-Generate` na
+release após concluir o primeiro comando. Para gerar apenas a release novamente,
+use `build_release.ps1 -Generate -Jobs 2`. Os dois scripts aceitam `-BiosPath`
+para indicar outra localização da mesma imagem validada. Sem `-Generate`, a
+imagem preparada no framework também precisa corresponder ao hash esperado.
+
+O caminho Python de geração também grava `<stem>.emitter.sha` depois do emissor
+concluir, usando o mesmo cálculo CMake da verificação. Em caso de erro ou mudança
+dos insumos durante a geração, não publica um fingerprint válido. Se a configuração
+parar com `stamp` vazio, execute novamente o primeiro comando com `-Generate`
+após atualizar este código; não desative a verificação nem preencha o hash à mão.
+
+### Placas de nomes (OpenGL)
+
+No launcher, em Settings → Display, `Show player names` ativa/desativa as
+placas para offline e netplay. A opção vem ligada e é salva em `settings.toml`,
+`[video] player_nameplates = true/false`, inclusive ao sair do launcher e ao
+voltar de uma partida. O jogo também lê essa preferência ao pular o launcher.
+`nameplates-preview.ini` não é mais consultado: uma instalação release nova
+não depende de copiar um arquivo de teste. Nenhum nome offline editável foi
+adicionado: offline exibe apenas `Play 1` à esquerda e `Play 2` à direita.
+
+Ao iniciar netplay, as placas recebem os nomes dos participantes da sala por
+slot: 0 à esquerda, 1 à direita, iguais nas duas instâncias. LAN/IP direto
+publica o nome editável antes de criar/entrar na sala, assim como o lobby online.
+Os nomes são copiados no início da sessão; não há leitura de arquivo ou consulta
+de rede por frame para atualizar as placas. Sem nome disponível, usa-se `Play 1`
+ou `Play 2` no respectivo lado.
+
+A apresentação remove um prefixo de bandeira Unicode e seu separador, limita
+cada nome a dez caracteres, preserva acentos e não modifica o nome da conta.
+As molduras têm largura fixa, P1 alinhado à esquerda e P2 à direita. São
+dimensionadas pela área de jogo apresentada, incluindo o ajuste de proporção.
+As placas começam quando o HUD de luta é emitido, continuam no replay e
+desaparecem ao sair da cena de luta. Não aparecem no Software.
+
+Teste seleção → luta → KO → replay → seleção, redimensionamento e tela cheia.
+As informações visuais ficam fora da RAM emulada e dos snapshots. Validar também
+Fred/Felipe em ambas as janelas por IP direto, troca de slots, saída e nova sessão.
+Validar também: pasta nova sem INI de prévia; opção ligada/desligada, fechar e
+reabrir o launcher; retorno ao lobby e nova partida. O ajuste não altera input
+delay, VSync, pacer ou rollback. A investigação de atraso fica para depois de
+validar as placas. Os testes C++ de estado cobrem ativação sem arquivo, ocultação
+ao desligar e limpeza do estado ao religar; precisam de compilação local.
+
+Como o leitor de settings também participa do fingerprint do emissor da BIOS,
+esta atualização requer uma geração local antes de compilar a release:
+
+```powershell
+.\PlusAlphaProject\tools\build_release.ps1 -Generate -Jobs 2
+```
+
+O runtime já forçava VSync off no netplay. Agora aplica essa política imediatamente
+após criar a sessão, antes da admissão do primeiro tick, em host e cliente.
+O intervalo efetivo é 0, inclusive se a preferência offline for adaptativa;
+a preferência offline é preservada para quando a sessão terminar. O log registra
+`netplay presentation: VSync OFF (swap interval 0)`. O limitador da simulação
+continua ativo. Não se alteraram os sete frames de input delay observados no teste;
+VSync off não elimina esse atraso configurado. Ainda é necessária validação local
+após build, inclusive uma sessão longa para verificar eventual atraso cumulativo.
+
 ### Release Windows enxuta
 
 Na raiz de `plusalpha-recomp`, execute localmente:

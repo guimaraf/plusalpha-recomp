@@ -117,6 +117,7 @@ psxrecomp_add_game_runtime(psx-runtime
     CODEGEN_SETUP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/codegen_setup.c"
 )
 set_target_properties(psx-runtime PROPERTIES ENABLE_EXPORTS TRUE WIN32_EXECUTABLE TRUE)
+target_sources(psx-runtime PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/player_nameplates.cpp")
 if(MINGW)
     target_link_options(psx-runtime PRIVATE "-Wl,--export-all-symbols")
 endif()

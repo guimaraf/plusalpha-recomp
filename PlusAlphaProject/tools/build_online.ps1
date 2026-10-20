@@ -30,18 +30,25 @@ if ($Release -and $SetupHost) { throw '-Release requer o runtime completo.' }
 if ($Release -and $BuildDirName -ne 'build-release-online') {
     throw '-Release requer -BuildDirName build-release-online para preservar a build de diagnostico.'
 }
-if ($BiosPath -and -not $Generate) { throw '-BiosPath requer -Generate.' }
-if ($Generate) {
-    if (-not $BiosPath) { $BiosPath = Join-Path $RepositoryRoot 'bios\SCPH1001.BIN' }
-    if (-not (Test-Path -LiteralPath $BiosPath -PathType Leaf)) {
-        throw 'Este port requer sua propria SCPH1001.BIN em bios\SCPH1001.BIN, ou informe -BiosPath.'
+if (-not $BiosPath) { $BiosPath = Join-Path $RepositoryRoot 'bios\SCPH1001.BIN' }
+if (-not (Test-Path -LiteralPath $BiosPath -PathType Leaf)) {
+    throw 'Este port requer sua propria SCPH1001.BIN em bios\SCPH1001.BIN, ou informe -BiosPath.'
+}
+$BiosPath = (Resolve-Path -LiteralPath $BiosPath).Path
+$ExpectedBiosSha256 = '71AF94D1E47A68C11E8FDB9F8368040601514A42A5A399CDA48C7D3BFF1E99D3'
+if ((Get-FileHash -LiteralPath $BiosPath -Algorithm SHA256).Hash -ne $ExpectedBiosSha256) {
+    throw 'A BIOS nao corresponde a SCPH-1001 validada para este port. O arquivo foi preservado.'
+}
+$FrameworkBios = Join-Path $Framework 'bios\SCPH1001.BIN'
+if (-not $Generate) {
+    if (-not (Test-Path -LiteralPath $FrameworkBios -PathType Leaf)) {
+        throw 'BIOS retail ainda nao preparada no framework. Execute este script com -Generate.'
     }
-    $BiosPath = (Resolve-Path -LiteralPath $BiosPath).Path
-    $ExpectedBiosSha256 = '71AF94D1E47A68C11E8FDB9F8368040601514A42A5A399CDA48C7D3BFF1E99D3'
-    if ((Get-FileHash -LiteralPath $BiosPath -Algorithm SHA256).Hash -ne $ExpectedBiosSha256) {
-        throw 'A BIOS nao corresponde a SCPH-1001 validada para este port. O arquivo foi preservado.'
+    if ((Get-FileHash -LiteralPath $FrameworkBios -Algorithm SHA256).Hash -ne $ExpectedBiosSha256) {
+        throw 'A BIOS preparada no framework difere da SCPH-1001 validada. Execute com -Generate para prepara-la novamente.'
     }
 }
+Write-Host "BIOS: SCPH-1001 retail ($BiosPath); backend exclusivo SCPH1001." -ForegroundColor Cyan
 if (-not $SetupHost) {
     if (-not $RetainedOverlayDir) {
         $RetainedOverlayDir = Join-Path $ProjectRoot 'buildTele-s1-309-bezeus\static_overlays'
@@ -107,6 +114,9 @@ try {
             "-DPSX_DEBUG_TOOLS=$DebugTools", '-DPSX_STATIC_RUNTIME=ON', '-DRNET_ENABLE_ICE=ON',
             "-DPSX_SDL_BACKEND=$SdlBackend", "-DPSX_GAME_VERSION=$Version",
             "-DPSX_STATIC_OVERLAY_DIR=$StaticOverlayDir",
+            '-DPSXRECOMP_BIOS_STEMS=SCPH1001', '-DPSXRECOMP_BIOS_STEM=SCPH1001',
+            "-DPSXRECOMP_BIOS_PROFILE=$($Framework.Replace('\', '/'))/bios/SCPH1001.toml",
+            '-DPSXRECOMP_SKIP_BIOS_STALE_CHECK=OFF', '-DPSXRECOMP_BIOS_STALE_FATAL=ON',
             "-DCMAKE_C_COMPILER=$ToolPath/gcc.exe", "-DCMAKE_CXX_COMPILER=$ToolPath/c++.exe",
             "-DCMAKE_RC_COMPILER:FILEPATH=$ToolPath/windres.exe",
             "-DCMAKE_MAKE_PROGRAM=$ToolPath/ninja.exe", "-DPKG_CONFIG_EXECUTABLE=$ToolPath/pkg-config.exe")
