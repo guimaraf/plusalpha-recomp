@@ -8,6 +8,7 @@ namespace {
 std::mutex snapshot_mutex;
 PsxHostNameplates published{};
 bool enabled = false;
+bool versus_active = false;
 bool hud_seen_in_match = false;
 bool hud_packet_seen = false;
 uint64_t previous_frame = 0;
@@ -23,6 +24,7 @@ void set_names(const char *left, const char *right) {
 }
 int configure(int requested) {
     enabled = requested != 0;
+    versus_active = false;
     hud_seen_in_match = hud_packet_seen = false;
     previous_frame = 0;
     {
@@ -56,13 +58,21 @@ void tick(uint64_t frame) {
     if (!enabled) return;
     // SLUS-00548: 1 = match scene; 0 = character select; 7 = mode select.
     // Keep the match latch through replay, where the life HUD is not emitted.
-    const bool match_scene = psx_read_byte(0x801D39B8u) == 1;
-    if (!match_scene || frame < previous_frame) hud_seen_in_match = false;
-    if (match_scene && hud_packet_seen) hud_seen_in_match = true;
+    const uint8_t scene = psx_read_byte(0x801D39B8u);
+    // SLUS-00548, observed menu confirmation at main-EXE PC 0x80176590:
+    // mode 1 = Versus, 0 = Arcade, 5 = Training. The mode byte survives
+    // returning to mode select (scene 7), so it cannot be the only gate.
+    // Derive from restored guest RAM rather than a host-only entry-PC latch:
+    // rollback/manual loads can replace the game state without a menu event.
+    // See VERSUS_NAMEPLATES.md for the observation evidence and limitations.
+    versus_active = scene != 7 && psx_read_byte(0x801DC9D0u) == 1;
+    const bool match_scene = scene == 1;
+    if (!versus_active || !match_scene || frame < previous_frame) hud_seen_in_match = false;
+    if (versus_active && match_scene && hud_packet_seen) hud_seen_in_match = true;
     hud_packet_seen = false;
     previous_frame = frame;
     std::lock_guard<std::mutex> guard(snapshot_mutex);
-    published.visible = match_scene && hud_seen_in_match;
+    published.visible = versus_active && match_scene && hud_seen_in_match;
 }
 void snapshot(PsxHostNameplates *out) {
     std::lock_guard<std::mutex> guard(snapshot_mutex);

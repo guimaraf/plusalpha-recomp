@@ -51,7 +51,7 @@ inline std::string display_player_name(const std::string& raw) {
         if (cp < 0x20 || cp == 0x7F || cp == 0xFFFD) continue;
         // Preserve combining accents without counting them as another letter.
         const bool accent = cp >= 0x300 && cp <= 0x36F;
-        if (!accent && characters == 10) break;
+        if (!accent && characters == 8) break;
         if (accent && !characters) continue;
         if (result.size() + at - before > 60) break;
         if (!accent) ++characters;

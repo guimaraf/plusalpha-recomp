@@ -173,12 +173,15 @@ de rede por frame para atualizar as placas. Sem nome disponível, usa-se `Play 1
 ou `Play 2` no respectivo lado.
 
 A apresentação online continua removendo um prefixo de bandeira Unicode e seu
-separador, limitando cada nome a dez caracteres, preservando acentos e sem
+separador, limitando cada nome a oito caracteres, preservando acentos e sem
 modificar o nome da conta. O limite de oito dos campos offline é independente.
 As molduras têm largura fixa, P1 alinhado à esquerda e P2 à direita. São
 dimensionadas pela área de jogo apresentada, incluindo o ajuste de proporção.
-As placas começam quando o HUD de luta é emitido, continuam no replay e
-desaparecem ao sair da cena de luta. Não aparecem no Software.
+As placas começam quando o HUD de luta é emitido no Versus, continuam no replay
+dessa cena e desaparecem ao sair da cena de luta. Arcade, Training e seleção de
+modos não habilitam as placas. As caixas de vitórias mostram `0` fixo nesta fase,
+sem contabilizar rounds ou lutas. Não aparecem no Software. Evidências e roteiro
+de observação estão em `VERSUS_NAMEPLATES.md`.
 
 Teste seleção → luta → KO → replay → seleção, redimensionamento e tela cheia.
 As informações visuais ficam fora da RAM emulada e dos snapshots. Validar também
