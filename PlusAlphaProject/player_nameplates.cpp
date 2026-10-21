@@ -1,9 +1,11 @@
 #include "host_nameplates.h"
 #include "player_nameplates_text.h"
+#include "versus_score_state.h"
 #include <cstdio>
 #include <mutex>
 
 extern "C" uint8_t psx_read_byte(uint32_t addr);
+extern "C" uint32_t psx_read_word(uint32_t addr);
 namespace {
 std::mutex snapshot_mutex;
 PsxHostNameplates published{};
@@ -12,6 +14,22 @@ bool versus_active = false;
 bool hud_seen_in_match = false;
 bool hud_packet_seen = false;
 uint64_t previous_frame = 0;
+plusalpha::VersusScoreState score;
+void publish_score() {
+    std::lock_guard<std::mutex> guard(snapshot_mutex);
+    published.wins[0] = score.wins[0]; published.wins[1] = score.wins[1];
+}
+void simulation_tick() {
+    score.step(psx_read_byte(0x801D39B8u), psx_read_byte(0x801DC9D0u),
+               psx_read_word(0x801D39E4u));
+}
+void reset_score() { score.reset(psx_read_word(0x801D39E4u)); publish_score(); }
+void begin_session() { score.reset(); publish_score(); }
+void save_state(uint8_t out[16]) { score.save(out); }
+int validate_state(const uint8_t *p, uint32_t len) {
+    return plusalpha::VersusScoreState::validate(p, len);
+}
+void load_state(const uint8_t *p) { score.load(p); publish_score(); }
 
 void set_names(const char *left, const char *right) {
     const char *names[2] = {left, right};
@@ -73,12 +91,14 @@ void tick(uint64_t frame) {
     previous_frame = frame;
     std::lock_guard<std::mutex> guard(snapshot_mutex);
     published.visible = versus_active && match_scene && hud_seen_in_match;
+    published.wins[0] = score.wins[0]; published.wins[1] = score.wins[1];
 }
 void snapshot(PsxHostNameplates *out) {
     std::lock_guard<std::mutex> guard(snapshot_mutex);
     *out = published;
 }
-const PsxHostNameplateProvider provider{configure, tick, observe, snapshot, set_names};
+const PsxHostNameplateProvider provider{configure, tick, observe, snapshot, set_names,
+    simulation_tick, reset_score, begin_session, save_state, validate_state, load_state};
 struct Register {
     Register() { psx_host_nameplates_register(&provider); }
 } registration;

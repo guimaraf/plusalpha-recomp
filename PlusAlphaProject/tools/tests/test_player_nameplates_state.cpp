@@ -4,6 +4,11 @@
 #include <string>
 static uint8_t scene;
 static uint8_t mode = 1;
+static uint32_t result_flags;
+extern "C" uint32_t psx_read_word(uint32_t addr) {
+    assert(addr == 0x801D39E4u);
+    return result_flags;
+}
 const PsxHostNameplateProvider *g_psx_nameplate_provider;
 extern "C" void psx_host_nameplates_register(const PsxHostNameplateProvider *p) {
     g_psx_nameplate_provider = p;
@@ -84,4 +89,52 @@ int main() {
     mode = 1;
     p->tick(17); p->snapshot(&snapshot); assert(!snapshot.visible);
     p->observe_gp0(fill, 8); p->tick(18); p->snapshot(&snapshot); assert(snapshot.visible);
+    // Full-match results, independent of the native streak and HUD switch.
+    p->begin_session();
+    auto step = [&](uint8_t next_scene, uint32_t flags) {
+        scene = next_scene; result_flags = flags;
+        p->simulation_tick(); p->tick(20); p->snapshot(&snapshot);
+    };
+    step(1, 0x83); // Intermediate round: no completed-match bit.
+    assert(snapshot.wins[0] == 0 && snapshot.wins[1] == 0);
+    uint8_t before_result[16], after_result[16];
+    p->save_state(before_result);
+    step(1, 0x683); // Captured P1 final result.
+    assert(snapshot.wins[0] == 1 && snapshot.wins[1] == 0);
+    p->save_state(after_result);
+    assert(p->validate_state(after_result, 16));
+    assert(!p->validate_state(after_result, 15));
+    uint8_t malformed[16]{};
+    assert(!p->validate_state(malformed, 16));
+    for (int i = 0; i < 60; ++i) step(1, 0x683); // Replay/held result.
+    step(0, 0x683); step(1, 0x683); // Character select cannot recount it.
+    assert(snapshot.wins[0] == 1 && snapshot.wins[1] == 0);
+    step(1, 0x8B); step(1, 0x69F); // P2 wins next: accumulated 1 x 1.
+    assert(snapshot.wins[0] == 1 && snapshot.wins[1] == 1);
+    step(1, 0); step(1, 0x440); // Non-scoring/draw.
+    assert(snapshot.wins[0] == 1 && snapshot.wins[1] == 1);
+    // Roll back an unconfirmed P1 win, then replay a corrected P2 result.
+    p->load_state(before_result);
+    step(1, 0x69F);
+    assert(snapshot.wins[0] == 0 && snapshot.wins[1] == 1);
+    p->load_state(after_result); step(1, 0x683);
+    assert(snapshot.wins[0] == 1 && snapshot.wins[1] == 0);
+    // A successful manual load/disconnect consumes an already-held result.
+    p->reset_score(); step(1, 0x683);
+    assert(snapshot.wins[0] == 0 && snapshot.wins[1] == 0);
+    step(1, 0); step(1, 0x683);
+    step(7, 0x683); step(0, 0x683); step(1, 0x683);
+    assert(snapshot.wins[0] == 0 && snapshot.wins[1] == 0);
+    p->configure(0);
+    step(1, 0); step(1, 0x69F);
+    p->configure(1); p->tick(21); p->snapshot(&snapshot);
+    assert(snapshot.wins[0] == 0 && snapshot.wins[1] == 1);
+    mode = 5; step(1, 0x683);
+    assert(snapshot.wins[0] == 0 && snapshot.wins[1] == 0);
+    // No overflow at the external counter's limit.
+    mode = 1;
+    uint8_t maximum[16] = {1,0,0,0,255,255,255,255};
+    assert(p->validate_state(maximum, 16)); p->load_state(maximum);
+    step(1, 0); step(1, 0x683);
+    assert(snapshot.wins[0] == UINT32_MAX && snapshot.wins[1] == 0);
 }
