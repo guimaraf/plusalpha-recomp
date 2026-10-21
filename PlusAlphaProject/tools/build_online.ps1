@@ -27,8 +27,8 @@ $UcrtBin = Join-Path $Msys2Root 'ucrt64\bin'
 $CMake = Join-Path $UcrtBin 'cmake.exe'
 $Python = (Get-Command python -ErrorAction Stop).Source
 if ($Release -and $SetupHost) { throw '-Release requer o runtime completo.' }
-if ($Release -and $BuildDirName -ne 'build-release-online') {
-    throw '-Release requer -BuildDirName build-release-online para preservar a build de diagnostico.'
+if ($Release -and $BuildDirName -notmatch '^build-release-online(?:-[A-Za-z0-9_-]+)?$') {
+    throw '-Release requer uma pasta build-release-online ou build-release-online-N para preservar as builds de diagnostico.'
 }
 if (-not $BiosPath) { $BiosPath = Join-Path $RepositoryRoot 'bios\SCPH1001.BIN' }
 if (-not (Test-Path -LiteralPath $BiosPath -PathType Leaf)) {

@@ -155,6 +155,43 @@ def analyze(status, events, mode):
             'scope': 'SIO host latch ate transicao interna validada; nao button-to-photon'}
 
 
+TIMING_KINDS = dict(enumerate((
+    'host_begin', 'host_end', 'pad_delivery', 'pacer_begin', 'pacer_end',
+    'host_present_begin', 'host_present_end', 'swap_begin', 'swap_end',
+    'vblank_edge', 'irq_deliver', 'callback_entry', 'buffer_read', 'buffer_write',
+    'sio_select', 'sio_deselect', 'sio_shift_begin', 'sio_rx_ready', 'sio_rx_read',
+    'sio_snapshot', 'sio_ack', 'game_write', 'pacer_defer', 'pacer_resume',
+    'pacer_cancel'), start=10))
+
+
+def require_timing_support(status):
+    if status.get('timing_supported') != 1 or status.get('timing_schema') != 1:
+        raise RuntimeError('Build sem a instrumentacao observacional; compile a pasta separada indicada no roteiro.')
+    if status.get('timing_sio_supported') != 1:
+        raise RuntimeError('Timeline exige SIO cycle-paced e PSX_SIO_PAD_SYNC_RX desativado; nenhuma configuracao foi alterada.')
+
+
+def timing_integrity(status, timeline):
+    # Check acquisition only: never pair actions or infer latency here.
+    reasons = []
+    if not status.get('timing') or status.get('timing_overflow', 0):
+        reasons.append('timeline desativada ou com overflow')
+    if not timeline or len(timeline) != status.get('timing_events'):
+        reasons.append('timeline ausente ou exportacao incompleta')
+    if any(row['kind'] == 34 for row in timeline):
+        reasons.append('espera experimental cancelada em contexto nao suportado; revisar fallback')
+    if any(row['kind'] == 10 and row['aux'] == 1 and row['value'] for row in timeline):
+        reasons.append('apresentacao/interpolacao em outra thread; timeline de swaps incompleta neste modo')
+    for i, row in enumerate(timeline):
+        if row['seq'] != i or row['kind'] not in TIMING_KINDS:
+            reasons.append('sequencia ou tipo de evento invalido')
+            break
+        if i and (row['qpc'] < timeline[i-1]['qpc'] or row['cycle'] < timeline[i-1]['cycle']):
+            reasons.append('relogio retrocedeu; captura nao representa uma execucao continua')
+            break
+    return reasons
+
+
 def collection_summary(status):
     # Acquisition integrity only. No matching, latency calculation or statistics.
     reasons = []
@@ -202,9 +239,13 @@ def main(argv=None):
                         help='pasta nova; nunca sobrescreve coleta anterior')
     parser.add_argument('--collect-only', action='store_true',
                         help='measure: exportar varios inputs sem calcular latencia; analise posterior')
+    parser.add_argument('--timing', action='store_true',
+                        help='sequencia observacional Ryu P1/Square; exige measure e collect-only')
     parser.add_argument('--review', type=Path,
                         help='reanalisar capture.json existente, sem conectar ao jogo nem alterar arquivos')
     args = parser.parse_args(argv)
+    if args.timing and (not args.collect_only or args.mode != 'measure' or args.player != 1 or args.button != 'square'):
+        parser.error('--timing exige --mode measure --collect-only --player 1 --button square')
     if args.collect_only and (args.mode != 'measure' or args.review):
         parser.error('--collect-only exige --mode measure e nao aceita --review')
     if args.review:
@@ -237,11 +278,16 @@ def main(argv=None):
         before = command(args.port, {'cmd': 'input_response_status'})
         if before.get('probe_version') != 1:
             raise RuntimeError('Build sem o protocolo input_response v1.')
+        if args.timing:
+            require_timing_support(before)
         arm = command(args.port, {'cmd': 'input_response_arm',
+            'timing': int(args.timing),
             'discovery': int(args.mode == 'discovery'), 'warmup_ms': args.warmup * 1000,
             'capture_ms': args.seconds * 1000, 'port': args.player - 1,
             'button_mask': BUTTONS[args.button], 'lo': hex(args.lo), 'hi': hex(args.hi), **params})
         armed = True
+        if args.timing and not arm.get('timing'):
+            raise RuntimeError('Runtime nao ativou a timeline solicitada.')
         (args.output / 'arm.json').write_text(json.dumps(arm, indent=2), encoding='utf-8')
         if profile:
             print('MEDICAO OFFLINE: use o personagem, player e botao do perfil.', flush=True)
@@ -264,13 +310,20 @@ def main(argv=None):
         armed = False
         print('Captura encerrada. Exportando dados; nenhuma nova amostra e registrada.', flush=True)
         events = read_pages(args.port, events=True)
+        timeline = read_pages(args.port, events=2) if args.timing else []
         candidates = read_pages(args.port) if args.mode == 'discovery' else []
         result = (collection_summary(status) if args.collect_only
                   else analyze(status, events, args.mode))
+        if args.timing:
+            result['reasons'].extend(timing_integrity(status, timeline))
+            result['valid_capture'] = not result['reasons']
         capture = {'schema': 1, 'mode': args.mode, 'player': args.player,
                    'button': args.button, 'collect_only': args.collect_only,
                    'status': status, 'events': events,
                    'candidates': candidates, 'profile': profile, 'analysis': result}
+        if args.timing:
+            capture.update(timing_schema=1, timeline=timeline,
+                           timing_kinds=TIMING_KINDS, emulated_clock_hz=33868800)
         data = json.dumps(capture, indent=2, ensure_ascii=False).encode('utf-8')
         (args.output / 'capture.json').write_bytes(data)
         (args.output / 'capture.sha256').write_text(hashlib.sha256(data).hexdigest() + '\n')
@@ -279,6 +332,11 @@ def main(argv=None):
                 writer = csv.DictWriter(f, fieldnames=list(events[0]))
                 writer.writeheader()
                 writer.writerows(events)
+        if timeline:
+            with (args.output / 'timeline.csv').open('w', newline='', encoding='utf-8-sig') as f:
+                writer = csv.DictWriter(f, fieldnames=['event', *timeline[0]])
+                writer.writeheader()
+                writer.writerows(dict(event=TIMING_KINDS[row['kind']], **row) for row in timeline)
         if candidates:
             ordered = sorted(candidates, key=lambda r: (r['pre_changes'] != 0,
                                                        r['pre_writes'] == 0, r['qpc']))

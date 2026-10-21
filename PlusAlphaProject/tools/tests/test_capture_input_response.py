@@ -2,6 +2,7 @@ import importlib.util
 import json
 from pathlib import Path
 import unittest
+import tempfile
 from unittest.mock import patch
 
 SCRIPT = Path(__file__).resolve().parents[1] / 'capture_input_response.py'
@@ -110,6 +111,88 @@ class ResponseAnalysisTests(unittest.TestCase):
         with patch.object(capture, 'command', return_value={'records': [], 'done': False, 'next': 0}):
             with self.assertRaises(RuntimeError):
                 capture.read_pages(4531)
+
+    def test_timing_capability_refuses_old_or_sync_sio_runtime(self):
+        for status in ({'probe_version': 1},
+                       dict(timing_supported=1, timing_schema=1, timing_sio_supported=0)):
+            with self.assertRaises(RuntimeError):
+                capture.require_timing_support(status)
+        capture.require_timing_support(dict(timing_supported=1, timing_schema=1,
+                                           timing_sio_supported=1))
+
+    def test_timing_export_uses_separate_stream_selector(self):
+        with patch.object(capture, 'command', return_value=dict(records=[], done=True)) as cmd:
+            self.assertEqual(capture.read_pages(4531, events=2), [])
+            self.assertEqual(cmd.call_args.args[1]['events'], 2)
+
+    def test_timing_integrity_checks_both_clocks_and_sequence(self):
+        status = dict(timing=1, timing_events=2, timing_overflow=0)
+        rows = [dict(seq=0, kind=19, qpc=100, cycle=200, aux=0, value=0),
+                dict(seq=1, kind=21, qpc=110, cycle=200, aux=0, value=0)]
+        self.assertEqual(capture.timing_integrity(status, rows), [])
+        for key, value in [('seq', 3), ('qpc', 99), ('cycle', 199), ('kind', 99)]:
+            bad = [rows[0], {**rows[1], key: value}]
+            self.assertTrue(capture.timing_integrity(status, bad))
+        self.assertTrue(capture.timing_integrity({**status, 'timing_overflow': 1}, rows))
+        self.assertTrue(capture.timing_integrity(status, rows[:1]))
+        threaded = [{**rows[0], 'kind': 10, 'aux': 1, 'value': 4}, rows[1]]
+        self.assertTrue(capture.timing_integrity(status, threaded))
+
+    def test_timing_collection_exports_raw_data_without_matching_actions(self):
+        profile = SCRIPT.parent / 'input_response_ryu_p1_square.json'
+        timeline = [dict(seq=0, kind=19, qpc=100, cycle=200, aux=0, value=0)]
+        status = {**self.status, 'presses': 5, 'timing': 1, 'timing_events': 1,
+                  'timing_overflow': 0, 'timing_supported': 1, 'timing_schema': 1,
+                  'timing_sio_supported': 1, 'probe_version': 1}
+        with tempfile.TemporaryDirectory(dir=SCRIPT.parent) as temp:
+            output = Path(temp) / 'new-capture'
+            with patch.object(capture, 'command', return_value=status), \
+                 patch.object(capture, 'countdown'), \
+                 patch.object(capture, 'read_pages', side_effect=[self.events, timeline]), \
+                 patch.object(capture, 'analyze', side_effect=AssertionError('must not calculate')):
+                code = capture.main(['--mode', 'measure', '--button', 'square',
+                                     '--profile', str(profile), '--output', str(output),
+                                     '--collect-only', '--timing'])
+            self.assertEqual(code, 0)
+            saved = json.loads((output / 'capture.json').read_text(encoding='utf-8'))
+            self.assertEqual(saved['events'], self.events)
+            self.assertEqual(saved['timeline'], timeline)
+            self.assertIsNone(saved['analysis']['latency_ms'])
+            self.assertTrue((output / 'timeline.csv').is_file())
+
+    def test_timing_mode_rejects_incompatible_scenario_before_connecting(self):
+        with patch.object(capture, 'command') as cmd:
+            with self.assertRaises(SystemExit):
+                capture.main(['--timing', '--mode', 'measure', '--button', 'cross',
+                              '--collect-only', '--output', 'unused'])
+            cmd.assert_not_called()
+
+    def test_deferred_pacer_events_and_post_irq_sample_remain_observations(self):
+        rows = [dict(seq=0, kind=32, qpc=100, cycle=200, aux=0, value=1),
+                dict(seq=1, kind=33, qpc=110, cycle=300, aux=0, value=1),
+                dict(seq=2, kind=10, qpc=120, cycle=300, aux=3, value=0)]
+        self.assertEqual(capture.timing_integrity(
+            dict(timing=1, timing_events=3, timing_overflow=0), rows), [])
+        self.assertEqual(capture.TIMING_KINDS[32], 'pacer_defer')
+        self.assertEqual(capture.TIMING_KINDS[33], 'pacer_resume')
+        result = capture.collection_summary(self.status)
+        self.assertIsNone(result['latency_ms'])
+
+    def test_frame_end_samples_do_not_get_confused_with_thread_flags(self):
+        rows = [dict(seq=0, kind=32, qpc=100, cycle=200, aux=0, value=2),
+                dict(seq=1, kind=33, qpc=110, cycle=560000, aux=2, value=0),
+                dict(seq=2, kind=10, qpc=120, cycle=560000, aux=5, value=0),
+                dict(seq=3, kind=13, qpc=125, cycle=560000, aux=2, value=0),
+                dict(seq=4, kind=14, qpc=200, cycle=560000, aux=2, value=0),
+                dict(seq=5, kind=10, qpc=210, cycle=560000, aux=4, value=0)]
+        self.assertEqual(capture.timing_integrity(
+            dict(timing=1, timing_events=6, timing_overflow=0), rows), [])
+
+    def test_cancelled_frame_end_wait_does_not_claim_clean_experiment(self):
+        rows = [dict(seq=0, kind=34, qpc=100, cycle=200, aux=0, value=1)]
+        self.assertTrue(capture.timing_integrity(
+            dict(timing=1, timing_events=1, timing_overflow=0), rows))
+        self.assertEqual(capture.TIMING_KINDS[34], 'pacer_cancel')
 
 
 if __name__ == '__main__':

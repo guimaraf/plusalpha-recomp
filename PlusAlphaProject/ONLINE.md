@@ -102,13 +102,29 @@ após build, inclusive uma sessão longa para verificar eventual atraso cumulati
 Na raiz de `plusalpha-recomp`, execute localmente:
 
 ```powershell
-.\PlusAlphaProject\tools\build_release.ps1 -Jobs 4
+.\PlusAlphaProject\tools\build_release.ps1 -Jobs 2
 ```
 
 O comando usa os fontes já gerados, compila `Release` com SDL3, online e launcher,
-sem debug tools nem wizard de geração, em `PlusAlphaProject/build-release-online`.
-A build de diagnóstico e a referência estável são preservadas. Se precisar
+sem debug tools nem wizard de geração, em uma pasta nova
+`PlusAlphaProject/build-release-online-AAAAmmdd-HHmmss`, com os overlays
+preparados dentro dela. As builds anteriores, incluindo a release antiga,
+a build de diagnóstico e a referência estável, são preservadas. Se precisar
 regenerar fontes, acrescente `-Generate` (essa opção também compila os emitters).
+
+Os modos experimentais de input 1/2/3 nao sao habilitados nesta release, mesmo
+se a variavel `PSX_OFFLINE_POST_IRQ_PACER` estiver definida no terminal. O modo
+original permanece e o launcher, o IP direto, o lobby e o rollback continuam
+habilitados. O script nao altera os fontes de comportamento do online.
+
+Para escolher o nome da pasta de build, use por exemplo
+`-BuildDirName build-release-online-input-baseline`. Se ela ja existir, o
+script recusa recompilar por padrao. Para continuar intencionalmente uma build
+interrompida, informe o mesmo nome e `-Incremental`:
+
+```powershell
+.\PlusAlphaProject\tools\build_release.ps1 -BuildDirName build-release-online-input-baseline -Incremental -Jobs 2
+```
 
 O pacote é criado em uma pasta nova
 `PlusAlphaProject/dist/exPlusAlpha-AAAAmmdd-HHmmss`. Para escolher outra pasta,
@@ -116,8 +132,12 @@ use `-OutputDir 'F:\meus-pacotes\exPlusAlpha-1'`; ela não pode existir.
 Para empacotar novamente uma build release pronta, sem compilar:
 
 ```powershell
-.\PlusAlphaProject\tools\build_release.ps1 -PackageOnly
+.\PlusAlphaProject\tools\build_release.ps1 -PackageOnly -BuildDirName build-release-online-AAAAmmdd-HHmmss
 ```
+
+Substitua o nome pelo diretorio real da compilacao desejada. Por compatibilidade,
+`-PackageOnly` sem nome ainda empacota a antiga pasta `build-release-online`.
+Nao usar essa forma abreviada para empacotar a release nova por engano.
 
 O empacotador não compila nem baixa dependências. Copia o executável, DLLs não
 pertencentes ao Windows detectadas recursivamente nos imports PE, assets,
