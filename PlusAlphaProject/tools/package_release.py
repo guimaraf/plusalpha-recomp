@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
+import zipfile
 
 
 def sha256_file(path):
@@ -45,10 +46,60 @@ def collect_dlls(binary, build, ucrt, system, objdump):
     return list(found.values())
 
 
-def package(build, output, ucrt):
+def archive_paths(output, archive):
+    output, archive = output.resolve(), archive.resolve()
+    partial, checksum = Path(str(archive) + '.partial'), Path(str(archive) + '.sha256')
+    if archive == output or output in archive.parents:
+        raise ValueError('ZIP deve ficar fora da pasta distribuivel.')
+    if any(p.exists() for p in (archive, partial, checksum)):
+        raise ValueError('ZIP, arquivo parcial ou checksum existente preservado.')
+    return archive, partial, checksum
+
+
+def create_archive(output, archive):
+    """Archive only the staged manifest inventory, never a build directory."""
+    output = output.resolve()
+    archive, partial, checksum = archive_paths(output, archive)
+    manifest = json.loads((output / 'release-manifest.json').read_text(encoding='utf-8'))
+    expected = manifest['files']
+    actual = {p.relative_to(output).as_posix(): p for p in output.rglob('*') if p.is_file()}
+    if set(actual) != set(expected) | {'release-manifest.json'}:
+        raise ValueError('Pasta foi modificada ou esta incompleta; gere um pacote novo antes de compactar.')
+    for name, path in actual.items():
+        if path.is_symlink() or (name in expected and sha256_file(path) != expected[name]):
+            raise ValueError(f'Integridade do pacote divergente: {name}')
+    archive.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(partial, 'x', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipped:
+        for name, path in sorted(actual.items()):
+            zipped.write(path, arcname=output.name + '/' + name)
+    # Verify the compressed bytes against the staged hashes before publishing.
+    with zipfile.ZipFile(partial) as zipped:
+        if zipped.testzip() is not None:
+            raise ValueError('Verificacao CRC do ZIP falhou; arquivo parcial preservado.')
+        for name, path in actual.items():
+            digest = hashlib.sha256()
+            with zipped.open(output.name + '/' + name) as stream:
+                for chunk in iter(lambda: stream.read(1024 * 1024), b''):
+                    digest.update(chunk)
+            if digest.hexdigest() != sha256_file(path):
+                raise ValueError(f'Verificacao do ZIP falhou: {name}')
+    # Windows rename refuses an existing destination; earlier outputs stay intact.
+    if archive.exists():
+        raise ValueError('ZIP apareceu durante o empacotamento; arquivo existente preservado.')
+    partial.rename(archive)
+    with checksum.open('x', encoding='utf-8') as stream:
+        stream.write(sha256_file(archive) + '  ' + archive.name + '\n')
+    print(f'ZIP verificado: {archive} ({archive.stat().st_size / 1024**2:.2f} MiB)')
+
+
+def package(build, output, ucrt, archive=None):
     project = Path(__file__).resolve().parents[1]
     repo = project.parent
     build, output, ucrt = build.resolve(), output.resolve(), ucrt.resolve()
+    if archive is not None:
+        archive_paths(output, archive)
+        if build == archive.resolve() or build in archive.resolve().parents:
+            raise ValueError('ZIP deve ficar fora da pasta de build.')
     # A new directory only: never replace builds, releases or personal data.
     if output.exists() or output == build or build in output.parents or output in build.parents:
         raise ValueError('A saida deve ser uma pasta nova e separada da build.')
@@ -59,7 +110,7 @@ def package(build, output, ucrt):
     for setting in ('CMAKE_BUILD_TYPE:STRING=Release', 'PSX_DEBUG_TOOLS:BOOL=OFF',
                     'PSX_SETUP_WIZARD:BOOL=OFF', 'PSX_NETPLAY:BOOL=ON',
                     'BUILD_DECOUPLED_LAUNCHER:BOOL=OFF', 'PSX_RECOMP_UI:BOOL=ON',
-                    'PSX_STATIC_RUNTIME:BOOL=ON'):
+                    'PSX_STATIC_RUNTIME:BOOL=ON', 'RNET_ENABLE_ICE:BOOL=ON'):
         if setting not in cache.splitlines():
             raise ValueError(f'Build release esperada: {setting}')
     binary = build / 'exPlusAlpha.exe'
@@ -135,7 +186,10 @@ def package(build, output, ucrt):
     (output / 'release-manifest.json').write_text(
         json.dumps({'schema': 1, 'files': files}, indent=2) + '\n', encoding='utf-8')
     (output / 'PACKAGE_INCOMPLETE.txt').unlink()
-    print(f'Release preparada: {output} ({len(files)} arquivos + manifesto)')
+    size = sum(p.stat().st_size for p in output.rglob('*') if p.is_file())
+    print(f'Release preparada: {output} ({len(files)} arquivos + manifesto, {size / 1024**2:.2f} MiB)')
+    if archive is not None:
+        create_archive(output, archive)
 
 
 if __name__ == '__main__':
@@ -143,8 +197,9 @@ if __name__ == '__main__':
     parser.add_argument('--build', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--ucrt-bin', type=Path, required=True)
+    parser.add_argument('--zip-path', type=Path)
     args = parser.parse_args()
     try:
-        package(args.build, args.output, args.ucrt_bin)
+        package(args.build, args.output, args.ucrt_bin, args.zip_path)
     except (OSError, ValueError, subprocess.CalledProcessError) as error:
         parser.exit(1, f'Release recusada: {error}\n')

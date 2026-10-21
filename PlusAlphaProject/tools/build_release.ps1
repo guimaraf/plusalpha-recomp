@@ -4,6 +4,7 @@ param(
     [switch]$Generate,
     [switch]$PackageOnly,
     [switch]$Incremental,
+    [switch]$NoZip,
     [ValidatePattern('^build-release-online(?:-[A-Za-z0-9_-]+)?$')]
     [string]$BuildDirName = '',
     [ValidateRange(1, 64)][int]$Jobs = 2,
@@ -33,6 +34,12 @@ if (-not $OutputDir) {
     $OutputDir = Join-Path $ProjectRoot ("dist\exPlusAlpha-$Stamp")
 }
 if (Test-Path -LiteralPath $OutputDir) { throw "Pacote existente preservado: $OutputDir. Escolha outra pasta de saida." }
+$ArchivePath = "$OutputDir.zip"
+if (-not $NoZip) {
+    foreach ($Artifact in @($ArchivePath, "$ArchivePath.partial", "$ArchivePath.sha256")) {
+        if (Test-Path -LiteralPath $Artifact) { throw "Arquivo existente preservado: $Artifact. Escolha outra pasta de saida." }
+    }
+}
 if (-not $PackageOnly) {
     $BuildArgs = @{
         Release = $true
@@ -49,9 +56,16 @@ if (-not $PackageOnly) {
     & (Join-Path $PSScriptRoot 'build_online.ps1') @BuildArgs
 }
 $Python = (Get-Command python -ErrorAction Stop).Source
-& $Python -B (Join-Path $PSScriptRoot 'package_release.py') `
-    --build $BuildDir --output $OutputDir `
-    --ucrt-bin (Join-Path $Msys2Root 'ucrt64\bin')
+$PackageArgs = @('-B', (Join-Path $PSScriptRoot 'package_release.py'),
+    '--build', $BuildDir, '--output', $OutputDir,
+    '--ucrt-bin', (Join-Path $Msys2Root 'ucrt64\bin'))
+if (-not $NoZip) { $PackageArgs += @('--zip-path', $ArchivePath) }
+& $Python @PackageArgs
 if ($LASTEXITCODE -ne 0) { throw "Empacotamento falhou: $LASTEXITCODE" }
 Write-Host "Launcher pronto para teste: $OutputDir\exPlusAlpha.exe" -ForegroundColor Green
 Write-Host 'Release sem diagnostico: modos experimentais de input desativados; launcher e netplay habilitados.'
+if (-not $NoZip) {
+    Write-Host "Arquivo para enviar: $ArchivePath" -ForegroundColor Green
+    Write-Host "Integridade: $ArchivePath.sha256"
+}
+Write-Host 'Posicionamento das janelas funciona com position_netplay_windows.ps1; o coletor TCP requer a build de diagnostico.'

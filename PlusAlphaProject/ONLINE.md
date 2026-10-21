@@ -8,6 +8,98 @@ release validada.
 
 ## Revisões
 
+### Captura da origem da defasagem — 21/10/2026
+
+O roteiro de repetição, combate e arrasto está em
+[NET_SYNC_TESTS.md](NET_SYNC_TESTS.md), com marcadores durante a captura.
+Essa atualização dos scripts usa a build de diagnóstico já existente e não
+exige recompilação. O coletor agora separa sessões recriadas nos mesmos EXEs;
+reiniciar os processos exige uma captura nova.
+
+Instrumentação preparada, aguardando build e teste locais. Não altera as
+decisões de admissão, delay, rollback ou o prazo do limitador de FPS.
+O defeito XA/FMV corrigido anteriormente continua corrigido; a origem da
+defasagem restante ainda precisa ser comprovada.
+
+Compile manualmente a nova versão:
+
+```powershell
+Set-Location F:\GitRevised\alphaplus\plusalpha-recomp
+.\PlusAlphaProject\tools\build_online_diagnostics.ps1 -Generate -Jobs 2 -RunRegressionTests
+```
+
+O script cria `PlusAlphaProject/build-online-diagnostics-sync-trace-DATA-HORA`.
+Copie a mesma build completa para `G:\sfPlus\onlineDiag1` e
+`G:\sfPlus\onlineDiag2`, como nos testes anteriores. Feche as instâncias antigas.
+Abra as duas cópias e o coletor com:
+
+```powershell
+.\PlusAlphaProject\tools\capture_net_sync.ps1 -Launch -Seconds 300
+```
+
+`-FirstDir` e `-SecondDir` permitem indicar outras pastas. Com `-Launch`, o
+script verifica se os EXEs têm o mesmo SHA-256 e se as portas estão livres,
+define `PSX_NET_SYNC_TRACE=1` e `PSX_DEBUG_TOGGLES=0` apenas para iniciar os
+processos, e abre cada EXE usando sua própria pasta de trabalho. Não copia
+builds, encerra jogos, muda configurações, injeta input ou compila.
+
+Aguarde a confirmação **nas duas portas** antes de criar/entrar na sala.
+Para o teste simples, crie a sala na primeira instância, entre pela segunda,
+use o ajuste automático habitual e chegue à luta. O teste T04 do roteiro
+permite recriar salas na mesma captura, mantendo os EXEs abertos. Deixe o versus
+com tempo infinito por pelo menos um minuto. O coletor termina após 300 s;
+Ctrl+C preserva os dados coletados. Mantenha os jogos abertos para inspeção.
+
+Repita em uma captura nova, reiniciando ambos os processos e invertendo quem
+cria a sala. Depois repita invertendo a ordem de abertura. Anote em cada teste
+quem criou a sala, qual janela tinha foco e quando percebeu a diferença.
+Os nomes `peer-4531`/`peer-4532` identificam portas; o papel real está em `host`.
+
+Arquivos em `PlusAlphaProject/captures/net-sync-DATA-HORA`:
+
+- `manifest.json`: horários, portas, etapas e hashes/caminhos dos EXEs com `-Launch`.
+- `peer-4531.jsonl` e `peer-4532.jsonl`: eventos e consultas com início/fim da requisição.
+- `summary.json`: perdas, erros e diferença temporal entre admissões do mesmo tick.
+
+O histórico é ativado antes do processo iniciar e usa um ring de 32.768 eventos
+em memória. Ele registra o retorno da criação da sessão, a entrada/saída da
+barreira (inclusive tick 0), esperas prolongadas a cada 100 ms, apresentação e
+limitador de FPS. Cada evento inclui QPC, prazo do limitador, tick, geração da
+sessão, papel, delay, maior wire recebido, lead, pacotes recebidos, idade do
+último pacote, FMV/XA, replay, dívida de timesync e fatias solicitadas, misses,
+lateness e estado da decisão de auto-delay. `sample_ticks` mede o custo da
+coleta do próprio evento, em unidades de QPC. Não há escrita em disco no
+caminho de gravação do jogo; o coletor externo persiste os lotes.
+
+`net_sync_trace` é um comando TCP de leitura com `after` (última sequência
+recebida) e `count` (até 512). A coleta normal pede 128 eventos por lote e
+consulta `netplay_status`/`video_info` a cada dois segundos quando não há atraso
+de leitura. O VSync real vem de `video_info`; o ring não consulta GL em cada
+evento, evitando uma sincronização adicional com a thread de renderização.
+As consultas TCP ainda têm custo; observe `sample_ticks` e os intervalos de
+requisição antes de atribuir qualquer pico exclusivamente ao jogo.
+
+`lead` representa disponibilidade de entradas, **não** diferença de simulação.
+O tick registrado é o cursor de admissão, não necessariamente o frame já
+exibido. `slice_requested_ms` soma as esperas solicitadas pelo controlador;
+as etapas de barreira e pacer mostram o tempo efetivamente transcorrido.
+O resumo compara os relógios QPC somente no mesmo PC Windows, com frequência
+igual; não serve para comparar relógios de computadores diferentes. Um valor
+positivo em `b_minus_a_ms` significa que a porta B chegou ao mesmo tick depois
+da A. Não é uma medida de latência física do controle. As sessões recriadas são analisadas separadamente; reiniciar os processos
+exige uma captura nova.
+
+Histórico desativado, comando inexistente, reinício detectado, perda de eventos
+ou ausência de ticks comuns tornam a captura incompleta. Preserve os JSONL
+mesmo assim. Nenhuma build foi executada pelo agente. Os testes Python do
+coletor podem ser executados sem compilar:
+
+```powershell
+python -B -m unittest discover -s PlusAlphaProject/tools/tests -p test_capture_net_sync.py -v
+```
+
+### Referências da integração
+
 - Baseline anterior do jogo: `abcac1c070652bd115d50a34659ffbe43b24c5c0`.
 - Baseline anterior do framework: `1cfa7fe449dd94e911fcb9c5491e6806c11935b7`.
 - Base original integrada: `RetroPortingToolKit/psxrecomp`,
@@ -55,8 +147,23 @@ placas para offline e netplay. A opção vem ligada e é salva em `settings.toml
 `[video] player_nameplates = true/false`, inclusive ao sair do launcher e ao
 voltar de uma partida. O jogo também lê essa preferência ao pular o launcher.
 `nameplates-preview.ini` não é mais consultado: uma instalação release nova
-não depende de copiar um arquivo de teste. Nenhum nome offline editável foi
-adicionado: offline exibe apenas `Play 1` à esquerda e `Play 2` à direita.
+não depende de copiar um arquivo de teste.
+
+Com `Show player names` marcado, a seção `Offline Names` oferece os campos
+`Player 1` (esquerda), `Player 2` (direita) e o botão `Save`. Cada nome aceita
+até oito caracteres UTF-8, incluindo colagem; acentos combinantes acompanham
+a letra. O botão grava imediatamente `[video] offline_player_1` e
+`offline_player_2` em `settings.toml` e confirma `Offline names saved.`.
+A edição fica separada dos nomes salvos: fechar o launcher ou iniciar sem
+clicar em `Save` conserva os últimos nomes gravados. Desmarcar a opção apenas
+oculta os campos e as barras, sem apagar os nomes. Campos vazios restauram
+`Play 1` e `Play 2` no respectivo lado.
+
+No início de cada sessão, após inicializar as barras, o runtime lê os nomes
+offline salvos, inclusive quando o launcher é pulado. A gravação usa um arquivo
+temporário na mesma pasta e só substitui o original após concluir a escrita.
+Erros de leitura/gravação aparecem no launcher e não promovem a edição a nome
+salvo. Os nomes permanecem fora da RAM emulada e dos snapshots.
 
 Ao iniciar netplay, as placas recebem os nomes dos participantes da sala por
 slot: 0 à esquerda, 1 à direita, iguais nas duas instâncias. LAN/IP direto
@@ -65,8 +172,9 @@ Os nomes são copiados no início da sessão; não há leitura de arquivo ou con
 de rede por frame para atualizar as placas. Sem nome disponível, usa-se `Play 1`
 ou `Play 2` no respectivo lado.
 
-A apresentação remove um prefixo de bandeira Unicode e seu separador, limita
-cada nome a dez caracteres, preserva acentos e não modifica o nome da conta.
+A apresentação online continua removendo um prefixo de bandeira Unicode e seu
+separador, limitando cada nome a dez caracteres, preservando acentos e sem
+modificar o nome da conta. O limite de oito dos campos offline é independente.
 As molduras têm largura fixa, P1 alinhado à esquerda e P2 à direita. São
 dimensionadas pela área de jogo apresentada, incluindo o ajuste de proporção.
 As placas começam quando o HUD de luta é emitido, continuam no replay e
@@ -80,6 +188,14 @@ reabrir o launcher; retorno ao lobby e nova partida. O ajuste não altera input
 delay, VSync, pacer ou rollback. A investigação de atraso fica para depois de
 validar as placas. Os testes C++ de estado cobrem ativação sem arquivo, ocultação
 ao desligar e limpeza do estado ao religar; precisam de compilação local.
+
+Para validar nomes offline: salvar os dois campos, fechar e reabrir o launcher,
+iniciar uma luta, editar sem salvar e iniciar novamente, salvar campos vazios,
+tentar inserir/colar nove letras e testar nomes acentuados. Conferir também
+offline → online → offline, mantendo os nomes da sala no online e recuperando
+os nomes locais no offline. Os novos testes `offline_player_names_test` e
+`recomp-ui-launcher-offline-names` cobrem persistência, falhas, validação UTF-8
+e a separação entre edição e Save; sua execução exige compilação local.
 
 Como o leitor de settings também participa do fingerprint do emissor da BIOS,
 esta atualização requer uma geração local antes de compilar a release:
@@ -96,6 +212,60 @@ a preferência offline é preservada para quando a sessão terminar. O log regis
 continua ativo. Não se alteraram os sete frames de input delay observados no teste;
 VSync off não elimina esse atraso configurado. Ainda é necessária validação local
 após build, inclusive uma sessão longa para verificar eventual atraso cumulativo.
+
+### Diagnostico online: musica XA e protecao de FMV
+
+A captura de 21/10/2026 confirmou rollback ligado e VSync efetivo zero nas duas
+instancias, mas oito frames de input delay e uma defasagem persistente entre
+simulacoes. A musica XA durante a luta ativava `rb_fmv_media_active`, mesmo sem
+video de 24 bits ou MDEC recente. Essa classificacao bloqueava a predicao normal
+e suspendia timesync e a adaptacao automatica do delay durante a partida.
+
+O detector agora usa evidencia de video: display de 24 bits ou MDEC recente.
+Musica XA isolada nao ativa a protecao; videos silenciosos e a histerese entre
+frames MDEC continuam protegidos. Nao houve alteracao do pacer, dos limites de
+delay ou da politica de VSync nesta correcao. Ainda e necessario medir o efeito
+na partida e verificar possiveis causas adicionais da defasagem.
+
+Para gerar uma nova build completa (RelWithDebInfo, SDL3, launcher, rollback,
+ICE e debug server ativos), execute na raiz do repositorio:
+
+```powershell
+.\PlusAlphaProject\tools\build_online_diagnostics.ps1 -Generate -Jobs 2 -RunRegressionTests
+```
+
+O script usa uma pasta nova `PlusAlphaProject/build-online-diagnostics-xa-fix-<data-hora>`,
+com overlays proprios, e nao substitui builds existentes. `-RunRegressionTests`
+compila e executa localmente um fixture com o corpo real do detector. Ele cobre
+XA sem video, video de 24 bits, MDEC com e sem audio, fim de video com musica
+persistente e retorno de um video silencioso. Tambem esta registrado no CTest
+como `netplay_fmv_media_detection_test`. O agente nao executa essa compilacao.
+
+Depois de copiar a mesma build para as duas pastas de teste, feche as instancias
+anteriores e inicie pelo PowerShell:
+
+```powershell
+$env:PSX_DEBUG_TOGGLES = '0'
+Start-Process 'G:\sfPlus\onlineDiag1\exPlusAlpha.exe' -WorkingDirectory 'G:\sfPlus\onlineDiag1' -ArgumentList '--debug-port', '4531'
+Start-Process 'G:\sfPlus\onlineDiag2\exPlusAlpha.exe' -WorkingDirectory 'G:\sfPlus\onlineDiag2' -ArgumentList '--debug-port', '4532'
+```
+
+`PSX_DEBUG_TOGGLES=0` desativa as teclas experimentais de renderizacao e sua
+preparacao de resolucao para A/B, mantendo os comandos TCP de diagnostico.
+Cada instancia usa a propria pasta de trabalho para os relatorios locais.
+
+Em `netplay_status`, os novos campos somente de leitura `input_delay`,
+`fmv_media_active` e `xa_stream_active` permitem acompanhar o delay efetivo e
+o detector, sem inspecionar memoria do processo. Na luta com musica, esperar
+`xa_stream_active=1` e `fmv_media_active=0`; durante um FMV real, a protecao deve
+ser 1. `video_info.gl_swap_interval` deve permanecer 0 no online.
+
+Validar intro -> selecao -> luta com musica -> KO/replay -> nova luta, uma
+sessao prolongada com tempo infinito e uma revanche. Comparar a diferenca de
+ticks com consultas proximas no tempo, o delay efetivo, a confirmacao de estados
+e `desync=0` nos dois pares. Rollback ligado nao implica delay fixo ou zero:
+o automatico volta a poder ajustar o buffer durante a luta. Nao considerar a
+correcao qualificada antes desses testes locais.
 
 ### Release Windows enxuta
 

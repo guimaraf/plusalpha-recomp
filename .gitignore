@@ -48,6 +48,8 @@ gametime.save.tmp.*
 gametime.save.lock
 
 # Diagnósticos e preferências locais
+/saves/
+/psx_last_run_report.json
 *.log
 *.jsonl
 psx_crash.txt
