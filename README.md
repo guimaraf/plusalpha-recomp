@@ -69,46 +69,6 @@ You must provide your own SCPH-1001 BIOS and your own image of the USA edition `
 
 Do not open issues asking for BIOS, ROM, BIN/CUE, ISO, or extracted executables.
 
-## Recording with OBS on Windows
-
-The observations below come from earlier local builds; the current Windows release uses SDL3.
-
-For stable video capture, use **Window Capture** in OBS and select the game
-window. The game may be displayed fullscreen; capturing its window is still the
-recommended method. Avoid **Display Capture** when frame-perfect recording is
-important: in local tests, it occasionally produced apparent skipped frames in
-the recorded video even though the game itself continued reporting stable FPS
-and frame time.
-
-During my tests, I recorded two complete Arcade matches in each of the
-following configurations:
-
-- OpenGL renderer, without video encoding or resolution scaling;
-- OpenGL renderer, with video encoding and scaling from 1080p to 1440p;
-- Software renderer, with video encoding and scaling from 1080p to 1440p.
-
-Window Capture showed no FPS drops in any of my runs. The Display Capture
-behavior may involve the OBS capture path, the Windows compositor, SDL2, and the
-selected rendering backend; my tests did not isolate it as an SDL2 defect.
-
-### Interpreting CPU clock readings
-
-The CPU clock normally shown directly by MSI Afterburner/RTSS is an
-instantaneous clock and should not be treated as the processor's effective
-workload. For more representative readings, use HWiNFO's **Effective Clock**,
-exported to MSI Afterburner/RTSS through HWiNFO Shared Memory and `HwInfo.dll`.
-
-On my test machine, the clean build `buildClean-ucrt-s1-261-clean-ddark-bomb`
-typically measured about 200-400 MHz of effective CPU clock, staying near
-300 MHz during Ryu versus Ken gameplay. Running OBS increased it by roughly
-100 MHz, remaining near or below 500 MHz. These values are specific to my
-machine and test environment and are not performance requirements.
-
-Consequently, a displayed instantaneous clock near the processor's maximum is
-not, by itself, evidence that interpreted game instructions are saturating the
-CPU. Interpreted code can still have a performance cost, but it must be assessed
-with frame-time data, effective clocks, and controlled comparisons.
-
 ## Framework and Attributions
 
 The framework is located at [`guimaraf/psxrecomp-plusalpha`](https://github.com/guimaraf/psxrecomp-plusalpha) and maintains its PolyForm Noncommercial 1.0.0 license and third-party attributions in the submodule itself.
