@@ -9,5 +9,18 @@
   "original": {
     "region": "USA",
     "serial": "SLUS-00548"
-  }
+  },
+  "maintainers": [
+    {
+      "name": "guimaraf",
+      "link": "https://github.com/guimaraf"
+    }
+  ],
+  "links": [
+    {
+      "label": "GitHub",
+      "url": "https://github.com/guimaraf/plusalpha-recomp"
+    }
+  ],
+  "notes": "Native static recompilation port of Street Fighter EX Plus Alpha Recomp (USA) powered by the psxRecomp framework."
 }
