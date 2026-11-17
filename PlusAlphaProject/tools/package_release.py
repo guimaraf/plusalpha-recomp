@@ -173,13 +173,13 @@ def package(build, output, ucrt, archive=None):
                 target = notices / str(index) / path.relative_to(root)
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(path, target)
-    (output / 'LEIA-ME.txt').write_text(
+    (output / 'README.txt').write_text(
         'Ex Plus Alpha - Windows x64\n\n'
-        'Abra exPlusAlpha.exe e selecione seu disco original (CUE/BIN) e sua\n'
-        'BIOS SCPH1001.BIN no launcher. Estes arquivos nao acompanham o pacote.\n'
-        'Nao sao necessarios MSYS2, Python, CMake ou compiladores para jogar.\n'
-        'Extraia para uma pasta gravavel: configuracoes e saves sao criados ao usar.\n'
-        'O pacote inclui launcher, lobby online e rollback.\n', encoding='utf-8')
+        'Run exPlusAlpha.exe and select your own supported game disc image and\n'
+        'SCPH1001.BIN BIOS in the launcher. These files are not included.\n'
+        'MSYS2, Python, CMake and compilers are not required to play.\n'
+        'Extract to a writable folder; settings and saves are created locally.\n'
+        'The package includes the launcher, online lobby and rollback.\n', encoding='utf-8')
     files = {p.relative_to(output).as_posix(): sha256_file(p)
              for p in sorted(output.rglob('*'))
              if p.is_file() and p.name != 'PACKAGE_INCOMPLETE.txt'}

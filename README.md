@@ -2,11 +2,15 @@
 
 [![Listed on PlayPorted](https://playported.com/badge.svg)](https://playported.com/ports/227-street-fighter-ex-plus-alpha/)
 
-**[Download v0.2.4-alpha for Windows x64](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.4-alpha)** — online play, player nameplates, and a cumulative Versus scoreboard.
+**[Download v0.2.5 for Windows x64](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.5)** — requires your own SCPH1001.BIN BIOS and supported game disc.
 
 Independent static/hybrid port of **Street Fighter EX Plus Alpha** for PlayStation, dedicated exclusively to the North American edition `SLUS-00548`.
 
 The repository contains only source code, configuration, and discovery data necessary to generate the port. It does not contain BIOS, game images, extracted executables, saves, or code generated from these files.
+
+## Version 0.2.5
+
+Version 0.2.5 removes the OpenBIOS selection from the launcher when the project requires its retail BIOS. Select your own **SCPH1001.BIN** in the launcher. See the [version 0.2.5 release notes](PlusAlphaProject/RELEASE_NOTES_v0.2.5.md).
 
 ## Current features
 
@@ -24,15 +28,15 @@ The maintainer has tested offline gameplay and online matches, including online 
 
 ## Download and play
 
-The **[v0.2.4-alpha release](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.4-alpha)** provides a portable Windows x64 package:
+The **[v0.2.5 release](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.5)** provides a portable Windows x64 package:
 
-1. Download and extract `exPlusAlpha-20261021-193923.zip` into a writable folder.
+1. Download and extract `Street Fighter Alpha 0.2.5.zip` into a writable folder.
 2. Run `exPlusAlpha.exe` and select your own supported USA disc image and **SCPH1001.BIN** BIOS in the launcher.
 3. For online play, both players should use the same release and matching supported game content.
 
 The package includes the runtime/launcher, required non-system DLLs, UI assets and fonts, bundled mod resources, license notices, and an integrity manifest. Diagnostic tools, build tools, personal settings, and saves are excluded. **Python, CMake, and MSYS2 are not required to play.** Game images and BIOS files are not included.
 
-A SHA-256 checksum is provided beside the ZIP. See the **[full release notes](PlusAlphaProject/RELEASE_NOTES_v0.2.4-alpha.md)** for scoreboard behavior, package contents, and validation details. The packaged runtime version string remains `0.2.0-online-dev`; the GitHub release is identified as `v0.2.4-alpha`.
+A SHA-256 checksum is provided beside the ZIP. See the **[v0.2.5 release notes](PlusAlphaProject/RELEASE_NOTES_v0.2.5.md)** for the launcher change and the **[v0.2.4-alpha notes](PlusAlphaProject/RELEASE_NOTES_v0.2.4-alpha.md)** for earlier scoreboard details.
 
 The project is also [listed on PlayPorted](https://playported.com/ports/227-street-fighter-ex-plus-alpha/).
 
@@ -61,7 +65,7 @@ If the repository was already cloned without recursion:
 git submodule update --init --recursive
 ```
 
-Local setup instructions are in [`PlusAlphaProject/BUILD_LOCAL.md`](PlusAlphaProject/BUILD_LOCAL.md). For the current online/SDL3 build workflow, see [`PlusAlphaProject/ONLINE.md`](PlusAlphaProject/ONLINE.md) and `PlusAlphaProject/tools/build_online.ps1`. To build and package a fresh release locally, use `PlusAlphaProject/tools/build_release.ps1`. Older S1-309 scripts belong to the previous workflow.
+Local setup instructions are in [`PlusAlphaProject/BUILD_LOCAL.md`](PlusAlphaProject/BUILD_LOCAL.md). For the current online/SDL3 build workflow, see [`PlusAlphaProject/ONLINE.md`](PlusAlphaProject/ONLINE.md) and `PlusAlphaProject/tools/build_online.ps1`. To build and package a fresh release locally, follow [`PlusAlphaProject/RELEASE.md`](PlusAlphaProject/RELEASE.md). Older S1-309 scripts belong to the previous workflow.
 
 ## Protected Files
 
