@@ -30,7 +30,7 @@ The maintainer has tested offline gameplay and online matches, including online 
 
 The **[v0.2.5 release](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.5)** provides a portable Windows x64 package:
 
-1. Download and extract `Street Fighter Alpha 0.2.5.zip` into a writable folder.
+1. Download and extract `Street.Fighter.Alpha.0.2.5.zip` into a writable folder.
 2. Run `exPlusAlpha.exe` and select your own supported USA disc image and **SCPH1001.BIN** BIOS in the launcher.
 3. For online play, both players should use the same release and matching supported game content.
 
