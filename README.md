@@ -2,11 +2,15 @@
 
 [![Listed on PlayPorted](https://playported.com/badge.svg)](https://playported.com/ports/227-street-fighter-ex-plus-alpha/)
 
-**[Download v0.2.5 for Windows x64](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.5)** — requires your own SCPH1001.BIN BIOS and supported game disc.
+**[Download v0.2.51 for Windows x64](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.51)** — requires your own SCPH1001.BIN BIOS and supported game disc.
 
 Independent static/hybrid port of **Street Fighter EX Plus Alpha** for PlayStation, dedicated exclusively to the North American edition `SLUS-00548`.
 
 The repository contains only source code, configuration, and discovery data necessary to generate the port. It does not contain BIOS, game images, extracted executables, saves, or code generated from these files.
+
+## Version 0.2.51
+
+This Windows x64 release removes the generic HD Texture Packs option from the launcher. Its ZIP filename identifies Windows and x64 for compatible release launchers.
 
 ## Version 0.2.5
 
@@ -21,22 +25,22 @@ Version 0.2.5 removes the OpenBIOS selection from the launcher when the project 
 - **Cumulative match scoreboard:** each completed match adds one point to its winner. If P1 wins and then P2 wins, the score becomes **1–1**. Rematches and character changes preserve the totals.
 - **Session score resets:** returning to mode selection, starting a new session, successfully loading a manual save state, or disconnecting clears the counters. The scoreboard state participates in rollback snapshots to prevent duplicate awards during resimulation.
 - **Software and OpenGL rendering**, with an SDL3-based Windows release.
-- **Bundled enhancement and presentation resources:** 8 MB RAM, CD speed, fast loading, HD textures, PGXP, and bezel options. Included options are not necessarily enabled by default.
+- **Enhancement and presentation resources:** the source configuration includes 8 MB RAM, CD speed, fast loading, PGXP, and bezel options. The previous 0.2.5 package also includes HD Texture Packs; version 0.2.51 excludes it. Included options are not necessarily enabled by default.
 - **Pinned framework and UI submodules** to record the source revisions used by the port.
 
 The maintainer has tested offline gameplay and online matches, including online names, counters, Versus-only HUD visibility, reset on return to mode selection, and synchronized play. This is an alpha release; testing continues across network conditions and gameplay scenarios.
 
 ## Download and play
 
-The **[v0.2.5 release](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.5)** provides a portable Windows x64 package:
+The **[v0.2.51 release](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.51)** provides a portable Windows x64 package:
 
-1. Download and extract `Street.Fighter.Alpha.0.2.5.zip` into a writable folder.
+1. Download and extract `Street-Fighter-Alpha-v0.2.51-Windows-x64-20261117-230920.zip` into a writable folder.
 2. Run `exPlusAlpha.exe` and select your own supported USA disc image and **SCPH1001.BIN** BIOS in the launcher.
 3. For online play, both players should use the same release and matching supported game content.
 
 The package includes the runtime/launcher, required non-system DLLs, UI assets and fonts, bundled mod resources, license notices, and an integrity manifest. Diagnostic tools, build tools, personal settings, and saves are excluded. **Python, CMake, and MSYS2 are not required to play.** Game images and BIOS files are not included.
 
-A SHA-256 checksum is provided beside the ZIP. See the **[v0.2.5 release notes](PlusAlphaProject/RELEASE_NOTES_v0.2.5.md)** for the launcher change and the **[v0.2.4-alpha notes](PlusAlphaProject/RELEASE_NOTES_v0.2.4-alpha.md)** for earlier scoreboard details.
+A SHA-256 checksum is provided beside the ZIP. See the **[v0.2.51 release notes](PlusAlphaProject/RELEASE_NOTES_v0.2.51.md)** for the latest change, the **[v0.2.5 notes](PlusAlphaProject/RELEASE_NOTES_v0.2.5.md)** for the BIOS selection change, and the **[v0.2.4-alpha notes](PlusAlphaProject/RELEASE_NOTES_v0.2.4-alpha.md)** for earlier scoreboard details.
 
 The project is also [listed on PlayPorted](https://playported.com/ports/227-street-fighter-ex-plus-alpha/).
 

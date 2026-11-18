@@ -115,6 +115,8 @@ psxrecomp_add_game_runtime(psx-runtime
     NETPLAY_LOBBY_URL "${PSX_NET_LOBBY_DEFAULT_URL}"
     ${_overlay_args}
     CODEGEN_SETUP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/codegen_setup.c"
+    # No texture pack is provided for this title; keep the framework support available.
+    EXCLUDE_BUILTIN_MODS psx.enhancement.hd-textures
 )
 set_target_properties(psx-runtime PROPERTIES ENABLE_EXPORTS TRUE WIN32_EXECUTABLE TRUE)
 target_sources(psx-runtime PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/player_nameplates.cpp")

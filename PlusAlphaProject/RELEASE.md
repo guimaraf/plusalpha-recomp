@@ -4,21 +4,25 @@ Run the following from PowerShell on the build machine. The command builds a fre
 
 ```powershell
 Set-Location 'F:\GitRevised\alphaplus\plusalpha-recomp'
-.\PlusAlphaProject\tools\build_release.ps1 -Jobs 2 -SdlBackend SDL3
+.\PlusAlphaProject\tools\build_release_0.2.51.ps1
 ```
 
-The script reads the version from `PlusAlphaProject/VERSION`. It requires Python, the MSYS2 UCRT64 toolchain, initialized submodules, the locally prepared game sources, retained overlays, and the validated SCPH1001 BIOS. By default the BIOS is read from `bios/SCPH1001.BIN`; use `-BiosPath` to choose another path. The default retained overlays are under `PlusAlphaProject/buildTele-s1-309-bezeus/static_overlays`; use `-RetainedOverlayDir` if stored elsewhere.
+The version-specific script requires `PlusAlphaProject/VERSION` to contain `0.2.51`, builds in a fresh timestamped directory and verifies that the ZIP contains version 0.2.51 and excludes the HD Texture Packs mod. It calls `build_release.ps1` with two jobs and SDL3. It requires Python, the MSYS2 UCRT64 toolchain, initialized submodules, the locally prepared game sources, retained overlays, and the validated SCPH1001 BIOS. By default the BIOS is read from `bios/SCPH1001.BIN`; use `-BiosPath` to choose another path. The default retained overlays are under `PlusAlphaProject/buildTele-s1-309-bezeus/static_overlays`; use `-RetainedOverlayDir` if stored elsewhere.
 
-Without `-Generate`, the script uses already prepared game and BIOS sources. If they are not prepared, follow [ONLINE.md](ONLINE.md) before building. `-Generate` regenerates sources and requires the local game disc and BIOS; use it only when regeneration is intended.
+The version-specific script uses already prepared game and BIOS sources and does not regenerate them. If they are not prepared, follow [ONLINE.md](ONLINE.md). The underlying `build_release.ps1` supports `-Generate`, which regenerates sources and requires the local game disc and BIOS.
+
+## Windows release identification
+
+The project metadata in `.recomp.json` declares Windows as its target. The ZIP filename also includes `Windows-x64`, so launchers that identify release assets by platform and architecture can select it. Upload the generated ZIP and its matching `.sha256` file without renaming either file. GitHub may normalize asset names; if it does, verify that the checksum file names the uploaded ZIP. Automatic recognition depends on the launcher and its catalog settings.
 
 ## Output
 
 - `PlusAlphaProject/build-release-online-<timestamp>/`: build directory.
-- `PlusAlphaProject/dist/exPlusAlpha-<timestamp>/`: portable folder.
-- `PlusAlphaProject/dist/exPlusAlpha-<timestamp>.zip`: distribution archive.
-- `PlusAlphaProject/dist/exPlusAlpha-<timestamp>.zip.sha256`: archive checksum.
+- `PlusAlphaProject/dist/Street-Fighter-Alpha-v0.2.51-Windows-x64-<timestamp>/`: portable folder.
+- `PlusAlphaProject/dist/Street-Fighter-Alpha-v0.2.51-Windows-x64-<timestamp>.zip`: distribution archive.
+- `PlusAlphaProject/dist/Street-Fighter-Alpha-v0.2.51-Windows-x64-<timestamp>.zip.sha256`: archive checksum.
 
-The package omits BIOS, game images, saves and personal settings. The player supplies the supported USA disc image and SCPH1001.BIN. Test an extracted copy before distribution; preserve the original ZIP and compare its SHA-256 with the checksum file. `-NoZip` creates only the portable folder. `-PackageOnly -BuildDirName <existing-build-directory>` packages a compatible existing Release build without compiling.
+The package omits BIOS, game images, saves and personal settings. The player supplies the supported USA disc image and SCPH1001.BIN. Test an extracted copy before distribution; preserve the original ZIP and compare its SHA-256 with the checksum file. The underlying `build_release.ps1` supports `-NoZip` to create only the portable folder and `-PackageOnly -BuildDirName <existing-build-directory>` to package an existing compatible Release build without compiling. These switches are not accepted by the version-specific script.
 
 Do not publish a `.partial` archive. The packaging script checks the ZIP against its manifest before completing it.
 
