@@ -13,14 +13,14 @@ The version-specific script uses already prepared game and BIOS sources and does
 
 ## Windows release identification
 
-The project metadata in `.recomp.json` declares Windows as its target. The ZIP filename also includes `Windows-x64`, so launchers that identify release assets by platform and architecture can select it. Upload the generated ZIP and its matching `.sha256` file without renaming either file. GitHub may normalize asset names; if it does, verify that the checksum file names the uploaded ZIP. Automatic recognition depends on the launcher and its catalog settings.
+The project metadata in `.recomp.json` declares Windows as its target. The ZIP filename uses the `exPlusAlpha-` prefix required by the current RecompLauncher catalog and includes `Windows-x64` to identify the target platform and architecture. Upload the generated ZIP and its matching `.sha256` file without renaming either file. GitHub may normalize asset names; if it does, verify that the checksum file names the uploaded ZIP. Automatic recognition depends on the launcher and its catalog settings.
 
 ## Output
 
 - `PlusAlphaProject/build-release-online-<timestamp>/`: build directory.
-- `PlusAlphaProject/dist/Street-Fighter-Alpha-v0.2.51-Windows-x64-<timestamp>/`: portable folder.
-- `PlusAlphaProject/dist/Street-Fighter-Alpha-v0.2.51-Windows-x64-<timestamp>.zip`: distribution archive.
-- `PlusAlphaProject/dist/Street-Fighter-Alpha-v0.2.51-Windows-x64-<timestamp>.zip.sha256`: archive checksum.
+- `PlusAlphaProject/dist/exPlusAlpha-v0.2.51-Windows-x64-<timestamp>/`: portable folder.
+- `PlusAlphaProject/dist/exPlusAlpha-v0.2.51-Windows-x64-<timestamp>.zip`: distribution archive.
+- `PlusAlphaProject/dist/exPlusAlpha-v0.2.51-Windows-x64-<timestamp>.zip.sha256`: archive checksum.
 
 The package omits BIOS, game images, saves and personal settings. The player supplies the supported USA disc image and SCPH1001.BIN. Test an extracted copy before distribution; preserve the original ZIP and compare its SHA-256 with the checksum file. The underlying `build_release.ps1` supports `-NoZip` to create only the portable folder and `-PackageOnly -BuildDirName <existing-build-directory>` to package an existing compatible Release build without compiling. These switches are not accepted by the version-specific script.
 

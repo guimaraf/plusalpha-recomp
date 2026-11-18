@@ -11,7 +11,7 @@ $projectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $version = (Get-Content -LiteralPath (Join-Path $projectRoot 'VERSION') -Raw).Trim()
 if ($version -ne '0.2.51') { throw "Expected VERSION 0.2.51, found '$version'." }
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
-$output = Join-Path $projectRoot "dist\Street-Fighter-Alpha-v0.2.51-Windows-x64-$stamp"
+$output = Join-Path $projectRoot "dist\exPlusAlpha-v0.2.51-Windows-x64-$stamp"
 $argsForRelease = @{
     Jobs = $Jobs
     Msys2Root = $Msys2Root

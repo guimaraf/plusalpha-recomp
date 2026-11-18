@@ -2,11 +2,15 @@
 
 [![Listed on PlayPorted](https://playported.com/badge.svg)](https://playported.com/ports/227-street-fighter-ex-plus-alpha/)
 
-**[Download v0.2.51 for Windows x64](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.51)** — requires your own SCPH1001.BIN BIOS and supported game disc.
+**[Download v0.2.52 for Windows x64](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.52)** — requires your own SCPH1001.BIN BIOS and supported game disc.
 
 Independent static/hybrid port of **Street Fighter EX Plus Alpha** for PlayStation, dedicated exclusively to the North American edition `SLUS-00548`.
 
 The repository contains only source code, configuration, and discovery data necessary to generate the port. It does not contain BIOS, game images, extracted executables, saves, or code generated from these files.
+
+## Version 0.2.52
+
+Version 0.2.52 republishes the tested 0.2.51 Windows x64 build under an `exPlusAlpha-` filename compatible with the RecompLauncher catalog. The executable and its internal version remain 0.2.51; no game code was rebuilt for this release.
 
 ## Version 0.2.51
 
@@ -32,15 +36,15 @@ The maintainer has tested offline gameplay and online matches, including online 
 
 ## Download and play
 
-The **[v0.2.51 release](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.51)** provides a portable Windows x64 package:
+The **[v0.2.52 release](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.52)** provides a portable Windows x64 package:
 
-1. Download and extract `Street-Fighter-Alpha-v0.2.51-Windows-x64-20261117-230920.zip` into a writable folder.
+1. Download and extract `exPlusAlpha-v0.2.52-Windows-x64.zip` into a writable folder.
 2. Run `exPlusAlpha.exe` and select your own supported USA disc image and **SCPH1001.BIN** BIOS in the launcher.
 3. For online play, both players should use the same release and matching supported game content.
 
 The package includes the runtime/launcher, required non-system DLLs, UI assets and fonts, bundled mod resources, license notices, and an integrity manifest. Diagnostic tools, build tools, personal settings, and saves are excluded. **Python, CMake, and MSYS2 are not required to play.** Game images and BIOS files are not included.
 
-A SHA-256 checksum is provided beside the ZIP. See the **[v0.2.51 release notes](PlusAlphaProject/RELEASE_NOTES_v0.2.51.md)** for the latest change, the **[v0.2.5 notes](PlusAlphaProject/RELEASE_NOTES_v0.2.5.md)** for the BIOS selection change, and the **[v0.2.4-alpha notes](PlusAlphaProject/RELEASE_NOTES_v0.2.4-alpha.md)** for earlier scoreboard details.
+A SHA-256 checksum is provided beside the ZIP. See the **[v0.2.52 release notes](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.52)** for the repackaging details, the **[v0.2.51 release notes](PlusAlphaProject/RELEASE_NOTES_v0.2.51.md)** for the latest change, the **[v0.2.5 notes](PlusAlphaProject/RELEASE_NOTES_v0.2.5.md)** for the BIOS selection change, and the **[v0.2.4-alpha notes](PlusAlphaProject/RELEASE_NOTES_v0.2.4-alpha.md)** for earlier scoreboard details.
 
 The project is also [listed on PlayPorted](https://playported.com/ports/227-street-fighter-ex-plus-alpha/).
 
