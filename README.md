@@ -1,6 +1,7 @@
 # Street Fighter EX Plus Alpha Recomp
 
 [![Listed on PlayPorted](https://playported.com/badge.svg)](https://playported.com/ports/227-street-fighter-ex-plus-alpha/)
+[![Verified developer on RecompStore](https://recompstore.com/assets/press/verified-dark.svg)](https://recompstore.com/dev/guimaraf)
 
 **[Download v0.2.52 for Windows x64](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.52)** — requires your own SCPH1001.BIN BIOS and supported game disc.
 
