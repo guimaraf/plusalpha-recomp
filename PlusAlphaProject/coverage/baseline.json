@@ -1,0 +1,246 @@
+{
+  "exe": {
+    "covered_words": 154639,
+    "dispatch_entries": 21908,
+    "functions": 1359
+  },
+  "overlays": {
+    "OVL/PL00_1.OVL": {
+      "covered_words": 3062,
+      "entries": 103
+    },
+    "OVL/PL01_1.OVL": {
+      "covered_words": 5,
+      "entries": 1
+    },
+    "OVL/PL02_1.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL/PL03_1.OVL": {
+      "covered_words": 4741,
+      "entries": 153
+    },
+    "OVL/PL04_1.OVL": {
+      "covered_words": 5,
+      "entries": 1
+    },
+    "OVL/PL05_1.OVL": {
+      "covered_words": 10,
+      "entries": 2
+    },
+    "OVL/PL06_1.OVL": {
+      "covered_words": 2898,
+      "entries": 155
+    },
+    "OVL/PL07_1.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL/PL08_1.OVL": {
+      "covered_words": 3957,
+      "entries": 97
+    },
+    "OVL/PL09_1.OVL": {
+      "covered_words": 3544,
+      "entries": 102
+    },
+    "OVL/PL0A_1.OVL": {
+      "covered_words": 3475,
+      "entries": 103
+    },
+    "OVL/PL0B_1.OVL": {
+      "covered_words": 4972,
+      "entries": 154
+    },
+    "OVL/PL0C_1.OVL": {
+      "covered_words": 6770,
+      "entries": 165
+    },
+    "OVL/PL0D_1.OVL": {
+      "covered_words": 4296,
+      "entries": 183
+    },
+    "OVL/PL0E_1.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL/PL0F_1.OVL": {
+      "covered_words": 2001,
+      "entries": 124
+    },
+    "OVL/PL10_1.OVL": {
+      "covered_words": 7081,
+      "entries": 196
+    },
+    "OVL/PL11_1.OVL": {
+      "covered_words": 7081,
+      "entries": 196
+    },
+    "OVL/PL12_1.OVL": {
+      "covered_words": 6770,
+      "entries": 165
+    },
+    "OVL/PL13_1.OVL": {
+      "covered_words": 4338,
+      "entries": 99
+    },
+    "OVL/PL14_1.OVL": {
+      "covered_words": 3475,
+      "entries": 103
+    },
+    "OVL/PL15_1.OVL": {
+      "covered_words": 4972,
+      "entries": 154
+    },
+    "OVL/PL16_1.OVL": {
+      "covered_words": 2502,
+      "entries": 81
+    },
+    "OVL/PL17_1.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL/PL18_1.OVL": {
+      "covered_words": 6215,
+      "entries": 120
+    },
+    "OVL/PL19_1.OVL": {
+      "covered_words": 5649,
+      "entries": 169
+    },
+    "OVL2/PL00_2.OVL": {
+      "covered_words": 14,
+      "entries": 1
+    },
+    "OVL2/PL01_2.OVL": {
+      "covered_words": 4547,
+      "entries": 107
+    },
+    "OVL2/PL02_2.OVL": {
+      "covered_words": 2028,
+      "entries": 61
+    },
+    "OVL2/PL03_2.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL2/PL04_2.OVL": {
+      "covered_words": 2121,
+      "entries": 99
+    },
+    "OVL2/PL05_2.OVL": {
+      "covered_words": 2124,
+      "entries": 98
+    },
+    "OVL2/PL06_2.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL2/PL07_2.OVL": {
+      "covered_words": 3358,
+      "entries": 94
+    },
+    "OVL2/PL08_2.OVL": {
+      "covered_words": 5,
+      "entries": 1
+    },
+    "OVL2/PL09_2.OVL": {
+      "covered_words": 17,
+      "entries": 3
+    },
+    "OVL2/PL0A_2.OVL": {
+      "covered_words": 2554,
+      "entries": 86
+    },
+    "OVL2/PL0B_2.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL2/PL0C_2.OVL": {
+      "covered_words": 6727,
+      "entries": 178
+    },
+    "OVL2/PL0D_2.OVL": {
+      "covered_words": 3621,
+      "entries": 130
+    },
+    "OVL2/PL0E_2.OVL": {
+      "covered_words": 3289,
+      "entries": 71
+    },
+    "OVL2/PL0F_2.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL2/PL10_2.OVL": {
+      "covered_words": 7548,
+      "entries": 238
+    },
+    "OVL2/PL11_2.OVL": {
+      "covered_words": 7548,
+      "entries": 238
+    },
+    "OVL2/PL12_2.OVL": {
+      "covered_words": 6727,
+      "entries": 178
+    },
+    "OVL2/PL13_2.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL2/PL14_2.OVL": {
+      "covered_words": 2554,
+      "entries": 86
+    },
+    "OVL2/PL15_2.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL2/PL16_2.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL2/PL17_2.OVL": {
+      "covered_words": 2693,
+      "entries": 163
+    },
+    "OVL2/PL18_2.OVL": {
+      "covered_words": 4842,
+      "entries": 80
+    },
+    "OVL2/PL19_2.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL3/BONUS.OVL": {
+      "covered_words": 6847,
+      "entries": 108
+    },
+    "OVL3/END.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL3/MC_I.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL3/MC_M.OVL": {
+      "covered_words": 0,
+      "entries": 0
+    },
+    "OVL3/MOV.OVL": {
+      "covered_words": 1298,
+      "entries": 57
+    },
+    "OVL3/OPTS.OVL": {
+      "covered_words": 3658,
+      "entries": 81
+    },
+    "OVL3/QUES.PAC": {
+      "covered_words": 3049,
+      "entries": 34
+    }
+  },
+  "schema": 1
+}

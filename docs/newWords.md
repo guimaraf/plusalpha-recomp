@@ -17,6 +17,8 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
+> **Official metric (Phase 0, 2026-11-24).** From now on, coverage is measured by `python PlusAlphaProject/tools/coverage_metric.py`, which counts **unique** words, and guarded by `--check` against `PlusAlphaProject/coverage/baseline.json`. Current value: **154.639 / 174.276 code words (88,7322%)**, 1.359 functions and 21.908 dispatcher entries (`generated-online`). Cumulative figures below that came from summing manifest `R` lines may double-count alias ranges: the S1-309 figure of 154.846 contained 202 duplicated words. The quarantines are exactly `0x801AB1F4..0x801AB237` (SIO) and `0x801AB2C0..0x801AB2EF` (SMC). The entries below are kept as a historical record.
+
 - **Validated Checkpoint**: **S1-305** (Skullo Dream cinematics and 3D camera setup - `0x8013B070..0x8013BFA8`: `0x8013B070`, `0x8013B078`, `0x8013B10C`, `0x8013B114`, `0x8013B328`, 5 functions, 1.148 words / 4.592 bytes; successfully validated in `gameplay-discovery-139`, eliminating 100% of Main EXE candidates; 1.320 native functions, 146.054 words, 74,6758%).
 - **Active Batch**: None (S1-305 validation complete).
 - **Current Main Binary Coverage**: **146,054 / 195,584 words (74.6758%)** (Validated S1-305).

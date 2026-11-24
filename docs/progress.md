@@ -1,9 +1,11 @@
 # Project Progress Status: Street Fighter EX Plus Alpha (SLUS-005.48)
 
 ## 1. Track 1: Static Recompilation (Main EXE)
-- **Native Functions**: 1.358 (+1 in batch S1-309)
-- **Recompiled Words**: 154.846 words (619.384 bytes)
-- **Main EXE Coverage**: 79,1711% (base: 195.584 words)
+- **Official metric (Phase 0, 2026-11-24)**: `python PlusAlphaProject/tools/coverage_metric.py` (guard: `--check` against `PlusAlphaProject/coverage/baseline.json`; exclusions in `PlusAlphaProject/coverage/exclusions.json`).
+- **Native Functions**: 1.359 (`generated-online`; S1-309 `generated/` had 1.358)
+- **Recompiled Words (unique)**: 154.639 of 174.276 code words — **88,7322%** of real code; 79,07% of the full 195.584-word text segment, which includes 21.254 words of trailing data.
+- **Dispatcher entries**: 21.908 (all inside compiled ranges).
+- **Correction**: the previous figure of 154.846 words (79,1711%) summed `R` lines of the manifest, and three alias entries repeat the same range (`0x8013B070`, `0x8013B10C`, `0x8019CB4C`, 202 words counted twice). The unique S1-309 count was 154.644. The current online generation lost a further 5 words (`0x8019CB8C..0x8019CB9F`) and the entry `0x8019CB8C`.
 - **Misses in Gameplay, Menus, Pause, Command List, Bonus Stage, and Expert Mode**: 0 (100% native across all execution paths)
 - **Main Pause Menu (`0x80172DD0..0x8017566C`)**: VALIDATED (S1-306, Test 164)
 - **Command List & 3D Submenus (`0x80183734..0x80185CC0` and GTE `0x8019`)**: VALIDATED (S1-307, Test 165)

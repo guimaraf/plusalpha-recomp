@@ -20,14 +20,14 @@ O "100%" anterior era 100% dos **caminhos jogados**, não 100% do código do jog
 
 - Teto real do EXE: **174.305 palavras de código (89,12%)**.
 - Evidência conferida: `0x80103E24..0x80103E3C` faz `lui/addiu 0x801AF960; addu; lw; jalr`. A tabela contém `0x8016FC28`, `0x801040E8`, `0x8010A5FC`, `0x80169B78`, `0x8010ABC8`, `0x8010ACD8`, `0x8010ADE8`, `0x8017566C`. `0x8010A5FC` e outras não estão nos ranges nem em `seeds/entry_funcs.txt`.
-- Os documentos citam 154.846 palavras, mas os ranges atuais dão 154.639 (`generated-online`) e 154.644 (`generated`). As 207 palavras de diferença precisam ser explicadas.
+- **Reconciliado na Fase 0:** as 154.846 palavras eram a soma bruta das linhas `R` do manifesto S1-309. Três aliases repetem o mesmo range (`0x8013B070`, `0x8013B10C` e `0x8019CB4C`), o que conta 202 palavras duas vezes. O valor único do S1-309 é 154.644. A geração online atual (154.639) perdeu mais 5 palavras, `0x8019CB8C..0x8019CB9F`, e a entrada `0x8019CB8C`, que o S1-309 despachava. Essa entrada é um alias sem predecessor direto e é candidata ao primeiro micro-lote da Fase 2.
 - **Raízes P1** (ver `track1/functions_uncovered.csv` e `roots.csv`):
   - funções: `0x8018D298`, `0x8010A5FC`, `0x8010AFDC`, `0x80102FAC`, `0x80131A3C`, `0x80162848`, `0x80102D80`, `0x80107EF0`, `0x8010809C`, `0x80107D80`, `0x8017FEC0`, `0x8016321C`, `0x8010ABC8`, `0x8010ACD8`, `0x8016313C`, `0x80127320`, `0x80162B18`, `0x8019F9E4`, mais cerca de 36 outras;
   - tabelas: `0x801AF960`, `0x801AF874`, `0x801B037C`, `0x801B1B20`, `0x801B3374`, `0x801B7EF0`, `0x801B85A0`.
 - **Maiores clusters sem referência** (`track1/D_clusters.csv`): `0x80180018` (983), `0x80169984` (935), `0x8019AD94` (505), `0x80129E1C` (476), `0x8018D974` (422).
 - **Stubs PsyQ descobertos:** `0x8019376C`, `0x8019377C`, `0x8019FB74`, `0x801AB1D0`.
 
-### Overlays do disco (58 imagens de código)
+### Overlays do disco (59 imagens de código)
 
 | Arquivo | Base | Estado |
 |---|---|---|
@@ -54,11 +54,11 @@ O "100%" anterior era 100% dos **caminhos jogados**, não 100% do código do jog
 
 ## 2. Definição de 100%
 
-100% = todas as palavras de **código real** do EXE e das 58 imagens de overlay compiladas nativamente, com todas as entradas no despachante. As únicas exceções são as de uma lista versionada e justificada:
+100% = todas as palavras de **código real** do EXE e das 59 imagens de overlay compiladas nativamente, com todas as entradas no despachante. As únicas exceções são as de uma lista versionada e justificada:
 
 - dados;
 - BIOS/kernel `0x8000xxxx` em HLE, por decisão arquitetural;
-- quarentenas `0x801AB1F4` (SIO) e `0x801AB2C0..0x801AB3E8` (SMC);
+- quarentenas `0x801AB1F4..0x801AB238` (SIO) e `0x801AB2C0..0x801AB2F0` (SMC), com limite superior exclusivo; o intervalo `0x801AB2F0..0x801AB35C` já é compilado;
 - código provado morto.
 
 ## 3. Fases
@@ -92,6 +92,16 @@ Autorizado pelo usuário em 2026-11-24. O agente pode compilar, executar o jogo,
 - Um script determinístico mede o EXE e cada overlay (palavras de código e entradas), a partir dos ranges e do disco, aplicando a lista de exclusões.
 - Reconciliar a diferença 154.846 × 154.639 e corrigir `docs/progress.md`, `docs/newWords.md` e `docs/newChat.md`.
 - **Aceite:** um número reproduzível por comando e uma guarda que falha se a cobertura cair.
+
+**Resultado (2026-11-24):**
+
+- Script: `python PlusAlphaProject/tools/coverage_metric.py`. Com `--json PATH` gera o relatório determinístico. `--check` é a guarda: sai com 1 se a cobertura cair em relação a `PlusAlphaProject/coverage/baseline.json`. `--update-baseline` atualiza a linha de base, sempre de forma explícita.
+- As exclusões versionadas ficam em `PlusAlphaProject/coverage/exclusions.json`. São três categorias:
+  - dados: 21.254 palavras;
+  - padding: 25;
+  - quarentenas: 29.
+- EXE: **154.639 de 174.276 palavras de código (88,7322%)**, 1.359 funções e 21.908 entradas no despachante. Nenhuma palavra compilada cai nas exclusões.
+- Overlays: 164.988 de 442.006 palavras (37,33%), com 3.840 de 3.885 variantes casando com o disco e 45 sem casamento. O denominador ainda é provisório: conta o arquivo inteiro. A Fase 1 deve trocá-lo pelo extent de código.
 
 ### Fase 1 — Overlays AOT a partir do disco (maior ganho)
 

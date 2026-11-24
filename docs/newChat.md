@@ -25,7 +25,8 @@
 - **Status**: **100% VALIDATED** (Micro-batch S1-309, commit `d4c0bc8`).
 - **Current Metrics**:
   - **1.358 native functions** compiled into the main executable.
-  - **154.846 MIPS words** (619.384 bytes) — **79,1711%** of the base executable (`195.584` words). The remaining 20,83% consists of constants, *jump tables*, strings, and inaccessible arcade code.
+  - **154.639 unique MIPS words** (`generated-online`, 1.359 functions) — **88,7322%** of the 174.276 real code words; 79,07% of the full text segment (`195.584` words). Official metric: `python PlusAlphaProject/tools/coverage_metric.py` (see [`PLANO_100.md`](PLANO_100.md), Fase 0).
+  - The previous figure of 154.846 words (79,1711%) double-counted 202 words of alias ranges; see [`progress.md`](progress.md).
   - **Static Runtime Misses**: **EXACTLY ZERO** across all tested paths (Boot, FMVs, Menus, Options, Mode Select, Character Select, 26/26 Combat, Pause, Command List, Barrel Bonus Stage, Replay, Records, Expert Mode, and Training Mode).
 - **Reference Documents**: [`progress.md`](progress.md) and [`buildResume.md`](buildResume.md).
 

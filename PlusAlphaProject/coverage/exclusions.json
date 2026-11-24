@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "exe": {"text_lo": "0x80101000", "text_hi": "0x801C0000"},
+  "exclusions": [
+    {"lo": "0x801AB3E8", "hi": "0x801C0000", "category": "dados", "reason": "cauda de dados do EXE (strings, tabelas de ponteiros, zeros); nenhuma palavra compilada; classificacao da analise estatica de 2026-11-24 (track1)"},
+    {"lo": "0x8019CA28", "hi": "0x8019CA30", "category": "padding", "reason": "zeros entre funcoes (track1 lab.pkl rotulo pad)"},
+    {"lo": "0x8019D394", "hi": "0x8019D3A0", "category": "padding", "reason": "zeros entre funcoes (track1 lab.pkl rotulo pad)"},
+    {"lo": "0x8019D734", "hi": "0x8019D740", "category": "padding", "reason": "zeros entre funcoes (track1 lab.pkl rotulo pad)"},
+    {"lo": "0x8019D848", "hi": "0x8019D850", "category": "padding", "reason": "zeros entre funcoes (track1 lab.pkl rotulo pad)"},
+    {"lo": "0x8019DAC8", "hi": "0x8019DAD0", "category": "padding", "reason": "zeros entre funcoes (track1 lab.pkl rotulo pad)"},
+    {"lo": "0x8019DB48", "hi": "0x8019DB50", "category": "padding", "reason": "zeros entre funcoes (track1 lab.pkl rotulo pad)"},
+    {"lo": "0x8019E868", "hi": "0x8019E870", "category": "padding", "reason": "zeros entre funcoes (track1 lab.pkl rotulo pad)"},
+    {"lo": "0x8019EA08", "hi": "0x8019EA10", "category": "padding", "reason": "zeros entre funcoes (track1 lab.pkl rotulo pad)"},
+    {"lo": "0x8019FB58", "hi": "0x8019FB64", "category": "padding", "reason": "zeros entre funcoes (track1 lab.pkl rotulo pad)"},
+    {"lo": "0x801AB370", "hi": "0x801AB380", "category": "padding", "reason": "zeros entre funcoes (track1 lab.pkl rotulo pad)"},
+    {"lo": "0x801AB1F4", "hi": "0x801AB238", "category": "quarentena", "reason": "SIO/joypad busy-wait, interpretada por contrato; ver docs/newWords.md"},
+    {"lo": "0x801AB2C0", "hi": "0x801AB2F0", "category": "quarentena", "reason": "SMC, troca 5 instrucoes em runtime"}
+  ]
+}
