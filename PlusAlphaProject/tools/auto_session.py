@@ -39,11 +39,15 @@ BUTTON_BITS = {
 BUTTON_ALIASES = {"x": "cross", "o": "circle", "sq": "square", "tri": "triangle"}
 IDLE_WORD = 0xFFFF
 
-STEP_TYPES = {"wait_frames", "press", "screenshot", "savestate", "telemetry", "expect"}
+STEP_TYPES = {"wait_frames", "press", "screenshot", "savestate", "telemetry", "expect",
+              "read_ram", "wait_ram", "fntrace", "dispatch_misses"}
+FNTRACE_ARM_MAX = 32  # runtime/include/fntrace.h
+EXE_PHYS_LO, EXE_PHYS_HI = 0x00101000, 0x001C0000  # texto do EXE principal (fisico)
 EXPECT_CHECKS = {"frame_min", "fmv_field", "shot_differs", "shot_equals", "ok"}
 TELEMETRY_KEYS = {"dispatch_stats", "overlay_interp_hot", "static_text_misses",
                   "frame_perf", "fmv_state", "frame", "overlay_loader_status",
-                  "dirty_ram_stats", "segment_misses", "phase_profile", "latency"}
+                  "dirty_ram_stats", "segment_misses", "phase_profile", "latency",
+                  "dispatch_misses"}
 OVERLAY_SOURCES = ("aot", "retained")
 STATIC_MATCH_CACHE_CAP = 16384  # overlay_loader.c: cache de CRC dos overlays estaticos
 
@@ -61,6 +65,61 @@ def pick_monitor1(rects):
     if tuple(rects[0]) == r:
         raise RuntimeError("Monitor 1 identico ao monitor 0 (espelhado?): nao executo.")
     return r
+
+
+def parse_addr(value):
+    """Endereco como int ou string ('0x801D39B8'); levanta ValueError se invalido."""
+    if isinstance(value, bool):
+        raise ValueError(f"endereco invalido: {value!r}")
+    if isinstance(value, int):
+        return value
+    return int(str(value), 0)
+
+
+def le_value(hex_str, size):
+    """Valor little-endian (ate 8 bytes) de uma string hex devolvida por read_ram."""
+    raw = bytes.fromhex(hex_str)[:size]
+    return int.from_bytes(raw, "little")
+
+
+def exe_misses(summary):
+    """Linhas de unknown_dispatch_log (phys, count) que caem no texto do EXE principal,
+    como [{"pc": "0x80xxxxxx", "count": n}] ordenadas por contagem."""
+    out = []
+    for row in summary or []:
+        phys = int(str(row.get("phys", "0")), 0)
+        if EXE_PHYS_LO <= phys < EXE_PHYS_HI:
+            out.append({"pc": f"0x{0x80000000 | phys:08X}", "count": int(row.get("count", 0))})
+    return sorted(out, key=lambda r: -r["count"])
+
+
+def exe_interp_pcs(per_pc):
+    """PCs do texto do EXE principal que rodaram interpretados (dirty_ram_stats.per_pc, fisicos):
+    [{"pc": "0x80xxxxxx", "hits": n, "insns": n}] por insns decrescente. Sao os misses reais
+    de compilacao estatica neste runtime (unknown_dispatch_log so conta despachos sem alvo)."""
+    out = []
+    for e in per_pc or []:
+        phys = int(str(e.get("pc", "0")), 0) & 0x1FFFFFFF
+        if EXE_PHYS_LO <= phys < EXE_PHYS_HI:
+            out.append({"pc": f"0x{0x80000000 | phys:08X}", "hits": e.get("hits", 0),
+                        "insns": e.get("insns", 0)})
+    return sorted(out, key=lambda r: -r["insns"])
+
+
+def count_fntrace_hits(entries, pcs):
+    """{pc: {"hits": n, "first_frame": f, "last_frame": f}} para cada PC armado."""
+    res = {f"0x{pc:08X}": {"hits": 0} for pc in pcs}
+    for e in entries or []:
+        key = f"0x{int(str(e['target']), 0):08X}"
+        if key not in res:
+            continue
+        r = res[key]
+        r["hits"] += 1
+        fr = e.get("frame")
+        if fr is not None:
+            r["first_frame"] = fr if "first_frame" not in r else min(r["first_frame"], fr)
+            r["last_frame"] = fr if "last_frame" not in r else max(r["last_frame"], fr)
+    return res
 
 
 def button_mask(names):
@@ -113,6 +172,41 @@ def validate_route(route):
                 raise ValueError(f"{where}: op deve ser save|load")
             if not isinstance(step.get("slot", 0), int) or step.get("slot", 0) < 0:
                 raise ValueError(f"{where}: slot invalido")
+        elif kind == "read_ram":
+            if not step.get("name"):
+                raise ValueError(f"{where}: read_ram requer name")
+            try:
+                parse_addr(step.get("addr"))
+            except (ValueError, TypeError):
+                raise ValueError(f"{where}: read_ram requer addr valido")
+            if not isinstance(step.get("size", 1), int) or not 1 <= step.get("size", 1) <= 4096:
+                raise ValueError(f"{where}: size deve ficar entre 1 e 4096")
+        elif kind == "wait_ram":
+            try:
+                parse_addr(step.get("addr"))
+            except (ValueError, TypeError):
+                raise ValueError(f"{where}: wait_ram requer addr valido")
+            if not isinstance(step.get("size", 1), int) or not 1 <= step.get("size", 1) <= 4:
+                raise ValueError(f"{where}: wait_ram size deve ficar entre 1 e 4")
+            if not (isinstance(step.get("values"), list) or isinstance(step.get("not_values"), list)):
+                raise ValueError(f"{where}: wait_ram requer values ou not_values")
+            if not isinstance(step.get("timeout_frames", 600), int) or step.get("timeout_frames", 600) <= 0:
+                raise ValueError(f"{where}: timeout_frames deve ser inteiro positivo")
+        elif kind == "fntrace":
+            op = step.get("op")
+            if op not in ("arm", "dump"):
+                raise ValueError(f"{where}: fntrace op deve ser arm|dump")
+            if op == "arm":
+                pcs = step.get("pcs")
+                if not isinstance(pcs, list) or not pcs or len(pcs) > FNTRACE_ARM_MAX:
+                    raise ValueError(f"{where}: fntrace arm requer 1..{FNTRACE_ARM_MAX} pcs")
+                for pc in pcs:
+                    parse_addr(pc)
+            elif not step.get("name"):
+                raise ValueError(f"{where}: fntrace dump requer name")
+        elif kind == "dispatch_misses":
+            if not step.get("name"):
+                raise ValueError(f"{where}: dispatch_misses requer name")
         elif kind == "telemetry":
             if not step.get("name"):
                 raise ValueError(f"{where}: telemetry requer name")
@@ -153,18 +247,24 @@ def build_game_command(exe, game_toml, memcard_dir, port, disc=None, bios=None):
     return cmd
 
 
-def build_powershell_command(build_dir_name, jobs, static_overlay_dir, overlay_source="aot"):
+def build_powershell_command(build_dir_name, jobs, static_overlay_dir, overlay_source="aot",
+                             generated_dir=None, seeds_file=None):
     if not build_dir_name.startswith("build-auto-"):
         raise ValueError("o build autonomo deve usar build-auto-<timestamp>")
     if not 1 <= jobs <= 4:
         raise ValueError("jobs deve ficar entre 1 e 4")
     if overlay_source not in OVERLAY_SOURCES:
         raise ValueError(f"overlay_source deve ser um de {OVERLAY_SOURCES}")
-    return ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
-            str(TOOLS_DIR / "build_online.ps1"),
-            "-BuildDirName", build_dir_name, "-Jobs", str(jobs),
-            "-StaticOverlayDir", str(static_overlay_dir),
-            "-OverlaySource", overlay_source]
+    cmd = ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+           str(TOOLS_DIR / "build_online.ps1"),
+           "-BuildDirName", build_dir_name, "-Jobs", str(jobs),
+           "-StaticOverlayDir", str(static_overlay_dir),
+           "-OverlaySource", overlay_source]
+    if generated_dir:  # geracao isolada por lote (fontes em <build>/generated)
+        cmd += ["-GeneratedDir", str(generated_dir)]
+        if seeds_file:
+            cmd += ["-SeedsFile", str(seeds_file)]
+    return cmd
 
 
 def static_overlay_dir_for(build_dir, overlay_source):
@@ -397,12 +497,27 @@ def no_concurrent_build():
         raise RuntimeError(f"build concorrente detectado ({', '.join(busy)}); aguarde.")
 
 
-def do_build(evidence, jobs=4, overlay_source="aot"):
+def resolve_reuse_name(value):
+    """Nome (build-auto-*) de um build a reaproveitar; aceita caminho ou nome."""
+    name = Path(value).name
+    if not name.startswith("build-auto-"):
+        raise ValueError("--reuse-build deve ser um build-auto-*")
+    return name
+
+
+def do_build(evidence, jobs=4, overlay_source="aot", reuse_build=None, seeds=None):
+    """reuse_build: nome de um build-auto-* (criado se nao existir) reaproveitado entre lotes; o
+    ninja recompila so os shards alterados. Com reuse_build ou seeds, as fontes do EXE vao para
+    <build>/generated (geracao isolada), a partir de `seeds` (padrao seeds/entry_funcs.txt)."""
     no_concurrent_build()
-    name = "build-auto-" + now_stamp()
+    name = resolve_reuse_name(reuse_build) if reuse_build else "build-auto-" + now_stamp()
     build_dir = PROJECT_ROOT / name
     overlays = static_overlay_dir_for(build_dir, overlay_source)
-    cmd = build_powershell_command(name, jobs, overlays, overlay_source)
+    isolated = bool(reuse_build or seeds)
+    generated = build_dir / "generated" if isolated else None
+    seeds_file = Path(seeds).resolve() if seeds else (
+        PROJECT_ROOT / "seeds" / "entry_funcs.txt" if isolated else None)
+    cmd = build_powershell_command(name, jobs, overlays, overlay_source, generated, seeds_file)
     log = evidence / "build.log"
     t0 = time.time()
     with open(log, "w", encoding="utf-8", errors="replace") as lf:
@@ -412,7 +527,9 @@ def do_build(evidence, jobs=4, overlay_source="aot"):
                               creationflags=BELOW_NORMAL, cwd=str(PROJECT_ROOT))
     dur = time.time() - t0
     info = {"build_dir": str(build_dir), "overlay_source": overlay_source,
-            "static_overlay_dir": str(overlays), "command": cmd, "exit_code": proc.returncode,
+            "static_overlay_dir": str(overlays), "generated_dir": str(generated) if generated else None,
+            "seeds_file": str(seeds_file) if seeds_file else None,
+            "reused_build": bool(reuse_build), "command": cmd, "exit_code": proc.returncode,
             "duration_s": round(dur, 1), "log": str(log)}
     (evidence / "build.json").write_text(json.dumps(info, indent=2), encoding="utf-8")
     if proc.returncode != 0 or not (build_dir / EXE_NAME).is_file():
@@ -435,6 +552,10 @@ class Session:
         self.shots = {}
         self.record = {"steps": [], "focus": {}, "timings": {}}
         self.tele_prev = None
+        self.vars = {}        # valores de read_ram/wait_ram por nome
+        self.scene_log = []   # sequencia de leituras read_ram
+        self.miss_log = []    # sequencia de dispatch_misses
+        self.armed_pcs = []
 
     # foco -------------------------------------------------------------
     def sample_focus(self, label):
@@ -560,13 +681,15 @@ class Session:
     def telemetry(self, name, which):
         # static_text_misses/overlay_interp_hot so existem no runtime do fork
         # psxrecomp-plusalpha; aqui o erro "unknown command" fica registrado.
-        which = which or ["dispatch_stats", "static_text_misses", "overlay_interp_hot",
+        which = which or ["dispatch_stats", "dispatch_misses", "overlay_interp_hot",
                           "frame_perf", "fmv_state", "frame", "overlay_loader_status",
                           "dirty_ram_stats", "segment_misses", "phase_profile", "latency"]
         out = {"name": name, "frame_at": self.frame(), "wall_s": round(time.time(), 3)}
         for key in which:
             try:
-                if key == "static_text_misses":
+                if key == "dispatch_misses":
+                    r = self.dispatch_misses()
+                elif key == "static_text_misses":
                     r = self.cmd("static_text_misses", **{"class": "all", "offset": 0, "limit": 256})
                 elif key == "phase_profile":
                     r = self.cmd("phase_profile", window=10)
@@ -590,6 +713,70 @@ class Session:
         path = self.evidence / f"telemetry_{name}.json"
         path.write_text(json.dumps(out, indent=1), encoding="utf-8")
         return out
+
+    def read_ram(self, addr, size):
+        r = self.cmd("read_ram", addr=f"0x{addr:08X}", len=size)
+        if not r.get("ok"):
+            raise RuntimeError(f"read_ram falhou: {r}")
+        return le_value(r["hex"], size), r["hex"]
+
+    def wait_ram(self, step):
+        addr, size = parse_addr(step["addr"]), step.get("size", 1)
+        want = [parse_addr(v) for v in step.get("values", [])]
+        avoid = [parse_addr(v) for v in step.get("not_values", [])]
+        deadline = self.frame() + step.get("timeout_frames", 600)
+        t0 = time.time()
+        while True:
+            val, _ = self.read_ram(addr, size)
+            if (want and val in want) or (avoid and val not in avoid):
+                return True, val
+            if self.frame() >= deadline or time.time() - t0 > max(60.0, step.get("timeout_frames", 600) / 5.0):
+                return False, val
+            time.sleep(0.1)
+
+    def dispatch_misses(self, tail=256):
+        """Misses de despacho (PCs sem funcao compilada), filtrados para o texto do EXE."""
+        stats = self.cmd("dispatch_stats")
+        summ = self.cmd("unknown_dispatch_log")
+        out = {"ok": bool(summ.get("ok")), "miss_total": stats.get("miss_total"),
+               "miss_unique": stats.get("miss_unique"),
+               "segment_miss_total": stats.get("segment_miss_total"),
+               "exe_misses": exe_misses(summ.get("summary")),
+               "all_summary_rows": len(summ.get("summary") or [])}
+        dirty = self.cmd("dirty_ram_stats")
+        out["dirty_ok"] = bool(dirty.get("ok"))
+        out["exe_interp_pcs"] = exe_interp_pcs(dirty.get("per_pc"))
+        if tail:
+            log = self.cmd("unknown_dispatch_log", tail=tail)
+            out["exe_tail"] = [e for e in (log.get("entries") or [])
+                               if EXE_PHYS_LO <= int(str(e.get("phys", "0")), 0) < EXE_PHYS_HI]
+        return out
+
+    def fntrace_arm(self, pcs, clear=True):
+        if clear:
+            self.cmd("fntrace_arm_clear")
+            self.cmd("fntrace_clear")
+        res = []
+        for pc in pcs:
+            r = self.cmd("fntrace_arm", target=f"0x{parse_addr(pc):08X}")
+            res.append({"pc": f"0x{parse_addr(pc):08X}", "ok": r.get("ok"), "armed": r.get("armed")})
+        self.armed_pcs = [parse_addr(p) for p in pcs]
+        return res
+
+    def fntrace_dump(self, name):
+        pcs = list(getattr(self, "armed_pcs", []))
+        hits = {f"0x{pc:08X}": {"hits": 0} for pc in pcs}
+        entries_all = []
+        for pc in pcs:
+            r = self.cmd("fntrace_dump", target_lo=f"0x{pc:08X}", target_hi=f"0x{pc + 4:08X}",
+                         count=4096)
+            ents = r.get("entries") or []
+            entries_all += ents
+            hits.update(count_fntrace_hits(ents, [pc]))
+        path = self.evidence / f"fntrace_{name}.json"
+        path.write_text(json.dumps({"name": name, "frame_at": self.frame(), "hits": hits,
+                                    "entries": entries_all[:512]}, indent=1), encoding="utf-8")
+        return hits
 
     def shot(self, name):
         path = self.evidence / f"{name}.png"
@@ -649,6 +836,37 @@ class Session:
             rec.update(self.shot(step["name"]))
         elif kind == "savestate":
             rec.update(self.savestate(step.get("op", "save"), step.get("slot", 0)))
+        elif kind == "read_ram":
+            addr, size = parse_addr(step["addr"]), step.get("size", 1)
+            val, hexs = self.read_ram(addr, size)
+            self.vars[step["name"]] = val
+            self.scene_log.append({"name": step["name"], "value": val, "frame": self.frame(),
+                                   "step": i, "note": step.get("note", "")})
+            rec.update(addr=f"0x{addr:08X}", size=size, value=val, hex=hexs[:64],
+                       var=step["name"], frame=self.frame())
+        elif kind == "wait_ram":
+            ok, val = self.wait_ram(step)
+            rec.update(addr=step["addr"], value=val, matched=ok, frame=self.frame())
+            if step.get("name"):
+                self.vars[step["name"]] = val
+            if not ok and not step.get("optional"):
+                rec["failed"] = True
+        elif kind == "fntrace":
+            if step["op"] == "arm":
+                rec["armed"] = self.fntrace_arm(step["pcs"], step.get("clear", True))
+            else:
+                rec["hits"] = self.fntrace_dump(step["name"])
+                rec["file"] = f"fntrace_{step['name']}.json"
+        elif kind == "dispatch_misses":
+            m = self.dispatch_misses(step.get("tail", 256))
+            self.miss_log.append({"name": step["name"], "frame": self.frame(), **m})
+            path = self.evidence / f"misses_{step['name']}.json"
+            path.write_text(json.dumps(m, indent=1), encoding="utf-8")
+            rec.update(file=path.name, miss_total=m["miss_total"], miss_unique=m["miss_unique"],
+                       exe_miss_count=len(m["exe_misses"]),
+                       exe_misses=[r["pc"] for r in m["exe_misses"][:40]],
+                       exe_interp_count=len(m["exe_interp_pcs"]),
+                       exe_interp_pcs=[r["pc"] for r in m["exe_interp_pcs"][:40]])
         elif kind == "telemetry":
             t = self.telemetry(step["name"], step.get("which"))
             rec["file"] = f"telemetry_{step['name']}.json"
@@ -703,6 +921,9 @@ def do_run(build_dir, route_name, evidence, port, show_window=False):
         sess.record["shutdown"] = sess.shutdown()
         sess.sample_focus("apos_quit")
         sess.record["timings"]["run_total_s"] = round(time.time() - t0, 1)
+        sess.record["vars"] = sess.vars
+        sess.record["reads"] = sess.scene_log
+        sess.record["miss_log"] = sess.miss_log
         sess.record["failed"] = failed
         sess.record["focus"] = {
             "samples": sess.focus,
@@ -738,6 +959,12 @@ def main(argv=None):
             sp.add_argument("--jobs", type=int, default=4)
             sp.add_argument("--overlay-source", choices=OVERLAY_SOURCES, default="aot",
                             help="aot: overlays gerados do disco (padrao); retained: retidas")
+            sp.add_argument("--reuse-build", metavar="BUILD_AUTO",
+                            help="reaproveita (ou cria) este build-auto-*: o ninja recompila so os "
+                                 "shards alterados; fontes em <build>/generated")
+            sp.add_argument("--seeds", type=Path,
+                            help="arquivo de seeds do lote (geracao isolada em <build>/generated); "
+                                 "padrao com --reuse-build: seeds/entry_funcs.txt")
         if name != "build":
             sp.add_argument("--route", default="boot_to_fight")
             sp.add_argument("--port", type=int, default=DEFAULT_PORT)
@@ -748,18 +975,20 @@ def main(argv=None):
     args = ap.parse_args(argv)
     if sys.platform != "win32":
         ap.error("Windows requerido")
-    evidence = args.evidence_dir or make_evidence_dir()
+    evidence = (args.evidence_dir or make_evidence_dir()).resolve()  # o jogo roda em outro cwd
     evidence.mkdir(parents=True, exist_ok=True)
     print(f"Evidencias: {evidence}", flush=True)
     try:
         if args.mode == "build":
-            build_dir, info = do_build(evidence, args.jobs, args.overlay_source)
+            build_dir, info = do_build(evidence, args.jobs, args.overlay_source,
+                                       args.reuse_build, args.seeds)
             print(f"Build ok em {info['duration_s']}s: {build_dir}")
             return 0
         if args.mode == "run":
             return do_run(resolve_build_dir(args.build_dir), args.route, evidence,
                           args.port, args.show_window)
-        build_dir, info = do_build(evidence, args.jobs, args.overlay_source)
+        build_dir, info = do_build(evidence, args.jobs, args.overlay_source,
+                                   args.reuse_build, args.seeds)
         print(f"Build ok em {info['duration_s']}s: {build_dir}", flush=True)
         return do_run(build_dir, args.route, evidence, args.port, args.show_window)
     except (RuntimeError, ValueError, FileNotFoundError) as exc:

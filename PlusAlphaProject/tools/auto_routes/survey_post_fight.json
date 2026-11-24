@@ -1,0 +1,2168 @@
+{
+ "name": "survey_post_fight",
+ "description": "Levantamento pos-luta: do boot ate a luta Arcade, vence/deixa o tempo acabar, avanca pelas telas seguintes, derrota, continue, game over e attract. Em cada tela: screenshot, byte de cena (0x801D39B8) e misses de despacho do EXE; fntrace nos 11 alvos ainda nao compilados (tabela 0x801AF960).",
+ "steps": [
+  {
+   "type": "fntrace",
+   "op": "arm",
+   "pcs": [
+    "0x8010A5FC",
+    "0x80169B78",
+    "0x8010ABC8",
+    "0x8010ACD8",
+    "0x8010ADE8",
+    "0x8017FEC0",
+    "0x8010AFDC",
+    "0x80107D80",
+    "0x80107EF0",
+    "0x8010809C",
+    "0x801085E0"
+   ],
+   "clear": true,
+   "note": "arma os 11 alvos ainda nao compilados"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 3500,
+   "note": "logos/FMV ate o titulo"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_01_titulo",
+   "note": "byte de cena em 01_titulo"
+  },
+  {
+   "type": "screenshot",
+   "name": "01_titulo"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_01_titulo",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "start (sai do titulo)"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_02_menu_inicio",
+   "note": "byte de cena em 02_menu_inicio"
+  },
+  {
+   "type": "screenshot",
+   "name": "02_menu_inicio"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_02_menu_inicio",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "start (tela de modo)"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_03_mode_select",
+   "note": "byte de cena em 03_mode_select"
+  },
+  {
+   "type": "screenshot",
+   "name": "03_mode_select"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_03_mode_select",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 400,
+   "note": "escolhe Arcade"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_04_player_select",
+   "note": "byte de cena em 04_player_select"
+  },
+  {
+   "type": "screenshot",
+   "name": "04_player_select"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_04_player_select",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200,
+   "note": "confirma Ryu"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_05_versus_tela",
+   "note": "byte de cena em 05_versus_tela"
+  },
+  {
+   "type": "screenshot",
+   "name": "05_versus_tela"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_05_versus_tela",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200,
+   "note": "pula versus"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_06_carregando",
+   "note": "byte de cena em 06_carregando"
+  },
+  {
+   "type": "screenshot",
+   "name": "06_carregando"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_06_carregando",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 400,
+   "note": "pula/espera"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_07_luta_inicio",
+   "note": "byte de cena em 07_luta_inicio"
+  },
+  {
+   "type": "screenshot",
+   "name": "07_luta_inicio"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_07_luta_inicio",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_08_luta_pronta",
+   "note": "byte de cena em 08_luta_pronta"
+  },
+  {
+   "type": "screenshot",
+   "name": "08_luta_pronta"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_08_luta_pronta",
+   "tail": 64
+  },
+  {
+   "type": "savestate",
+   "op": "save",
+   "slot": 3,
+   "note": "marco: luta"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5,
+   "note": "avanca"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 2,
+   "note": "hadouken"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 50
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5,
+   "note": "avanca"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 2,
+   "note": "hadouken"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 50
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5,
+   "note": "avanca"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 2,
+   "note": "hadouken"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 50
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_09_luta1_ataque1",
+   "note": "byte de cena em 09_luta1_ataque1"
+  },
+  {
+   "type": "screenshot",
+   "name": "09_luta1_ataque1"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_09_luta1_ataque1",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5,
+   "note": "avanca"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 2,
+   "note": "hadouken"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 50
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5,
+   "note": "avanca"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 2,
+   "note": "hadouken"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 50
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5,
+   "note": "avanca"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 2,
+   "note": "hadouken"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 50
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_09_luta1_ataque2",
+   "note": "byte de cena em 09_luta1_ataque2"
+  },
+  {
+   "type": "screenshot",
+   "name": "09_luta1_ataque2"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_09_luta1_ataque2",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5,
+   "note": "avanca"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 2,
+   "note": "hadouken"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 50
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5,
+   "note": "avanca"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 2,
+   "note": "hadouken"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 50
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5,
+   "note": "avanca"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 2,
+   "note": "hadouken"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 50
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_09_luta1_ataque3",
+   "note": "byte de cena em 09_luta1_ataque3"
+  },
+  {
+   "type": "screenshot",
+   "name": "09_luta1_ataque3"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_09_luta1_ataque3",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5,
+   "note": "avanca"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 2,
+   "note": "hadouken"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 50
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5,
+   "note": "avanca"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 2,
+   "note": "hadouken"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 50
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5,
+   "note": "avanca"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 2,
+   "note": "hadouken"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 50
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_09_luta1_ataque4",
+   "note": "byte de cena em 09_luta1_ataque4"
+  },
+  {
+   "type": "screenshot",
+   "name": "09_luta1_ataque4"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_09_luta1_ataque4",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 1800,
+   "note": "deixa o tempo acabar se ainda houver luta"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_10_luta1_apos_espera",
+   "note": "byte de cena em 10_luta1_apos_espera"
+  },
+  {
+   "type": "screenshot",
+   "name": "10_luta1_apos_espera"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_10_luta1_apos_espera",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_01_a",
+   "note": "byte de cena em 11_pos_luta1_01_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_01_a"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_01_a",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "avanca tela"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_01_b",
+   "note": "byte de cena em 11_pos_luta1_01_b"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_01_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_01_b",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_02_a",
+   "note": "byte de cena em 11_pos_luta1_02_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_02_a"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_02_a",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "avanca tela"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_02_b",
+   "note": "byte de cena em 11_pos_luta1_02_b"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_02_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_02_b",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_03_a",
+   "note": "byte de cena em 11_pos_luta1_03_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_03_a"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_03_a",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "avanca tela"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_03_b",
+   "note": "byte de cena em 11_pos_luta1_03_b"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_03_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_03_b",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_04_a",
+   "note": "byte de cena em 11_pos_luta1_04_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_04_a"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_04_a",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "avanca tela"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_04_b",
+   "note": "byte de cena em 11_pos_luta1_04_b"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_04_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_04_b",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_05_a",
+   "note": "byte de cena em 11_pos_luta1_05_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_05_a"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_05_a",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "avanca tela"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_05_b",
+   "note": "byte de cena em 11_pos_luta1_05_b"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_05_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_05_b",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_06_a",
+   "note": "byte de cena em 11_pos_luta1_06_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_06_a"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_06_a",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "avanca tela"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_06_b",
+   "note": "byte de cena em 11_pos_luta1_06_b"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_06_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_06_b",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_07_a",
+   "note": "byte de cena em 11_pos_luta1_07_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_07_a"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_07_a",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "avanca tela"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_07_b",
+   "note": "byte de cena em 11_pos_luta1_07_b"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_07_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_07_b",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_08_a",
+   "note": "byte de cena em 11_pos_luta1_08_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_08_a"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_08_a",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "avanca tela"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_11_pos_luta1_08_b",
+   "note": "byte de cena em 11_pos_luta1_08_b"
+  },
+  {
+   "type": "screenshot",
+   "name": "11_pos_luta1_08_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_11_pos_luta1_08_b",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_12_luta2_01",
+   "note": "byte de cena em 12_luta2_01"
+  },
+  {
+   "type": "screenshot",
+   "name": "12_luta2_01"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_12_luta2_01",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_12_luta2_02",
+   "note": "byte de cena em 12_luta2_02"
+  },
+  {
+   "type": "screenshot",
+   "name": "12_luta2_02"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_12_luta2_02",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_12_luta2_03",
+   "note": "byte de cena em 12_luta2_03"
+  },
+  {
+   "type": "screenshot",
+   "name": "12_luta2_03"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_12_luta2_03",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 18
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 5
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_12_luta2_04",
+   "note": "byte de cena em 12_luta2_04"
+  },
+  {
+   "type": "screenshot",
+   "name": "12_luta2_04"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_12_luta2_04",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 1800
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_13_luta2_apos_espera",
+   "note": "byte de cena em 13_luta2_apos_espera"
+  },
+  {
+   "type": "screenshot",
+   "name": "13_luta2_apos_espera"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_13_luta2_apos_espera",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_14_pos_luta2_01_a",
+   "note": "byte de cena em 14_pos_luta2_01_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "14_pos_luta2_01_a"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_14_pos_luta2_01_a",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "avanca tela"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_14_pos_luta2_01_b",
+   "note": "byte de cena em 14_pos_luta2_01_b"
+  },
+  {
+   "type": "screenshot",
+   "name": "14_pos_luta2_01_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_14_pos_luta2_01_b",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_14_pos_luta2_02_a",
+   "note": "byte de cena em 14_pos_luta2_02_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "14_pos_luta2_02_a"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_14_pos_luta2_02_a",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "avanca tela"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_14_pos_luta2_02_b",
+   "note": "byte de cena em 14_pos_luta2_02_b"
+  },
+  {
+   "type": "screenshot",
+   "name": "14_pos_luta2_02_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_14_pos_luta2_02_b",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_14_pos_luta2_03_a",
+   "note": "byte de cena em 14_pos_luta2_03_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "14_pos_luta2_03_a"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_14_pos_luta2_03_a",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "avanca tela"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_14_pos_luta2_03_b",
+   "note": "byte de cena em 14_pos_luta2_03_b"
+  },
+  {
+   "type": "screenshot",
+   "name": "14_pos_luta2_03_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_14_pos_luta2_03_b",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_14_pos_luta2_04_a",
+   "note": "byte de cena em 14_pos_luta2_04_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "14_pos_luta2_04_a"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_14_pos_luta2_04_a",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "avanca tela"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_14_pos_luta2_04_b",
+   "note": "byte de cena em 14_pos_luta2_04_b"
+  },
+  {
+   "type": "screenshot",
+   "name": "14_pos_luta2_04_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_14_pos_luta2_04_b",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_14_pos_luta2_05_a",
+   "note": "byte de cena em 14_pos_luta2_05_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "14_pos_luta2_05_a"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_14_pos_luta2_05_a",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "avanca tela"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_14_pos_luta2_05_b",
+   "note": "byte de cena em 14_pos_luta2_05_b"
+  },
+  {
+   "type": "screenshot",
+   "name": "14_pos_luta2_05_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_14_pos_luta2_05_b",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_14_pos_luta2_06_a",
+   "note": "byte de cena em 14_pos_luta2_06_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "14_pos_luta2_06_a"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_14_pos_luta2_06_a",
+   "tail": 64
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "avanca tela"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_14_pos_luta2_06_b",
+   "note": "byte de cena em 14_pos_luta2_06_b"
+  },
+  {
+   "type": "screenshot",
+   "name": "14_pos_luta2_06_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_14_pos_luta2_06_b",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 600,
+   "note": "ocioso: derrota/continue/game over/attract"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_15_ocioso_01",
+   "note": "byte de cena em 15_ocioso_01"
+  },
+  {
+   "type": "screenshot",
+   "name": "15_ocioso_01"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_15_ocioso_01",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 600,
+   "note": "ocioso: derrota/continue/game over/attract"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_15_ocioso_02",
+   "note": "byte de cena em 15_ocioso_02"
+  },
+  {
+   "type": "screenshot",
+   "name": "15_ocioso_02"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_15_ocioso_02",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 600,
+   "note": "ocioso: derrota/continue/game over/attract"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_15_ocioso_03",
+   "note": "byte de cena em 15_ocioso_03"
+  },
+  {
+   "type": "screenshot",
+   "name": "15_ocioso_03"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_15_ocioso_03",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 600,
+   "note": "ocioso: derrota/continue/game over/attract"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_15_ocioso_04",
+   "note": "byte de cena em 15_ocioso_04"
+  },
+  {
+   "type": "screenshot",
+   "name": "15_ocioso_04"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_15_ocioso_04",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 600,
+   "note": "ocioso: derrota/continue/game over/attract"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_15_ocioso_05",
+   "note": "byte de cena em 15_ocioso_05"
+  },
+  {
+   "type": "screenshot",
+   "name": "15_ocioso_05"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_15_ocioso_05",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 600,
+   "note": "ocioso: derrota/continue/game over/attract"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_15_ocioso_06",
+   "note": "byte de cena em 15_ocioso_06"
+  },
+  {
+   "type": "screenshot",
+   "name": "15_ocioso_06"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_15_ocioso_06",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 600,
+   "note": "ocioso: derrota/continue/game over/attract"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_15_ocioso_07",
+   "note": "byte de cena em 15_ocioso_07"
+  },
+  {
+   "type": "screenshot",
+   "name": "15_ocioso_07"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_15_ocioso_07",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 600,
+   "note": "ocioso: derrota/continue/game over/attract"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_15_ocioso_08",
+   "note": "byte de cena em 15_ocioso_08"
+  },
+  {
+   "type": "screenshot",
+   "name": "15_ocioso_08"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_15_ocioso_08",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 600,
+   "note": "ocioso: derrota/continue/game over/attract"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_15_ocioso_09",
+   "note": "byte de cena em 15_ocioso_09"
+  },
+  {
+   "type": "screenshot",
+   "name": "15_ocioso_09"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_15_ocioso_09",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 600,
+   "note": "ocioso: derrota/continue/game over/attract"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_15_ocioso_10",
+   "note": "byte de cena em 15_ocioso_10"
+  },
+  {
+   "type": "screenshot",
+   "name": "15_ocioso_10"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_15_ocioso_10",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 600,
+   "note": "ocioso: derrota/continue/game over/attract"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_15_ocioso_11",
+   "note": "byte de cena em 15_ocioso_11"
+  },
+  {
+   "type": "screenshot",
+   "name": "15_ocioso_11"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_15_ocioso_11",
+   "tail": 64
+  },
+  {
+   "type": "wait_frames",
+   "frames": 600,
+   "note": "ocioso: derrota/continue/game over/attract"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_15_ocioso_12",
+   "note": "byte de cena em 15_ocioso_12"
+  },
+  {
+   "type": "screenshot",
+   "name": "15_ocioso_12"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_15_ocioso_12",
+   "tail": 64
+  },
+  {
+   "type": "fntrace",
+   "op": "dump",
+   "name": "alvos"
+  },
+  {
+   "type": "telemetry",
+   "name": "final",
+   "which": [
+    "dispatch_stats",
+    "dispatch_misses",
+    "fmv_state",
+    "frame"
+   ]
+  }
+ ]
+}

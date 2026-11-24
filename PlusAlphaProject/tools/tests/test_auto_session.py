@@ -147,5 +147,70 @@ class CommandTest(unittest.TestCase):
         self.assertEqual(au.perf_indicators(0, 1.0, None, None, None, None), {})
 
 
+class Phase2StepsTest(unittest.TestCase):
+    def test_parse_addr_and_le_value(self):
+        self.assertEqual(au.parse_addr('0x801D39B8'), 0x801D39B8)
+        self.assertEqual(au.parse_addr(5), 5)
+        with self.assertRaises(ValueError):
+            au.parse_addr('zz')
+        self.assertEqual(au.le_value('0a', 1), 10)
+        self.assertEqual(au.le_value('78563412', 4), 0x12345678)
+
+    def test_exe_misses_filters_and_sorts(self):
+        rows = [{'phys': '0x0010A5FC', 'count': 3}, {'phys': '0x00020000', 'count': 99},
+                {'phys': '0x00169B78', 'count': 7}, {'phys': '0x001C0000', 'count': 1}]
+        got = au.exe_misses(rows)
+        self.assertEqual([r['pc'] for r in got], ['0x80169B78', '0x8010A5FC'])
+        self.assertEqual(au.exe_misses(None), [])
+
+    def test_exe_interp_pcs(self):
+        rows = [{'pc': '0x0010A5FC', 'hits': 2, 'insns': 50}, {'pc': '0x00020000', 'hits': 9, 'insns': 999},
+                {'pc': '0x00169B78', 'hits': 1, 'insns': 70}]
+        got = au.exe_interp_pcs(rows)
+        self.assertEqual([r['pc'] for r in got], ['0x80169B78', '0x8010A5FC'])
+        self.assertEqual(au.exe_interp_pcs(None), [])
+
+    def test_count_fntrace_hits(self):
+        ents = [{'target': '0x8010A5FC', 'frame': 30}, {'target': '0x8010A5FC', 'frame': 10},
+                {'target': '0x80169B78', 'frame': 5}, {'target': '0x80000000', 'frame': 1}]
+        h = au.count_fntrace_hits(ents, [0x8010A5FC, 0x80169B78, 0x8010ABC8])
+        self.assertEqual(h['0x8010A5FC'], {'hits': 2, 'first_frame': 10, 'last_frame': 30})
+        self.assertEqual(h['0x8010ABC8'], {'hits': 0})
+
+    def test_validate_new_steps(self):
+        ok = {'steps': [
+            {'type': 'read_ram', 'addr': '0x801D39B8', 'size': 1, 'name': 'cena'},
+            {'type': 'wait_ram', 'addr': '0x801D39B8', 'values': [3], 'timeout_frames': 60},
+            {'type': 'fntrace', 'op': 'arm', 'pcs': ['0x8010A5FC']},
+            {'type': 'fntrace', 'op': 'dump', 'name': 'x'},
+            {'type': 'dispatch_misses', 'name': 'm'}]}
+        self.assertIs(au.validate_route(ok), ok)
+        for bad in ({'type': 'read_ram', 'addr': '0x1'},
+                    {'type': 'read_ram', 'addr': 'zz', 'name': 'a'},
+                    {'type': 'wait_ram', 'addr': '0x1'},
+                    {'type': 'fntrace', 'op': 'arm', 'pcs': []},
+                    {'type': 'fntrace', 'op': 'arm', 'pcs': ['0x1'] * 33},
+                    {'type': 'fntrace', 'op': 'dump'},
+                    {'type': 'dispatch_misses'}):
+            with self.assertRaises(ValueError):
+                au.validate_route({'steps': [bad]})
+
+    def test_build_command_isolated(self):
+        cmd = au.build_powershell_command('build-auto-1', 4, 'x', 'aot', Path('g'), Path('s.txt'))
+        self.assertEqual(cmd[cmd.index('-GeneratedDir') + 1], 'g')
+        self.assertEqual(cmd[cmd.index('-SeedsFile') + 1], 's.txt')
+        plain = au.build_powershell_command('build-auto-1', 4, 'x')
+        self.assertNotIn('-GeneratedDir', plain)
+        self.assertNotIn('-SeedsFile', plain)
+
+    def test_resolve_reuse_name(self):
+        self.assertEqual(au.resolve_reuse_name('PlusAlphaProject/build-auto-9'), 'build-auto-9')
+        with self.assertRaises(ValueError):
+            au.resolve_reuse_name('build-release-online-1')
+
+    def test_survey_route_valid(self):
+        self.assertTrue(au.load_route('survey_post_fight')['steps'])
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -19,7 +19,7 @@ O "100%" anterior era 100% dos **caminhos jogados**, não 100% do código do jog
 | Dados (`0x801AB3E8..0x801C0000`, strings, tabelas, zeros, padding) | 21.279 | 10,88 | Fora do denominador |
 
 - Teto real do EXE: **174.305 palavras de código (89,12%)**.
-- Evidência conferida: `0x80103E24..0x80103E3C` faz `lui/addiu 0x801AF960; addu; lw; jalr`. A tabela contém `0x8016FC28`, `0x801040E8`, `0x8010A5FC`, `0x80169B78`, `0x8010ABC8`, `0x8010ACD8`, `0x8010ADE8`, `0x8017566C`. `0x8010A5FC` e outras não estão nos ranges nem em `seeds/entry_funcs.txt`.
+- Evidência conferida: `0x80103E24..0x80103E3C` faz `lui/addiu 0x801AF960; addu; lw; jalr`. A tabela tem 27 entradas, indexadas pelo byte de cena `0x801D39B8`. Os alvos `0x8016FC28` (seleção), `0x801040E8` (luta) e `0x8017566C` (modo) já estavam cobertos. Faltavam 11: `0x8010A5FC`, `0x80169B78`, `0x8010ABC8`, `0x8010ACD8`, `0x8010ADE8`, `0x8017FEC0`, `0x8010AFDC`, `0x80107D80`, `0x80107EF0`, `0x8010809C` e `0x801085E0`.
 - **Reconciliado na Fase 0:** as 154.846 palavras eram a soma bruta das linhas `R` do manifesto S1-309. Três aliases repetem o mesmo range (`0x8013B070`, `0x8013B10C` e `0x8019CB4C`), o que conta 202 palavras duas vezes. O valor único do S1-309 é 154.644. A geração online atual (154.639) perdeu mais 5 palavras, `0x8019CB8C..0x8019CB9F`, e a entrada `0x8019CB8C`, que o S1-309 despachava. Essa entrada é um alias sem predecessor direto e é candidata ao primeiro micro-lote da Fase 2.
 - **Raízes P1** (ver `track1/functions_uncovered.csv` e `roots.csv`):
   - funções: `0x8018D298`, `0x8010A5FC`, `0x8010AFDC`, `0x80102FAC`, `0x80131A3C`, `0x80162848`, `0x80102D80`, `0x80107EF0`, `0x8010809C`, `0x80107D80`, `0x8017FEC0`, `0x8016321C`, `0x8010ABC8`, `0x8010ACD8`, `0x8016313C`, `0x80127320`, `0x80162B18`, `0x8019F9E4`, mais cerca de 36 outras;
@@ -161,6 +161,30 @@ Autorizado pelo usuário em 2026-11-24. O agente pode compilar, executar o jogo,
 ### Fase 2 — EXE: raízes chamadas por tabela (de ~79% para ~84,2%)
 
 Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fechamento, orçamento, aliases e jump tables. Começar pela tabela `0x801AF960` e pelas maiores raízes.
+
+**Andamento (2026-11-24):**
+
+- **Etapa 2.0 (infraestrutura):**
+  - geração isolada por build: `build_online.ps1 -GeneratedDir/-SeedsFile` e `PSX_GENERATED_DIR`;
+  - `tools/seed_preview.py`, que mede o fechamento exato em ~1 s, sem compilar C, e aplica o orçamento de ≤1.200 palavras e ≤10 funções por lote;
+  - builds incrementais com `auto_session.py --reuse-build`;
+  - passos `read_ram`, `fntrace` e `dispatch_misses`;
+  - rota `survey_post_fight`;
+  - `codegen_audit_game.py` corrigido para shards e para o despachante de 5 campos.
+- **Fechamento real é maior que o estimado:** as 58 raízes P1/A2 acrescentam cerca de 13,7 mil palavras, o que leva o EXE a ~96,6%. Parte do que a Fase 3 trataria como "sem referência" é alcançada por essas raízes.
+- **Correção no recompilador** (`function_analysis.cpp`):
+  - um `jal` em palavra emitida mas não visitada passa a virar raiz;
+  - um alias absorvido passa a ser exportado com evidência de qualquer função final.
+  Com as seeds atuais, a base fica byte a byte igual. No AOT, `MC_M` ganha a raiz `0x800DCA14`. O hash de codegen mudou de `1b6950cb` para `d3d005b3`.
+- **F2-L1** (`0x80169B78`, `0x8010ADE8`, com `0x8016A3A4` pelo fechamento):
+  - +1.375 palavras, chegando a **156.014 de 174.276 (89,52%)**, e 22.121 entradas;
+  - na rota pós-luta, os PCs do EXE interpretados caíram de 149 para 38, e as instruções interpretadas, 49,8%;
+  - `miss_total` = 0.
+- **Pendências:**
+  - o resolvedor de jump table não reconhece `sltiu; beq; sll (delay); lui; addiu; addu; lw; nop; jr` (o `jr` de `0x80169BF4` sai como CPS indireto). A correção muda bytes da base;
+  - a rota não é determinística: a validação compara PCs interpretados, não screenshots;
+  - os alvos das cenas 2, 4, 5 e 8+ ainda não foram alcançados por rota;
+  - `generated-online/` e `coverage/baseline.json` só serão promovidos no fim da fase, com a validação de sensação do usuário.
 
 ### Fase 3 — Código sem referência e variantes divergentes
 

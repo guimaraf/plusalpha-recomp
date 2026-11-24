@@ -18,7 +18,16 @@ param(
     # aot: overlays gerados direto do disco (aot/overlays.json); retained: retidas (fallback).
     # Sem o parametro explicito, -Release e -RetainedOverlayDir mantem as retidas.
     [ValidateSet('aot', 'retained')]
-    [string]$OverlaySource = 'aot'
+    [string]$OverlaySource = 'aot',
+    # Geracao isolada por lote: fontes do EXE em -GeneratedDir (nao toca generated-online) a partir
+    # de -SeedsFile. O emitter roda direto (~1 s) num staging e so os arquivos alterados sao
+    # copiados, para o ninja recompilar apenas os shards que mudaram. Sem estes parametros o
+    # fluxo e o de sempre (generated-online).
+    [string]$GeneratedDir = '',
+    [string]$SeedsFile = '',
+    # Antes sempre ligados em -Generate; agora opcionais na geracao isolada.
+    [switch]$ForceEmitters,
+    [switch]$ForceBios
 )
 
 $ErrorActionPreference = 'Stop'
@@ -26,6 +35,22 @@ if (-not $PSBoundParameters.ContainsKey('OverlaySource') -and ($Release -or $Ret
     $OverlaySource = 'retained'
 }
 $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
+$Isolated = [bool]($GeneratedDir -or $SeedsFile)
+if ($Isolated) {
+    if (-not $GeneratedDir) { throw '-SeedsFile requer -GeneratedDir.' }
+    if ($Release) { throw '-Release nao suporta geracao isolada (-GeneratedDir).' }
+    if ($SetupHost) { throw '-SetupHost nao suporta geracao isolada (-GeneratedDir).' }
+    $GeneratedDir = [IO.Path]::GetFullPath($GeneratedDir)
+    if ($GeneratedDir.TrimEnd([char]92) -ieq (Join-Path $ProjectRoot 'generated-online')) {
+        throw '-GeneratedDir nao pode ser generated-online (use o fluxo padrao).'
+    }
+    if (-not $SeedsFile) { $SeedsFile = Join-Path $ProjectRoot 'seeds\entry_funcs.txt' }
+    $SeedsFile = (Resolve-Path -LiteralPath $SeedsFile).Path
+    if ($OverlaySource -eq 'retained' -and -not $StaticOverlayDir) {
+        throw 'Geracao isolada com overlays retidos requer -StaticOverlayDir explicito.'
+    }
+}
+$MainDispatch = if ($Isolated) { Join-Path $GeneratedDir 'SLUS_005.48_dispatch.c' } else { Join-Path $ProjectRoot 'generated-online\SLUS_005.48_dispatch.c' }
 $RepositoryRoot = Split-Path $ProjectRoot -Parent
 $Framework = Join-Path $RepositoryRoot 'psxrecomp'
 $BuildName = if ($SetupHost) { 'build-online-setup' } else { $BuildDirName }
@@ -105,9 +130,51 @@ try {
             if ($LASTEXITCODE -ne 0) { throw "Geracao falhou: $LASTEXITCODE" }
         }
 
+        if ($Isolated) {
+            Write-Host "Geracao isolada: seeds $SeedsFile -> $GeneratedDir" -ForegroundColor Cyan
+            $Emitter = Join-Path $Framework 'recompiler\build\psxrecomp-game.exe'
+            if (-not (Test-Path -LiteralPath $Emitter -PathType Leaf)) {
+                throw "Emitter ausente: $Emitter. Compile o alvo psxrecomp-game do framework."
+            }
+            $GenWork = Join-Path $BuildDir 'generate-work'
+            $GenStage = Join-Path $GenWork 'out'
+            if (Test-Path -LiteralPath $GenStage) { Remove-Item -LiteralPath $GenStage -Recurse -Force }
+            New-Item -ItemType Directory -Force -Path $GenStage | Out-Null
+            $Fwd = { param($p) $p.Replace('\', '/') }
+            $Toml = (Get-Content -LiteralPath (Join-Path $ProjectRoot 'game.toml') -Raw)
+            $Toml = [regex]::Replace($Toml, '(?m)^exe\s*=.*$', "exe = `"$(& $Fwd (Join-Path $ProjectRoot 'local\SLUS_005.48'))`"")
+            $Toml = [regex]::Replace($Toml, '(?m)^disc\s*=.*$', "disc = `"$(& $Fwd (Join-Path $ProjectRoot 'disc-a\Street Fighter EX Plus Alpha (USA).cue'))`"")
+            $Toml = [regex]::Replace($Toml, '(?m)^bios_config\s*=.*$', "bios_config = `"$(& $Fwd (Join-Path $Framework 'bios\SCPH1001.toml'))`"")
+            $Toml = [regex]::Replace($Toml, '(?m)^seeds\s*=.*$', "seeds = `"$(& $Fwd $SeedsFile)`"")
+            $Toml = [regex]::Replace($Toml, '(?m)^out_dir\s*=\s*"generated-online"\s*$', "out_dir = `"$(& $Fwd $GenStage)`"")
+            Set-Content -LiteralPath (Join-Path $GenWork 'game.toml') -Value $Toml -Encoding utf8
+            $EmitterArgs = @('--config', (Join-Path $GenWork 'game.toml'))
+            if ($ForceEmitters) { $EmitterArgs += '--force-emitters' }
+            if ($ForceBios) { $EmitterArgs += '--force-bios' }
+            & $Emitter @EmitterArgs *> (Join-Path $GenWork 'emitter.log')
+            if ($LASTEXITCODE -ne 0) { throw "Emitter falhou: $LASTEXITCODE (veja $GenWork\emitter.log)" }
+            # Sincroniza so o que mudou (mtime preservado => ninja recompila apenas os shards alterados)
+            # e remove shards antigos que o novo lote nao gera.
+            New-Item -ItemType Directory -Force -Path $GeneratedDir | Out-Null
+            $Changed = 0
+            foreach ($f in Get-ChildItem -LiteralPath $GenStage -File) {
+                $dst = Join-Path $GeneratedDir $f.Name
+                if ((Test-Path -LiteralPath $dst) -and ((Get-Item -LiteralPath $dst).Length -eq $f.Length) -and
+                    ((Get-FileHash -LiteralPath $dst -Algorithm SHA256).Hash -eq (Get-FileHash -LiteralPath $f.FullName -Algorithm SHA256).Hash)) { continue }
+                Copy-Item -LiteralPath $f.FullName -Destination $dst -Force
+                $Changed++
+            }
+            $Stale = 0
+            foreach ($f in Get-ChildItem -LiteralPath $GeneratedDir -File) {
+                if (-not (Test-Path -LiteralPath (Join-Path $GenStage $f.Name))) {
+                    Remove-Item -LiteralPath $f.FullName -Force; $Stale++
+                }
+            }
+            Write-Host "Fontes gerados: $Changed arquivo(s) alterado(s), $Stale removido(s)." -ForegroundColor Cyan
+        }
+
         if (-not $SetupHost) {
-            & $Python (Join-Path $PSScriptRoot 'check_main_coverage.py') `
-                (Join-Path $ProjectRoot 'generated-online\SLUS_005.48_dispatch.c')
+            & $Python (Join-Path $PSScriptRoot 'check_main_coverage.py') $MainDispatch
             if ($LASTEXITCODE -ne 0) { throw 'Cobertura do EXE incompleta. Execute novamente com -Generate.' }
             if ($OverlaySource -eq 'retained') {
                 & $Python (Join-Path $PSScriptRoot 'prepare_retained_overlays.py') `
@@ -158,6 +225,7 @@ try {
             "-DCMAKE_C_COMPILER=$ToolPath/gcc.exe", "-DCMAKE_CXX_COMPILER=$ToolPath/c++.exe",
             "-DCMAKE_RC_COMPILER:FILEPATH=$ToolPath/windres.exe",
             "-DCMAKE_MAKE_PROGRAM=$ToolPath/ninja.exe", "-DPKG_CONFIG_EXECUTABLE=$ToolPath/pkg-config.exe")
+        if ($Isolated) { $ConfigureArgs += "-DPSX_GENERATED_DIR=$($GeneratedDir.Replace('\', '/'))" }
         & $CMake @ConfigureArgs
         if ($LASTEXITCODE -ne 0) { throw "Configuracao falhou: $LASTEXITCODE" }
         & $CMake --build $BuildDir --target psx-runtime --parallel $Jobs

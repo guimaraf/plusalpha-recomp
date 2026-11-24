@@ -4962,3 +4962,31 @@
 
 
 
+
+# Micro-lote F2-L1 (Fase 2, EXE). Seeds 0x80169B78 e 0x8010ADE8, alvos da
+# tabela 0x801AF960 indexada pelo byte de cena 0x801D39B8, executados
+# interpretados depois das lutas. Evidencia de execucao: a rota autonoma
+# survey_post_fight sobre build-auto-20261124-181206 registrou fntrace com
+# 3.484 hits em 0x80169B78 (frames 8250..25475) e 482 hits em 0x8010ADE8
+# (frames 9653..17894). Fechamento medido por seed_preview.py com o emitter
+# corrigido (fechamento sobre as palavras emitidas e nao visitadas): +1.375
+# palavras unicas, +8 funcoes e +213 entradas de dispatcher (0x80169B78: 812
+# palavras, 3 funcoes, 124 entradas; 0x8010ADE8: 563 palavras, 5 funcoes, 89
+# entradas), com 0 perdas, 0 em quarentena, bordas em prologo e 0 stores em
+# texto (SMC). Sem a correcao eram 1.206 palavras/7 funcoes/189 entradas e o
+# audit acusava tail-call miss em 0x8016A3A4; com ela 0x8016A3A4 entra
+# sozinha, sem seed manual, pelo jal de 0x80169F28/0x80169F38 (palavras
+# emitidas e nao visitadas por causa do jr abaixo).
+# 0x80169B78 e lui+lw e cai por fallthrough no prologo 0x80169B80. jalr: 0.
+# jr nao-ra: um, em 0x80169BF4 (switch com tabela 0x801AC3C4, indices 0..8,
+# sltiu 9; padrao sltiu; beq; sll no delay; lui; addiu; addu; lw; nop; jr que o
+# resolvedor de jump table nao reconhece, function_analysis.cpp ~890-940), que
+# sai como CPS indireto. Os oito destinos distintos (0x80169BFC, 0x80169D74,
+# 0x80169E1C, 0x80169EAC, 0x8016A24C, 0x8016A2C0, 0x8016A308, 0x8016A320; o
+# indice 5 e o 7 repetem 0x8016A2C0) conferem nos bytes do EXE e estao todos no
+# dispatcher. 0x8010ADE8 nao tem jalr nem jr nao-ra e puxa as rotinas de
+# biblioteca 0x8012CB94, 0x801685AC, 0x801A2CA0 e 0x801A441C. Orcamento: o
+# fechamento excede 1.200 palavras por 175, autorizado (ate ~1.400) e medido,
+# com evidencia de execucao.
+0x80169B78
+0x8010ADE8

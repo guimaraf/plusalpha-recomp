@@ -125,3 +125,16 @@ Dynamic battle overlays (`0x80020000..0x800F2000`) are compiled on-demand via th
 | `0x801AB2C0` | Self-modifying code (swaps 5 instructions with BIOS in runtime) | Retained under interpreter |
 | `0x8019E6D0` | Historical candidate (reproduced with 5,328 hits in Garuda vs Kairi) | Resolved via S1-270 |
 | `0x80103384..0x801038B4` | Global root previously quarantined under S1-261 | Resolved via S1-262 |
+
+---
+
+## 6. Fase 2
+
+| Lote | Seeds / Faixas | Novas palavras | Palavras cumulativas | Estado |
+|---|---|---:|---:|---|
+| **F2-L1** | `0x80169B78`, `0x8010ADE8` (fechamento inclui `0x8016A3A4` via `jal`; 8 funcoes, 213 entradas) | 1.375 | 156.014 (89,5212%) | Validado em execucao autonoma; pendente validacao de sensacao do usuario |
+
+Pendencias da Fase 2:
+
+- Resolvedor de jump table nao reconhece `sltiu; beq; sll (delay); lui; addiu; addu; lw; nop; jr` (`function_analysis.cpp` ~890-940); correcao muda bytes da base; follow-up.
+- Fechamento do emitter (palavras emitidas e nao visitadas) muda o hash de codegen (`1b6950cb` -> `d3d005b3`) e o stamp do BIOS SCPH1001.

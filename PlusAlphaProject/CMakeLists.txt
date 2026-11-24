@@ -42,7 +42,10 @@ if(PSX_NETPLAY)
 endif()
 
 # Keep the old S1-309 generated C and caches separate: their ABI differs.
-set(_generated "${CMAKE_CURRENT_SOURCE_DIR}/generated-online")
+# PSX_GENERATED_DIR: diretorio de fontes geradas (padrao generated-online); o build isolado
+# por lote (build_online.ps1 -GeneratedDir) aponta para <build>/generated.
+set(PSX_GENERATED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/generated-online" CACHE PATH "Generated main-EXE sources")
+set(_generated "${PSX_GENERATED_DIR}")
 set(_dispatch "${_generated}/SLUS_005.48_dispatch.c")
 if(BUILD_DECOUPLED_LAUNCHER)
     set(PSXRECOMP_FORCE_SETUP_HOST ON CACHE BOOL "Build setup host" FORCE)
