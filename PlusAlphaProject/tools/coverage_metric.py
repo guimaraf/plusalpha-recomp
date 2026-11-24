@@ -148,7 +148,8 @@ def match_variants(variants, data, base):
 
 def union_words(variants, base, size):
     iv = sorted((max(lo, base), min(lo + ln, base + size))
-                for v in variants for lo, ln in v['ranges'])
+                for v in variants for lo, ln in v['ranges']
+                if max(lo, base) < min(lo + ln, base + size))
     total, cur_end = 0, None
     for a, b in iv:
         if cur_end is None or a > cur_end:
@@ -167,16 +168,47 @@ def overlay_base(name):
     return OV_BASES.get(name.upper())
 
 
-def overlay_metrics(variants, files):
-    """files: lista de (name, lba, bytes, base)."""
+def load_extents(profile_path):
+    """Extents de codigo declarados no perfil AOT: {NOME_MAIUSCULO: (lo_fisico, bytes)}.
+
+    So o metodo fixed_address_extents conta; um perfil ausente significa sem extents
+    (denominador = arquivo inteiro para todos)."""
+    profile_path = Path(profile_path) if profile_path else None
+    if profile_path is None or not profile_path.is_file():
+        return {}
+    profile = json.loads(profile_path.read_text(encoding='utf-8-sig'))
+    out = {}
+    for image in profile.get('images', []):
+        if image.get('method') != 'fixed_address_extents':
+            continue
+        for ext in image.get('extents', []):
+            addr = int(str(ext['address']), 16) & 0x1FFFFFFF
+            out[ext['file'].upper()] = (addr, int(ext['size']))
+    return out
+
+
+def overlay_metrics(variants, files, extents=None):
+    """files: lista de (name, lba, bytes, base).
+
+    extents: {NOME: (lo_fisico, bytes)}; esses arquivos usam o extent declarado como
+    denominador (e cobertura recortada nele); os demais, o arquivo inteiro."""
+    extents = extents or {}
     rows, matched_ids = [], set()
     for name, lba, data, base in files:
         hit, miss = match_variants(variants, data, base)
         matched_ids.update(id(v) for v in hit)
-        cov = union_words(hit, base, len(data))
-        words = len(data) // 4
+        extent = extents.get(name.upper())
+        if extent:
+            lo, size = extent
+            cov = union_words(hit, lo, size)
+            words = size // 4
+        else:
+            cov = union_words(hit, base, len(data))
+            words = len(data) // 4
         rows.append({
             'name': name, 'lba': lba, 'size_bytes': len(data), 'size_words': words,
+            'file_size_words': len(data) // 4,
+            'denominator': 'extent' if extent else 'file',
             'base': f'0x{base:X}', 'covered_words': cov,
             'pct': round(100.0 * cov / words, 4) if words else 0.0,
             'variants_matched': len(hit), 'crc_mismatch': len(miss),
@@ -195,7 +227,7 @@ def overlay_metrics(variants, files):
             'variants_matched': len(matched_ids), 'unmatched': unmatched,
             'crc_mismatch': sum(r['crc_mismatch'] for r in rows),
             'entries': sum(r['entries'] for r in rows),
-            'denominator': 'provisorio: tamanho inteiro de cada arquivo',
+            'denominator': 'arquivo inteiro; MOV e QUES.PAC pelo extent declarado em aot/overlays.json',
         },
     }
 
@@ -289,6 +321,16 @@ def need(path, what):
     return Path(path)
 
 
+def latest_build_overlays(root=ROOT):
+    """overlays_static.c do build-auto-* mais recente (por nome), ou None."""
+    for build in sorted(Path(root).glob('build-auto-*'), reverse=True):
+        for sub in ('static-overlays', 'retained-overlays'):
+            candidate = build / sub / 'overlays_static.c'
+            if candidate.is_file():
+                return candidate
+    return None
+
+
 def build_report(args):
     ranges_p = need(args.ranges, 'ranges do EXE')
     disp_p = need(args.dispatch, 'tabela do despachante')
@@ -302,13 +344,20 @@ def build_report(args):
                           'exclusions': sha256(excl_p)},
     }
     if not args.skip_overlays:
+        selected = 'explicito (--overlays)'
+        if args.overlays is None:
+            args.overlays = latest_build_overlays()
+            selected = 'build-auto-* mais recente por nome'
         ov_p = need(args.overlays, 'overlays_static.c')
         cue = need(args.cue, 'cue do disco')
         variants = parse_overlays_static(ov_p.read_text(encoding='utf-8', errors='replace'))
         files = load_overlay_files(cue)
         if not files:
             raise InputMissing('nenhum arquivo OVL/OVL2/OVL3 encontrado no disco')
-        report['overlays'] = overlay_metrics(variants, files)
+        extents = load_extents(getattr(args, 'profile', None))
+        report['overlays'] = overlay_metrics(variants, files, extents)
+        report['overlays_file'] = {'path': str(ov_p), 'selected': selected}
+        report['extents_profile'] = str(args.profile) if extents else None
         report['inputs_sha256']['overlays_static'] = sha256(ov_p)
         report['inputs_sha256']['cue'] = sha256(cue)
         report['inputs_sha256']['overlay_images'] = {
@@ -358,13 +407,13 @@ def print_table(report):
     print(f"  covered_in_exclusions  {e['covered_in_exclusions']}")
     print(f"  pct                    {e['pct']:.4f}%")
     if 'overlays' in report:
-        print('== Overlays (denominador provisorio: arquivo inteiro) ==')
+        print(f"== Overlays: {report['overlays_file']['path']} ({report['overlays_file']['selected']}) ==")
         print(f"  {'arquivo':18s} {'lba':>7s} {'palavras':>8s} {'cobertas':>8s} {'pct':>8s} "
-              f"{'match':>5s} {'crcX':>4s} {'entr':>5s}")
+              f"{'match':>5s} {'crcX':>4s} {'entr':>5s} den")
         for r in report['overlays']['files']:
             print(f"  {r['name']:18s} {r['lba']:7d} {r['size_words']:8d} "
                   f"{r['covered_words']:8d} {r['pct']:7.2f}% {r['variants_matched']:5d} "
-                  f"{r['crc_mismatch']:4d} {r['entries']:5d}")
+                  f"{r['crc_mismatch']:4d} {r['entries']:5d} {r['denominator']}")
         t = report['overlays']['total']
         print(f"  TOTAL: {t['covered_words']}/{t['size_words']} palavras ({t['pct']:.4f}%), "
               f"variantes {t['variants_matched']}/{t['variants_total']}, "
@@ -376,8 +425,10 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--ranges', default=ROOT / 'generated-online/SLUS_005.48_full.ranges')
     ap.add_argument('--dispatch', default=ROOT / 'generated-online/SLUS_005.48_dispatch.c')
-    ap.add_argument('--overlays',
-                    default=ROOT / 'generated-online/retained-overlays/overlays_static.c')
+    ap.add_argument('--overlays', default=None,
+                    help='overlays_static.c de um build; padrao: build-auto-* mais recente por nome')
+    ap.add_argument('--profile', default=ROOT / 'aot/overlays.json',
+                    help='perfil AOT; declara os extents de MOV e QUES.PAC (denominador)')
     ap.add_argument('--exclusions', default=ROOT / 'coverage/exclusions.json')
     ap.add_argument('--baseline', default=ROOT / 'coverage/baseline.json')
     ap.add_argument('--game-toml', default=ROOT / 'game.toml')

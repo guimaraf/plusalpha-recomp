@@ -133,6 +133,31 @@ Autorizado pelo usuário em 2026-11-24. O agente pode compilar, executar o jogo,
   - despachante dentro do orçamento;
   - sem regressão.
 
+**Resultado (2026-11-24):**
+
+- Perfil versionado em `PlusAlphaProject/aot/overlays.json`, gerado por `aot/gen_profile.py`. São 59 imagens:
+  - PL_1 e PL_2 (52) e BONUS, OPTS, MC_M, MC_I e END pelo método `fixed_address_files`;
+  - MOV e QUES.PAC por `fixed_address_extents`, com sha256.
+  O perfil não declara `static_output`: a saída vai para `<build>/static-overlays`.
+- `build_online.ps1 -OverlaySource aot|retained`. O padrão é `aot`. `-Release` ou `-RetainedOverlayDir` continuam nas retidas, então o release não mudou. O CMake valida `AOT_STATIC_AUDIT.json`: 59 recipes, `all_pairs_valid` e guardas de CRC. A geração leva menos de 1 min; o build limpo completo, cerca de 10,5 min.
+- Correção geral no `psxrecomp`: `recompiler_project_root()`, em `tools/aot_overlay_pipeline.py`. Projetos sem `bios/SCPH1001.toml` passam a usar o framework.
+- Link: `--export-all-symbols` só vale para as retidas, porque o AOT estoura o limite de ordinais de export. Isso é seguro com `overlay_cache = false`; se o cache de DLL for ligado num build AOT, será preciso revisar.
+- **Cobertura estática:**
+  - overlays: 164.988 → **328.016 palavras (40,5% → 80,4%)**, com o denominador de 407.741 (MOV e QUES por extent);
+  - 52 de 52 imagens PL cobertas (antes eram 40), e MC_M, MC_I e END deixaram de estar em 0;
+  - 18.184 endereços no despachante (antes 3.495, todos preservados) e 50.738 variantes, todas casando com o disco;
+  - nenhum arquivo regrediu.
+- **Runtime** (rota `boot_to_fight`, Ryu × Allen), comparando com as retidas:
+  - instruções de overlay interpretadas: 14,05 M → 1,18 M (cerca de 12× menos);
+  - handoffs: 91.134 → 35.243;
+  - EXE com 0 misses e guest a 60 fps.
+  - O que sobra interpretado é a quarentena SMC (`0x801AB2DC`), código da BIOS/kernel (`0xC88`, `0xCF0`) e resíduos de baixa frequência.
+- **Pendências:**
+  - as 45 variantes retidas divergentes continuam interpretadas até a Fase 3;
+  - 56 possíveis alvos de jump table sem entrada ficam como risco aceito, a conferir na Fase 4;
+  - os scripts de diagnóstico (`build_online_diagnostics.ps1`, `build_input_observation.ps1`) agora usam AOT por padrão;
+  - a validação de sensação de jogo do AOT continua com o usuário, antes de promovê-lo ao release.
+
 ### Fase 2 — EXE: raízes chamadas por tabela (de ~79% para ~84,2%)
 
 Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fechamento, orçamento, aliases e jump tables. Começar pela tabela `0x801AF960` e pelas maiores raízes.

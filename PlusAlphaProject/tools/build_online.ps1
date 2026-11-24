@@ -14,10 +14,17 @@ param(
     [string]$RetainedOverlayDir = '',
     [ValidatePattern('^build-[A-Za-z0-9_-]+$')]
     [string]$BuildDirName = 'build-online-static',
-    [string]$StaticOverlayDir = ''
+    [string]$StaticOverlayDir = '',
+    # aot: overlays gerados direto do disco (aot/overlays.json); retained: retidas (fallback).
+    # Sem o parametro explicito, -Release e -RetainedOverlayDir mantem as retidas.
+    [ValidateSet('aot', 'retained')]
+    [string]$OverlaySource = 'aot'
 )
 
 $ErrorActionPreference = 'Stop'
+if (-not $PSBoundParameters.ContainsKey('OverlaySource') -and ($Release -or $RetainedOverlayDir)) {
+    $OverlaySource = 'retained'
+}
 $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $RepositoryRoot = Split-Path $ProjectRoot -Parent
 $Framework = Join-Path $RepositoryRoot 'psxrecomp'
@@ -50,14 +57,19 @@ if (-not $Generate) {
 }
 Write-Host "BIOS: SCPH-1001 retail ($BiosPath); backend exclusivo SCPH1001." -ForegroundColor Cyan
 if (-not $SetupHost) {
-    if (-not $RetainedOverlayDir) {
-        $RetainedOverlayDir = Join-Path $ProjectRoot 'buildTele-s1-309-bezeus\static_overlays'
-    }
-    $RetainedOverlayDir = (Resolve-Path -LiteralPath $RetainedOverlayDir).Path
-    if (-not $StaticOverlayDir) {
-        $StaticOverlayDir = Join-Path $ProjectRoot 'generated-online\retained-overlays'
+    if ($OverlaySource -eq 'retained') {
+        if (-not $RetainedOverlayDir) {
+            $RetainedOverlayDir = Join-Path $ProjectRoot 'buildTele-s1-309-bezeus\static_overlays'
+        }
+        $RetainedOverlayDir = (Resolve-Path -LiteralPath $RetainedOverlayDir).Path
+        if (-not $StaticOverlayDir) {
+            $StaticOverlayDir = Join-Path $ProjectRoot 'generated-online\retained-overlays'
+        }
+    } elseif (-not $StaticOverlayDir) {
+        $StaticOverlayDir = Join-Path $BuildDir 'static-overlays'
     }
     $StaticOverlayDir = [IO.Path]::GetFullPath($StaticOverlayDir)
+    Write-Host "Overlays: fonte $OverlaySource -> $StaticOverlayDir" -ForegroundColor Cyan
 }
 
 foreach ($Name in @('cmake.exe', 'gcc.exe', 'c++.exe', 'ninja.exe', 'windres.exe', 'pkg-config.exe')) {
@@ -97,9 +109,35 @@ try {
             & $Python (Join-Path $PSScriptRoot 'check_main_coverage.py') `
                 (Join-Path $ProjectRoot 'generated-online\SLUS_005.48_dispatch.c')
             if ($LASTEXITCODE -ne 0) { throw 'Cobertura do EXE incompleta. Execute novamente com -Generate.' }
-            & $Python (Join-Path $PSScriptRoot 'prepare_retained_overlays.py') `
-                --source $RetainedOverlayDir --output $StaticOverlayDir --framework $Framework
-            if ($LASTEXITCODE -ne 0) { throw "Preparacao da cobertura retida falhou: $LASTEXITCODE" }
+            if ($OverlaySource -eq 'retained') {
+                & $Python (Join-Path $PSScriptRoot 'prepare_retained_overlays.py') `
+                    --source $RetainedOverlayDir --output $StaticOverlayDir --framework $Framework
+                if ($LASTEXITCODE -ne 0) { throw "Preparacao da cobertura retida falhou: $LASTEXITCODE" }
+            } else {
+                # O recompilador precisa ter o mesmo --codegen-hash dos fontes do runtime; um
+                # binario defasado emitiria overlays com semantica antiga (o pipeline tambem recusa).
+                $Recompiler = Join-Path $Framework 'recompiler\build\psxrecomp-game.exe'
+                if (-not (Test-Path -LiteralPath $Recompiler -PathType Leaf)) {
+                    throw "Recompilador ausente: $Recompiler. Compile o alvo psxrecomp-game do framework."
+                }
+                $HashHeader = Join-Path $Framework 'runtime\include\overlay_codegen_hash.h'
+                $ExpectedHash = if (Test-Path -LiteralPath $HashHeader) {
+                    [regex]::Match((Get-Content -LiteralPath $HashHeader -Raw), 'PSX_OVERLAY_CODEGEN_HASH\s+0x([0-9A-Fa-f]{8})u').Groups[1].Value
+                } else { '' }
+                $BakedHash = ((& $Recompiler --codegen-hash) | Select-Object -First 1)
+                if ($ExpectedHash -and ("$BakedHash".Trim() -ne $ExpectedHash.ToLower())) {
+                    throw "Recompilador defasado: --codegen-hash $BakedHash difere de $ExpectedHash em overlay_codegen_hash.h. Recompile psxrecomp-game."
+                }
+                $AotWork = Join-Path $BuildDir 'aot-work'
+                $AotWorkers = [Math]::Min($Jobs, 3)
+                & $Python (Join-Path $Framework 'tools\aot_overlay_pipeline.py') static `
+                    --profile (Join-Path $ProjectRoot 'aot\overlays.json') `
+                    --game-toml (Join-Path $ProjectRoot 'game.toml') `
+                    --disc (Join-Path $ProjectRoot 'disc-a\Street Fighter EX Plus Alpha (USA).cue') `
+                    --recompiler $Recompiler --work-dir $AotWork --out-dir $StaticOverlayDir `
+                    --gcc (Join-Path $UcrtBin 'gcc.exe') --cmake $CMake --workers $AotWorkers --cps --reuse
+                if ($LASTEXITCODE -ne 0) { throw "Geracao AOT dos overlays falhou: $LASTEXITCODE" }
+            }
         }
 
         $ToolPath = $UcrtBin.Replace('\', '/')
@@ -113,7 +151,7 @@ try {
             '-DPSX_NETPLAY=ON', '-DPSX_RECOMP_UI=ON', "-DPSX_SETUP_WIZARD=$SetupWizard",
             "-DPSX_DEBUG_TOOLS=$DebugTools", '-DPSX_STATIC_RUNTIME=ON', '-DRNET_ENABLE_ICE=ON',
             "-DPSX_SDL_BACKEND=$SdlBackend", "-DPSX_GAME_VERSION=$Version",
-            "-DPSX_STATIC_OVERLAY_DIR=$StaticOverlayDir",
+            "-DPSX_STATIC_OVERLAY_DIR=$StaticOverlayDir", "-DPSX_OVERLAY_SOURCE=$OverlaySource",
             '-DPSXRECOMP_BIOS_STEMS=SCPH1001', '-DPSXRECOMP_BIOS_STEM=SCPH1001',
             "-DPSXRECOMP_BIOS_PROFILE=$($Framework.Replace('\', '/'))/bios/SCPH1001.toml",
             '-DPSXRECOMP_SKIP_BIOS_STALE_CHECK=OFF', '-DPSXRECOMP_BIOS_STALE_FATAL=ON',

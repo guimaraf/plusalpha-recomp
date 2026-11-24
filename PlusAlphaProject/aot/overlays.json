@@ -1,0 +1,176 @@
+{
+  "schema": "psxrecomp AOT methods v1",
+  "game_id": "SLUS-00548",
+  "disc_hashes": {
+    "sha256": "e1050b3b8a3d26e04d4bbe196a7ded17cd0ff1e7de944d0fd7e161c48d60f9ca",
+    "sha1": "4a25dab2bdc11372ab8496c807c28d49a476137d",
+    "md5": "2a57b43b0b2f3f094ce203d32e910e2a"
+  },
+  "expected_records": 59,
+  "images": [
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVL/PL00_1.OVL",
+        "OVL/PL01_1.OVL",
+        "OVL/PL02_1.OVL",
+        "OVL/PL03_1.OVL",
+        "OVL/PL04_1.OVL",
+        "OVL/PL05_1.OVL",
+        "OVL/PL06_1.OVL",
+        "OVL/PL07_1.OVL",
+        "OVL/PL08_1.OVL",
+        "OVL/PL09_1.OVL",
+        "OVL/PL0A_1.OVL",
+        "OVL/PL0B_1.OVL",
+        "OVL/PL0C_1.OVL",
+        "OVL/PL0D_1.OVL",
+        "OVL/PL0E_1.OVL",
+        "OVL/PL0F_1.OVL",
+        "OVL/PL10_1.OVL",
+        "OVL/PL11_1.OVL",
+        "OVL/PL12_1.OVL",
+        "OVL/PL13_1.OVL",
+        "OVL/PL14_1.OVL",
+        "OVL/PL15_1.OVL",
+        "OVL/PL16_1.OVL",
+        "OVL/PL17_1.OVL",
+        "OVL/PL18_1.OVL",
+        "OVL/PL19_1.OVL"
+      ],
+      "load_addr": "0x80043000",
+      "allow_missing": true,
+      "entry_pointer_offsets": [
+        "0x0",
+        "0x4",
+        "0x8",
+        "0xc",
+        "0x10"
+      ]
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVL2/PL00_2.OVL",
+        "OVL2/PL01_2.OVL",
+        "OVL2/PL02_2.OVL",
+        "OVL2/PL03_2.OVL",
+        "OVL2/PL04_2.OVL",
+        "OVL2/PL05_2.OVL",
+        "OVL2/PL06_2.OVL",
+        "OVL2/PL07_2.OVL",
+        "OVL2/PL08_2.OVL",
+        "OVL2/PL09_2.OVL",
+        "OVL2/PL0A_2.OVL",
+        "OVL2/PL0B_2.OVL",
+        "OVL2/PL0C_2.OVL",
+        "OVL2/PL0D_2.OVL",
+        "OVL2/PL0E_2.OVL",
+        "OVL2/PL0F_2.OVL",
+        "OVL2/PL10_2.OVL",
+        "OVL2/PL11_2.OVL",
+        "OVL2/PL12_2.OVL",
+        "OVL2/PL13_2.OVL",
+        "OVL2/PL14_2.OVL",
+        "OVL2/PL15_2.OVL",
+        "OVL2/PL16_2.OVL",
+        "OVL2/PL17_2.OVL",
+        "OVL2/PL18_2.OVL",
+        "OVL2/PL19_2.OVL"
+      ],
+      "load_addr": "0x8008CA00",
+      "allow_missing": true,
+      "entry_pointer_offsets": [
+        "0x0",
+        "0x4",
+        "0x8",
+        "0xc",
+        "0x10"
+      ]
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVL3/BONUS.OVL"
+      ],
+      "load_addr": "0x80018800",
+      "allow_missing": true,
+      "entry_pointer_offsets": [
+        "0x0",
+        "0x4"
+      ]
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVL3/OPTS.OVL"
+      ],
+      "load_addr": "0x80020800",
+      "allow_missing": true,
+      "entry_pointer_offsets": [
+        "0x0",
+        "0x4",
+        "0x8",
+        "0xc",
+        "0x10"
+      ]
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVL3/MC_I.OVL",
+        "OVL3/END.OVL"
+      ],
+      "load_addr": "0x800D6400",
+      "allow_missing": true,
+      "entry_pointer_offsets": [
+        "0x0"
+      ]
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVL3/MC_M.OVL"
+      ],
+      "load_addr": "0x800D6400",
+      "allow_missing": true,
+      "entry_pointer_offsets": [
+        "0x0",
+        "0x4",
+        "0x8"
+      ]
+    },
+    {
+      "method": "fixed_address_extents",
+      "allow_missing": true,
+      "extents": [
+        {
+          "file": "OVL3/MOV.OVL",
+          "base": "0x800d6400",
+          "address": "0x800e76a0",
+          "size": 5732,
+          "load_addr": "0x800e76a0",
+          "sha256": "a2bbdd7135a342007ac4de44f9f3f6848ff488497f2cca6b80890fb372b85943",
+          "entries": [
+            "0x800e76a0",
+            "0x800e8a78",
+            "0x800e8ae4",
+            "0x800e8b98",
+            "0x800e8b9c",
+            "0x800e8ba8",
+            "0x800e8bf8",
+            "0x800e8c60"
+          ]
+        },
+        {
+          "file": "OVL3/QUES.PAC",
+          "base": "0x800d6400",
+          "address": "0x800e64d8",
+          "size": 12196,
+          "load_addr": "0x800e64d8",
+          "sha256": "8de276660a9bdb5d802eed3bcb997a2a239d09cc0794631717de7539527f3bb2"
+        }
+      ]
+    }
+  ]
+}

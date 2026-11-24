@@ -110,6 +110,42 @@ class CommandTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             au.build_powershell_command('build-auto-1', 8, 'x')
 
+    def test_build_command_overlay_source(self):
+        cmd = au.build_powershell_command('build-auto-1', 4, 'x')
+        self.assertEqual(cmd[cmd.index('-OverlaySource') + 1], 'aot')
+        cmd = au.build_powershell_command('build-auto-1', 4, 'x', 'retained')
+        self.assertEqual(cmd[cmd.index('-OverlaySource') + 1], 'retained')
+        with self.assertRaises(ValueError):
+            au.build_powershell_command('build-auto-1', 4, 'x', 'other')
+        self.assertEqual(au.static_overlay_dir_for('b', 'aot'), Path('b/static-overlays'))
+        self.assertEqual(au.static_overlay_dir_for('b', 'retained'), Path('b/retained-overlays'))
+
+    def test_detect_overlay_source(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            self.assertEqual(au.detect_overlay_source(root), 'unknown')
+            (root / 'retained-overlays').mkdir()
+            (root / 'retained-overlays' / 'retained_coverage.json').write_text('{}')
+            self.assertEqual(au.detect_overlay_source(root), 'retained')
+            (root / 'static-overlays').mkdir()
+            (root / 'static-overlays' / 'AOT_STATIC_AUDIT.json').write_text('{}')
+            self.assertEqual(au.detect_overlay_source(root), 'aot')
+
+    def test_perf_indicators(self):
+        perf = au.perf_indicators(
+            1200, 110.0, (600, 100.0),
+            dict(ok=True, insns_run=2400000, native_handoffs=600),
+            dict(ok=True, interp_share=0.1, native_share=0.2, static_share=0.3),
+            dict(ok=True, static_hits=5, static_rehashes=2, static_crc_misses=1))
+        self.assertEqual(perf['guest_fps_since_prev'], 60.0)
+        self.assertEqual(perf['insns_per_frame'], 2000.0)
+        self.assertEqual(perf['native_handoffs_per_frame'], 0.5)
+        self.assertEqual(perf['interp_share'], 0.1)
+        self.assertEqual(perf['static_crc_cache']['capacity'], 16384)
+        self.assertEqual(perf['static_crc_cache']['static_rehashes'], 2)
+        self.assertEqual(au.perf_indicators(0, 1.0, None, None, None, None), {})
+
 
 if __name__ == '__main__':
     unittest.main()

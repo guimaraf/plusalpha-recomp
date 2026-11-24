@@ -43,7 +43,9 @@ STEP_TYPES = {"wait_frames", "press", "screenshot", "savestate", "telemetry", "e
 EXPECT_CHECKS = {"frame_min", "fmv_field", "shot_differs", "shot_equals", "ok"}
 TELEMETRY_KEYS = {"dispatch_stats", "overlay_interp_hot", "static_text_misses",
                   "frame_perf", "fmv_state", "frame", "overlay_loader_status",
-                  "dirty_ram_stats", "segment_misses"}
+                  "dirty_ram_stats", "segment_misses", "phase_profile", "latency"}
+OVERLAY_SOURCES = ("aot", "retained")
+STATIC_MATCH_CACHE_CAP = 16384  # overlay_loader.c: cache de CRC dos overlays estaticos
 
 
 # ---------------------------------------------------------------- logica pura
@@ -151,15 +153,60 @@ def build_game_command(exe, game_toml, memcard_dir, port, disc=None, bios=None):
     return cmd
 
 
-def build_powershell_command(build_dir_name, jobs, static_overlay_dir):
+def build_powershell_command(build_dir_name, jobs, static_overlay_dir, overlay_source="aot"):
     if not build_dir_name.startswith("build-auto-"):
         raise ValueError("o build autonomo deve usar build-auto-<timestamp>")
     if not 1 <= jobs <= 4:
         raise ValueError("jobs deve ficar entre 1 e 4")
+    if overlay_source not in OVERLAY_SOURCES:
+        raise ValueError(f"overlay_source deve ser um de {OVERLAY_SOURCES}")
     return ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
             str(TOOLS_DIR / "build_online.ps1"),
             "-BuildDirName", build_dir_name, "-Jobs", str(jobs),
-            "-StaticOverlayDir", str(static_overlay_dir)]
+            "-StaticOverlayDir", str(static_overlay_dir),
+            "-OverlaySource", overlay_source]
+
+
+def static_overlay_dir_for(build_dir, overlay_source):
+    """AOT grava <build>/static-overlays; as retidas mantem <build>/retained-overlays."""
+    return Path(build_dir) / ("static-overlays" if overlay_source == "aot" else "retained-overlays")
+
+
+def detect_overlay_source(build_dir):
+    """Fonte dos overlays de um build existente (para run.json)."""
+    build_dir = Path(build_dir)
+    if (build_dir / "static-overlays" / "AOT_STATIC_AUDIT.json").is_file():
+        return "aot"
+    if (build_dir / "retained-overlays" / "retained_coverage.json").is_file():
+        return "retained"
+    return "unknown"
+
+
+def perf_indicators(frame, wall_s, prev, dirty, phase, loader):
+    """Indicadores de desempenho por frame, a partir da telemetria bruta.
+
+    guest_fps_since_prev: frames emulados por segundo de parede desde a telemetria anterior
+    (prev = (frame, wall_s) ou None). insns_per_frame / native_handoffs_per_frame:
+    dirty_ram_stats acumulado / frame. interp_share etc.: phase_profile (amostrador de fase).
+    static_crc_cache: contadores do cache de CRC estatico (capacidade fixa no runtime).
+    """
+    out = {}
+    if prev and frame > prev[0] and wall_s > prev[1]:
+        out["guest_fps_since_prev"] = round((frame - prev[0]) / (wall_s - prev[1]), 2)
+    if isinstance(dirty, dict) and dirty.get("ok") and frame > 0:
+        out["insns_per_frame"] = round(dirty.get("insns_run", 0) / frame, 1)
+        out["native_handoffs_per_frame"] = round(dirty.get("native_handoffs", 0) / frame, 2)
+    if isinstance(phase, dict) and phase.get("ok"):
+        for key in ("interp_share", "native_share", "static_share", "gpu_share", "other_share"):
+            if key in phase:
+                out[key] = phase[key]
+    if isinstance(loader, dict) and loader.get("ok"):
+        cache = {k: loader.get(k) for k in ("static_checks", "static_hits", "static_variant_misses",
+                                            "static_address_misses", "static_rehashes",
+                                            "static_crc_misses", "static_gen_fastpath")}
+        cache["capacity"] = STATIC_MATCH_CACHE_CAP
+        out["static_crc_cache"] = cache
+    return out
 
 
 def sha256_file(path):
@@ -350,12 +397,12 @@ def no_concurrent_build():
         raise RuntimeError(f"build concorrente detectado ({', '.join(busy)}); aguarde.")
 
 
-def do_build(evidence, jobs=4):
+def do_build(evidence, jobs=4, overlay_source="aot"):
     no_concurrent_build()
     name = "build-auto-" + now_stamp()
     build_dir = PROJECT_ROOT / name
-    overlays = build_dir / "retained-overlays"
-    cmd = build_powershell_command(name, jobs, overlays)
+    overlays = static_overlay_dir_for(build_dir, overlay_source)
+    cmd = build_powershell_command(name, jobs, overlays, overlay_source)
     log = evidence / "build.log"
     t0 = time.time()
     with open(log, "w", encoding="utf-8", errors="replace") as lf:
@@ -364,7 +411,8 @@ def do_build(evidence, jobs=4):
         proc = subprocess.run(cmd, stdout=lf, stderr=subprocess.STDOUT,
                               creationflags=BELOW_NORMAL, cwd=str(PROJECT_ROOT))
     dur = time.time() - t0
-    info = {"build_dir": str(build_dir), "command": cmd, "exit_code": proc.returncode,
+    info = {"build_dir": str(build_dir), "overlay_source": overlay_source,
+            "static_overlay_dir": str(overlays), "command": cmd, "exit_code": proc.returncode,
             "duration_s": round(dur, 1), "log": str(log)}
     (evidence / "build.json").write_text(json.dumps(info, indent=2), encoding="utf-8")
     if proc.returncode != 0 or not (build_dir / EXE_NAME).is_file():
@@ -386,6 +434,7 @@ class Session:
         self.focus = []
         self.shots = {}
         self.record = {"steps": [], "focus": {}, "timings": {}}
+        self.tele_prev = None
 
     # foco -------------------------------------------------------------
     def sample_focus(self, label):
@@ -513,12 +562,14 @@ class Session:
         # psxrecomp-plusalpha; aqui o erro "unknown command" fica registrado.
         which = which or ["dispatch_stats", "static_text_misses", "overlay_interp_hot",
                           "frame_perf", "fmv_state", "frame", "overlay_loader_status",
-                          "dirty_ram_stats", "segment_misses"]
-        out = {"name": name, "frame_at": self.frame()}
+                          "dirty_ram_stats", "segment_misses", "phase_profile", "latency"]
+        out = {"name": name, "frame_at": self.frame(), "wall_s": round(time.time(), 3)}
         for key in which:
             try:
                 if key == "static_text_misses":
                     r = self.cmd("static_text_misses", **{"class": "all", "offset": 0, "limit": 256})
+                elif key == "phase_profile":
+                    r = self.cmd("phase_profile", window=10)
                 elif key == "overlay_interp_hot":
                     r = self.cmd("overlay_interp_hot", sort="insns", min_entries=1,
                                  offset=0, limit=64)
@@ -532,6 +583,10 @@ class Session:
             # substituto de overlay_interp_hot neste runtime: PCs interpretados por insns
             top = sorted(dirty.get("per_pc", []), key=lambda e: e.get("insns", 0), reverse=True)[:10]
             out["top_interp_pcs"] = top
+        out["perf"] = perf_indicators(out["frame_at"], out["wall_s"], self.tele_prev,
+                                      out.get("dirty_ram_stats"), out.get("phase_profile"),
+                                      out.get("overlay_loader_status"))
+        self.tele_prev = (out["frame_at"], out["wall_s"])
         path = self.evidence / f"telemetry_{name}.json"
         path.write_text(json.dumps(out, indent=1), encoding="utf-8")
         return out
@@ -636,6 +691,7 @@ def do_run(build_dir, route_name, evidence, port, show_window=False):
     sess.record["monitors_all"] = win.monitors()
     sess.record["route"] = route_name
     sess.record["build_dir"] = str(build_dir)
+    sess.record["overlay_source"] = detect_overlay_source(build_dir)
     t0 = time.time()
     failed = None
     try:
@@ -680,6 +736,8 @@ def main(argv=None):
         sp.add_argument("--evidence-dir", type=Path)
         if name != "run":
             sp.add_argument("--jobs", type=int, default=4)
+            sp.add_argument("--overlay-source", choices=OVERLAY_SOURCES, default="aot",
+                            help="aot: overlays gerados do disco (padrao); retained: retidas")
         if name != "build":
             sp.add_argument("--route", default="boot_to_fight")
             sp.add_argument("--port", type=int, default=DEFAULT_PORT)
@@ -695,13 +753,13 @@ def main(argv=None):
     print(f"Evidencias: {evidence}", flush=True)
     try:
         if args.mode == "build":
-            build_dir, info = do_build(evidence, args.jobs)
+            build_dir, info = do_build(evidence, args.jobs, args.overlay_source)
             print(f"Build ok em {info['duration_s']}s: {build_dir}")
             return 0
         if args.mode == "run":
             return do_run(resolve_build_dir(args.build_dir), args.route, evidence,
                           args.port, args.show_window)
-        build_dir, info = do_build(evidence, args.jobs)
+        build_dir, info = do_build(evidence, args.jobs, args.overlay_source)
         print(f"Build ok em {info['duration_s']}s: {build_dir}", flush=True)
         return do_run(build_dir, args.route, evidence, args.port, args.show_window)
     except (RuntimeError, ValueError, FileNotFoundError) as exc:

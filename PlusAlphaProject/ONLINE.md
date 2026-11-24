@@ -371,6 +371,36 @@ antigo e não usa `game_core.dll`/`compileBuild`. Os scripts S1-309 e os antigos
 
 ## Cobertura estática recuperada
 
+### Fonte dos overlays: AOT do disco (padrão) ou retidas (fallback)
+
+`tools/build_online.ps1 -OverlaySource aot|retained` escolhe a origem dos
+overlays estáticos (Fase 1 de `docs/PLANO_100.md`). O padrão é `aot`; `-Release`
+e `-RetainedOverlayDir` mantêm `retained` quando `-OverlaySource` não é informado,
+então o release segue nas retidas até a sensação de jogo ser validada.
+
+- `aot`: roda `psxrecomp/tools/aot_overlay_pipeline.py static` com o perfil
+  versionado `aot/overlays.json` (gerado por `aot/gen_profile.py`, que só lê o
+  disco), no disco original verificado por hash. 59 recipes (PL_1 x26 e PL_2 x26,
+  BONUS, OPTS, MC_M, MC_I, END, MOV e QUES.PAC); MOV e QUES.PAC entram como extents de
+  código declarados. O perfil não tem `static_output`: a saída fica por build, em
+  `<build>/static-overlays` (`--out-dir`), com trabalho em `<build>/aot-work`. Usa
+  `--cps`, no máximo 3 workers e herda a prioridade do processo. O script recusa um
+  `psxrecomp-game.exe` cujo `--codegen-hash` difira de
+  `runtime/include/overlay_codegen_hash.h`. O CMake (`PSX_OVERLAY_SOURCE=aot`) lê
+  `AOT_STATIC_AUDIT.json` e exige `all_pairs_valid`, `all_guards_match_known_input_bytes`,
+  `recipe_count == 59`, `published_variants > 0` e os hashes de todos os arquivos.
+- `retained`: o fluxo descrito abaixo (`prepare_retained_overlays.py`), mantido como fallback.
+
+`tools/auto_session.py build|all --overlay-source aot|retained` (padrão `aot`) grava
+a fonte em `build.json`; a telemetria passa a incluir `phase_profile`, `latency` e um
+bloco `perf` (fps de guest, instruções interpretadas por frame, estatísticas do cache de
+CRC estático). `tools/coverage_metric.py --overlays <overlays_static.c>` mede um build
+específico (padrão: o `build-auto-*` mais recente por nome, registrado no JSON); MOV e
+QUES.PAC usam o extent declarado em `aot/overlays.json` como denominador
+(`denominator: extent`), os demais o arquivo inteiro (`denominator: file`).
+
+### Retidas (fallback)
+
 O build agora exige o conjunto promovido S1-309: 2.219 DLLs do inventário,
 2.086 unidades C e 4.748 entradas/variantes antes da deduplicação. A origem
 padrão é `buildTele-s1-309-bezeus/static_overlays/`. O preparador apenas lê essa

@@ -6,240 +6,240 @@
   },
   "overlays": {
     "OVL/PL00_1.OVL": {
-      "covered_words": 3062,
-      "entries": 103
+      "covered_words": 5379,
+      "entries": 1002
     },
     "OVL/PL01_1.OVL": {
-      "covered_words": 5,
-      "entries": 1
+      "covered_words": 7280,
+      "entries": 1390
     },
     "OVL/PL02_1.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 4148,
+      "entries": 787
     },
     "OVL/PL03_1.OVL": {
-      "covered_words": 4741,
-      "entries": 153
+      "covered_words": 6249,
+      "entries": 1194
     },
     "OVL/PL04_1.OVL": {
-      "covered_words": 5,
-      "entries": 1
+      "covered_words": 5151,
+      "entries": 1125
     },
     "OVL/PL05_1.OVL": {
-      "covered_words": 10,
-      "entries": 2
+      "covered_words": 3298,
+      "entries": 763
     },
     "OVL/PL06_1.OVL": {
-      "covered_words": 2898,
-      "entries": 155
+      "covered_words": 4949,
+      "entries": 1179
     },
     "OVL/PL07_1.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 4451,
+      "entries": 823
     },
     "OVL/PL08_1.OVL": {
-      "covered_words": 3957,
-      "entries": 97
+      "covered_words": 5754,
+      "entries": 922
     },
     "OVL/PL09_1.OVL": {
-      "covered_words": 3544,
-      "entries": 102
+      "covered_words": 4380,
+      "entries": 648
     },
     "OVL/PL0A_1.OVL": {
-      "covered_words": 3475,
-      "entries": 103
+      "covered_words": 4731,
+      "entries": 988
     },
     "OVL/PL0B_1.OVL": {
-      "covered_words": 4972,
-      "entries": 154
+      "covered_words": 6432,
+      "entries": 1201
     },
     "OVL/PL0C_1.OVL": {
-      "covered_words": 6770,
-      "entries": 165
+      "covered_words": 8108,
+      "entries": 1347
     },
     "OVL/PL0D_1.OVL": {
-      "covered_words": 4296,
-      "entries": 183
+      "covered_words": 4459,
+      "entries": 840
     },
     "OVL/PL0E_1.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 5102,
+      "entries": 758
     },
     "OVL/PL0F_1.OVL": {
-      "covered_words": 2001,
-      "entries": 124
+      "covered_words": 3278,
+      "entries": 674
     },
     "OVL/PL10_1.OVL": {
-      "covered_words": 7081,
-      "entries": 196
+      "covered_words": 9546,
+      "entries": 1689
     },
     "OVL/PL11_1.OVL": {
-      "covered_words": 7081,
-      "entries": 196
+      "covered_words": 9546,
+      "entries": 1689
     },
     "OVL/PL12_1.OVL": {
-      "covered_words": 6770,
-      "entries": 165
+      "covered_words": 8108,
+      "entries": 1347
     },
     "OVL/PL13_1.OVL": {
-      "covered_words": 4338,
-      "entries": 99
+      "covered_words": 7280,
+      "entries": 1390
     },
     "OVL/PL14_1.OVL": {
-      "covered_words": 3475,
-      "entries": 103
+      "covered_words": 4731,
+      "entries": 988
     },
     "OVL/PL15_1.OVL": {
-      "covered_words": 4972,
-      "entries": 154
+      "covered_words": 6432,
+      "entries": 1201
     },
     "OVL/PL16_1.OVL": {
-      "covered_words": 2502,
-      "entries": 81
+      "covered_words": 5157,
+      "entries": 1038
     },
     "OVL/PL17_1.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 3701,
+      "entries": 858
     },
     "OVL/PL18_1.OVL": {
-      "covered_words": 6215,
-      "entries": 120
+      "covered_words": 8409,
+      "entries": 1562
     },
     "OVL/PL19_1.OVL": {
-      "covered_words": 5649,
-      "entries": 169
+      "covered_words": 6642,
+      "entries": 1197
     },
     "OVL2/PL00_2.OVL": {
-      "covered_words": 14,
-      "entries": 1
+      "covered_words": 5379,
+      "entries": 1002
     },
     "OVL2/PL01_2.OVL": {
-      "covered_words": 4547,
-      "entries": 107
+      "covered_words": 7280,
+      "entries": 1390
     },
     "OVL2/PL02_2.OVL": {
-      "covered_words": 2028,
-      "entries": 61
+      "covered_words": 4148,
+      "entries": 787
     },
     "OVL2/PL03_2.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 6249,
+      "entries": 1194
     },
     "OVL2/PL04_2.OVL": {
-      "covered_words": 2121,
-      "entries": 99
+      "covered_words": 5151,
+      "entries": 1125
     },
     "OVL2/PL05_2.OVL": {
-      "covered_words": 2124,
-      "entries": 98
+      "covered_words": 3298,
+      "entries": 763
     },
     "OVL2/PL06_2.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 4949,
+      "entries": 1179
     },
     "OVL2/PL07_2.OVL": {
-      "covered_words": 3358,
-      "entries": 94
+      "covered_words": 4451,
+      "entries": 823
     },
     "OVL2/PL08_2.OVL": {
-      "covered_words": 5,
-      "entries": 1
+      "covered_words": 5754,
+      "entries": 922
     },
     "OVL2/PL09_2.OVL": {
-      "covered_words": 17,
-      "entries": 3
+      "covered_words": 4380,
+      "entries": 648
     },
     "OVL2/PL0A_2.OVL": {
-      "covered_words": 2554,
-      "entries": 86
+      "covered_words": 4731,
+      "entries": 988
     },
     "OVL2/PL0B_2.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 6432,
+      "entries": 1201
     },
     "OVL2/PL0C_2.OVL": {
-      "covered_words": 6727,
-      "entries": 178
+      "covered_words": 8108,
+      "entries": 1347
     },
     "OVL2/PL0D_2.OVL": {
-      "covered_words": 3621,
-      "entries": 130
+      "covered_words": 4459,
+      "entries": 840
     },
     "OVL2/PL0E_2.OVL": {
-      "covered_words": 3289,
-      "entries": 71
+      "covered_words": 5102,
+      "entries": 758
     },
     "OVL2/PL0F_2.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 3278,
+      "entries": 674
     },
     "OVL2/PL10_2.OVL": {
-      "covered_words": 7548,
-      "entries": 238
+      "covered_words": 9546,
+      "entries": 1689
     },
     "OVL2/PL11_2.OVL": {
-      "covered_words": 7548,
-      "entries": 238
+      "covered_words": 9546,
+      "entries": 1689
     },
     "OVL2/PL12_2.OVL": {
-      "covered_words": 6727,
-      "entries": 178
+      "covered_words": 8108,
+      "entries": 1347
     },
     "OVL2/PL13_2.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 7280,
+      "entries": 1390
     },
     "OVL2/PL14_2.OVL": {
-      "covered_words": 2554,
-      "entries": 86
+      "covered_words": 4731,
+      "entries": 988
     },
     "OVL2/PL15_2.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 6432,
+      "entries": 1201
     },
     "OVL2/PL16_2.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 5157,
+      "entries": 1038
     },
     "OVL2/PL17_2.OVL": {
-      "covered_words": 2693,
-      "entries": 163
+      "covered_words": 3701,
+      "entries": 858
     },
     "OVL2/PL18_2.OVL": {
-      "covered_words": 4842,
-      "entries": 80
+      "covered_words": 8409,
+      "entries": 1562
     },
     "OVL2/PL19_2.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 6642,
+      "entries": 1197
     },
     "OVL3/BONUS.OVL": {
       "covered_words": 6847,
-      "entries": 108
+      "entries": 1163
     },
     "OVL3/END.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 224,
+      "entries": 28
     },
     "OVL3/MC_I.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 104,
+      "entries": 18
     },
     "OVL3/MC_M.OVL": {
-      "covered_words": 0,
-      "entries": 0
+      "covered_words": 6438,
+      "entries": 1225
     },
     "OVL3/MOV.OVL": {
-      "covered_words": 1298,
-      "entries": 57
+      "covered_words": 1424,
+      "entries": 247
     },
     "OVL3/OPTS.OVL": {
-      "covered_words": 3658,
-      "entries": 81
+      "covered_words": 4528,
+      "entries": 745
     },
     "OVL3/QUES.PAC": {
       "covered_words": 3049,
-      "entries": 34
+      "entries": 562
     }
   },
   "schema": 1

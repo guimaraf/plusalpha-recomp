@@ -101,6 +101,47 @@ class VariantMatchTest(unittest.TestCase):
                                      row['entries']))
         self.assertEqual(2, m['total']['unmatched'])
 
+    def test_extent_denominator_clips_coverage_and_labels_rows(self):
+        base = 0x1000
+        data = bytes(range(256)) * 4
+        r_in, r_out = (0x1100, 16), (0x1200, 16)
+        v_in = {'ranges': [r_in], 'crc': zlib.crc32(data[0x100:0x110]), 'entry': 0x80001100}
+        v_out = {'ranges': [r_out], 'crc': zlib.crc32(data[0x200:0x210]), 'entry': 0x80001200}
+        files = [('E', 1, data, base), ('F', 2, data, base)]
+        m = cm.overlay_metrics([v_in, v_out], files, {'E': (0x1100, 0x40)})
+        e, f = m['files']
+        self.assertEqual(('extent', 16, 4), (e['denominator'], e['size_words'], e['covered_words']))
+        self.assertEqual(256, e['file_size_words'])
+        self.assertEqual(('file', 256, 8), (f['denominator'], f['size_words'], f['covered_words']))
+
+    def test_load_extents_reads_only_extent_images(self):
+        import json, tempfile
+        profile = {'images': [
+            {'method': 'fixed_address_files', 'files': ['OVL3/BONUS.OVL']},
+            {'method': 'fixed_address_extents', 'extents': [
+                {'file': 'OVL3/MOV.OVL', 'address': '0x800E76A0', 'size': 5732}]}]}
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / 'overlays.json'
+            path.write_text(json.dumps(profile))
+            self.assertEqual({'OVL3/MOV.OVL': (0xE76A0, 5732)}, cm.load_extents(path))
+            self.assertEqual({}, cm.load_extents(Path(d) / 'missing.json'))
+            self.assertEqual({}, cm.load_extents(None))
+
+    def test_latest_build_overlays_by_name(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            self.assertIsNone(cm.latest_build_overlays(root))
+            for name, sub in (('build-auto-20260101-000000', 'retained-overlays'),
+                              ('build-auto-20260102-000000', 'static-overlays'),
+                              ('build-auto-20260103-000000', None)):
+                (root / name).mkdir()
+                if sub:
+                    (root / name / sub).mkdir()
+                    (root / name / sub / 'overlays_static.c').write_text('')
+            self.assertEqual(root / 'build-auto-20260102-000000/static-overlays/overlays_static.c',
+                             cm.latest_build_overlays(root))
+
     def test_parse_overlays_static_entry_mapping(self):
         text = (
             'static const uint32_t psx_ov_static_ranges_00000[] = { 0x00001000u, 0x10u };\n'
