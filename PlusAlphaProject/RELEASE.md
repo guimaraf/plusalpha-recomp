@@ -9,11 +9,19 @@ Set-Location 'F:\GitRevised\alphaplus\plusalpha-recomp'
 
 The version-specific script requires `PlusAlphaProject/VERSION` to contain `0.2.51`, builds in a fresh timestamped directory and verifies that the ZIP contains version 0.2.51 and excludes the HD Texture Packs mod. It calls `build_release.ps1` with two jobs and SDL3. It requires Python, the MSYS2 UCRT64 toolchain, initialized submodules, the locally prepared game sources, retained overlays, and the validated SCPH1001 BIOS. By default the BIOS is read from `bios/SCPH1001.BIN`; use `-BiosPath` to choose another path. The default retained overlays are under `PlusAlphaProject/buildTele-s1-309-bezeus/static_overlays`; use `-RetainedOverlayDir` if stored elsewhere.
 
+For future versions, the underlying `build_release.ps1` names new packages `exPlusAlpha-v<version>-Windows-x64-<timestamp>.zip`, reading the version from `VERSION` or, in `-PackageOnly` mode, from the existing build.
+
 The version-specific script uses already prepared game and BIOS sources and does not regenerate them. If they are not prepared, follow [ONLINE.md](ONLINE.md). The underlying `build_release.ps1` supports `-Generate`, which regenerates sources and requires the local game disc and BIOS.
 
 ## Windows release identification
 
 The project metadata in `.recomp.json` declares Windows as its target. The ZIP filename uses the `exPlusAlpha-` prefix required by the current RecompLauncher catalog and includes `Windows-x64` to identify the target platform and architecture. Upload the generated ZIP and its matching `.sha256` file without renaming either file. GitHub may normalize asset names; if it does, verify that the checksum file names the uploaded ZIP. Automatic recognition depends on the launcher and its catalog settings.
+
+## RecompLauncher integration
+
+Every package includes `recomplauncher.json` beside `exPlusAlpha.exe`. RecompLauncher can request a USA `.cue`, validate the disc serial and pass the selected disc to the game launcher. It can also expose renderer, internal resolution, fullscreen and VSync settings, and back up the default `saves` directory. Custom memory-card paths need separate backup.
+
+The PS1 BIOS must still be selected in the game launcher; the SDK does not manage PS1 BIOS files. The game launcher remains available for BIOS selection, netplay and its other settings. `settings.toml` is not included in cloud backups by this profile because it can contain machine-specific paths. Test the profile with RecompLauncher Developer tools before releasing; packaging the profile alone does not publish an update or force a catalog refresh.
 
 ## Output
 

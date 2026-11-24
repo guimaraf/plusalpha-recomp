@@ -115,7 +115,8 @@ def package(build, output, ucrt, archive=None):
             raise ValueError(f'Build release esperada: {setting}')
     binary = build / 'exPlusAlpha.exe'
     objdump, strip = ucrt / 'objdump.exe', ucrt / 'strip.exe'
-    required = [binary, build / 'exPlusAlpha.execution.json', build / 'game.toml',
+    launcher_profile = project / 'recomplauncher.json'
+    required = [launcher_profile, binary, build / 'exPlusAlpha.execution.json', build / 'game.toml',
                 build / 'sfexp.png', build / 'psx_game_version.txt', objdump, strip,
                 build / 'psx_mod_catalog_psx-runtime.txt',
                 build / 'psx_mod_catalog_psx-runtime.excluded.txt']
@@ -142,6 +143,10 @@ def package(build, output, ucrt, archive=None):
     (output / 'PACKAGE_INCOMPLETE.txt').write_text('Pacote incompleto; nao distribuir.\n')
     for name in ('exPlusAlpha.exe', 'game.toml', 'sfexp.png', 'psx_game_version.txt'):
         shutil.copy2(build / name, output / name)
+    # Ship the title-owned SDK profile beside the executable and include it
+    # in the integrity manifest; never copy a player's settings or BIOS.
+    json.loads(launcher_profile.read_text(encoding='utf-8'))
+    shutil.copy2(launcher_profile, output / 'recomplauncher.json')
     for source in binaries[1:] + list(dlls.values()):
         shutil.copy2(source, output / source.name)
     # Strip only the COPY. Keep exports and all source build/debug artifacts.

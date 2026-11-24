@@ -31,7 +31,15 @@ if (-not $PackageOnly -and (Test-Path -LiteralPath $BuildDir) -and -not $Increme
     throw "Build existente preservada: $BuildDir. Escolha outro -BuildDirName ou use -Incremental para recompilar essa pasta intencionalmente."
 }
 if (-not $OutputDir) {
-    $OutputDir = Join-Path $ProjectRoot ("dist\exPlusAlpha-$Stamp")
+    # Use the packaged executable's version in package-only mode, rather than
+    # labelling an older build with the current source version.
+    $VersionPath = if ($PackageOnly) { Join-Path $BuildDir 'psx_game_version.txt' } else { Join-Path $ProjectRoot 'VERSION' }
+    if (-not (Test-Path -LiteralPath $VersionPath -PathType Leaf)) { throw "Version file missing: $VersionPath" }
+    $PackageVersion = (Get-Content -LiteralPath $VersionPath -Raw).Trim()
+    if ($PackageVersion -notmatch '^[0-9]+(\.[0-9]+){1,3}(-[A-Za-z0-9][A-Za-z0-9.-]*)?$') {
+        throw "Invalid package version: $PackageVersion"
+    }
+    $OutputDir = Join-Path $ProjectRoot ("dist\exPlusAlpha-v$PackageVersion-Windows-x64-$Stamp")
 }
 if (Test-Path -LiteralPath $OutputDir) { throw "Pacote existente preservado: $OutputDir. Escolha outra pasta de saida." }
 $ArchivePath = "$OutputDir.zip"

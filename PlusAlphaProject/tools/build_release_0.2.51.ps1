@@ -39,9 +39,16 @@ try {
     $reader = New-Object System.IO.StreamReader($versionEntries[0].Open())
     try { $packagedVersion = $reader.ReadToEnd().Trim() } finally { $reader.Dispose() }
     if ($packagedVersion -ne '0.2.51') { throw "Unexpected packaged version: $packagedVersion" }
+    $profileEntries = @($archive.Entries | Where-Object { $_.FullName -match '(^|/)recomplauncher\.json$' })
+    if ($profileEntries.Count -ne 1) { throw 'Expected exactly one RecompLauncher profile in the ZIP.' }
+    $profileReader = New-Object System.IO.StreamReader($profileEntries[0].Open())
+    try { $profile = $profileReader.ReadToEnd() | ConvertFrom-Json } finally { $profileReader.Dispose() }
+    if ($profile.format -ne 1 -or $profile.start.program -notcontains 'exPlusAlpha.exe') {
+        throw 'The packaged RecompLauncher profile does not identify the game executable.'
+    }
     if (@($archive.Entries | Where-Object { $_.FullName -match '(^|/)mods/bundled/psx\.enhancement\.hd-textures/' }).Count -ne 0) {
         throw 'The excluded HD Texture Packs mod is present in the ZIP.'
     }
 } finally { $archive.Dispose() }
-Write-Host "Verified version 0.2.51; HD Texture Packs absent; SHA-256 $actualHash" -ForegroundColor Green
+Write-Host "Verified version 0.2.51; RecompLauncher profile present; HD Texture Packs absent; SHA-256 $actualHash" -ForegroundColor Green
 Write-Host "Distribution ZIP: $zipPath" -ForegroundColor Green

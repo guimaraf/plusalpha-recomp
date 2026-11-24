@@ -1,0 +1,169 @@
+{
+  "$schema": "https://recomplauncher.com/schema/recomplauncher.json",
+  "format": 1,
+  "name": "Street Fighter EX Plus Alpha",
+  "repo": "guimaraf/plusalpha-recomp",
+  "game": {
+    "kind": "iso",
+    "label": "Your USA disc (SLUS-00548): select the .cue with its .bin tracks beside it. Select your own SCPH1001.BIN BIOS in the game launcher.",
+    "check": {
+      "iso9660": "SLUS_005.48"
+    }
+  },
+  "start": {
+    "program": [
+      "exPlusAlpha.exe"
+    ],
+    "args": [
+      "--game",
+      "{install}/game.toml",
+      "--disc",
+      "{game}",
+      "--launcher"
+    ]
+  },
+  "config": [
+    {
+      "id": "main",
+      "format": "toml",
+      "file": [
+        {
+          "path": "{install}/settings.toml"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "id": "renderer",
+      "label": "Renderer",
+      "group": "Display",
+      "help": "Select how the game is rendered.",
+      "choices": [
+        {
+          "label": "Software",
+          "set": {
+            "video/renderer": "\"software\""
+          }
+        },
+        {
+          "label": "OpenGL",
+          "set": {
+            "video/renderer": "\"opengl\""
+          }
+        }
+      ],
+      "defaults": {
+        "video/renderer": "\"software\""
+      }
+    },
+    {
+      "id": "internal_resolution",
+      "label": "Internal resolution",
+      "group": "Display",
+      "help": "Higher values require more graphics performance.",
+      "choices": [
+        {
+          "label": "Native",
+          "set": {
+            "video/internal_resolution": "\"native\""
+          }
+        },
+        {
+          "label": "720p",
+          "set": {
+            "video/internal_resolution": "\"720p\""
+          }
+        },
+        {
+          "label": "1080p",
+          "set": {
+            "video/internal_resolution": "\"1080p\""
+          }
+        },
+        {
+          "label": "1440p",
+          "set": {
+            "video/internal_resolution": "\"1440p\""
+          }
+        },
+        {
+          "label": "4K",
+          "set": {
+            "video/internal_resolution": "\"4k\""
+          }
+        }
+      ],
+      "defaults": {
+        "video/internal_resolution": "\"native\""
+      }
+    },
+    {
+      "id": "fullscreen",
+      "label": "Fullscreen",
+      "group": "Display",
+      "help": "Choose the game window mode.",
+      "choices": [
+        {
+          "label": "Windowed",
+          "set": {
+            "video/fullscreen": "0"
+          }
+        },
+        {
+          "label": "Borderless",
+          "set": {
+            "video/fullscreen": "1"
+          }
+        },
+        {
+          "label": "Exclusive",
+          "set": {
+            "video/fullscreen": "2"
+          }
+        }
+      ],
+      "defaults": {
+        "video/fullscreen": "0"
+      }
+    },
+    {
+      "id": "vsync",
+      "label": "VSync",
+      "group": "Display",
+      "help": "Control display synchronization.",
+      "choices": [
+        {
+          "label": "Off",
+          "set": {
+            "video/vsync": "\"immediate\""
+          }
+        },
+        {
+          "label": "On",
+          "set": {
+            "video/vsync": "\"on\""
+          }
+        },
+        {
+          "label": "Adaptive",
+          "set": {
+            "video/vsync": "\"adaptive\""
+          }
+        },
+        {
+          "label": "VRR",
+          "set": {
+            "video/vsync": "\"vrr\""
+          }
+        }
+      ],
+      "defaults": {
+        "video/vsync": "\"immediate\""
+      }
+    }
+  ],
+  "saves": [
+    "{install}/saves"
+  ]
+}

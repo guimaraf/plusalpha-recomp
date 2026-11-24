@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
+from types import SimpleNamespace
 import zipfile
 
 SPEC = importlib.util.spec_from_file_location('package_release',
@@ -69,6 +71,43 @@ class ReleaseArchiveTests(unittest.TestCase):
             output = self.fixture(Path(directory))
             with self.assertRaises(ValueError):
                 release.create_archive(output, output / 'portable.zip')
+
+    def test_package_includes_recomplauncher_profile_in_manifest_and_zip(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            build, ucrt, output = root / 'build', root / 'ucrt', root / 'portable'
+            build.mkdir()
+            ucrt.mkdir()
+            (build / 'CMakeCache.txt').write_text('\n'.join((
+                'CMAKE_BUILD_TYPE:STRING=Release', 'PSX_DEBUG_TOOLS:BOOL=OFF',
+                'PSX_SETUP_WIZARD:BOOL=OFF', 'PSX_NETPLAY:BOOL=ON',
+                'BUILD_DECOUPLED_LAUNCHER:BOOL=OFF', 'PSX_RECOMP_UI:BOOL=ON',
+                'PSX_STATIC_RUNTIME:BOOL=ON', 'RNET_ENABLE_ICE:BOOL=ON')))
+            for name in ('exPlusAlpha.exe', 'exPlusAlpha.execution.json', 'game.toml',
+                         'sfexp.png', 'psx_game_version.txt'):
+                (build / name).write_text('fixture')
+            (build / 'psx_mod_catalog_psx-runtime.txt').write_text('fixture.mod\n')
+            (build / 'psx_mod_catalog_psx-runtime.excluded.txt').write_text('')
+            (build / 'assets').mkdir()
+            (build / 'mods' / 'bundled' / 'fixture.mod').mkdir(parents=True)
+            for name in ('objdump.exe', 'strip.exe'):
+                (ucrt / name).touch()
+            fake_spec = SimpleNamespace(loader=SimpleNamespace(exec_module=lambda module: None))
+            fake_stage = SimpleNamespace(stage_execution=lambda *args: None)
+            archive = root / 'portable.zip'
+            with mock.patch.object(release, 'collect_dlls', return_value=[]), \
+                 mock.patch.object(release.subprocess, 'run'), \
+                 mock.patch.object(release.importlib.util, 'spec_from_file_location', return_value=fake_spec), \
+                 mock.patch.object(release.importlib.util, 'module_from_spec', return_value=fake_stage), \
+                 mock.patch.object(release.os, 'walk', return_value=[]):
+                release.package(build, output, ucrt, archive)
+            profile = json.loads((output / 'recomplauncher.json').read_text(encoding='utf-8'))
+            self.assertEqual(profile['start']['program'], ['exPlusAlpha.exe'])
+            manifest = json.loads((output / 'release-manifest.json').read_text(encoding='utf-8'))
+            self.assertEqual(manifest['files']['recomplauncher.json'],
+                             release.sha256_file(output / 'recomplauncher.json'))
+            with zipfile.ZipFile(archive) as zipped:
+                self.assertEqual(json.loads(zipped.read('portable/recomplauncher.json')), profile)
 
     def test_diagnostic_cache_is_refused_without_running_tools(self):
         with tempfile.TemporaryDirectory() as directory:
