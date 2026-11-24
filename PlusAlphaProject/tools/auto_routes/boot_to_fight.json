@@ -1,0 +1,353 @@
+{
+ "name": "boot_to_fight",
+ "description": "Boot ate a luta Arcade (Ryu vs Allen), com golpes simples.",
+ "steps": [
+  {
+   "type": "wait_frames",
+   "frames": 3500,
+   "note": "logos/FMV ate o titulo (~60 s a 60 fps)"
+  },
+  {
+   "type": "screenshot",
+   "name": "01_titulo"
+  },
+  {
+   "type": "expect",
+   "check": "frame_min",
+   "value": 3000,
+   "note": "o jogo avancou frames"
+  },
+  {
+   "type": "savestate",
+   "op": "save",
+   "slot": 1,
+   "note": "marco: titulo"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "start (sai do titulo)"
+  },
+  {
+   "type": "screenshot",
+   "name": "02_menu_inicio"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "start (tela de modo)"
+  },
+  {
+   "type": "screenshot",
+   "name": "03_mode_select"
+  },
+  {
+   "type": "expect",
+   "check": "shot_differs",
+   "a": "01_titulo",
+   "b": "03_mode_select"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 400,
+   "note": "escolhe Arcade"
+  },
+  {
+   "type": "screenshot",
+   "name": "04_player_select"
+  },
+  {
+   "type": "savestate",
+   "op": "save",
+   "slot": 2,
+   "note": "marco: selecao de personagem"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200,
+   "note": "confirma personagem 1 (Ryu)"
+  },
+  {
+   "type": "screenshot",
+   "name": "05_versus_tela"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200,
+   "note": "pula tela de versus"
+  },
+  {
+   "type": "screenshot",
+   "name": "06_carregando"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 400,
+   "note": "pula/espera"
+  },
+  {
+   "type": "screenshot",
+   "name": "07_luta_inicio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "08_luta_antes_golpes"
+  },
+  {
+   "type": "telemetry",
+   "name": "luta_antes",
+   "which": [
+    "dispatch_stats",
+    "fmv_state",
+    "frame"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "save",
+   "slot": 3,
+   "note": "marco: luta"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 40,
+   "wait_after": 10,
+   "note": "anda"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 25,
+   "note": "soco fraco"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 25,
+   "note": "chute fraco"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 25,
+   "note": "soco fraco"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 25,
+   "note": "chute fraco"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 25,
+   "note": "soco fraco"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 25,
+   "note": "chute fraco"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 25,
+   "note": "soco fraco"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 25,
+   "note": "chute fraco"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 8,
+   "wait_after": 5,
+   "note": "agacha"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 2,
+   "note": "hadouken 2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 60,
+   "note": "hadouken 3"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 40,
+   "wait_after": 10,
+   "note": "recua"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 30,
+   "note": "chute forte"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 30,
+   "note": "soco forte"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 30,
+   "note": "chute forte"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 30,
+   "note": "soco forte"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 30,
+   "note": "chute forte"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 30,
+   "note": "soco forte"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 30,
+   "note": "chute forte"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 30,
+   "note": "soco forte"
+  },
+  {
+   "type": "screenshot",
+   "name": "09_luta_golpes"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "10_luta_final"
+  },
+  {
+   "type": "expect",
+   "check": "shot_differs",
+   "a": "08_luta_antes_golpes",
+   "b": "10_luta_final"
+  },
+  {
+   "type": "telemetry",
+   "name": "luta_final"
+  }
+ ]
+}

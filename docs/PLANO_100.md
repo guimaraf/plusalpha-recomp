@@ -87,6 +87,23 @@ Autorizado pelo usuário em 2026-11-24. O agente pode compilar, executar o jogo,
 - **Parada.** Pare e reporte quando houver evidência contraditória, regressão sem causa clara, risco a saves ou sessões, falta do monitor 1, ou necessidade de juízo humano. Juízo humano inclui percepção de lag, áudio e qualidade visual subjetiva; a validação final de "sensação" (RivaTuner, input) continua com o usuário.
 - **Aceite da fase.** Um script único que faz build isolado, executa no monitor 1, injeta uma rota de input (boot até uma luta), salva screenshots e telemetria e encerra com `quit`, sem tocar no foco do usuário.
 
+**Resultado (2026-11-24):**
+
+- Comando: `python PlusAlphaProject/tools/auto_session.py all --route boot_to_fight`. O subcomando `build` compila; `run --build-dir build-auto-X` só executa.
+- Rota versionada: `PlusAlphaProject/tools/auto_routes/boot_to_fight.json`. Percorre boot, título, Arcade e Ryu × Allen até o KO, com savestates nos slots 1 a 3.
+- Build isolado em `PlusAlphaProject/build-auto-<ts>/`, com `-Jobs 4`, prioridade BelowNormal e overlays preparados dentro da pasta do build. Leva cerca de 17 min. O run leva cerca de 110 s.
+- Execução:
+  - o jogo abre com `--hidden-window`, áudio `SDL_AUDIO_DRIVER=dummy` e porta 4631;
+  - memcard e savestates vão para `relatorios/auto-<data>/<run>/`;
+  - encerra com `quit`, e o kill, quando necessário, é só pelo PID iniciado pelo script.
+- **Foco:** a janela fica oculta e apenas posicionada no monitor 1. Num teste com a janela visível (`SWP_SHOWWINDOW|SWP_NOACTIVATE`), o jogo ficou em primeiro plano por cerca de 17 s durante a luta. Por isso mostrar a janela virou opt-in (`--show-window`), que devolve exit 3 se o jogo pegar o foco. A causa ainda não foi identificada; o suspeito é um raise do próprio runtime. O `run.json` registra o foreground a cada passo.
+- **Limites do runtime:** `static_text_misses` e `overlay_interp_hot` não existem no submódulo `psxrecomp`; o substituto é `dirty_ram_stats.per_pc`. `frame_perf` não tem amostras no renderer software. O `quit` responde `ok:false` ("emu busy or frozen"), mas o processo sai com código 0.
+- **Primeira medição (Ryu × Allen, frame ~6600):**
+  - `dispatch_stats.miss_total` = 0 no EXE;
+  - `dirty_ram_stats`: 14,1 M instruções de overlay interpretadas e 92.080 handoffs nativos;
+  - os PCs mais quentes são de `PL_1` (`0x80049E50`, `0x80048834`, `0x8004A278`) e de `PL_2` (`0x80090414`), mais a quarentena SMC `0x801AB2DC`.
+  Esses números são a linha de base da Fase 1.
+
 ### Fase 0 — Métrica oficial
 
 - Um script determinístico mede o EXE e cada overlay (palavras de código e entradas), a partir dos ranges e do disco, aplicando a lista de exclusões.
