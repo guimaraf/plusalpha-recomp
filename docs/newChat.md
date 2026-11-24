@@ -3,7 +3,7 @@
 ## 1. Mandatory Working Rules (User Rules & Constraints)
 - **Tone and Communication**: Strictly technical, candid, and direct. No embellishment, praise, or unnecessary apologies. Get straight to the point.
 - **Immediate Correction**: If the user proposes a technically flawed or unsafe approach, correct it immediately with a technical explanation.
-- **Inviolable Host Ownership**: The assistant **NEVER** executes native C/C++ compilation commands, invokes the recompiler (`psxrecomp-game.exe`), runs telemetry scripts, or issues gameplay commands. All compilation, game execution, and telemetry are performed exclusively by the **Operator** through PowerShell scripts (`.ps1`). The assistant generates/edits scripts, analyzes logs, and guides the architecture.
+- **Host Ownership (updated 2026-11-24)**: The user authorized autonomous build, game execution, telemetry and fixes, **only** under the protocol in [`PLANO_100.md`](PLANO_100.md) "Fase A": isolated build directory, game window on the second monitor (index 1, `x=1920..3840`), input exclusively through the debug TCP port (never the user's keyboard/mouse/focus), test saves and savestates outside the user's `saves/`, one build at a time at low priority. Without that protocol (e.g. no second monitor), fall back to the previous rule: the assistant generates/edits scripts and the **Operator** runs them.
 
 ---
 
