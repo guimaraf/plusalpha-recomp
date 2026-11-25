@@ -61,11 +61,19 @@ O SHA-1 esperado do executável é
 
 ## 6. Gerar os fontes locais do jogo
 
+Fluxo atual: `build_online.ps1 -Generate` gera os fontes em `PlusAlphaProject/generated-online/` e compila (veja [ONLINE.md](ONLINE.md)); a versão vigente está em `VERSION`.
+
+```powershell
+.\PlusAlphaProject\tools\build_online.ps1 -Generate -Jobs 2
+```
+
+Caminho alternativo/legado: `generate_game.ps1` grava em `PlusAlphaProject/generated/`, diretório que o `CMakeLists.txt` atual não usa (ele consome `generated-online/`).
+
 ```powershell
 .\PlusAlphaProject\tools\generate_game.ps1
 ```
 
-As saídas ficam em `PlusAlphaProject/generated/` e não são versionadas.
+As saídas de ambos não são versionadas.
 
 ## 7. Configurar e compilar o runtime
 

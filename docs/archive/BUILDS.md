@@ -1,3 +1,4 @@
+> Arquivado em 2026-11-25: diário/registro histórico da fase S1/Track 2; os scripts citados estão na tag git `arquivo-ferramentas-s1`. Estado atual em [docs/PLANO_100.md](../PLANO_100.md).
 # Project Build Architecture (Street Fighter EX Plus Alpha)
 
 This document defines the project's build categories, their technical roles, the launcher lifecycle, and the versions retained for comparison and historical audits.

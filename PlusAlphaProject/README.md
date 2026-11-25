@@ -1,6 +1,6 @@
 # Street Fighter EX Plus Alpha Recomp
 
-This directory contains the configuration and tools for the USA edition (`SLUS-00548`) of Street Fighter EX Plus Alpha. The current project version is **0.2.51**.
+This directory contains the configuration and tools for the USA edition (`SLUS-00548`) of Street Fighter EX Plus Alpha. The current project version is recorded in `PlusAlphaProject/VERSION`.
 
 ## Playing
 

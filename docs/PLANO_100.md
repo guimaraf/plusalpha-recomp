@@ -96,7 +96,7 @@ Autorizado pelo usuário em 2026-11-24. O agente pode compilar, executar o jogo,
   - o jogo abre com `--hidden-window`, áudio `SDL_AUDIO_DRIVER=dummy` e porta 4631;
   - memcard e savestates vão para `relatorios/auto-<data>/<run>/`;
   - encerra com `quit`, e o kill, quando necessário, é só pelo PID iniciado pelo script.
-- **Screenshot e display apagado:** o screenshot tolera `display disabled` (display apagado pelo jogo em transições, ex.: saída do Game Over) com até 8 esperas de 15 frames, registradas em `display_retries` no `run.json`.
+- **Screenshot e display apagado:** o screenshot tolera `display disabled` (display apagado pelo jogo em transições, ex.: saída do Game Over) com até 8 esperas de 15 frames, registradas em `display_retries` no `run.json`; com `display_retries` > 0 o screenshot é de um frame posterior.
 - **Foco:** a janela fica oculta e apenas posicionada no monitor 1. Num teste com a janela visível (`SWP_SHOWWINDOW|SWP_NOACTIVATE`), o jogo ficou em primeiro plano por cerca de 17 s durante a luta. Por isso mostrar a janela virou opt-in (`--show-window`), que devolve exit 3 se o jogo pegar o foco. A causa ainda não foi identificada; o suspeito é um raise do próprio runtime. O `run.json` registra o foreground a cada passo.
 - **Limites do runtime:** `static_text_misses` e `overlay_interp_hot` não existem no submódulo `psxrecomp`; o substituto é `dirty_ram_stats.per_pc`. `frame_perf` não tem amostras no renderer software. O `quit` responde `ok:false` ("emu busy or frozen"), mas o processo sai com código 0.
 - **Primeira medição (Ryu × Allen, frame ~6600):**
@@ -159,11 +159,11 @@ Autorizado pelo usuário em 2026-11-24. O agente pode compilar, executar o jogo,
   - os scripts de diagnóstico (`build_online_diagnostics.ps1`, `build_input_observation.ps1`) agora usam AOT por padrão;
   - a validação de sensação de jogo do AOT continua com o usuário, antes de promovê-lo ao release.
 
-### Fase 2 — EXE: raízes chamadas por tabela (de ~79% para ~84,2%)
+### Fase 2 — EXE: raízes chamadas por tabela (de ~79% para ~84,2%; meta original, estado atual 91,89% — ver Andamento)
 
 Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fechamento, orçamento, aliases e jump tables. Começar pela tabela `0x801AF960` e pelas maiores raízes.
 
-**Andamento (2026-11-24):**
+**Andamento (2026-11-24; F2-L5 em diante, 2026-11-25):**
 
 - **Etapa 2.0 (infraestrutura):**
   - geração isolada por build: `build_online.ps1 -GeneratedDir/-SeedsFile` e `PSX_GENERATED_DIR`;
@@ -208,7 +208,7 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
   - +895 palavras, chegando a **160.149 de 174.276 (91,89%)**, 1.398 funções e 22.734 entradas; audit `CLEAN`; métrica igual à prevista;
   - rotas `boot_to_fight` (48 passos) e `survey_post_fight` (332), com `miss_total` = 0 e só os 6 PCs da quarentena interpretados, como em F2-L5; nenhum PC novo; `survey_modes` (446 passos) também completa, com `miss_total` = 0 em 99 snapshots, os mesmos 6 PCs da quarentena, nenhum PC novo e nenhuma espera de display;
   - ponteiros: `0x801AF888` e `0x801AF88C` (tabela de estados), `0x801B0380` e `0x801B03EC` (tabela de handlers do modo, a mesma de `0x80129E0C`), `0x801B3458` e `0x801B3474`; `0x80131A3C` foi excluído na pré-auditoria (origem fraca);
-  - incidente: a `survey_post_fight` falhou duas vezes com `display disabled` logo após a leitura do byte de cena 7 no Game Over (`survey_try1`, passo 248; `survey_try2`, passo 280), sem causa nas seeds. Correção no `auto_session.py` (commit `6673184`): o screenshot espera 15 frames e tenta até 8 vezes (`display_retries`); na 3ª execução a rota completou com `display_retries` = 0 em 58 screenshots;
+  - incidente: a `survey_post_fight` falhou duas vezes com `display disabled` logo após a leitura do byte de cena 7 no Game Over (`survey_try1`, passo 248; `survey_try2`, passo 280), sem causa nas seeds. Correção aplicada no `auto_session.py` (commit `6673184`; validada por teste unitário; não recorreu na 3ª execução): o screenshot espera 15 frames e tenta até 8 vezes (`display_retries`); na 3ª execução a rota completou com `display_retries` = 0 em 58 screenshots; `survey_options` não refeita desde F2-L4;
   - próximo: F2-L7 provisório, `0x8012F484` (ponteiro `0x801B1BD8`) e `0x8013497C` (`0x801B1C00`), +1.195 palavras previstas; evidências em `relatorios/fase2/L6/`.
 - **Pendências:**
   - o resolvedor de jump table não reconhecia a forma com `sll` no delay slot: resolvido em F2-R1; restam 42 `jr` indiretos de outras formas (41 após F2-R1, mais o de `0x8010B030` em F2-L3);

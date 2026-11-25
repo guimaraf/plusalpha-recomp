@@ -1,3 +1,4 @@
+> Arquivado em 2026-11-25: diário/registro histórico da fase S1/Track 2; os scripts citados estão na tag git `arquivo-ferramentas-s1`. Estado atual em [docs/PLANO_100.md](../PLANO_100.md).
 # Validation of CPU-Controlled Characters (Combat AI)
 
 This document tracks native coverage and validation progress for all 26 characters (23 standard + 3 unlockable CPU boss variants) in *Street Fighter EX Plus Alpha* (`SLUS-005.48`) when controlled by CPU Artificial Intelligence.

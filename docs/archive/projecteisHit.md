@@ -1,3 +1,4 @@
+> Arquivado em 2026-11-25: diário/registro histórico da fase S1/Track 2; os scripts citados estão na tag git `arquivo-ferramentas-s1`. Estado atual em [docs/PLANO_100.md](../PLANO_100.md).
 # Projectile Collision and Interaction Catalog (Track 2 - RAM Overlay)
 
 This document records the reverse engineering mapping of **projectile collision, absorption, reflection, mutual cancellation, and hit-stop** routines executed in the dynamic RAM combat subsystem (`0x80020000..0x800F2000`).

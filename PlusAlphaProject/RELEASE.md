@@ -7,6 +7,8 @@ Set-Location 'F:\GitRevised\alphaplus\plusalpha-recomp'
 .\PlusAlphaProject\tools\build_release_0.2.51.ps1
 ```
 
+Note: the 0.2.51 script requires `PlusAlphaProject/VERSION` to contain `0.2.51` (the current version is in that file); for other versions, see `tools/build_release.ps1`, which builds and packages whatever version `VERSION` holds but does not run the extra ZIP checks (version, RecompLauncher profile, excluded HD Texture Packs) done by the 0.2.51 script.
+
 The version-specific script requires `PlusAlphaProject/VERSION` to contain `0.2.51`, builds in a fresh timestamped directory and verifies that the ZIP contains version 0.2.51 and excludes the HD Texture Packs mod. It calls `build_release.ps1` with two jobs and SDL3. It requires Python, the MSYS2 UCRT64 toolchain, initialized submodules, the locally prepared game sources, retained overlays, and the validated SCPH1001 BIOS. By default the BIOS is read from `bios/SCPH1001.BIN`; use `-BiosPath` to choose another path. The default retained overlays are under `PlusAlphaProject/buildTele-s1-309-bezeus/static_overlays`; use `-RetainedOverlayDir` if stored elsewhere.
 
 For future versions, the underlying `build_release.ps1` names new packages `exPlusAlpha-v<version>-Windows-x64-<timestamp>.zip`, reading the version from `VERSION` or, in `-PackageOnly` mode, from the existing build.

@@ -1,8 +1,9 @@
+> Arquivado em 2026-11-25: diário/registro histórico da fase S1/Track 2; os scripts citados estão na tag git `arquivo-ferramentas-s1`. Estado atual em [docs/PLANO_100.md](../PLANO_100.md).
 # Build & Reverse Engineering Technical History (Build Resume)
 
 This document serves as the historical deep-dive record for all static recompilation micro-batches, pre-audits, incident post-mortems, and dynamic overlay investigations for *Street Fighter EX Plus Alpha* (USA, `SLUS-005.48`).
 
-For the current baseline status, active batches, and concise tracking table, see [`newWords.md`](newWords.md).
+For the current baseline status, active batches, and concise tracking table, see [`newWords.md`](../newWords.md).
 
 ---
 

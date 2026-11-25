@@ -1,3 +1,4 @@
+> Arquivado em 2026-11-25: diário/registro histórico da fase S1/Track 2; os scripts citados estão na tag git `arquivo-ferramentas-s1`. Estado atual em [docs/PLANO_100.md](../PLANO_100.md).
 # Character Ending Validation (Endings Campaign)
 
 This document establishes the test protocol, capture methodology, and tracking table for static validation of 100% of the **Character Endings** in *Street Fighter EX Plus Alpha* (`SLUS-005.48`).

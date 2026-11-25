@@ -5095,7 +5095,8 @@
 # interpretados (como em F2-L5); nenhum PC novo. survey_modes:
 # 446 passos completa, miss_total 0, so a quarentena, nenhum PC novo. Metrica observada igual a prevista (160.149 de
 # 174.276, 91,8939%; 1.398 funcoes, 22.734 entradas). Incidente de screenshot
-# (display disabled) corrigido em auto_session.py (commit 6673184):
+# (display disabled): correcao aplicada em auto_session.py (commit 6673184;
+# validada por teste unitario; nao recorreu na 3a execucao):
 # survey_post_fight completou na 3a execucao, com display_retries = 0 em 58
 # screenshots.
 0x80102D80

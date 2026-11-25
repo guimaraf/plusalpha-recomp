@@ -1,3 +1,4 @@
+> Arquivado em 2026-11-25: diário/registro histórico da fase S1/Track 2; os scripts citados estão na tag git `arquivo-ferramentas-s1`. Estado atual em [docs/PLANO_100.md](../PLANO_100.md).
 # Architectural Planning: Pause Menu and Command List Subsystem
 
 This document consolidates the static mapping, dependency closure, and future action plan for native recompilation of the pause menus and command lists in *Street Fighter EX Plus Alpha* (`SLUS-005.48`).

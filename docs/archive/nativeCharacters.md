@@ -1,3 +1,4 @@
+> Arquivado em 2026-11-25: diário/registro histórico da fase S1/Track 2; os scripts citados estão na tag git `arquivo-ferramentas-s1`. Estado atual em [docs/PLANO_100.md](../PLANO_100.md).
 # Record of 100% Native Characters (Main EXE SLUS-005.48)
 
 This document records characters tested and validated with **100% native execution** in the static executable (`Main EXE`), detailing validation sessions, covered subsystems, and special dynamic-overlay cases (Track 2) to be addressed later.
