@@ -17,14 +17,14 @@ For full reverse engineering notes, pre-audit breakdowns, incident reports, and 
 
 ## 2. Current Baseline Status
 
-> **Official metric (Phase 0, 2026-11-24).** From now on, coverage is measured by `python PlusAlphaProject/tools/coverage_metric.py`, which counts **unique** words, and guarded by `--check` against `PlusAlphaProject/coverage/baseline.json`. Value at Phase 0: **154.639 / 174.276 code words (88,7322%)**, 1.359 functions and 21.908 dispatcher entries (`generated-online`); the current Fase 2 value is in section 6. Cumulative figures below that came from summing manifest `R` lines may double-count alias ranges: the S1-309 figure of 154.846 contained 202 duplicated words. The quarantines are exactly `0x801AB1F4..0x801AB237` (SIO) and `0x801AB2C0..0x801AB2EF` (SMC). The entries below are kept as a historical record. Atualizado em F2-L11 (secao 6): 165.850 / 174.276 (95,1651%), 1.432 funcoes, 23.497 entradas; o baseline.json so sera promovido no fim da Fase 2.
+> **Official metric (Phase 0, 2026-11-24).** From now on, coverage is measured by `python PlusAlphaProject/tools/coverage_metric.py`, which counts **unique** words, and guarded by `--check` against `PlusAlphaProject/coverage/baseline.json`. Value at Phase 0: **154.639 / 174.276 code words (88,7322%)**, 1.359 functions and 21.908 dispatcher entries (`generated-online`); the current Fase 2 value is in section 6. Cumulative figures below that came from summing manifest `R` lines may double-count alias ranges: the S1-309 figure of 154.846 contained 202 duplicated words. The quarantines are exactly `0x801AB1F4..0x801AB237` (SIO) and `0x801AB2C0..0x801AB2EF` (SMC). The entries below are kept as a historical record. Atualizado em F2-L12 (secao 6): 166.571 / 174.276 (95,5789%), 1.441 funcoes, 23.646 entradas; o baseline.json so sera promovido no fim da Fase 2.
 
 - **Validated Checkpoint**: **S1-305** (Skullo Dream cinematics and 3D camera setup - `0x8013B070..0x8013BFA8`: `0x8013B070`, `0x8013B078`, `0x8013B10C`, `0x8013B114`, `0x8013B328`, 5 functions, 1.148 words / 4.592 bytes; successfully validated in `gameplay-discovery-139`, eliminating 100% of Main EXE candidates; 1.320 native functions, 146.054 words, 74,6758%).
 - **Active Batch (S1-305, historical)**: None (S1-305 validation complete); the Fase 2 micro-lots are tracked in section 6.
-- **Main Binary Coverage at S1-305 (historical)**: **146,054 / 195,584 words (74.6758%)** (Validated S1-305). Current Fase 2 metric after F2-L11: **165.850 / 174.276 code words (95,1651%)**, section 6.
-- **Total Compiled Native Functions (S1-305, historical)**: **1,320 functions**; 1.432 functions after F2-L11, section 6.
+- **Main Binary Coverage at S1-305 (historical)**: **146,054 / 195,584 words (74.6758%)** (Validated S1-305). Current Fase 2 metric after F2-L12: **166.571 / 174.276 code words (95,5789%)**, section 6.
+- **Total Compiled Native Functions (S1-305, historical)**: **1,320 functions**; 1.441 functions after F2-L12, section 6.
 - **Codegen Audit Status**: **CLEAN** (0 unresolved direct calls, 0 call_by_address misses, 0 tail-call misses, 0 unresolved gotos).
-- **Residual Main EXE Misses**: **ZERO misses during boot, introduction, and active combat** (S1-305). In the F2-L8, F2-L9, F2-L10 and F2-L11 routes, the only Main EXE PCs in fallback are the six quarantined ones, `0x801AB1F4`, `0x801AB208`, `0x801AB21C`, `0x801AB2C0`, `0x801AB2DC` and `0x801AB2E8` (BIOS/SIO SMC monkey-patches, inside the metric quarantine ranges `0x801AB1F4..0x801AB237` and `0x801AB2C0..0x801AB2EF`).
+- **Residual Main EXE Misses**: **ZERO misses during boot, introduction, and active combat** (S1-305). In the F2-L8, F2-L9, F2-L10, F2-L11 and F2-L12 routes, the only Main EXE PCs in fallback are the six quarantined ones, `0x801AB1F4`, `0x801AB208`, `0x801AB21C`, `0x801AB2C0`, `0x801AB2DC` and `0x801AB2E8` (BIOS/SIO SMC monkey-patches, inside the metric quarantine ranges `0x801AB1F4..0x801AB237` and `0x801AB2C0..0x801AB2EF`).
 
 ---
 
@@ -143,6 +143,7 @@ Dynamic battle overlays (`0x80020000..0x800F2000`) are compiled on-demand via th
 | **F2-L9** | `0x80132ED4` e `0x8012E858` (2 raizes estaticas, borda em prologo; 6 funcoes, 119 entradas) | 1.093 | 163.611 (93,8804%) | Sem regressao nas rotas (miss_total 0); raizes sem execucao observada; pendente validacao de sensacao do usuario |
 | **F2-L10** | `0x801371C8` e `0x80135010` (2 raizes estaticas da tabela de ponteiros `0x801B1BC0..0x801B1C1C`, ponteiros `0x801B1C18` e `0x801B1C04`, borda em prologo; 10 funcoes, 165 entradas) | 1.135 | 164.746 (94,5317%) | Sem regressao nas rotas (miss_total 0); raizes sem execucao observada; pendente validacao de sensacao do usuario |
 | **F2-L11** | `0x801453A8`, `0x8018D298` e `0x80127320` (3 raizes estaticas: ponteiros `0x801B1B7C`, `0x801B7EF0` e `0x801B039C`, borda em prologo; 5 funcoes, 148 entradas) | 1.104 | 165.850 (95,1651%) | Sem regressao nas rotas (miss_total 0); raizes sem execucao observada; pendente validacao de sensacao do usuario |
+| **F2-L12** | `0x8012EF88`, `0x801236EC`, `0x80198BE4` e `0x8019B168` (4 raizes estaticas: ponteiro `0x801B1BD4` para `0x8012EF88`, borda em prologo; os tres `jal` com alvo unico, sem referencia no EXE; 9 funcoes, 149 entradas) | 721 | 166.571 (95,5789%) | Sem regressao nas rotas (miss_total 0); raizes sem execucao observada; pendente validacao de sensacao do usuario |
 
 Pendencias da Fase 2:
 
@@ -218,4 +219,16 @@ Rotas: `boot_to_fight` (48 passos), `survey_post_fight` (332 passos, 58 snapshot
 
 As tres raizes nao estavam nos alvos do fntrace (`survey_post_fight/fntrace_alvos.json` e `survey_modes/fntrace_alvos.json` nao citam os seus enderecos; `boot_to_fight` nao tem arquivo de fntrace): sem execucao observada, o que nao prova que nao sao chamadas.
 
-Proximo candidato: a definir pela fila (`relatorios/fase2/fila.json`). Evidencias em `relatorios/fase2/L11/`.
+Proximo candidato: F2-L12 (promovido). Evidencias em `relatorios/fase2/L11/`.
+
+**F2-L12 (2026-11-25):** quatro raizes estaticas, com borda em prologo: `0x8012EF88` (ponteiro `0x801B1BD4`, tabela `0x801B1BC0..0x801B1C1C`; fecha 4 funcoes, +365 palavras, +72 entradas; o callee `0x8012F090` (jal em `0x8012EFE4`) fica no fechamento e por isso nao entra como seed, por ser redundante), `0x801236EC` (alvo unico de `jal` em `0x801248E0`, dentro da funcao `0x80124728`, sem referencia no EXE; fecha 1 funcao, +137 palavras, +28 entradas), `0x80198BE4` (alvo unico de `jal` em `0x801987F8`, funcao `0x801987D8`, sem referencia; fecha 1 funcao, +102 palavras, +17 entradas) e `0x8019B168` (alvo unico de `jal` em `0x8019AE1C`, funcao `0x8019AD94`, sem referencia; fecha 3 funcoes, +117 palavras, +32 entradas). Os tres alvos de `jal` tem origem mais fraca (chamador ainda nao coberto, sem raiz maior auditavel) e foram aceitos so por evidencia estatica (`relatorios/fase2/L12/origem.txt`); neles a palavra anterior e `jr ra`+nop (`origem.txt`).
+
+Pre-auditoria (`seed_preview.py` contra a base F2-L11, 165.850 palavras, 1.432 funcoes, 23.497 entradas; `relatorios/fase2/L12/preview.txt`): +721 palavras, +9 funcoes, +149 entradas; 0 perdas; 0 em quarentena; 0 `jalr`; 0 `jr` nao-`$ra`; 0 SMC; orcamento OK (721 <= 1.200 palavras; 9 <= 10 funcoes).
+
+Metrica observada igual a prevista (`relatorios/fase2/L12/metric.json`): 166.571 de 174.276 (95,5789%), 1.441 funcoes, 23.646 entradas, `entries_not_covered` 0. `codegen_audit_game.py` STATUS CLEAN (`relatorios/fase2/L12/audit.txt`): 0 sites de `call_by_address` indireto. Build incremental `build-auto-p2infra` (`reused_build` true) com `exit_code` 0 em 360,9 s (`relatorios/fase2/L12/build/build.json`).
+
+Rotas: `boot_to_fight` (48 passos), `survey_post_fight` (332 passos, 58 snapshots de misses) e `survey_modes` (446 passos, 99 snapshots de misses) completas, `miss_total` = 0 nas telemetrias finais; so os seis PCs da quarentena interpretados, `0x801AB1F4`, `0x801AB208`, `0x801AB21C`, `0x801AB2C0`, `0x801AB2DC` e `0x801AB2E8`, o mesmo conjunto do F2-L11; nenhum PC novo. `survey_options` nao foi rodada (proximo checkpoint de quatro rotas: F2-L13).
+
+As quatro raizes nao estavam nos alvos do fntrace (`survey_modes/fntrace_alvos.json` e `survey_post_fight/fntrace_alvos.json` nao citam os seus enderecos; `boot_to_fight` nao tem arquivo de fntrace): sem execucao observada, o que nao prova que nao sao chamadas.
+
+Proximo candidato: a definir pela fila (`relatorios/fase2/fila.json`); restam poucos candidatos limpos; 4 bloqueados por jump table (`jr` nao-`$ra`) aguardam investigacao F2-Rx. Evidencias em `relatorios/fase2/L12/`.

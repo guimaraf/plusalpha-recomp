@@ -5199,3 +5199,25 @@
 0x801453A8
 0x8018D298
 0x80127320
+
+# Micro-lote F2-L12 (Fase 2, EXE). Borda em prologo; palavra anterior =
+# jr ra + delay; fora da cobertura anterior. Evidencia = auditoria estatica,
+# SEM execucao observada.
+#   0x8012EF88: ponteiro em 0x801B1BD4 (tabela 0x801B1BC0..0x801B1C1C; fecha
+#               4 funcoes, incluindo o callee 0x8012F090 chamado em 0x8012EFE4)
+#   0x801236EC: alvo unico de jal em 0x801248E0 (funcao 0x80124728, ainda sem
+#               referencia no EXE; origem fraca, so estatica)
+#   0x80198BE4: alvo unico de jal em 0x801987F8 (funcao 0x801987D8; idem)
+#   0x8019B168: alvo unico de jal em 0x8019AE1C (funcao 0x8019AD94; idem)
+# Fechamento medido por seed_preview.py contra a base F2-L11 (165.850 palavras,
+# 1.432 funcoes, 23.497 entradas): +721 palavras unicas, +9 funcoes e +149
+# entradas de dispatcher, com 0 perdas, 0 em quarentena, 0 jalr, 0 jr nao-ra e
+# 0 stores em texto (SMC); orcamento 721 <= 1.200 palavras e 9 <= 10 funcoes.
+# Metrica prevista: 166.571 palavras (95,5789%) e 23.646 entradas.
+# Rotas F2-L12 (boot_to_fight, survey_post_fight, survey_modes): completas,
+# miss_total 0, so a quarentena interpretada; sem regressao. Raizes fora dos
+# alvos do fntrace: sem execucao observada.
+0x8012EF88
+0x801236EC
+0x80198BE4
+0x8019B168
