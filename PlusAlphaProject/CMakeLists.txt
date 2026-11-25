@@ -18,7 +18,14 @@ set(PSX_NET_LOBBY_DEFAULT_URL "ws://netplay.retcomm.net:8765" CACHE STRING "Defa
 set(PSX_STATIC_OVERLAY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/generated-online/retained-overlays" CACHE PATH "Verified retained static sources")
 set(PSX_OVERLAY_SOURCE "retained" CACHE STRING "Overlay source: aot (generated from the disc) or retained")
 set_property(CACHE PSX_OVERLAY_SOURCE PROPERTY STRINGS aot retained)
-set(PSX_APP_ICON "${CMAKE_CURRENT_SOURCE_DIR}/../icon/alpha256.ico" CACHE FILEPATH "Application icon")
+set(_PSX_DEFAULT_APP_ICON "${CMAKE_CURRENT_SOURCE_DIR}/../gameFiles/icon/alpha256.ico")
+set(PSX_APP_ICON "${_PSX_DEFAULT_APP_ICON}" CACHE FILEPATH "Application icon")
+# Builds configurados antes da mudanca para gameFiles/ guardam ../icon/ no cache: volta ao padrao
+# quando o caminho em cache nao existe mais (um -DPSX_APP_ICON valido continua valendo).
+if(NOT EXISTS "${PSX_APP_ICON}")
+    message(STATUS "PSX_APP_ICON em cache nao existe (${PSX_APP_ICON}); usando ${_PSX_DEFAULT_APP_ICON}")
+    set(PSX_APP_ICON "${_PSX_DEFAULT_APP_ICON}" CACHE FILEPATH "Application icon" FORCE)
+endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
     message(FATAL_ERROR "This migration targets desktop netplay. Use the versioned baseline for UWP.")
@@ -182,5 +189,5 @@ add_custom_command(TARGET psx-runtime POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${CMAKE_CURRENT_SOURCE_DIR}/game.toml" "$<TARGET_FILE_DIR:psx-runtime>/game.toml"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_CURRENT_SOURCE_DIR}/../sfexp.png" "$<TARGET_FILE_DIR:psx-runtime>/sfexp.png"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../gameFiles/img/sfexp.png" "$<TARGET_FILE_DIR:psx-runtime>/sfexp.png"
 )

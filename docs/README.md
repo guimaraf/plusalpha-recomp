@@ -20,16 +20,16 @@ Links relativos a `docs/`. Documentos de projeto específicos ficam em `PlusAlph
 
 ## Online e netplay
 - [../PlusAlphaProject/ONLINE.md](../PlusAlphaProject/ONLINE.md): integração do online, rollback e lobby.
-- [../PlusAlphaProject/NET_SYNC_TESTS.md](../PlusAlphaProject/NET_SYNC_TESTS.md): testes de net sync.
+- [../PlusAlphaProject/docs/NET_SYNC_TESTS.md](../PlusAlphaProject/docs/NET_SYNC_TESTS.md): testes de net sync.
 
 ## Input
-- [../PlusAlphaProject/INPUT_RESPONSE.md](../PlusAlphaProject/INPUT_RESPONSE.md): captura causal da resposta ao input.
+- [../PlusAlphaProject/docs/INPUT_RESPONSE.md](../PlusAlphaProject/docs/INPUT_RESPONSE.md): captura causal da resposta ao input.
 - [reference/PS1_SIO0_Input_Timing_Technical_Reference.md](reference/PS1_SIO0_Input_Timing_Technical_Reference.md): referência técnica de timing do SIO0.
 
 ## Versus
-- [../PlusAlphaProject/VERSUS_NAMEPLATES.md](../PlusAlphaProject/VERSUS_NAMEPLATES.md): placas de nome.
-- [../PlusAlphaProject/VERSUS_SCORE.md](../PlusAlphaProject/VERSUS_SCORE.md): placar.
-- [../PlusAlphaProject/VERSUS_RESULT_CAPTURE.md](../PlusAlphaProject/VERSUS_RESULT_CAPTURE.md): captura do resultado.
+- [../PlusAlphaProject/docs/VERSUS_NAMEPLATES.md](../PlusAlphaProject/docs/VERSUS_NAMEPLATES.md): placas de nome.
+- [../PlusAlphaProject/docs/VERSUS_SCORE.md](../PlusAlphaProject/docs/VERSUS_SCORE.md): placar.
+- [../PlusAlphaProject/docs/VERSUS_RESULT_CAPTURE.md](../PlusAlphaProject/docs/VERSUS_RESULT_CAPTURE.md): captura do resultado.
 
 ## Referência
 - [reference/PS1_SIO0_Input_Timing_Technical_Reference.md](reference/PS1_SIO0_Input_Timing_Technical_Reference.md)

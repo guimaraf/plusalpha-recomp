@@ -597,7 +597,7 @@ class Session:
         memcard = self.evidence / "memcard"
         memcard.mkdir(parents=True, exist_ok=True)
         disc = PROJECT_ROOT / "disc-a" / "Street Fighter EX Plus Alpha (USA).cue"
-        bios = REPO_ROOT / "bios" / "SCPH1001.BIN"  # somente leitura
+        bios = REPO_ROOT / "gameFiles" / "bios" / "SCPH1001.BIN"  # somente leitura
         cmd = build_game_command(exe, game_toml, memcard, self.port,
                                  disc if disc.is_file() else None,
                                  bios if bios.is_file() else None)

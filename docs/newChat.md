@@ -4,7 +4,7 @@ Briefing curto e atual (2026-11-25). O histórico anterior (Track 2, telemetria 
 
 ## Regras de trabalho
 - Responda em português do Brasil, de forma técnica e direta; corrija de imediato propostas tecnicamente erradas.
-- Execução autônoma (build, jogo, rotas) só pelo protocolo da "Fase A" de [`PLANO_100.md`](PLANO_100.md): build isolado, jogo no monitor 1, entrada só pela porta TCP de debug, saves/savestates fora de `saves/`, um build por vez.
+- Execução autônoma (build, jogo, rotas) só pelo protocolo da "Fase A" de [`PLANO_100.md`](PLANO_100.md): build isolado, jogo no monitor 1, entrada só pela porta TCP de debug, saves/savestates fora de `gameFiles/saves/`, um build por vez.
 - Sem commits sem pedido do usuário; preserve saves, sessões, BIOS e caminhos de fallback.
 
 ## Onde está o estado

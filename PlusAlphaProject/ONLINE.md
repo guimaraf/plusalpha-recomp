@@ -11,7 +11,7 @@ release validada.
 ### Captura da origem da defasagem — 21/10/2026
 
 O roteiro de repetição, combate e arrasto está em
-[NET_SYNC_TESTS.md](NET_SYNC_TESTS.md), com marcadores durante a captura.
+[docs/NET_SYNC_TESTS.md](docs/NET_SYNC_TESTS.md), com marcadores durante a captura.
 Essa atualização dos scripts usa a build de diagnóstico já existente e não
 exige recompilação. O coletor agora separa sessões recriadas nos mesmos EXEs;
 reiniciar os processos exige uma captura nova.
@@ -115,7 +115,7 @@ fork; dependências regeneráveis não fazem parte desta alteração.
 
 ## Build feito pelo usuário
 
-Os scripts normal e release validam sempre `../bios/SCPH1001.BIN` (relativo
+Os scripts normal e release validam sempre `../gameFiles/bios/SCPH1001.BIN` (relativo
 ao projeto), SHA-256 `71af94d1e47a68c11e8fdb9f8368040601514a42a5a399cda48c7d3bff1e99d3`.
 Ambos fixam somente o backend SCPH1001 e recusam fontes de BIOS com fingerprint
 desatualizado. A definição genérica `PSX_BUNDLED_BIOS_PATH` do framework não
@@ -181,7 +181,7 @@ As placas começam quando o HUD de luta é emitido no Versus, continuam no repla
 dessa cena e desaparecem ao sair da cena de luta. Arcade, Training e seleção de
 modos não habilitam as placas. As caixas de vitórias mostram `0` fixo nesta fase,
 sem contabilizar rounds ou lutas. Não aparecem no Software. Evidências e roteiro
-de observação estão em `VERSUS_NAMEPLATES.md`.
+de observação estão em `docs/VERSUS_NAMEPLATES.md`.
 
 Teste seleção → luta → KO → replay → seleção, redimensionamento e tela cheia.
 As informações visuais ficam fora da RAM emulada e dos snapshots. Validar também
@@ -339,7 +339,7 @@ git submodule update --init --recursive
 .\PlusAlphaProject\tools\build_online.ps1 -Generate
 ```
 
-Antes, coloque sua própria SCPH-1001 em `bios/SCPH1001.BIN`, na raiz do
+Antes, coloque sua própria SCPH-1001 em `gameFiles/bios/SCPH1001.BIN`, na raiz do
 repositório. `-Generate` confere o hash dessa imagem, chama a CLI oficial,
 recompila os emitters, gera o backend SCPH1001 e o jogo e depois compila o
 runtime. Pode baixar o toolchain e as dependências fixadas pelo framework.
@@ -534,7 +534,7 @@ Após o relato de tela preta com OpenBIOS, o port passou a exigir exclusivamente
 a imagem SCPH-1001 já usada na baseline. Não foi feito trabalho para adaptar o
 jogo à OpenBIOS.
 
-- Origem local: `../bios/SCPH1001.BIN`, SHA-256 conferido com `BIOS.md`.
+- Origem local: `../gameFiles/bios/SCPH1001.BIN`, SHA-256 conferido com `BIOS.md`.
 - Backend SCPH1001 regenerado a partir dessa imagem. A regeneração dos 45
   shards do jogo não alterou nenhum deles.
 - CMake/cache e registro de backends contêm apenas SCPH1001. Inspeção do
@@ -550,7 +550,7 @@ jogo à OpenBIOS.
   `../psxrecomp/.local/build-online-retail.log`.
 
 Abra o executável e selecione sua própria `SCPH1001.BIN` no launcher. Na máquina
-do desenvolvedor, use `F:\GitRevised\alphaplus\plusalpha-recomp\bios\SCPH1001.BIN`.
+do desenvolvedor, use `F:\GitRevised\alphaplus\plusalpha-recomp\gameFiles\bios\SCPH1001.BIN`.
 O jogador deve fornecer sua própria cópia dessa mesma revisão da BIOS.
 
 ## Conferência da integração estática em 18/10/2026

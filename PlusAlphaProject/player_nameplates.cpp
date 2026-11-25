@@ -82,7 +82,7 @@ void tick(uint64_t frame) {
     // returning to mode select (scene 7), so it cannot be the only gate.
     // Derive from restored guest RAM rather than a host-only entry-PC latch:
     // rollback/manual loads can replace the game state without a menu event.
-    // See VERSUS_NAMEPLATES.md for the observation evidence and limitations.
+    // See docs/VERSUS_NAMEPLATES.md for the observation evidence and limitations.
     versus_active = scene != 7 && psx_read_byte(0x801DC9D0u) == 1;
     const bool match_scene = scene == 1;
     if (!versus_active || !match_scene || frame < previous_frame) hud_seen_in_match = false;

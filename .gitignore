@@ -12,7 +12,6 @@
 /PlusAlphaProject/inputTest/
 /PlusAlphaProject/dist/
 /PlusAlphaProject/release-stage/
-/UWP-Build/
 **/CMakeFiles/
 **/CMakeCache.txt
 **/cmake_install.cmake
@@ -48,7 +47,7 @@ gametime.save.tmp.*
 gametime.save.lock
 
 # Diagnósticos e preferências locais
-/saves/
+/gameFiles/saves/
 /psx_last_run_report.json
 *.log
 *.jsonl
@@ -61,9 +60,6 @@ settings.toml
 game_options.toml
 keybinds.ini
 input.ini
-!UWP/input.ini
-!UWP/settings.toml
-!UWP/keybinds.ini
 
 # Editores e caches
 /.agents/

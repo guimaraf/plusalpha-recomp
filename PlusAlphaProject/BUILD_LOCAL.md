@@ -18,8 +18,11 @@ git submodule update --init --recursive
 Coloque sua BIOS SCPH-1001 validada em:
 
 ```text
-psxrecomp/bios/SCPH1001.BIN
+gameFiles/bios/SCPH1001.BIN
 ```
+
+O `build_online.ps1 -Generate` confere o SHA-256 e prepara a copia usada pelo framework em `psxrecomp/bios/SCPH1001.BIN`.
+Use `-BiosPath` para indicar outro local.
 
 Coloque sua imagem CUE/BIN validada em:
 
@@ -67,7 +70,7 @@ Fluxo atual: `build_online.ps1 -Generate` gera os fontes em `PlusAlphaProject/ge
 .\PlusAlphaProject\tools\build_online.ps1 -Generate -Jobs 2
 ```
 
-Caminho alternativo/legado: `generate_game.ps1` grava em `PlusAlphaProject/generated/`, diretório que o `CMakeLists.txt` atual não usa (ele consome `generated-online/`).
+Caminho alternativo/legado: `generate_game.ps1` grava em `PlusAlphaProject/generated/`, diretório criado sob demanda e que não faz parte do fluxo atual: o `CMakeLists.txt` não o usa (ele consome `generated-online/`).
 
 ```powershell
 .\PlusAlphaProject\tools\generate_game.ps1

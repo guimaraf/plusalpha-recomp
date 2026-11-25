@@ -62,9 +62,9 @@ if ($Release -and $SetupHost) { throw '-Release requer o runtime completo.' }
 if ($Release -and $BuildDirName -notmatch '^build-release-online(?:-[A-Za-z0-9_-]+)?$') {
     throw '-Release requer uma pasta build-release-online ou build-release-online-N para preservar as builds de diagnostico.'
 }
-if (-not $BiosPath) { $BiosPath = Join-Path $RepositoryRoot 'bios\SCPH1001.BIN' }
+if (-not $BiosPath) { $BiosPath = Join-Path $RepositoryRoot 'gameFiles\bios\SCPH1001.BIN' }
 if (-not (Test-Path -LiteralPath $BiosPath -PathType Leaf)) {
-    throw 'Este port requer sua propria SCPH1001.BIN em bios\SCPH1001.BIN, ou informe -BiosPath.'
+    throw 'Este port requer sua propria SCPH1001.BIN em gameFiles\bios\SCPH1001.BIN, ou informe -BiosPath.'
 }
 $BiosPath = (Resolve-Path -LiteralPath $BiosPath).Path
 $ExpectedBiosSha256 = '71AF94D1E47A68C11E8FDB9F8368040601514A42A5A399CDA48C7D3BFF1E99D3'

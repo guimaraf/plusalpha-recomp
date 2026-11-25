@@ -19,7 +19,7 @@ This Windows x64 release removes the generic HD Texture Packs option from the la
 
 ## Version 0.2.5
 
-Version 0.2.5 removes the OpenBIOS selection from the launcher when the project requires its retail BIOS. Select your own **SCPH1001.BIN** in the launcher. See the [version 0.2.5 release notes](PlusAlphaProject/RELEASE_NOTES_v0.2.5.md).
+Version 0.2.5 removes the OpenBIOS selection from the launcher when the project requires its retail BIOS. Select your own **SCPH1001.BIN** in the launcher. See the [version 0.2.5 release notes](PlusAlphaProject/.archive/RELEASE_NOTES_v0.2.5.md).
 
 ## Current features
 
@@ -45,7 +45,7 @@ The **[v0.2.52 release](https://github.com/guimaraf/plusalpha-recomp/releases/ta
 
 The package includes the runtime/launcher, required non-system DLLs, UI assets and fonts, bundled mod resources, license notices, and an integrity manifest. Diagnostic tools, build tools, personal settings, and saves are excluded. **Python, CMake, and MSYS2 are not required to play.** Game images and BIOS files are not included.
 
-A SHA-256 checksum is provided beside the ZIP. See the **[v0.2.52 release notes](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.52)** for the repackaging details, the **[v0.2.51 release notes](PlusAlphaProject/RELEASE_NOTES_v0.2.51.md)** for the latest change, the **[v0.2.5 notes](PlusAlphaProject/RELEASE_NOTES_v0.2.5.md)** for the BIOS selection change, and the **[v0.2.4-alpha notes](PlusAlphaProject/RELEASE_NOTES_v0.2.4-alpha.md)** for earlier scoreboard details.
+A SHA-256 checksum is provided beside the ZIP. See the **[v0.2.52 release notes](https://github.com/guimaraf/plusalpha-recomp/releases/tag/v0.2.52)** for the repackaging details, the **[v0.2.51 release notes](PlusAlphaProject/.archive/RELEASE_NOTES_v0.2.51.md)** for the latest change, the **[v0.2.5 notes](PlusAlphaProject/.archive/RELEASE_NOTES_v0.2.5.md)** for the BIOS selection change, and the **[v0.2.4-alpha notes](PlusAlphaProject/.archive/RELEASE_NOTES_v0.2.4-alpha.md)** for earlier scoreboard details.
 
 The project is also [listed on PlayPorted](https://playported.com/ports/227-street-fighter-ex-plus-alpha/).
 

@@ -108,7 +108,7 @@ O agente não executa build nem compila testes. Para gerar uma pasta nova:
 ```
 
 Sem alterar geração/emissores, esta mudança não requer `-Generate` por si só.
-Se a verificação de insumos pedir regeneração, seguir o fluxo de `ONLINE.md`.
+Se a verificação de insumos pedir regeneração, seguir o fluxo de `../ONLINE.md`.
 
 Validar no executável novo:
 

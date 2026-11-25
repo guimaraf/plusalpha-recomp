@@ -6,7 +6,7 @@ A BIOS não acompanha este repositório.
 Coloque o arquivo em:
 
 ```text
-bios/SCPH1001.BIN
+gameFiles/bios/SCPH1001.BIN
 ```
 
 | Campo | Valor |
