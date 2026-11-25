@@ -159,7 +159,7 @@ Autorizado pelo usuário em 2026-11-24. O agente pode compilar, executar o jogo,
   - os scripts de diagnóstico (`build_online_diagnostics.ps1`, `build_input_observation.ps1`) agora usam AOT por padrão;
   - a validação de sensação de jogo do AOT continua com o usuário, antes de promovê-lo ao release.
 
-### Fase 2 — EXE: raízes chamadas por tabela (de ~79% para ~84,2%; meta original, estado atual 94,53% com F2-L10 — ver Andamento)
+### Fase 2 — EXE: raízes chamadas por tabela (de ~79% para ~84,2%; meta original, estado atual 95,17% com F2-L11 — ver Andamento)
 
 Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fechamento, orçamento, aliases e jump tables. Começar pela tabela `0x801AF960` e pelas maiores raízes.
 
@@ -172,7 +172,7 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
   - passos `read_ram`, `fntrace` e `dispatch_misses`;
   - rota `survey_post_fight`;
   - `codegen_audit_game.py` corrigido para shards e para o despachante de 5 campos.
-- **Fechamento real é maior que o estimado:** as 58 raízes P1/A2 acrescentam cerca de 13,7 mil palavras, o que, na estimativa da epoca, levaria o EXE a ~96,6%; a medicao real esta em 94,53% (F2-L10). Parte do que a Fase 3 trataria como "sem referência" é alcançada por essas raízes.
+- **Fechamento real é maior que o estimado:** as 58 raízes P1/A2 acrescentam cerca de 13,7 mil palavras, o que, na estimativa da epoca, levaria o EXE a ~96,6%; a medicao real esta em 95,17% (F2-L11). Parte do que a Fase 3 trataria como "sem referência" é alcançada por essas raízes.
 - **Correção no recompilador** (`function_analysis.cpp`):
   - um `jal` em palavra emitida mas não visitada passa a virar raiz;
   - um alias absorvido passa a ser exportado com evidência de qualquer função final.
@@ -242,8 +242,16 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
   - rotas `boot_to_fight` (48 passos), `survey_post_fight` (332 passos, 58 snapshots de misses), `survey_modes` (446 passos, 99 snapshots de misses) e `survey_options` (417 passos, 90 snapshots de misses) completas, `miss_total` = 0; só os 6 PCs da quarentena interpretados, o mesmo conjunto do F2-L9 (em `survey_options`, também o do F2-L7); nenhum PC novo;
   - as duas raízes não estão nos alvos do fntrace das rotas de L10: não há execução observada, e isso não prova que não são chamadas;
   - candidatos adiados, sem promoção: `0x80135608` e `0x80147624` têm `jr` não-`$ra` = 1 no fechamento (jump table); requerem investigador/resolvedor antes de promover;
-  - próximo candidato: a definir pela fila (`relatorios/fase2/fila.json`);
+  - próximo candidato: F2-L11 (promovido);
   - evidências em `relatorios/fase2/L10/`.
+- **F2-L11** (`0x801453A8`, `0x8018D298` e `0x80127320`; ponteiros `0x801B1B7C`, `0x801B7EF0` e `0x801B039C`; sem execução observada):
+  - fechamento: `0x801453A8` +610 palavras, 3 funções, 72 entradas; `0x8018D298` +439 palavras, 1 função, 72 entradas; `0x80127320` +55 palavras, 1 função, 4 entradas (raízes estáticas, borda de prólogo);
+  - +1.104 palavras, chegando a **165.850 de 174.276 (95,17%)**, 1.432 funções e 23.497 entradas; `codegen_audit_game.py` CLEAN; métrica igual à prevista; build incremental `build-auto-p2infra` com `exit_code` 0 em 170,9 s;
+  - pré-auditoria com `seed_preview.py` dentro do orçamento (1.104 ≤ 1.200 palavras; 5 ≤ 10 funções), 0 perdas, 0 em quarentena, 0 `jalr`, 0 `jr` não-`$ra`, 0 SMC;
+  - rotas `boot_to_fight` (48 passos), `survey_post_fight` (332 passos, 58 snapshots de misses) e `survey_modes` (446 passos, 99 snapshots de misses) completas, `miss_total` = 0; só os 6 PCs da quarentena interpretados, o mesmo conjunto do F2-L10; nenhum PC novo; `survey_options` não foi rodada (próximo checkpoint de quatro rotas: F2-L13);
+  - as três raízes não estão nos alvos do fntrace das rotas de L11: não há execução observada, e isso não prova que não são chamadas;
+  - próximo candidato: a definir pela fila (`relatorios/fase2/fila.json`);
+  - evidências em `relatorios/fase2/L11/`.
 - **Pendências:**
   - o resolvedor de jump table não reconhecia a forma com `sll` no delay slot: resolvido em F2-R1; restam 42 `jr` indiretos de outras formas (41 após F2-R1, mais o de `0x8010B030` em F2-L3);
   - a rota não é determinística: a validação compara PCs interpretados, não screenshots;
