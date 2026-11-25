@@ -5105,3 +5105,23 @@
 0x80129148
 0x80162848
 0x8016321C
+
+# Micro-lote F2-L7 (Fase 2, EXE; raizes estaticas de tabela de funcoes).
+# Dois seeds, ponteiros unicos na tabela contigua de funcoes 0x801B1BC0..
+# 0x801B1C1C, cujos vizinhos ja estao cobertos/no dispatcher; sem jal/j nem
+# lui+addiu apontando para eles; palavra anterior = jr ra + nop; borda em
+# prologo (addiu sp); fora da cobertura atual. Evidencia = auditoria estatica,
+# SEM execucao observada (nenhum fntrace/rota com hit): nao ha PC interpretado
+# associado.
+#   0x8012F484: ponteiro em 0x801B1BD8 (fecha 3 funcoes)
+#   0x8013497C: ponteiro em 0x801B1C00 (fecha 3 funcoes)
+# Fechamento medido por seed_preview.py contra a base F2-L6 (160.149 palavras,
+# 1.398 funcoes, 22.734 entradas): +1.195 palavras unicas, +6 funcoes e +215
+# entradas de dispatcher, com 0 perdas, 0 em quarentena, 0 jalr, 0 jr nao-ra e
+# 0 stores em texto (SMC); orcamento 1.195 <= 1.200 palavras e 6 <= 10 funcoes.
+# Metrica prevista: 161.344 palavras (92,5796%) e 22.949 entradas.
+# Rotas F2-L7 (boot_to_fight, survey_post_fight, survey_modes, survey_options):
+# completas, miss_total 0, so a quarentena interpretada; sem regressao. As duas
+# raizes nao estavam nos alvos do fntrace: sem execucao observada.
+0x8012F484
+0x8013497C

@@ -159,7 +159,7 @@ Autorizado pelo usuário em 2026-11-24. O agente pode compilar, executar o jogo,
   - os scripts de diagnóstico (`build_online_diagnostics.ps1`, `build_input_observation.ps1`) agora usam AOT por padrão;
   - a validação de sensação de jogo do AOT continua com o usuário, antes de promovê-lo ao release.
 
-### Fase 2 — EXE: raízes chamadas por tabela (de ~79% para ~84,2%; meta original, estado atual 91,89% — ver Andamento)
+### Fase 2 — EXE: raízes chamadas por tabela (de ~79% para ~84,2%; meta original, estado atual 92,58% com F2-L7 — ver Andamento)
 
 Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fechamento, orçamento, aliases e jump tables. Começar pela tabela `0x801AF960` e pelas maiores raízes.
 
@@ -172,7 +172,7 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
   - passos `read_ram`, `fntrace` e `dispatch_misses`;
   - rota `survey_post_fight`;
   - `codegen_audit_game.py` corrigido para shards e para o despachante de 5 campos.
-- **Fechamento real é maior que o estimado:** as 58 raízes P1/A2 acrescentam cerca de 13,7 mil palavras, o que leva o EXE a ~96,6%. Parte do que a Fase 3 trataria como "sem referência" é alcançada por essas raízes.
+- **Fechamento real é maior que o estimado:** as 58 raízes P1/A2 acrescentam cerca de 13,7 mil palavras, o que, na estimativa da epoca, levaria o EXE a ~96,6%; a medicao real esta em 92,58% (F2-L7). Parte do que a Fase 3 trataria como "sem referência" é alcançada por essas raízes.
 - **Correção no recompilador** (`function_analysis.cpp`):
   - um `jal` em palavra emitida mas não visitada passa a virar raiz;
   - um alias absorvido passa a ser exportado com evidência de qualquer função final.
@@ -209,7 +209,16 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
   - rotas `boot_to_fight` (48 passos) e `survey_post_fight` (332), com `miss_total` = 0 e só os 6 PCs da quarentena interpretados, como em F2-L5; nenhum PC novo; `survey_modes` (446 passos) também completa, com `miss_total` = 0 em 99 snapshots, os mesmos 6 PCs da quarentena, nenhum PC novo e nenhuma espera de display;
   - ponteiros: `0x801AF888` e `0x801AF88C` (tabela de estados), `0x801B0380` e `0x801B03EC` (tabela de handlers do modo, a mesma de `0x80129E0C`), `0x801B3458` e `0x801B3474`; `0x80131A3C` foi excluído na pré-auditoria (origem fraca);
   - incidente: a `survey_post_fight` falhou duas vezes com `display disabled` logo após a leitura do byte de cena 7 no Game Over (`survey_try1`, passo 248; `survey_try2`, passo 280), sem causa nas seeds. Correção aplicada no `auto_session.py` (commit `6673184`; validada por teste unitário; não recorreu na 3ª execução): o screenshot espera 15 frames e tenta até 8 vezes (`display_retries`); na 3ª execução a rota completou com `display_retries` = 0 em 58 screenshots; `survey_options` não refeita desde F2-L4;
-  - próximo: F2-L7 provisório, `0x8012F484` (ponteiro `0x801B1BD8`) e `0x8013497C` (`0x801B1C00`), +1.195 palavras previstas; evidências em `relatorios/fase2/L6/`.
+  - próximo, registrado em F2-L6 (promovido em F2-L7, abaixo): `0x8012F484` (ponteiro `0x801B1BD8`) e `0x8013497C` (`0x801B1C00`), +1.195 palavras previstas; evidências em `relatorios/fase2/L6/`.
+- **F2-L7** (`0x8012F484` e `0x8013497C`, ponteiros `0x801B1BD8` e `0x801B1C00`, na tabela contígua `0x801B1BC0..0x801B1C1C`; sem execução observada):
+  - fechamento: `0x8012F484` +774 palavras, 3 funções, 140 entradas; `0x8013497C` +421 palavras, 3 funções, 75 entradas (raízes estáticas, borda de prólogo, palavra anterior `jr ra`+nop);
+  - +1.195 palavras, chegando a **161.344 de 174.276 (92,58%)**, 1.404 funções e 22.949 entradas; `codegen_audit_game.py` CLEAN; métrica igual à prevista; build incremental `build-auto-p2infra` com `exit_code` 0 em 28,4 s;
+  - pré-auditoria com `seed_preview.py` dentro do orçamento (1.195 ≤ 1.200 palavras; 6 ≤ 10 funções), 0 perdas, 0 em quarentena, 0 `jalr`, 0 `jr` não-`$ra`, 0 SMC;
+  - rotas (checkpoint de 3 lotes, L5 a L7; evidências em `relatorios/fase2/L7/r2/`): `boot_to_fight` (48 passos), `survey_post_fight` (332 passos, 58 checkpoints) e `survey_modes` (446 passos, 99 checkpoints) completas, `miss_total` = 0; só os 6 PCs da quarentena interpretados, nenhum PC novo;
+  - `0x8012F484` e `0x8013497C` não estão na lista de alvos do fntrace de nenhuma rota: não há execução observada, e a instrumentação atual não permite afirmar que não são chamados;
+  - rota `survey_options`: completou (417 passos, 90 checkpoints), miss_total 0, so a quarentena interpretada; conjunto de PCs igual ao de F2-L6 nas rotas comparaveis;
+  - histórico: a primeira tentativa do L7 (sessão anterior) parou nas rotas por máquina ocupada (timeouts de `wait_frames`/`starvation_watchdog`, ambiente); o patch foi salvo e reaplicado, e a reexecução r2 passou;
+  - próximo candidato: F2-L8 = `0x80141A30` + `0x80135E50` + `0x80129384` (provisório; pré-auditoria em `relatorios/fase2/L8pre/`, a reconferir depois do commit do L7).
 - **Pendências:**
   - o resolvedor de jump table não reconhecia a forma com `sll` no delay slot: resolvido em F2-R1; restam 42 `jr` indiretos de outras formas (41 após F2-R1, mais o de `0x8010B030` em F2-L3);
   - a rota não é determinística: a validação compara PCs interpretados, não screenshots;
