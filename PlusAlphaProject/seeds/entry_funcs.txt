@@ -4990,3 +4990,20 @@
 # com evidencia de execucao.
 0x80169B78
 0x8010ADE8
+
+# Micro-lote F2-L2 (Fase 2, EXE). Seed 0x8013009C: funcao com prologo
+# (addiu sp,-0x18; sw s0; sw ra) logo apos o `jr ra`+delay de 0x80130094,
+# despachante por tipo (byte 4 do objeto em a0: 0..3) que chama 0x80130138
+# (jal em 0x801300F0) e 0x80130294 (jal em 0x801300F8). Evidencia de execucao:
+# o survey_post_fight de F2-L1 (lote F2-L1b) registrou 30 PCs interpretados
+# dentro de 0x8013009C..0x80130508 (3.783 hits em 0x8013009C; 1.990 em
+# 0x801303B8; ~113 mil instrucoes so ali), nenhum deles raiz: todos interiores
+# das tres funcoes 0x8013009C, 0x80130138 e 0x80130294. Fechamento medido por
+# seed_preview.py: +288 palavras unicas, +3 funcoes, +40 entradas de
+# dispatcher, com 0 perdas, 0 em quarentena, bordas em prologo, 0 jalr, 0 jr
+# nao-ra e 0 stores em texto (SMC). Os jal de saida (0x80123BF4, 0x801945F8,
+# 0x801946C8, 0x80194904, 0x801949F4, 0x80194B00, 0x8010C72C) ja estao
+# compilados. Orcamento: 288 palavras e 3 funcoes (<= 1.200 e <= 10).
+# Nao entram: 0x801548BC e 0x80198350 (interiores de funcoes ja compiladas,
+# alvos de jump table que o resolvedor nao reconhece; sem correcao por seed).
+0x8013009C

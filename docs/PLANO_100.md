@@ -180,8 +180,13 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
   - +1.375 palavras, chegando a **156.014 de 174.276 (89,52%)**, e 22.121 entradas;
   - na rota pós-luta, os PCs do EXE interpretados caíram de 149 para 38, e as instruções interpretadas, 49,8%;
   - `miss_total` = 0.
+- **F2-L2** (`0x8013009C`; `0x80130138` e `0x80130294` entram pelo fechamento):
+  - por quê: é o despachante por tipo cujos 30 PCs interiores eram interpretados após a luta (3.783 hits em `0x8013009C`);
+  - +288 palavras, chegando a **156.302 (89,69%)**, 1.370 funções e 22.161 entradas;
+  - PCs do EXE interpretados na rota pós-luta: 38 → 8. `miss_total` = 0.
+- **F2-R1 (correção do resolvedor):** `sltiu; beq; sll (delay); lui [; addiu]; addu; lw; nop; jr` passa a ser reconhecido, com todas as provas de limite e base. Hash de codegen `d3d005b3` → `e13692f6`; BIOS idêntico. EXE: mesmas 156.302 palavras, 1.370 funções, 22.161 entradas, 37 `jr` resolvidos (`0x80169BF4`, `0x801548A0`, `0x80198074` entre eles). AOT: 280 switches, entradas 61.189 → 61.226. Rotas: PCs interpretados do EXE 8 → 6 (`0x801548BC` e `0x80198350` saem), `miss_total` = 0.
 - **Pendências:**
-  - o resolvedor de jump table não reconhece `sltiu; beq; sll (delay); lui; addiu; addu; lw; nop; jr` (o `jr` de `0x80169BF4` sai como CPS indireto). A correção muda bytes da base;
+  - o resolvedor de jump table não reconhecia a forma com `sll` no delay slot: resolvido em F2-R1; restam 41 `jr` indiretos de outras formas;
   - a rota não é determinística: a validação compara PCs interpretados, não screenshots;
   - os alvos das cenas 2, 4, 5 e 8+ ainda não foram alcançados por rota;
   - `generated-online/` e `coverage/baseline.json` só serão promovidos no fim da fase, com a validação de sensação do usuário.
