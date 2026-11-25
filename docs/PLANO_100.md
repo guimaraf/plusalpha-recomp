@@ -185,10 +185,17 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
   - +288 palavras, chegando a **156.302 (89,69%)**, 1.370 funções e 22.161 entradas;
   - PCs do EXE interpretados na rota pós-luta: 38 → 8. `miss_total` = 0.
 - **F2-R1 (correção do resolvedor):** `sltiu; beq; sll (delay); lui [; addiu]; addu; lw; nop; jr` passa a ser reconhecido, com todas as provas de limite e base. Hash de codegen `d3d005b3` → `e13692f6`; BIOS idêntico. EXE: mesmas 156.302 palavras, 1.370 funções, 22.161 entradas, 37 `jr` resolvidos (`0x80169BF4`, `0x801548A0`, `0x80198074` entre eles). AOT: 280 switches, entradas 61.189 → 61.226. Rotas: PCs interpretados do EXE 8 → 6 (`0x801548BC` e `0x80198350` saem), `miss_total` = 0.
+- **F2-L3** (oito raízes da tabela `0x801AF960`, índices 2, 4, 5, 12, 22–24 e 26, mais o alias `0x8019CB8C`):
+  - +1.131 palavras, chegando a **157.433 de 174.276 (90,34%)**, 1.379 funções e 22.360 entradas; audit `CLEAN`;
+  - `boot_to_fight` e `survey_post_fight` só com a quarentena interpretada; `miss_total` = 0;
+  - rotas novas `survey_modes` e `survey_options`: modos do Mode Select (Team Battle só até a seleção; em Practice, só Training Mode), submenus de Option (Memory Card só até a tela de slot, sem load nem save) e derrota, continue e game over;
+  - execução observada só em `0x801085E0`; os outros oito alvos ainda não foram alcançados;
+  - o `jr` de `0x8010B030` tem uma forma não reconhecida: `0x8010B1BC` e `0x8010B230` ficam sem entrada (41 → 42 `jr` indiretos);
+  - próximos candidatos com execução observada: `0x8017FEC0` (cena 8, resultado do Survival) e `0x80129E0C` (modo Watch, com ponteiro em `0x801B0404`).
 - **Pendências:**
-  - o resolvedor de jump table não reconhecia a forma com `sll` no delay slot: resolvido em F2-R1; restam 41 `jr` indiretos de outras formas;
+  - o resolvedor de jump table não reconhecia a forma com `sll` no delay slot: resolvido em F2-R1; restam 42 `jr` indiretos de outras formas (41 após F2-R1, mais o de `0x8010B030` em F2-L3);
   - a rota não é determinística: a validação compara PCs interpretados, não screenshots;
-  - os alvos das cenas 2, 4, 5 e 8+ ainda não foram alcançados por rota;
+  - os alvos dos índices 8 (Survival, byte de cena lido) e 26 (só pelo hit de `0x801085E0`) já são alcançados por rota; 2, 4, 5, 12 e 22–24 ainda não;
   - `generated-online/` e `coverage/baseline.json` só serão promovidos no fim da fase, com a validação de sensação do usuário.
 
 ### Fase 3 — Código sem referência e variantes divergentes

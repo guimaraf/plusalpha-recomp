@@ -5007,3 +5007,34 @@
 # Nao entram: 0x801548BC e 0x80198350 (interiores de funcoes ja compiladas,
 # alvos de jump table que o resolvedor nao reconhece; sem correcao por seed).
 0x8013009C
+
+# Micro-lote F2-L3 (Fase 2, EXE; lote 1A). Oito raizes da tabela de cenas
+# 0x801AF960 (27 ponteiros, lida por lui/addiu + lw + jalr em
+# 0x80103E24..0x80103E3C e indexada pelo byte 0x801D39B8): indices 2
+# (0x8010A5FC), 4 (0x8010ABC8), 5 (0x8010ACD8), 12 (0x8010AFDC), 22
+# (0x80107D80), 23 (0x80107EF0), 24 (0x8010809C) e 26 (0x801085E0); os
+# ponteiros conferem nos bytes do EXE. A nona seed, 0x8019CB8C, e o alias do
+# lote S1-239 que o S1-309 despachava e a geracao atual perdeu (sem
+# predecessor direto, auditado ate o retorno). Bordas: prologo em sete seeds e
+# jr ra+delay em 0x801085E0 e 0x8019CB8C. Fechamento medido por
+# seed_preview.py: +1.131 palavras unicas, +9 funcoes e +199 entradas de
+# dispatcher, com 0 perdas, 0 em quarentena e 0 stores em texto (SMC);
+# orcamento 1.131 <= 1.200 palavras e 9 <= 10 funcoes. jalr: cinco, em
+# 0x8010A5FC (0x8010A87C, 0x8010A940, 0x8010AA40, 0x8010AAC0, 0x8010AAE0).
+# jr nao-ra: 0x8010A708 (tabela 0x801AB644, 5 alvos, resolvido como switch,
+# todos no dispatcher) e 0x8010B030 (tabela 0x801AB6CC, 6 alvos), que o
+# resolvedor NAO reconhece (sltiu; beq; sw no delay; sll; lui; addiu; addu;
+# lw; nop; jr) e sai como CPS indireto: 0x8010B1BC e 0x8010B230 ficam sem
+# entrada e, se alcancados, rodam no interpretador. Pendencia do resolvedor;
+# PCs interiores nao sao semeados. Evidencia de execucao: so 0x801085E0 foi
+# observado (1 hit, frame 26.549, rota survey_options); os outros oito alvos
+# deste lote ainda nao foram alcancados por rota.
+0x8010A5FC
+0x8010ABC8
+0x8010ACD8
+0x8010AFDC
+0x80107D80
+0x80107EF0
+0x8010809C
+0x801085E0
+0x8019CB8C
