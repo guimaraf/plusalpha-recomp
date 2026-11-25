@@ -5038,3 +5038,17 @@
 0x8010809C
 0x801085E0
 0x8019CB8C
+
+# Micro-lote F2-L4 (Fase 2, EXE; lote 1B2). Seed 0x8017FEC0: indice 8 da tabela
+# de cenas 0x801AF960 (ponteiro em 0x801AF980), borda em prologo (addiu
+# sp,-0x18) apos jr ra+delay. O fechamento inclui 0x80180010 (jal em
+# 0x8017FF88) e 0x8018097C (jal em 0x8017FFDC) e ocupa a faixa continua
+# 0x8017FEC0..0x80180F7F. Evidencia anterior a promocao (rotas de F2-L3):
+# resultado do Survival (byte de cena 8), com 99 PCs do EXE interpretados,
+# todos dentro desta faixa. Fechamento medido por seed_preview.py: +1.072
+# palavras unicas, +3 funcoes e +135 entradas de dispatcher, com 0 perdas, 0 em
+# quarentena, 0 jalr, 0 jr nao-ra e 0 stores em texto (SMC); orcamento
+# 1.072 <= 1.200 palavras e 3 <= 10 funcoes. Depois da promocao: os 99 PCs
+# deixam de ser interpretados nas rotas survey_modes e survey_options,
+# 0x8017FEC0 executa nativo (838 e 1.684 hits) e miss_total = 0.
+0x8017FEC0

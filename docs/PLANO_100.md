@@ -192,6 +192,10 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
   - execução observada só em `0x801085E0`; os outros oito alvos ainda não foram alcançados;
   - o `jr` de `0x8010B030` tem uma forma não reconhecida: `0x8010B1BC` e `0x8010B230` ficam sem entrada (41 → 42 `jr` indiretos);
   - próximos candidatos com execução observada: `0x8017FEC0` (cena 8, resultado do Survival) e `0x80129E0C` (modo Watch, com ponteiro em `0x801B0404`).
+- **F2-L4** (`0x8017FEC0`, índice 8 da tabela, resultado do Survival; `0x80180010` e `0x8018097C` pelo fechamento):
+  - +1.072 palavras, chegando a **158.505 de 174.276 (90,95%)**, 1.382 funções e 22.495 entradas; audit `CLEAN`;
+  - PCs do EXE interpretados: `survey_modes` 151 → 52 e `survey_options` 105 → 6, nenhum novo; `miss_total` = 0;
+  - próximo candidato com execução observada: `0x80129E0C` (modo Watch, 46 PCs interpretados).
 - **Pendências:**
   - o resolvedor de jump table não reconhecia a forma com `sll` no delay slot: resolvido em F2-R1; restam 42 `jr` indiretos de outras formas (41 após F2-R1, mais o de `0x8010B030` em F2-L3);
   - a rota não é determinística: a validação compara PCs interpretados, não screenshots;
