@@ -159,7 +159,7 @@ Autorizado pelo usuário em 2026-11-24. O agente pode compilar, executar o jogo,
   - os scripts de diagnóstico (`build_online_diagnostics.ps1`, `build_input_observation.ps1`) agora usam AOT por padrão;
   - a validação de sensação de jogo do AOT continua com o usuário, antes de promovê-lo ao release.
 
-### Fase 2 — EXE: raízes chamadas por tabela (de ~79% para ~84,2%; meta original, estado atual 95,86% com F2-L13 — ver Andamento)
+### Fase 2 — EXE: raízes chamadas por tabela (de ~79% para ~84,2%; meta original, estado atual 96,07% com F2-L14 — ver Andamento)
 
 Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fechamento, orçamento, aliases e jump tables. Começar pela tabela `0x801AF960` e pelas maiores raízes.
 
@@ -172,7 +172,7 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
   - passos `read_ram`, `fntrace` e `dispatch_misses`;
   - rota `survey_post_fight`;
   - `codegen_audit_game.py` corrigido para shards e para o despachante de 5 campos.
-- **Fechamento real é maior que o estimado:** as 58 raízes P1/A2 acrescentam cerca de 13,7 mil palavras, o que, na estimativa da epoca, levaria o EXE a ~96,6%; a medicao real esta em 95,86% (F2-L13). Parte do que a Fase 3 trataria como "sem referência" é alcançada por essas raízes.
+- **Fechamento real é maior que o estimado:** as 58 raízes P1/A2 acrescentam cerca de 13,7 mil palavras, o que, na estimativa da epoca, levaria o EXE a ~96,6%; a medicao real esta em 96,07% (F2-L14). Parte do que a Fase 3 trataria como "sem referência" é alcançada por essas raízes.
 - **Correção no recompilador** (`function_analysis.cpp`):
   - um `jal` em palavra emitida mas não visitada passa a virar raiz;
   - um alias absorvido passa a ser exportado com evidência de qualquer função final.
@@ -266,8 +266,16 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
   - pré-auditoria com `seed_preview.py` dentro do orçamento (488 ≤ 1.200 palavras; 10 ≤ 10 funções), 0 perdas, 0 em quarentena, 0 `jalr`, 0 `jr` não-`$ra`, 0 SMC;
   - rotas `boot_to_fight` (48 passos), `survey_post_fight` (332 passos, 58 snapshots de misses), `survey_modes` (446 passos, 99 snapshots de misses) e `survey_options` (417 passos, 90 snapshots de misses) completas, `miss_total` = 0 nas telemetrias finais; só os 6 PCs da quarentena interpretados, o mesmo conjunto do F2-L12 (em `survey_options`, também o do F2-L10); nenhum PC novo;
   - as cinco raízes não estão nos alvos do fntrace das rotas de L13: não há execução observada, e isso não prova que não são chamadas;
-  - próximo candidato: restam `0x801287CC` e `0x80131A3C` (origem fraca) como candidatos limpos; 4 candidatos bloqueados por jump table (`0x80147624`, `0x80135608`, `0x801477F8` e `0x80135848`, `jr` não-`$ra` = 1) aguardam investigação F2-Rx (`relatorios/fase2/fila.json`);
+  - próximo candidato: F2-L14 (promovido);
   - evidências em `relatorios/fase2/L13/`.
+- **F2-L14** (`0x801287CC`, `0x80131A3C`, `0x8019735C`, `0x80197370`, `0x8019743C`, `0x8019FA90`, `0x8019FCE4` e `0x801A74F8`; ponteiros em `0x801B03C8`, `0x801ABAA8`, `0x801B85C8`, `0x801B85B4`, `0x801B85A4` e `0x801BEEA8`, e `lui/addiu` em código coberto para `0x8019FCE4` e `0x801A74F8`; sem execução observada):
+  - fechamento: `0x801287CC` +68 palavras, 3 funções, 12 entradas; `0x80131A3C` +212 palavras, 1 função, 16 entradas (origem mais fraca); `0x8019735C` +5, `0x80197370` +20, `0x8019743C` +9 (cada uma 1 função; 1, 4 e 2 entradas); `0x8019FA90` +34, 1 função, 6 entradas; `0x8019FCE4` +11, 1 função, 3 entradas; `0x801A74F8` +10, 1 função, 2 entradas (bordas em prólogo ou `jr ra`+delay);
+  - +369 palavras, chegando a **167.428 de 174.276 (96,07%)**, 1.461 funções e 23.767 entradas; `codegen_audit_game.py` CLEAN; métrica igual à prevista; build incremental `build-auto-p2infra` com `exit_code` 0 em 133,8 s;
+  - pré-auditoria com `seed_preview.py` contra a base F2-L13 (167.059 palavras): +369 palavras, +10 funções, +46 entradas, 0 perdas, 0 em quarentena, 0 `jalr`, 0 `jr` não-`$ra`, 0 SMC;
+  - rotas `boot_to_fight` (48 passos), `survey_post_fight` (332 passos, 58 snapshots de misses) e `survey_modes` (446 passos, 99 snapshots de misses) completas, `miss_total` = 0 nas telemetrias finais; só os 6 PCs da quarentena interpretados, o mesmo conjunto do F2-L13; nenhum PC novo; `survey_options` não foi rodada (próximo checkpoint no F2-L15);
+  - as oito raízes não estão nos alvos do fntrace das rotas de L14: não há execução observada, e isso não prova que não são chamadas;
+  - próximo candidato: F2-L15 (8 raízes pequenas de tabelas da varredura `scan_L15`, ~196 palavras previstas; checkpoint de quatro rotas);
+  - evidências em `relatorios/fase2/L14/` e `relatorios/fase2/scan_L15/`.
 - **Pendências:**
   - o resolvedor de jump table não reconhecia a forma com `sll` no delay slot: resolvido em F2-R1; restam 42 `jr` indiretos de outras formas (41 após F2-R1, mais o de `0x8010B030` em F2-L3);
   - a rota não é determinística: a validação compara PCs interpretados, não screenshots;

@@ -5244,3 +5244,32 @@
 0x80162B18
 0x801627AC
 0x801356A4
+
+# Micro-lote F2-L14 (Fase 2, EXE; raizes estaticas da varredura scan_L15 e
+# restantes da fila). Borda em prologo ou jr ra + delay; fora da cobertura
+# anterior. Evidencia = auditoria estatica, SEM execucao observada.
+#   0x801287CC: ponteiro unico em 0x801B03C8 (tabela de handlers; fecha 3 func)
+#   0x80131A3C: ponteiro em 0x801ABAA8, numa estrutura {"HIT", funcao, 0x20,
+#               0x21} (origem mais fraca; fecha 1 funcao)
+#   0x8019735C, 0x80197370, 0x8019743C: ponteiros em 0x801B85C8, 0x801B85B4 e
+#               0x801B85A4 (tabela 0x801B85A4..; 1 funcao cada)
+#   0x8019FA90: ponteiro em 0x801BEEA8 (tabela 0x801BEE90..; 1 funcao)
+#   0x8019FCE4: lui/addiu em 0x8019FC54 (codigo coberto; callback; 1 funcao)
+#   0x801A74F8: lui/addiu em 0x801A7474 (codigo coberto; argumento de registro
+#               de callback; 1 funcao)
+# Fechamento medido por seed_preview.py contra a base F2-L13 (167.059 palavras,
+# 1.451 funcoes, 23.721 entradas): +369 palavras unicas, +10 funcoes e +46
+# entradas de dispatcher, com 0 perdas, 0 em quarentena, 0 jalr, 0 jr nao-ra e
+# 0 stores em texto (SMC); orcamento 369 <= 1.200 palavras e 10 <= 10 funcoes.
+# Metrica prevista: 167.428 palavras (96,0706%) e 23.767 entradas.
+# Rotas F2-L14 (boot_to_fight, survey_post_fight, survey_modes): completas,
+# miss_total 0, so a quarentena interpretada; sem regressao. Raizes fora dos
+# alvos do fntrace: sem execucao observada.
+0x801287CC
+0x80131A3C
+0x8019735C
+0x80197370
+0x8019743C
+0x8019FA90
+0x8019FCE4
+0x801A74F8
