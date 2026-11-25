@@ -5052,3 +5052,23 @@
 # deixam de ser interpretados nas rotas survey_modes e survey_options,
 # 0x8017FEC0 executa nativo (838 e 1.684 hits) e miss_total = 0.
 0x8017FEC0
+
+# Micro-lote F2-L5 (Fase 2, EXE; lote 1B3). Seed 0x80129E0C: modo Watch,
+# ponteiro em 0x801B0404 (raiz de funcao; borda jr ra+delay). O fechamento
+# tem palavras entre 0x80126DC4 e 0x8012A588 (6 funcoes, inclui 0x80126DC4). Evidencia
+# anterior a promocao (rotas de F2-L4, relatorios/fase2/L4/modes): 46 PCs do
+# EXE interpretados na faixa 0x80129E0C..0x8012A578, todos dentro deste
+# fechamento. Fechamento medido por seed_preview.py: +749 palavras unicas, +6
+# funcoes e +95 entradas de dispatcher, com 0 perdas, 0 em quarentena, 0 jalr,
+# 0 jr nao-ra e 0 stores em texto (SMC); orcamento 749 <= 1.200 palavras e
+# 6 <= 10 funcoes. Metrica prevista: 159.254 palavras (91,3803%) e 22.590
+# entradas. Metrica observada: igual a prevista (159.254 de 174.276, 1.388
+# funcoes, 22.590 entradas). Resultado de rotas de F2-L5: boot_to_fight 48
+# passos, survey_post_fight 332 e survey_modes 446, todas completas com
+# miss_total = 0. PCs do EXE interpretados: boot_to_fight 6 -> 6,
+# survey_post_fight 6 -> 6 e survey_modes 52 -> 6 (saem os 46 do modo Watch;
+# restam so os 6 da quarentena); nenhum PC novo. O modo Watch foi alcancado
+# (misses_m_watch_*). 0x80129E0C nao tem hits de fntrace (o fntrace da rota so
+# arma os alvos da tabela 0x801AF960); a execucao compilada e inferida pela
+# saida dos PCs interpretados, nao medida por contagem.
+0x80129E0C
