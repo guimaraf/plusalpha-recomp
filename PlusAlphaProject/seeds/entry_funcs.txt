@@ -5249,8 +5249,9 @@
 # restantes da fila). Borda em prologo ou jr ra + delay; fora da cobertura
 # anterior. Evidencia = auditoria estatica, SEM execucao observada.
 #   0x801287CC: ponteiro unico em 0x801B03C8 (tabela de handlers; fecha 3 func)
-#   0x80131A3C: ponteiro em 0x801ABAA8, numa estrutura {"HIT", funcao, 0x20,
-#               0x21} (origem mais fraca; fecha 1 funcao)
+#   0x80131A3C: ponteiro em 0x801ABAA8, par de callbacks logo apos a string
+#               "HIT", ao lado de 0x801317E4 (0x801ABAA4, seed desde S1-160, que
+#               termina em 0x80131A3B); origem estatica; fecha 1 funcao
 #   0x8019735C, 0x80197370, 0x8019743C: ponteiros em 0x801B85C8, 0x801B85B4 e
 #               0x801B85A4 (tabela 0x801B85A4..; 1 funcao cada)
 #   0x8019FA90: ponteiro em 0x801BEEA8 (tabela 0x801BEE90..; 1 funcao)
@@ -5273,3 +5274,29 @@
 0x8019FA90
 0x8019FCE4
 0x801A74F8
+
+# Micro-lote F2-L15 (Fase 2, EXE; checkpoint; raizes estaticas de tabelas de
+# ponteiros da varredura scan_L15). Ponteiros conferidos no EXE; palavra
+# anterior = jr ra + delay; borda em prologo ou jr ra + delay (stubs vazios
+# de handler). Evidencia = auditoria estatica, SEM execucao observada.
+#   0x8012DB4C: ponteiro em 0x801B1BC4 (tabela 0x801B1BC0..; fecha 3 funcoes)
+#   0x80118010, 0x80118018: ponteiros em 0x801AFCC4 e 0x801AFCC8 (stubs)
+#   0x801627A4, 0x8016280C, 0x80162AA8, 0x8016313C: ponteiros em 0x801B3404,
+#               0x801B340C, 0x801B341C e 0x801B3428 (tabela 0x801B33F0..)
+#   0x80196B18: ponteiro em 0x801B85D8 (tabela 0x801B85A4..)
+# Fechamento medido por seed_preview.py contra a base F2-L14 (167.428 palavras,
+# 1.461 funcoes, 23.767 entradas): +196 palavras unicas, +10 funcoes e +46
+# entradas de dispatcher, com 0 perdas, 0 em quarentena, 0 jalr, 0 jr nao-ra e
+# 0 stores em texto (SMC); orcamento 196 <= 1.200 palavras e 10 <= 10 funcoes.
+# Metrica prevista: 167.624 palavras (96,1831%) e 23.813 entradas.
+# Rotas F2-L15 (checkpoint: boot_to_fight, survey_post_fight, survey_modes,
+# survey_options): completas, miss_total 0, so a quarentena interpretada; sem
+# regressao. Raizes fora dos alvos do fntrace: sem execucao observada.
+0x8012DB4C
+0x80118010
+0x80118018
+0x801627A4
+0x8016280C
+0x80162AA8
+0x8016313C
+0x80196B18
