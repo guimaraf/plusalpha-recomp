@@ -159,7 +159,7 @@ Autorizado pelo usuário em 2026-11-24. O agente pode compilar, executar o jogo,
   - os scripts de diagnóstico (`build_online_diagnostics.ps1`, `build_input_observation.ps1`) agora usam AOT por padrão;
   - a validação de sensação de jogo do AOT continua com o usuário, antes de promovê-lo ao release.
 
-### Fase 2 — EXE: raízes chamadas por tabela (de ~79% para ~84,2%; meta original, estado atual 96,18% com F2-L15 — ver Andamento)
+### Fase 2 — EXE: raízes chamadas por tabela (de ~79% para ~84,2%; meta original, estado atual 96,79% com F2-L16 — ver Andamento)
 
 Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fechamento, orçamento, aliases e jump tables. Começar pela tabela `0x801AF960` e pelas maiores raízes.
 
@@ -172,7 +172,7 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
   - passos `read_ram`, `fntrace` e `dispatch_misses`;
   - rota `survey_post_fight`;
   - `codegen_audit_game.py` corrigido para shards e para o despachante de 5 campos.
-- **Fechamento real é maior que o estimado:** as 58 raízes P1/A2 acrescentam cerca de 13,7 mil palavras, o que, na estimativa da epoca, levaria o EXE a ~96,6%; a medicao real esta em 96,18% (F2-L15). Parte do que a Fase 3 trataria como "sem referência" é alcançada por essas raízes.
+- **Fechamento real é maior que o estimado:** as 58 raízes P1/A2 acrescentam cerca de 13,7 mil palavras, o que, na estimativa da epoca, levaria o EXE a ~96,6%; a medicao real esta em 96,79% (F2-L16; 96,18% no F2-L15, com denominador 174.276). Parte do que a Fase 3 trataria como "sem referência" é alcançada por essas raízes.
 - **Correção no recompilador** (`function_analysis.cpp`):
   - um `jal` em palavra emitida mas não visitada passa a virar raiz;
   - um alias absorvido passa a ser exportado com evidência de qualquer função final.
@@ -284,12 +284,19 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
   - as oito raízes não estão nos alvos do fntrace das rotas de L15: não há execução observada, e isso não prova que não são chamadas;
   - fronteira da Fase 2 descrita em Pendências;
   - evidências em `relatorios/fase2/L15/` e `relatorios/fase2/scan_L15/`.
+- **F2-L16** (`0x80135608` e `0x80147624`; ponteiros `0x801B1C08` e `0x801B1B8C`; jump tables `0x801ABBEC` e `0x801ABC6C`, resolvidas pelo resolvedor da F2-R1; sem execução observada; checkpoint de quatro rotas):
+  - +1.030 palavras, chegando a **168.654 de 174.246 (96,79%)**, 1.476 funções e 23.938 entradas; métrica igual à prevista; `codegen_audit_game.py` STATUS CLEAN sobre o C gerado do build do lote (`audit_build.txt`: 1.476 funções e 23.938 entradas; o `audit.txt` com 1.471/23.813 leu `generated-online` porque o `out_dir` do `game.toml` é resolvido a partir da raiz do projeto); build incremental `build-auto-p2infra` ok em 203,8 s;
+  - correção de exclusões de padding (`PlusAlphaProject/coverage/exclusions.json`): `0x801AB370` (delay slot de `jr ra`) sai do padding; +31 palavras de padding de alinhamento; denominador do EXE 174.276 → 174.246. Os percentuais de F2-L1 a F2-L15 usam 174.276;
+  - rotas `boot_to_fight` (48 passos), `survey_post_fight` (332), `survey_modes` (446) e `survey_options` (417) completas, `miss_total` 0; só os seis PCs da quarentena interpretados (em `boot_to_fight`, o agregado lista cinco e a telemetria final, seis); nenhum PC novo;
+  - alvos novos sem execução observada: não estão nas listas de fntrace de `auto_routes`;
+  - contador da quarentena: os seis PCs ficam fixos enquanto o interpretador cresce de 1.000.427 para 2.238.724 insns em `survey_modes`; execução só no boot, então não servem como evidência de execução por rota;
+  - evidências em `relatorios/fase2/L16/`.
 - **Pendências:**
   - o resolvedor de jump table não reconhecia a forma com `sll` no delay slot: resolvido em F2-R1; restam 42 `jr` indiretos de outras formas (41 após F2-R1, mais o de `0x8010B030` em F2-L3);
   - a rota não é determinística: a validação compara PCs interpretados, não screenshots;
   - os alvos dos índices 8 (Survival, byte de cena lido) e 26 (só pelo hit de `0x801085E0`) já são alcançados por rota; 2, 4, 5, 12 e 22–24 ainda não;
   - `generated-online/` e `coverage/baseline.json` só serão promovidos no fim da fase, com a validação de sensação do usuário.
-  - **Fronteira da Fase 2 (após F2-L15):** esgotam-se as raízes estáticas auditáveis das varreduras `scan_L7` e `scan_L15`; restam 6.652 palavras sem cobertura (174.276 − 167.624). Pela classificação por faixa de `scan_L15` (152 faixas, medida antes do L14): ~2.119 palavras só alcançáveis por jump table ou `jalr` (17 faixas; candidatos citados `0x80135608`, `0x80135848`, `0x80147624`, `0x801477F8`, `0x8010F290`, `0x8018D974`, `0x8019F9E4`, `0x80193474`, `0x801935BC`, `0x801A15A8`, `0x801AB180`), que exigem investigação F2-Rx (resolvedor de jump table); ~4.016 palavras órfãs, sem referência estática no EXE nem nos overlays (hipótese: SDK sem uso), que só viram seed com evidência de execução ou decisão explícita do usuário; ~327 encadeadas a órfãos; ~96 em fragmentos sem borda de função e ~31 em zeros soltos (possível ajuste de exclusões). As 63 palavras restantes (6.652 = 6.589 + 63) estão na classe "raiz auditável" da varredura, sem candidato atribuído no arquivo; `candidatos.json` marca `0x8019F9E4` como JT e `0x801A15A8` como jalr, o que sugere, mas não prova, que sejam essas. O próximo passo deixa de ser micro-lote de seeds e passa a ser: (1) investigação F2-Rx das jump tables; (2) decidir a política para órfãos (armar fntrace em rotas novas, ou aceitar raízes estáticas sem referência); (3) revisar exclusões de padding.
+  - **Fronteira da Fase 2 (após F2-L16):** esgotam-se as raízes estáticas auditáveis das varreduras `scan_L7` e `scan_L15`; restam 5.592 palavras sem cobertura (174.246 − 168.654; antes do L16 eram 6.652 = 174.276 − 167.624, com denominador antigo). Pela classificação por faixa de `scan_L15` (152 faixas, medida antes do L14 e não recalculada após o L16): ~2.119 palavras só alcançáveis por jump table ou `jalr` (17 faixas; candidatos citados `0x80135608`, `0x80135848`, `0x80147624`, `0x801477F8`, `0x8010F290`, `0x8018D974`, `0x8019F9E4`, `0x80193474`, `0x801935BC`, `0x801A15A8`, `0x801AB180`), que exigem investigação F2-Rx (resolvedor de jump table); ~4.016 palavras órfãs, sem referência estática no EXE nem nos overlays (hipótese: SDK sem uso), que só viram seed com evidência de execução ou decisão explícita do usuário; ~327 encadeadas a órfãos; ~96 em fragmentos sem borda de função e ~31 em zeros soltos (possível ajuste de exclusões). As 63 palavras restantes (6.652 = 6.589 + 63) estão na classe "raiz auditável" da varredura, sem candidato atribuído no arquivo; `candidatos.json` marca `0x8019F9E4` como JT e `0x801A15A8` como jalr, o que sugere, mas não prova, que sejam essas. O próximo passo deixa de ser micro-lote de seeds e passa a ser: (1) investigação F2-Rx das jump tables (feita, sem mudança no recompilador; as 2 tabelas do L16 saíram da lista, 7 dos 11 sítios seguem pendentes); (2) decidir a política para órfãos (armar fntrace em rotas novas, ou aceitar raízes estáticas sem referência); (3) revisar exclusões de padding (feito no F2-L16, com a correção de padding descrita no bloco F2-L16).
 
 ### Fase 3 — Código sem referência e variantes divergentes
 

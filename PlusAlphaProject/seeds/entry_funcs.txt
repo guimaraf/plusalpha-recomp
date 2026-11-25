@@ -5300,3 +5300,22 @@
 0x80162AA8
 0x8016313C
 0x80196B18
+
+# Micro-lote F2-L16 (Fase 2, EXE; raizes com jump table resolvida pela F2-R1,
+# adiadas no L10 por "jr nao-ra"). Evidencia = auditoria estatica, SEM execucao
+# observada. Ponteiros conferidos no EXE (contiguos as tabelas 0x801B1B64 e
+# 0x801B1C0C, promovidas no L8); borda em prologo.
+#   0x80135608: ponteiro em 0x801B1C08; jr v0 em 0x80135898 = jump table
+#               0x801ABBEC (5 alvos 0x801358A0..0x80135C94), resolvida pela
+#               F2-R1 (resolve_exact_bounded_jump_table); fecha 0x80135848
+#   0x80147624: ponteiro em 0x801B1B8C; jr em 0x80147CD8 = jump table
+#               0x801ABC6C (6 alvos 0x80147CE0..0x80147E88), resolvida pela
+#               F2-R1; fecha 0x801477F8
+# Fechamento medido por seed_preview.py contra a base F2-L15 (167.624 palavras,
+# 1.471 funcoes, 23.813 entradas): +1.030 palavras unicas, +5 funcoes e +125
+# entradas de dispatcher, com 0 perdas, 0 em quarentena, 0 jalr, 0 stores em
+# texto (SMC) e 2 jr nao-ra (exatamente as duas jump tables); orcamento
+# 1.030 <= 1.200 palavras e 5 <= 10 funcoes.
+# Metrica observada: 168.654 de 174.246 palavras (96,7907%) e 23.938 entradas (preview previa o mesmo).
+0x80135608
+0x80147624
