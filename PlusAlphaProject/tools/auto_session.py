@@ -49,6 +49,8 @@ TELEMETRY_KEYS = {"dispatch_stats", "overlay_interp_hot", "static_text_misses",
                   "dirty_ram_stats", "segment_misses", "phase_profile", "latency",
                   "dispatch_misses"}
 OVERLAY_SOURCES = ("aot", "retained")
+SHOT_DISPLAY_RETRIES = 8  # novas tentativas se o guest apagou o display (GP1 03h)
+SHOT_DISPLAY_WAIT_FRAMES = 15
 STATIC_MATCH_CACHE_CAP = 16384  # overlay_loader.c: cache de CRC dos overlays estaticos
 
 
@@ -781,11 +783,21 @@ class Session:
     def shot(self, name):
         path = self.evidence / f"{name}.png"
         r = self.cmd("screenshot_file", path=str(path).replace("\\", "/"))
+        retries = 0
+        while (not r.get("ok") and r.get("error") == "display disabled"
+               and retries < SHOT_DISPLAY_RETRIES):
+            self.wait_frames(SHOT_DISPLAY_WAIT_FRAMES)
+            retries += 1
+            r = self.cmd("screenshot_file", path=str(path).replace("\\", "/"))
         if not r.get("ok"):
             raise RuntimeError(f"screenshot_file falhou: {r}")
         digest = sha256_file(path)
         self.shots[name] = digest
-        return {"path": str(path), "sha256": digest, "w": r.get("width"), "h": r.get("height")}
+        out = {"path": str(path), "sha256": digest, "w": r.get("width"), "h": r.get("height"),
+               "display_retries": retries}
+        if retries:
+            out["frame_after_retries"] = self.frame()
+        return out
 
     def savestate(self, op, slot):
         before = self.cmd("savestate_status")

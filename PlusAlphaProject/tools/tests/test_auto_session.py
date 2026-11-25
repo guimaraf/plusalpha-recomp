@@ -212,5 +212,60 @@ class Phase2StepsTest(unittest.TestCase):
         self.assertTrue(au.load_route('survey_post_fight')['steps'])
 
 
+class ShotDisplayRetryTest(unittest.TestCase):
+    def make(self, tmp, replies):
+        s = au.Session.__new__(au.Session)
+        s.evidence = Path(tmp)
+        s.shots = {}
+        s.calls = 0
+        s.waits = []
+
+        def cmd(name, **kw):
+            r = replies[min(s.calls, len(replies) - 1)]
+            s.calls += 1
+            if r.get('ok'):
+                Path(kw['path']).write_bytes(b'png')
+            return dict(r)
+        s.cmd = cmd
+        s.wait_frames = lambda n, timeout=None: s.waits.append(n)
+        s.frame = lambda: 1234
+        return s
+
+    def test_retries_then_ok(self):
+        import tempfile
+        d = {'ok': False, 'error': 'display disabled'}
+        with tempfile.TemporaryDirectory() as tmp:
+            s = self.make(tmp, [d, d, {'ok': True, 'width': 640, 'height': 480}])
+            r = s.shot('a')
+            self.assertEqual(r['display_retries'], 2)
+            self.assertEqual(r['frame_after_retries'], 1234)
+            self.assertEqual(s.waits, [au.SHOT_DISPLAY_WAIT_FRAMES] * 2)
+            self.assertEqual(s.shots['a'], r['sha256'])
+
+    def test_no_retry_has_zero(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            r = self.make(tmp, [{'ok': True}]).shot('a')
+            self.assertEqual(r['display_retries'], 0)
+            self.assertNotIn('frame_after_retries', r)
+
+    def test_always_disabled_raises(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            s = self.make(tmp, [{'ok': False, 'error': 'display disabled'}])
+            with self.assertRaises(RuntimeError):
+                s.shot('a')
+            self.assertEqual(s.calls, 1 + au.SHOT_DISPLAY_RETRIES)
+
+    def test_other_error_raises_immediately(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            s = self.make(tmp, [{'ok': False, 'error': 'boom'}])
+            with self.assertRaises(RuntimeError):
+                s.shot('a')
+            self.assertEqual(s.calls, 1)
+            self.assertEqual(s.waits, [])
+
+
 if __name__ == '__main__':
     unittest.main()

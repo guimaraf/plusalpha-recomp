@@ -96,6 +96,7 @@ Autorizado pelo usuário em 2026-11-24. O agente pode compilar, executar o jogo,
   - o jogo abre com `--hidden-window`, áudio `SDL_AUDIO_DRIVER=dummy` e porta 4631;
   - memcard e savestates vão para `relatorios/auto-<data>/<run>/`;
   - encerra com `quit`, e o kill, quando necessário, é só pelo PID iniciado pelo script.
+- **Screenshot e display apagado:** o screenshot tolera `display disabled` (display apagado pelo jogo em transições, ex.: saída do Game Over) com até 8 esperas de 15 frames, registradas em `display_retries` no `run.json`.
 - **Foco:** a janela fica oculta e apenas posicionada no monitor 1. Num teste com a janela visível (`SWP_SHOWWINDOW|SWP_NOACTIVATE`), o jogo ficou em primeiro plano por cerca de 17 s durante a luta. Por isso mostrar a janela virou opt-in (`--show-window`), que devolve exit 3 se o jogo pegar o foco. A causa ainda não foi identificada; o suspeito é um raise do próprio runtime. O `run.json` registra o foreground a cada passo.
 - **Limites do runtime:** `static_text_misses` e `overlay_interp_hot` não existem no submódulo `psxrecomp`; o substituto é `dirty_ram_stats.per_pc`. `frame_perf` não tem amostras no renderer software. O `quit` responde `ok:false` ("emu busy or frozen"), mas o processo sai com código 0.
 - **Primeira medição (Ryu × Allen, frame ~6600):**
