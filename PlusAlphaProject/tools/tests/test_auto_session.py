@@ -267,5 +267,32 @@ class ShotDisplayRetryTest(unittest.TestCase):
             self.assertEqual(s.waits, [])
 
 
+class AuditTest(unittest.TestCase):
+    TOML = (
+        '[game]\nname = "X"\nexe = "local/SLUS_005.48"\n\n'
+        '[recompiler]\nseeds = "s.txt"\nout_dir = "generated-online"  # c\nstrict = true\n\n'
+        '[prepare_disc]\nout_dir = "prepared-online"\n')
+
+    def test_toml_out_dir_section(self):
+        import tomllib
+        b = Path('C:/x/PlusAlphaProject/build-auto-t')
+        r = tomllib.loads(au.build_audit_toml_text(self.TOML, b, Path('C:/x/PlusAlphaProject')))
+        self.assertEqual(r['recompiler']['out_dir'], (b / 'generated').as_posix())
+        self.assertEqual(r['prepare_disc']['out_dir'], 'prepared-online')
+        self.assertEqual(r['game']['exe'], 'C:/x/PlusAlphaProject/local/SLUS_005.48')
+        self.assertEqual(r['recompiler']['seeds'], 's.txt')
+
+    def test_toml_requires_out_dir(self):
+        with self.assertRaises(ValueError):
+            au.build_audit_toml_text('[game]\nexe = "a"\n', Path('C:/b'), Path('C:/p'))
+
+    def test_output_check(self):
+        b = Path('C:/x/build-auto-t')
+        ok = f"  full_c     = {b / 'generated' / 'S_full.c'}\n  STATUS : CLEAN\n"
+        self.assertEqual(au.check_audit_output(ok, b), [])
+        bad = "  full_c     = C:/x/generated-online/S_full.c\n  STATUS : ISSUES FOUND\n"
+        self.assertEqual(len(au.check_audit_output(bad, b)), 2)
+
+
 if __name__ == '__main__':
     unittest.main()

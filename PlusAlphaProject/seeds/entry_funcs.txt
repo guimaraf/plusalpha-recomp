@@ -5319,3 +5319,22 @@
 # Metrica observada: 168.654 de 174.246 palavras (96,7907%) e 23.938 entradas (preview previa o mesmo).
 0x80135608
 0x80147624
+
+# Micro-lote F2-L17 (Fase 2, EXE; raizes estaticas com referencia conferida nos
+# bytes do EXE). Evidencia = auditoria estatica, SEM execucao observada.
+#   0x8019F9E4: ponteiro em 0x801BEEA0 (== 0x8019F9E4); borda: jr ra + nop em
+#               0x8019F9DC/E0 e prologo addiu sp. Unico jr nao-ra do fechamento:
+#               0x8019FB78 (thunk BIOS B0: addiu t2,zero,0xB0 + jr t2); sem
+#               jump table; 2 funcoes
+#   0x801A15A8: referencia lui/addiu em 0x801A14E8 (codigo coberto) formando
+#               0x801A15A8; borda: jr ra + nop em 0x801A15A0/A4. Unico jalr do
+#               fechamento: 0x801A15E0 (jalr v0, v0 = [0x801BF734], callback
+#               inicializado no EXE com 0x801A15F8, ja coberta)
+# Fechamento medido por seed_preview.py contra a base F2-L16 (168.654 palavras,
+# 1.476 funcoes, 23.938 entradas): +66 palavras unicas, +3 funcoes e +10
+# entradas de dispatcher, com 0 perdas, 0 em quarentena, 0 stores em texto
+# (SMC), 1 jr nao-ra e 1 jalr (descritos acima); orcamento 66 <= 1.200 palavras
+# e 3 <= 10 funcoes.
+# Metrica prevista: 168.720 de 174.246 palavras (96,8286%) e 23.948 entradas.
+0x8019F9E4
+0x801A15A8

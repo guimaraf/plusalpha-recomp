@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Sessao autonoma: build isolado + execucao no monitor 1 + rota de input via TCP.
 
-Subcomandos: build | run --build-dir X --route NOME | all --route NOME.
+Subcomandos: build | run --build-dir X --route NOME | all --route NOME | audit --build-dir X.
 Somente stdlib + ctypes. Nunca usa SendInput, foco, nem captura de desktop: toda
 entrada vai pela porta TCP de debug do runtime; as imagens vem do framebuffer
 emulado (screenshot_file). Ver docs/PLANO_100.md, Fase A.
@@ -961,9 +961,81 @@ def resolve_build_dir(value):
     return p
 
 
+def build_audit_toml_text(text, build_dir, project_root):
+    """Copia de game.toml com [recompiler] out_dir e [game] exe absolutos (edicao por secao)."""
+    import re
+    import tomllib
+    build_dir, project_root = Path(build_dir), Path(project_root)
+    out_abs = (build_dir / "generated").as_posix()
+    section, seen, lines = None, set(), []
+    for line in text.splitlines(keepends=True):
+        m = re.match(r"\s*\[([^\[\]]+)\]\s*(#.*)?$", line)
+        if m:
+            section = m.group(1).strip()
+        else:
+            k = re.match(r"(\s*)(out_dir|exe)\s*=\s*(\"[^\"]*\")", line)
+            if k and section == "recompiler" and k.group(2) == "out_dir":
+                line = f'{k.group(1)}out_dir = "{out_abs}"\n'
+                seen.add("out_dir")
+            elif k and section == "game" and k.group(2) == "exe":
+                exe = Path(json.loads(k.group(3)))
+                exe = exe if exe.is_absolute() else project_root / exe
+                line = f'{k.group(1)}exe = "{exe.as_posix()}"\n'
+        lines.append(line)
+    if "out_dir" not in seen:
+        raise ValueError("game.toml sem [recompiler] out_dir")
+    result = "".join(lines)
+    parsed = tomllib.loads(result)
+    if Path(parsed["recompiler"]["out_dir"]) != build_dir / "generated":
+        raise ValueError("audit_build.toml invalido: out_dir")
+    return result
+
+
+def check_audit_output(output, build_dir):
+    """Lista de erros da saida do codegen_audit_game (caminho do full_c e STATUS)."""
+    import re
+    errors = []
+    m = re.search(r"^\s*full_c\s*=\s*(.+?)\s*$", output, re.M)
+    gen = (Path(build_dir) / "generated").resolve()
+    if not m or Path(m.group(1)).resolve().parent != gen:
+        errors.append(f"full_c nao aponta para {gen}: {m.group(1) if m else 'ausente'}")
+    if not re.search(r"STATUS\s*:\s*CLEAN\b", output):
+        errors.append("STATUS nao e CLEAN")
+    return errors
+
+
+def do_audit(build_dir, out_file=None):
+    build_dir = Path(build_dir)
+    gen = build_dir / "generated"
+    game_toml = build_dir / "game.toml"
+    if not game_toml.is_file():
+        raise FileNotFoundError(f"game.toml ausente em {build_dir}")
+    if not (list(gen.glob("*_full.c")) or list(gen.glob("*_full_[0-9]*.c"))):
+        raise FileNotFoundError(f"sem *_full.c em {gen}")
+    audit_toml = build_dir / "audit_build.toml"
+    audit_toml.write_text(build_audit_toml_text(game_toml.read_text(encoding="utf-8"),
+                                                build_dir, PROJECT_ROOT), encoding="utf-8")
+    script = REPO_ROOT / "psxrecomp" / "tools" / "codegen_audit_game.py"
+    proc = subprocess.run([sys.executable, str(script), "--config", str(audit_toml)],
+                          capture_output=True, text=True, encoding="utf-8", errors="replace",
+                          cwd=str(REPO_ROOT))
+    output = proc.stdout + (("\n" + proc.stderr) if proc.stderr.strip() else "")
+    if out_file:
+        Path(out_file).parent.mkdir(parents=True, exist_ok=True)
+        Path(out_file).write_text(output, encoding="utf-8")
+    print(output)
+    errors = check_audit_output(output, build_dir)
+    for e in errors:
+        print(f"ERRO: {e}", file=sys.stderr)
+    return proc.returncode or (1 if errors else 0)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     sub = ap.add_subparsers(dest="mode", required=True)
+    au_p = sub.add_parser("audit", help="codegen_audit_game sobre <build>/generated")
+    au_p.add_argument("--build-dir", required=True)
+    au_p.add_argument("--out", type=Path, help="grava a saida da auditoria neste arquivo")
     for name in ("build", "run", "all"):
         sp = sub.add_parser(name)
         sp.add_argument("--evidence-dir", type=Path)
@@ -985,6 +1057,12 @@ def main(argv=None):
         if name == "run":
             sp.add_argument("--build-dir", required=True)
     args = ap.parse_args(argv)
+    if args.mode == "audit":
+        try:
+            return do_audit(resolve_build_dir(args.build_dir), args.out)
+        except (RuntimeError, ValueError, FileNotFoundError) as exc:
+            print(f"ERRO: {exc}", file=sys.stderr)
+            return 2
     if sys.platform != "win32":
         ap.error("Windows requerido")
     evidence = (args.evidence_dir or make_evidence_dir()).resolve()  # o jogo roda em outro cwd
