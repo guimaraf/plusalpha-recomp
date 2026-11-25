@@ -5072,3 +5072,35 @@
 # arma os alvos da tabela 0x801AF960); a execucao compilada e inferida pela
 # saida dos PCs interpretados, nao medida por contagem.
 0x80129E0C
+
+# Micro-lote F2-L6 (Fase 2, EXE; raizes estaticas de tabelas de handlers).
+# Seis seeds, cada uma ponteiro unico em tabela de handlers cujos vizinhos ja
+# estao cobertos/no dispatcher; sem jal/j nem lui+addiu apontando para elas;
+# palavra anterior = jr ra + nop; borda em prologo (addiu sp); fora da
+# cobertura atual. Evidencia = auditoria estatica, SEM execucao observada
+# (nenhum fntrace/rota com hit): nao ha PC interpretado associado.
+#   0x80102D80: ponteiro em 0x801AF888
+#   0x80102FAC: ponteiro em 0x801AF88C
+#   0x80126878: ponteiro em 0x801B0380 (fecha 3 funcoes)
+#   0x80129148: ponteiro em 0x801B03EC (fecha 3 funcoes)
+#   0x80162848: ponteiro em 0x801B3458
+#   0x8016321C: ponteiro em 0x801B3474
+# Fechamento medido por seed_preview.py contra a base F2-L5 (159.254 palavras,
+# 1.388 funcoes, 22.590 entradas): +895 palavras unicas, +10 funcoes e +144
+# entradas de dispatcher, com 0 perdas, 0 em quarentena, 0 jalr, 0 jr nao-ra e
+# 0 stores em texto (SMC); orcamento 895 <= 1.200 palavras e 10 <= 10 funcoes.
+# Metrica prevista: 160.149 palavras (91,8939%) e 22.734 entradas.
+# Resultado de rotas de F2-L6: boot_to_fight 48 passos e survey_post_fight 332
+# passos, ambas completas com miss_total 0 e so os 6 PCs da quarentena
+# interpretados (como em F2-L5); nenhum PC novo. survey_modes:
+# 446 passos completa, miss_total 0, so a quarentena, nenhum PC novo. Metrica observada igual a prevista (160.149 de
+# 174.276, 91,8939%; 1.398 funcoes, 22.734 entradas). Incidente de screenshot
+# (display disabled) corrigido em auto_session.py (commit 6673184):
+# survey_post_fight completou na 3a execucao, com display_retries = 0 em 58
+# screenshots.
+0x80102D80
+0x80102FAC
+0x80126878
+0x80129148
+0x80162848
+0x8016321C

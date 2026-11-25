@@ -202,8 +202,14 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
   - rotas `boot_to_fight` (48 passos), `survey_post_fight` (332) e `survey_modes` (446), todas completas com `miss_total` = 0; `survey_options` não foi refeita neste lote;
   - PCs do EXE interpretados: `survey_modes` 52 → 6 (saem os 46 do modo Watch; restam só os 6 da quarentena), `boot_to_fight` e `survey_post_fight` 6 → 6; nenhum PC novo;
   - o modo Watch foi alcançado (snapshots `misses_m_watch_*`), mas `0x80129E0C` não tem hits de fntrace: o fntrace da rota só arma os alvos da tabela `0x801AF960`. A execução compilada é inferida pela saída dos PCs interpretados, não medida por contagem;
-  - próximos candidatos: as raízes auditadas restantes são estáticas (tabelas de handlers `0x801B0380..0x801B0404`, `0x801B3450..0x801B3474` e de estados `0x801AF888/0x801AF88C`), sem execução observada; fila em `relatorios/fase2/fila.json`;
+  - próximos candidatos: as raízes auditadas restantes são estáticas (tabelas de handlers `0x801B0380..0x801B0404`, `0x801B3450..0x801B3474` e de estados `0x801AF888/0x801AF88C`), sem execução observada; desfecho (F2-L6): seis dessas raízes foram promovidas, também sem execução observada; fila em `relatorios/fase2/fila.json`;
   - evidências em `relatorios/fase2/L5/`.
+- **F2-L6** (seis raízes estáticas de tabelas de handlers, sem execução observada: `0x80102D80`, `0x80102FAC`, `0x80126878`, `0x80129148`, `0x80162848`, `0x8016321C`):
+  - +895 palavras, chegando a **160.149 de 174.276 (91,89%)**, 1.398 funções e 22.734 entradas; audit `CLEAN`; métrica igual à prevista;
+  - rotas `boot_to_fight` (48 passos) e `survey_post_fight` (332), com `miss_total` = 0 e só os 6 PCs da quarentena interpretados, como em F2-L5; nenhum PC novo; `survey_modes` (446 passos) também completa, com `miss_total` = 0 em 99 snapshots, os mesmos 6 PCs da quarentena, nenhum PC novo e nenhuma espera de display;
+  - ponteiros: `0x801AF888` e `0x801AF88C` (tabela de estados), `0x801B0380` e `0x801B03EC` (tabela de handlers do modo, a mesma de `0x80129E0C`), `0x801B3458` e `0x801B3474`; `0x80131A3C` foi excluído na pré-auditoria (origem fraca);
+  - incidente: a `survey_post_fight` falhou duas vezes com `display disabled` logo após a leitura do byte de cena 7 no Game Over (`survey_try1`, passo 248; `survey_try2`, passo 280), sem causa nas seeds. Correção no `auto_session.py` (commit `6673184`): o screenshot espera 15 frames e tenta até 8 vezes (`display_retries`); na 3ª execução a rota completou com `display_retries` = 0 em 58 screenshots;
+  - próximo: F2-L7 provisório, `0x8012F484` (ponteiro `0x801B1BD8`) e `0x8013497C` (`0x801B1C00`), +1.195 palavras previstas; evidências em `relatorios/fase2/L6/`.
 - **Pendências:**
   - o resolvedor de jump table não reconhecia a forma com `sll` no delay slot: resolvido em F2-R1; restam 42 `jr` indiretos de outras formas (41 após F2-R1, mais o de `0x8010B030` em F2-L3);
   - a rota não é determinística: a validação compara PCs interpretados, não screenshots;
