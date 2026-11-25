@@ -5221,3 +5221,26 @@
 0x801236EC
 0x80198BE4
 0x8019B168
+
+# Micro-lote F2-L13 (Fase 2, EXE; checkpoint). Borda em prologo; palavra
+# anterior = jr ra + delay; fora da cobertura anterior. Evidencia = auditoria
+# estatica, SEM execucao observada.
+#   0x80128524: ponteiro unico em 0x801B03C4 (tabela de handlers; fecha 4 func)
+#   0x80129BE0: ponteiro unico em 0x801B0400 (tabela de handlers; fecha 3 func)
+#   0x80162B18: ponteiro unico em 0x801B3468 (tabela de handlers; fecha 1 func)
+#   0x801627AC: ponteiro unico em 0x801B3450 (tabela de handlers; fecha 1 func)
+#   0x801356A4: alvo de jal em 0x8013565C, dentro de 0x80135608 (raiz ainda
+#               bloqueada por jump table); origem mais fraca; fecha 1 funcao
+# Fechamento medido por seed_preview.py contra a base F2-L12 (166.571 palavras,
+# 1.441 funcoes, 23.646 entradas): +488 palavras unicas, +10 funcoes e +75
+# entradas de dispatcher, com 0 perdas, 0 em quarentena, 0 jalr, 0 jr nao-ra e
+# 0 stores em texto (SMC); orcamento 488 <= 1.200 palavras e 10 <= 10 funcoes.
+# Metrica prevista: 167.059 palavras (95,8589%) e 23.721 entradas.
+# Rotas F2-L13 (checkpoint: boot_to_fight, survey_post_fight, survey_modes,
+# survey_options): completas, miss_total 0, so a quarentena interpretada; sem
+# regressao. Raizes fora dos alvos do fntrace: sem execucao observada.
+0x80128524
+0x80129BE0
+0x80162B18
+0x801627AC
+0x801356A4
