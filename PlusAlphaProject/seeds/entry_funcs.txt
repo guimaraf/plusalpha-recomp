@@ -5628,3 +5628,65 @@
 # 0 perdas, 0 quarentena, 0 SMC; orcamento 749 <= 1.200 palavras e 25 <= 25 funcoes
 # (exigiu --allow-over-budget; reprovado apenas pelo limite padrao de 10 funcoes).
 # Metrica prevista: 173.400 de 174.246 palavras (99,5145%) e 24.589 entradas.
+# Micro-lote F2-L23 (Fase 2, EXE; politica 2a de raizes orfas, lote P06; orcamento de
+# 25 funcoes autorizado pelo usuario em 2026-11-25). 24 raizes (fechamento de 24 funcoes
+# unicas): todas SEM referencia estatica externa (relatorios/fase2/L23/pre/chamadores.json:
+# varredura do binario por jal/j, lui+addiu/ori e palavras de dados; unico achado e o jal em
+# 0x801A3108, dentro de 0x801A303C, que referencia 0x801A58B0 e pertence ao proprio lote),
+# SEM execucao observada (promocao por analise estatica; classe/modulo de
+# relatorios/fase2/orfas/classificacao.json: D2 libapi/libc/libspu/libcd e D3 som do jogo; os
+# rotulos de biblioteca sao palpites incertos, nao confirmados). Bordas: prologo ou jr ra + delay.
+# Indiretos do fechamento: 0 jalr, 0 jr nao-ra, 0 stores em texto (SMC), 0 quarentena.
+#   0x8019F598: [D2] libapi intr (rotulo incerto); getter lhu [[0x801BEEB8]]; SEM referencia estatica, SEM execucao observada
+0x8019F598
+#   0x8019FBD0: [D2] libc (rotulo incerto); longjmp (restaura ra,gp,sp,fp,s0-s7); SEM referencia estatica, SEM execucao observada
+0x8019FBD0
+#   0x8019FFE4: [D2] libapi (rotulo incerto); setter [0x801BEF14]; SEM referencia estatica, SEM execucao observada
+0x8019FFE4
+#   0x801A0700: [D2] libspu (rotulo incerto); transferencia manual ao SPU (SPUCNT/transfer addr 0x1F801DA6/DAA via 0x801BF394); SEM referencia estatica, SEM execucao observada
+0x801A0700
+#   0x801A0AD4: [D2] libspu (rotulo incerto); wrappers de 0x801A07BC; SEM referencia estatica, SEM execucao observada
+0x801A0AD4
+#   0x801A0C28: [D2] libspu (rotulo incerto); helpers (0x801BF394/0x801BF3A4); SEM referencia estatica, SEM execucao observada
+0x801A0C28
+#   0x801A0C64: [D2] libspu (rotulo incerto); helpers (0x801BF394/0x801BF3A4); SEM referencia estatica, SEM execucao observada
+0x801A0C64
+#   0x801A1548: [D2] libspu/libcd (rotulo incerto); wrapper para 0x801A12C0; SEM referencia estatica, SEM execucao observada
+0x801A1548
+#   0x801A2804: [D2] libspu/libcd (rotulo incerto); 2 wrappers de 0x801A269C; SEM referencia estatica, SEM execucao observada
+0x801A2804
+#   0x801A282C: [D2] libspu/libcd (rotulo incerto); 2 wrappers de 0x801A269C; SEM referencia estatica, SEM execucao observada
+0x801A282C
+#   0x801A303C: [D3] jogo: som/SE (classificacao do jogo, incerta); rotina de som/SE (24 entradas x 0x34), chama 0x801A58B0/0x801A58F4; SEM referencia estatica, SEM execucao observada
+0x801A303C
+#   0x801A3AF0: [D2] libspu (rotulo incerto); varredura de lista SPU (mascaras 0x80000000/0x40000000/0x0FFFFFFF); SEM referencia estatica, SEM execucao observada
+0x801A3AF0
+#   0x801A431C: [D3] jogo: som (classificacao do jogo, incerta); setter [0x801D201C]; SEM referencia estatica, SEM execucao observada
+0x801A431C
+#   0x801A5224: [D3] jogo: som/tempo (classificacao do jogo, incerta); calculo de tempo (divisao por 7 via 0x2AAAAAAB, bytes em 0x801EF98x); SEM referencia estatica, SEM execucao observada
+0x801A5224
+#   0x801A58B0: [D3] jogo: som/SE (classificacao do jogo, incerta); sub-rotina de 0x801A303C; unica referencia: jal em 0x801A3108 (0x801A303C, mesmo lote); SEM referencia estatica externa, SEM execucao observada
+0x801A58B0
+#   0x801A6454: [D3] jogo: som (classificacao do jogo, incerta); lookup em tabela 0x801FB370 (stride 0x74); SEM referencia estatica, SEM execucao observada
+0x801A6454
+#   0x801A64A4: [D3] jogo: som (classificacao do jogo, incerta); lookup em tabela 0x801FB370 (stride 0x74); SEM referencia estatica, SEM execucao observada
+0x801A64A4
+#   0x801A6AB0: [D3] jogo: som (classificacao do jogo, incerta); 2 wrappers de 0x801A6B10 (cov); SEM referencia estatica, SEM execucao observada
+0x801A6AB0
+#   0x801A6AE0: [D3] jogo: som (classificacao do jogo, incerta); 2 wrappers de 0x801A6B10 (cov); SEM referencia estatica, SEM execucao observada
+0x801A6AE0
+#   0x801A7568: [D2] libcd (rotulo incerto); setter (0x801BF975); SEM referencia estatica, SEM execucao observada
+0x801A7568
+#   0x801A7614: [D2] libcd (rotulo incerto); getters/nomes de comando CD (string "none" 0x801AF3D4) e wrappers; SEM referencia estatica, SEM execucao observada
+0x801A7614
+#   0x801A762C: [D2] libcd (rotulo incerto); getters/nomes de comando CD (string "none" 0x801AF3D4) e wrappers; SEM referencia estatica, SEM execucao observada
+0x801A762C
+#   0x801A7660: [D2] libcd (rotulo incerto); getters/nomes de comando CD (string "none" 0x801AF3D4) e wrappers; SEM referencia estatica, SEM execucao observada
+0x801A7660
+#   0x801A7694: [D2] libcd (rotulo incerto); getters/nomes de comando CD (string "none" 0x801AF3D4) e wrappers; SEM referencia estatica, SEM execucao observada
+0x801A7694
+# Fechamento medido por seed_preview.py contra a base F2-L22 (173.400 palavras,
+# 1.593 funcoes, 24.589 entradas): +448 palavras unicas, +24 funcoes e +80 entradas,
+# 0 perdas, 0 quarentena, 0 SMC; orcamento 448 <= 1.200 palavras e 24 <= 25 funcoes
+# (exigiu --allow-over-budget; reprovado apenas pelo limite padrao de 10 funcoes).
+# Metrica prevista: 173.848 de 174.246 palavras (99,7716%) e 24.669 entradas.
