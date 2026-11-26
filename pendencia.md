@@ -32,7 +32,25 @@ Estado em 2026-11-26, após o lote F2-L26 (commit `2a1e651`, em `origin/main`).
 - Se der erro ou travar, os arquivos de diagnóstico ficam em `release\`: `psx_last_run_report.json`, `psx_freeze_heartbeat_*.json`, `psx_freeze_dump_*.json` e `starvation_dump.jsonl`. Guarde esses arquivos.
 - A build de desenvolvimento `PlusAlphaProject\build-auto-p2infra\exPlusAlpha.exe` (`RelWithDebInfo`, `PSX_DEBUG_TOOLS=ON`) **não serve** para avaliar a sensação de jogo, porque a instrumentação pode causar engasgos.
 
-**Se a sensação for aprovada:** promover `generated-online/` a partir de `build-auto-p2infra/generated`, atualizar a linha de base com `python PlusAlphaProject/tools/coverage_metric.py ... --update-baseline` e registrar o fechamento da Fase 2 em `docs/PLANO_100.md`.
+**Resultado do teste do usuário (2026-11-26, depois de reiniciar o computador, `release\Jogar.bat`):**
+
+- No geral a linha de frame time (RivaTuner) ficou estável.
+- **Micro engasgo ao executar especiais.** Suspeita, não confirmada: o efeito do especial (flash, tela amarela que pisca no KO por especial, som diferente) passa por código ainda interpretado, por carga de overlay ou de áudio, ou por um caminho que as rotas automáticas nunca exercitaram. As rotas (`boot_to_fight`, `survey_*`) não fazem especiais nem KO por especial.
+- Engasgo no save: ainda não reportado neste teste.
+- **Sensação NÃO aprovada.** A promoção de `generated-online/` e do baseline fica bloqueada até o pente fino abaixo.
+
+**Pente fino (próximo passo, num chat dedicado):** sessão manual de modo Arcade (dificuldade mínima, de preferência até zerar), com especiais, combos, super e KO por especial. O jogo roda na build de desenvolvimento com telemetria, e o agente acompanha pela porta de debug.
+
+- Build: `PlusAlphaProject\build-auto-p2infra\exPlusAlpha.exe` (`RelWithDebInfo`, `PSX_DEBUG_TOOLS=ON`, mesmo código do F2-L26, porta `debug_port = 4531` do `game.toml`). Serve para coletar PCs e misses, **não** para medir frame time, porque a instrumentação causa engasgos próprios.
+- O que coletar:
+  - PCs do EXE interpretados fora da quarentena SIO/SMC;
+  - misses de overlay e PCs de overlay interpretados (personagens e efeitos);
+  - momento (frame) de cada engasgo, cruzado com o que estava na tela;
+  - `starvation_dump.jsonl` e `psx_freeze_*`, se aparecerem.
+- Não existe ferramenta pronta para acompanhar uma sessão manual: o `auto_session.py` só roda rotas. A sessão vai precisar de um script de coleta pela porta TCP, só de leitura, sem enviar input.
+- Saída esperada: lista de PCs e alvos novos para seeds (EXE) ou para a Fase 3 (overlays), e o diagnóstico do engasgo nos especiais.
+
+**Se a sensação for aprovada (depois do pente fino):** promover `generated-online/` a partir de `build-auto-p2infra/generated`, atualizar a linha de base com `python PlusAlphaProject/tools/coverage_metric.py ... --update-baseline` e registrar o fechamento da Fase 2 em `docs/PLANO_100.md`.
 
 ### 1.2 Decisão sobre as 195 palavras restantes (usuário)
 
