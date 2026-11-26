@@ -290,21 +290,19 @@ Se aparecer PC do EXE fora da quarentena, vira candidato a seed com execução o
 - **Execução observada das órfãs:** as 144 raízes P01–P08 têm só cobertura estática. Uma rota com fntrace armado nesses alvos daria evidência, se você quiser.
 - **Índices de modo sem rota:** os índices 2, 4, 5, 12 e 22–24 da tabela de modos ainda não são alcançados por nenhuma rota automática. O Expert Mode foi exercitado manualmente no pente fino (sem rota automática); as notas não dizem a qual índice da tabela ele corresponde.
 - **`jr` indiretos:** a F2-R2 resolveu 13 (forma `sltiu; beq; D; sll`, §1.4). Restavam 41 de formas que o resolvedor de jump table não reconhece. Eles funcionam pelo dispatch e por fallback e não afetam a métrica.
-- **Testes de guarda desatualizados no `psxrecomp` (2026-11-26).** Eles não bloqueiam a Fase 2 e não foram causados pela F2-R2.
-  - **Contexto:** o toolchain portátil em `tools\` resolveu as falhas de ferramenta (Python sem `tomllib`, gcc fora do PATH); ver `PlusAlphaProject/docs/TOOLCHAIN.md`.
-  - **Falhas que restam:** testes que leem o código do runtime e não batem mais com ele:
-    - `native_wide_line_batching`;
-    - `gl_internal_scale_guards`;
-    - `mod_load_acceleration`;
-    - `mod_owned_display_controls`;
-    - `bundled_release_layout`;
-    - `test_gpu_gp0_history_guard` (aviso em `pgxp_load_projection`);
-    - `test_memory_debug_trace_guard` (`undefined reference render_pass_mmio_read_allowed`).
-  - **Conferir primeiro:** `netplay_start_failure_wiring`. O teste afirma que uma falha do launcher ao iniciar o online cairia no jogo offline em vez de voltar ao lobby. Pode ser um defeito real (skill `plusalpha-netplay`).
-  - **Outras pendências do mesmo grupo:**
-    - `optional_netplay_auth` não acha `recomp_net/sched.h`;
-    - os alvos `ws_cull_edge_interp_test` e `draw_distance_interp_test` falham no link;
+- **Testes do `psxrecomp` (2026-11-26, `ctest` com o toolchain portátil).** Nenhuma destas falhas bloqueia a Fase 2 e nenhuma foi causada pela F2-R2.
+  - **Situação:** 13 falhas no ambiente antigo e **7 agora**, das quais 3 resolvidas pelo toolchain e 3 por correção de teste. Evidência: `relatorios\toolchain\validacao\ctest_full.log` (10 falhas, antes da correção dos testes) e `ctest_full_pos_correcao.log` (7 falhas).
+  - **Resolvidas pelo toolchain portátil:** `aligned_lzss_banks` e `disc_inventory` (Python 3.13 com `tomllib`) e `aot_overlay_discovery` (gcc com o bin no PATH). Ver `PlusAlphaProject/docs/TOOLCHAIN.md`.
+  - **Resolvidas corrigindo testes desatualizados** (o código mudou de propósito; nenhum defeito real):
+    - `optional_netplay_auth`: faltavam versões vazias de `recomp_net/sched.h` e `recomp_net/host_ice.h` (incluídos no commit `97bc0f06`).
+    - `netplay_start_failure_wiring`: o retorno ao lobby antes do início do jogo continua funcionando; o teste não aceitava a linha `freeze_heartbeat_set_paused(0);` (commit `4b8ce17d`).
+    - `bundled_release_layout`: o template de CI passou a exigir só o OpenBIOS (commit `771ded81`).
+    - O `recomp-net` já é submódulo do `psxrecomp` (`lib/recomp-net`, fork `guimaraf/recomp-net`, commit `a203bb88`), então não foi preciso copiá-lo.
+  - **Falhas que restam (7):**
+    - guardas de texto que não batem mais com o runtime: `native_wide_line_batching`, `gl_internal_scale_guards`, `mod_load_acceleration` e `mod_owned_display_controls`;
+    - os alvos `ws_cull_edge_interp_test` e `draw_distance_interp_test` falham no link (`undefined symbol` do runtime);
     - `cli_retail_bios_profile` precisa da BIOS SCPH5552.
+  - **Fora do ctest:** `test_gpu_gp0_history_guard` (aviso em `pgxp_load_projection`) e `test_memory_debug_trace_guard` (`undefined reference render_pass_mmio_read_allowed`) também falham com o gcc do sistema.
 - **`0x801937DC` (PadStop):** salta pelo ponteiro `[0x801BFD20]`, cujo valor depende da imagem de BIOS (SCPH1001 contra OpenBIOS). O fallback cobre os dois casos, mas isso não foi testado em execução.
 
 ## 3. Fora da Fase 2 (Fase 3)

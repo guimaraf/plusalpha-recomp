@@ -228,7 +228,8 @@ try {
             '-DPSXRECOMP_SKIP_BIOS_STALE_CHECK=OFF', '-DPSXRECOMP_BIOS_STALE_FATAL=ON',
             "-DCMAKE_C_COMPILER=$ToolPath/gcc.exe", "-DCMAKE_CXX_COMPILER=$ToolPath/c++.exe",
             "-DCMAKE_RC_COMPILER:FILEPATH=$ToolPath/windres.exe",
-            "-DCMAKE_MAKE_PROGRAM=$ToolPath/ninja.exe", "-DPKG_CONFIG_EXECUTABLE=$ToolPath/pkg-config.exe")
+            "-DCMAKE_MAKE_PROGRAM=$ToolPath/ninja.exe", "-DPKG_CONFIG_EXECUTABLE=$ToolPath/pkg-config.exe",
+            "-DPSX_PYTHON:FILEPATH=$($Python.Replace('\', '/'))")
         if ($Isolated) { $ConfigureArgs += "-DPSX_GENERATED_DIR=$($GeneratedDir.Replace('\', '/'))" }
         & $CMake @ConfigureArgs
         if ($LASTEXITCODE -ne 0) { throw "Configuracao falhou: $LASTEXITCODE" }

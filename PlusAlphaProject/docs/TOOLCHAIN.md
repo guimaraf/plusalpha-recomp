@@ -152,6 +152,7 @@ O passo 3 de [BUILD_LOCAL.md](../BUILD_LOCAL.md) (`cmake -S ... -G Ninja`) conti
 - **`pacman -U` falha ou pacotes ausentes ao final.** Confira a mensagem `Pacotes ainda ausentes apos pacman`. O instalador usa um `pacman.setup.conf` temporário com `SigLevel = Never` apenas durante o `pacman -U`; a integridade vem do sha256 do lock. Não use `pacman -Syu` neste ambiente (puxaria versões diferentes das pinadas).
 - **`ModuleNotFoundError: tomllib` no CMake/testes.** Algum passo está usando outro Python (por exemplo 3.10). Passe `-DPython3_EXECUTABLE=<repo>\tools\python\python.exe` ao reconfigurar o recompilador.
 - **Download do retcomm lento ou falha na extração.** O zip tem cerca de 200 MB (`size` no lock: 209.497.009 bytes) e é extraído com `tar.exe`; confira espaço em disco e antivírus.
+- **`pacman` online reclama do chaveiro (keyring).** O instalador não inicializa o chaveiro do pacman do MSYS2 portátil; a integridade dos pacotes vem do sha256 do lock. Para usar o pacman online, rode `pacman-key --init` e `pacman-key --populate msys2` dentro de `tools\msys64` (pode demorar ou travar esperando o gpg-agent).
 
 ## 9. Limites
 
