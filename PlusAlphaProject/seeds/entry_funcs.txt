@@ -5497,3 +5497,68 @@
 # 0 perdas, 0 quarentena, 0 SMC; orcamento 830 <= 1.200 palavras e 25 <= 25 funcoes
 # (exigiu --allow-over-budget; reprovado apenas pelo limite padrao de 10 funcoes).
 # Metrica prevista: 171.619 de 174.246 palavras (98,4924%) e 24.378 entradas.
+# Micro-lote F2-L21 (Fase 2, EXE; politica 2a de raizes orfas, lote P04; orcamento de
+# 25 funcoes autorizado pelo usuario em 2026-11-25). Todas as 25 seeds: SEM referencia
+# estatica (chamadores.json vazio), SEM execucao observada (promocao por analise estatica;
+# classe/modulo de relatorios/fase2/orfas/classificacao.json: D2 libgpu API, D2 libc,
+# D3 jogo/SDK, D2 libgpu, D2 libgs? e D2 libgte; o rotulo libgs? e incerto). Bordas:
+# prologo ou jr ra + delay.
+# Indiretos do fechamento: 11 jalr, 0 jr nao-ra, 0 stores em texto (SMC), 0 quarentena.
+# 5 jalr leem [0x801B85E4] =0x80197F88 (GPU_printf) e 6 leem slots da tabela
+# [0x801B85E0]=0x801B85A0 (+0x34 =0x80197A2C, +8 =0x80197460, +0x3C =0x80197B88,
+# +0x14 =0x80197370, +0x38 =0x80196B18); todos os alvos ja cobertos.
+#   0x8019517C: [D2] libgpu API; SetGraphReverse/SetGraphDebug/SetGrapQue (vtable GPU 0x801B85E0 offs 0x28/0x10); jalr 0x801951C0 via [0x801B85E4]=0x80197F88 (GPU_printf); SEM referencia estatica, SEM execucao observada
+0x8019517C
+#   0x801951E0: [D2] libgpu API; SetGraphReverse/SetGraphDebug/SetGrapQue (vtable GPU 0x801B85E0 offs 0x28/0x10); jalr 0x80195228 via [0x801B85E4]=0x80197F88 (GPU_printf); jalr 0x80195254 via slot +0x34 de [0x801B85E0]=0x801B85A0 -> 0x80197A2C; SEM referencia estatica, SEM execucao observada
+0x801951E0
+#   0x801952AC: [D2] libgpu API; DrawSyncCallback; jalr 0x801952DC via [0x801B85E4]=0x80197F88 (GPU_printf); SEM referencia estatica, SEM execucao observada
+0x801952AC
+#   0x801955CC: [D2] libgpu API; ClearImage; jalr 0x80195640 via slot +8 de [0x801B85E0]=0x801B85A0 -> 0x80197460; SEM referencia estatica, SEM execucao observada
+0x801955CC
+#   0x801957F4: [D2] libgpu API; ClearOTag; jalr 0x80195830 via [0x801B85E4]=0x80197F88 (GPU_printf); SEM referencia estatica, SEM execucao observada
+0x801957F4
+#   0x80195944: [D2] libgpu API; funcao via vtable offs 0x3C/0x14; jalr 0x80195968 via slot +0x3C de [0x801B85E0]=0x801B85A0 -> 0x80197B88; jalr 0x80195984 via slot +0x14 de [0x801B85E0]=0x801B85A0 -> 0x80197370; SEM referencia estatica, SEM execucao observada
+0x80195944
+#   0x80195B1C: [D2] libgpu API; DrawOTagEnv; jalr 0x80195B6C via [0x801B85E4]=0x80197F88 (GPU_printf); jalr 0x80195BC0 via slot +8 de [0x801B85E0]=0x801B85A0 -> 0x80197460; SEM referencia estatica, SEM execucao observada
+0x80195B1C
+#   0x80195C38: [D2] libgpu API; DrawOTagEnv; SEM referencia estatica, SEM execucao observada
+0x80195C38
+#   0x80196118: [D2] libgpu API; funcao via vtable offs 0x38; SEM referencia estatica, SEM execucao observada
+0x80196118
+#   0x80196150: [D2] libgpu API; funcao via vtable offs 0x38; jalr 0x80196168 via slot +0x38 de [0x801B85E0]=0x801B85A0 -> 0x80196B18; SEM referencia estatica, SEM execucao observada
+0x80196150
+#   0x80196240: [D2] libgpu API; PutDrawEnv/PutDispEnv e comandos GP0 E6 (mask); SEM referencia estatica, SEM execucao observada
+0x80196240
+#   0x80196284: [D2] libgpu API; PutDrawEnv/PutDispEnv e comandos GP0 E6 (mask); SEM referencia estatica, SEM execucao observada
+0x80196284
+#   0x801962B0: [D2] libgpu API; PutDrawEnv/PutDispEnv e comandos GP0 E6 (mask); SEM referencia estatica, SEM execucao observada
+0x801962B0
+#   0x80196308: [D2] libgpu API; PutDrawEnv/PutDispEnv e comandos GP0 E6 (mask); SEM referencia estatica, SEM execucao observada
+0x80196308
+#   0x8019864C: [D2] libc; toupper/tolower sobre _ctype (0x801B8709); SEM referencia estatica, SEM execucao observada
+0x8019864C
+#   0x8019867C: [D2] libc; toupper/tolower sobre _ctype (0x801B8709); SEM referencia estatica, SEM execucao observada
+0x8019867C
+#   0x801987D8: [D3] jogo/SDK: frames de player; usa campo 0x70 do struct de jogador e tabelas 0x801C0734..0x801C0740; SEM referencia estatica, SEM execucao observada
+0x801987D8
+#   0x80198818: [D3] jogo/SDK: frames de player; usa campo 0x70 do struct de jogador e tabelas 0x801C0734..0x801C0740; SEM referencia estatica, SEM execucao observada
+0x80198818
+#   0x80199FC4: [D2] libgpu; espera GPU pronta (GPUSTAT bit 26, laco com timeout); SEM referencia estatica, SEM execucao observada
+0x80199FC4
+#   0x8019A024: [D2] libgpu; espera GPU pronta (GPUSTAT bit 26, laco com timeout); SEM referencia estatica, SEM execucao observada
+0x8019A024
+#   0x8019A384: [D2] libgs?; setup de estado grafico (0x801D4D4C..); SEM referencia estatica, SEM execucao observada
+0x8019A384
+#   0x8019A660: [D2] libgs?; setters indexados por 0x801FBC24; SEM referencia estatica, SEM execucao observada
+0x8019A660
+#   0x8019A79C: [D2] libgs?; setters indexados por 0x801FBC24; SEM referencia estatica, SEM execucao observada
+0x8019A79C
+#   0x8019A950: [D2] libgs?; setter [0x801FB368]; SEM referencia estatica, SEM execucao observada
+0x8019A950
+#   0x8019AB24: [D2] libgte; produto matriz*vetor (>>12); SEM referencia estatica, SEM execucao observada
+0x8019AB24
+# Fechamento medido por seed_preview.py contra a base F2-L20 (171.619 palavras,
+# 1.543 funcoes, 24.378 entradas): +1.032 palavras unicas, +25 funcoes e +112 entradas,
+# 0 perdas, 0 quarentena, 0 SMC; orcamento 1.032 <= 1.200 palavras e 25 <= 25 funcoes
+# (exigiu --allow-over-budget; reprovado apenas pelo limite padrao de 10 funcoes).
+# Metrica prevista: 172.651 de 174.246 palavras (99,0846%) e 24.490 entradas.
