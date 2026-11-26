@@ -5690,3 +5690,13 @@
 # 0 perdas, 0 quarentena, 0 SMC; orcamento 448 <= 1.200 palavras e 24 <= 25 funcoes
 # (exigiu --allow-over-budget; reprovado apenas pelo limite padrao de 10 funcoes).
 # Metrica prevista: 173.848 de 174.246 palavras (99,7716%) e 24.669 entradas.
+0x801A7B10  # F2-L24: orfa politica 2a (P07), SEM referencia estatica, SEM execucao observada, biblioteca nao identificada (faixa 0x801A7B10..0x801AA4F8)
+0x801A903C  # F2-L24: orfa politica 2a (P07), SEM referencia estatica, SEM execucao observada, biblioteca nao identificada (faixa 0x801A7B10..0x801AA4F8)
+0x801A92A8  # F2-L24: orfa politica 2a (P07), SEM referencia estatica, SEM execucao observada, biblioteca nao identificada (faixa 0x801A7B10..0x801AA4F8)
+0x801AA1A0  # F2-L24: orfa politica 2a (P07), SEM referencia estatica, SEM execucao observada, biblioteca nao identificada (faixa 0x801A7B10..0x801AA4F8)
+0x801AA4F8  # F2-L24: orfa politica 2a (P07), SEM referencia estatica, SEM execucao observada, biblioteca nao identificada (faixa 0x801A7B10..0x801AA4F8)
+# Fechamento medido por seed_preview.py contra a base F2-L23 (173.848 palavras,
+# 1.617 funcoes, 24.669 entradas): +147 palavras unicas, +5 funcoes e +27 entradas,
+# 0 perdas, 0 quarentena, 0 SMC, 0 jalr, 0 jr nao-ra; orcamento 147 <= 1.200 palavras e
+# 5 <= 10 funcoes (aprovado tambem sem --allow-over-budget).
+# Metrica prevista: 173.995 de 174.246 palavras (99,8560%) e 24.696 entradas.
