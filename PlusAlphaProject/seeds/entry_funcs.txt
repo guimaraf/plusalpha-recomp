@@ -5392,3 +5392,46 @@
 # 0 perdas, 0 quarentena, 0 SMC; orcamento 928 <= 1.200 palavras e 21 <= 25 funcoes
 # (exigiu --allow-over-budget; reprovado apenas pelo limite padrao de 10 funcoes).
 # Metrica prevista: 169.648 de 174.246 palavras (97,3612%) e 24.060 entradas.
+
+# Micro-lote F2-L19 (Fase 2, EXE; politica 2a de raizes orfas, lote P02; orcamento de
+# 25 funcoes autorizado pelo usuario em 2026-11-25). Todas as seeds: SEM referencia
+# estatica, SEM execucao observada (promocao por analise estatica; classes de
+# relatorios/fase2/orfas/classificacao.json). Bordas: prologo ou jr ra + delay.
+# Fechamento sem jalr, sem jr nao-ra, sem stores em texto (SMC), sem quarentena.
+#   0x80124728: [D4] dev: tela de erro; tela de erro/dump: "STACK -> %8.8XH", "CD_READ_ERROR -> %s (%08X)" e hexdump 8 bytes/linha; GetSp 0x801932CC; SEM referencia estatica, SEM execucao observada
+0x80124728
+#   0x80124ef0: [D4] dev: texto debug; variante (kana/kanji) do impressor de texto 0x80125024; SEM referencia estatica, SEM execucao observada
+0x80124ef0
+#   0x8012548c: [D4] dev: texto debug; leitura de glifo da ROM kanji da BIOS (B0:51 via thunk 0x801932BC) para bitmap 16x15; SEM referencia estatica de codigo alcancavel (unico chamador: jal em 0x8012587C, dentro da orfa 0x801257F4 deste lote), SEM execucao observada
+0x8012548c
+#   0x801257f4: [D4] dev: texto debug; desenha glifo kanji (chama 0x8012548C + 0x80195668); SEM referencia estatica, SEM execucao observada
+0x801257f4
+#   0x801582b8: [D3] jogo: helper de entrada; teste de bits de botao/direcao (0xA000 xor); SEM referencia estatica, SEM execucao observada
+0x801582b8
+#   0x80158fbc: [D3] jogo: helper de entrada; compara campo 0x1506 do jogador com tabela; SEM referencia estatica, SEM execucao observada
+0x80158fbc
+#   0x801592e4: [D3] jogo: helper de entrada; AND de 0x1506 com mascara; SEM referencia estatica, SEM execucao observada
+0x801592e4
+#   0x80163444: [D1] jogo; 3 stubs jr ra/nop; SEM referencia estatica, SEM execucao observada
+0x80163444
+#   0x8016344c: [D1] jogo; 3 stubs jr ra/nop; SEM referencia estatica, SEM execucao observada
+0x8016344c
+#   0x80163454: [D1] jogo; 3 stubs jr ra/nop; SEM referencia estatica, SEM execucao observada
+0x80163454
+#   0x80163908: [D3] jogo: render/prim; percorre pacotes por tipo (byte +7 = 0x20/0x28/0x30, strides 0x4C/0x5C/0x6C) e chama 0x801946C8; SEM referencia estatica, SEM execucao observada
+0x80163908
+#   0x80168b3c: [D3] jogo: efeito; efeito com contador 0x801C05A4 e tabela 0x801B44F8; SEM referencia estatica, SEM execucao observada
+0x80168b3c
+#   0x80169984: [D3] jogo: 3D; init de 4 shorts em 0x801EB360 + helper de transformacao GTE (0x8019D740/0x8019D7D0/0x8019DAA0); SEM referencia estatica, SEM execucao observada
+0x80169984
+#   0x801699b0: [D3] jogo: 3D; init de 4 shorts em 0x801EB360 + helper de transformacao GTE (0x8019D740/0x8019D7D0/0x8019DAA0); SEM referencia estatica, SEM execucao observada
+0x801699b0
+#   0x8016e874: [D3] jogo: camera/GTE; setup de matriz em 0x80016804..0x80016844 via 0x8019E1B0; SEM referencia estatica, SEM execucao observada
+0x8016e874
+#   0x8017b2cc: [D3] jogo: utilitario; aproximacao de valor 16-bit (passo 0x20) com limite; SEM referencia estatica, SEM execucao observada
+0x8017b2cc
+# Fechamento medido por seed_preview.py contra a base F2-L18 (169.648 palavras,
+# 1.500 funcoes, 24.060 entradas): +1.141 palavras unicas, +18 funcoes e +171 entradas,
+# 0 perdas, 0 quarentena, 0 SMC; orcamento 1.141 <= 1.200 palavras e 18 <= 25 funcoes
+# (exigiu --allow-over-budget; reprovado apenas pelo limite padrao de 10 funcoes).
+# Metrica prevista: 170.789 de 174.246 palavras (98,0160%) e 24.231 entradas.
