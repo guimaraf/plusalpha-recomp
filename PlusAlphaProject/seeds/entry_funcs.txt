@@ -5435,3 +5435,65 @@
 # 0 perdas, 0 quarentena, 0 SMC; orcamento 1.141 <= 1.200 palavras e 18 <= 25 funcoes
 # (exigiu --allow-over-budget; reprovado apenas pelo limite padrao de 10 funcoes).
 # Metrica prevista: 170.789 de 174.246 palavras (98,0160%) e 24.231 entradas.
+
+# Micro-lote F2-L20 (Fase 2, EXE; politica 2a de raizes orfas, lote P03; orcamento de
+# 25 funcoes autorizado pelo usuario em 2026-11-25). Todas as seeds: SEM referencia
+# estatica, SEM execucao observada (promocao por analise estatica; classes de
+# relatorios/fase2/orfas/classificacao.json). Bordas: prologo ou jr ra + delay.
+# Indiretos do fechamento: 3 jr nao-ra (jump tables 0x801ADD48/0x801ADD68 de 0x8018D974 em
+# 0x8018DCAC/0x8018DE44; thunk BIOS B0:15 em 0x80193780) e 7 jalr de libgpu (leem
+# [0x801B85E4] =0x80197F88 e os slots 0x10/0x28 da tabela [0x801B85E0]=0x801B85A0, que
+# apontam 0x80197334/0x8019735C; alvos ja cobertos). Sem stores em texto (SMC), sem quarentena.
+#   0x8018D974: [D4] dev: option mode; tela OPTION MODE (dev), jump tables 0x801ADD48/0x801ADD68; tela "**** OPTION MODE ****" (DIFFICULTY, DAMAGE LEVEL, TIME COUNT SPEED, ROUNDS(CPU/VS), SHORT CUT, VITALITY, EXIT); JT 0x801ADD48 e 0x801ADD68 (7 casos cada, guarda sltiu 7) por indice lhu 0x4A([0x801D1FD8]); estado em 0x801F98BC; SEM referencia estatica, SEM execucao observada
+0x8018D974
+#   0x801933E4: [D2] libapi intr; limpa bit de mascara de interrupcao ([0x801B8568]->+4 &= ~tabela); SEM referencia estatica, SEM execucao observada
+0x801933E4
+#   0x80193454: [D2] libapi pad; PadInit(mode): setter/getter de modo + PadInit (B0:15 PAD_init, ChangeClearPad); SEM referencia estatica, SEM execucao observada
+0x80193454
+#   0x80193464: [D2] libapi pad; PadInit(mode): setter/getter de modo + PadInit (B0:15 PAD_init, ChangeClearPad); SEM referencia estatica, SEM execucao observada
+0x80193464
+#   0x80193474: [D2] libapi pad; PadInit(mode): setter/getter de modo + PadInit (B0:15 PAD_init, ChangeClearPad); jr nao-ra 0x80193780 = thunk BIOS B0:15; SEM referencia estatica, SEM execucao observada
+0x80193474
+#   0x8019366C: [D2] libapi pad; parte de PadStop (SysDeqIntRP C0:03); SEM referencia estatica de codigo alcancavel (unico chamador: jal em 0x801935D4, dentro da orfa 0x801935BC, PadStop, fora deste lote), SEM execucao observada
+0x8019366C
+#   0x801938E0: [D2] libapi; setter de callback ([0x801C05D8]); SEM referencia estatica, SEM execucao observada
+0x801938E0
+#   0x80194330: [D2] libgpu; LoadImage/StoreImage-like (helpers de RECT 0x80195668/0x801945F8); SEM referencia estatica, SEM execucao observada
+0x80194330
+#   0x8019441C: [D2] libgpu; LoadImage/StoreImage-like (helpers de RECT 0x80195668/0x801945F8); SEM referencia estatica, SEM execucao observada
+0x8019441C
+#   0x80194484: [D2] libgpu; LoadImage/StoreImage-like (helpers de RECT 0x80195668/0x801945F8); SEM referencia estatica, SEM execucao observada
+0x80194484
+#   0x801946E0: [D2] libgpu debug; DumpTPage/DumpClut etc (GPU_printf [0x801B85E4] com "tpage: (%d,%d,%d,%d)" / "clut: (%d,%d)"); jalr via [0x801B85E4] (=0x80197F88, GPU_printf); SEM referencia estatica, SEM execucao observada
+0x801946E0
+#   0x801947B0: [D2] libgpu debug; DumpTPage/DumpClut etc (GPU_printf [0x801B85E4] com "tpage: (%d,%d,%d,%d)" / "clut: (%d,%d)"); jalr via [0x801B85E4] (=0x80197F88, GPU_printf); SEM referencia estatica, SEM execucao observada
+0x801947B0
+#   0x801947F0: [D2] libgpu debug; DumpTPage/DumpClut etc (GPU_printf [0x801B85E4] com "tpage: (%d,%d,%d,%d)" / "clut: (%d,%d)"); SEM referencia estatica, SEM execucao observada
+0x801947F0
+#   0x8019480C: [D2] libgpu debug; DumpTPage/DumpClut etc (GPU_printf [0x801B85E4] com "tpage: (%d,%d,%d,%d)" / "clut: (%d,%d)"); SEM referencia estatica, SEM execucao observada
+0x8019480C
+#   0x80194864: [D2] libgpu; helpers de primitivas; SEM referencia estatica, SEM execucao observada
+0x80194864
+#   0x801948A0: [D2] libgpu; helpers de primitivas; SEM referencia estatica, SEM execucao observada
+0x801948A0
+#   0x801948C4: [D2] libgpu; helpers de primitivas; SEM referencia estatica, SEM execucao observada
+0x801948C4
+#   0x801949CC: [D2] libgpu; helpers de primitivas; SEM referencia estatica, SEM execucao observada
+0x801949CC
+#   0x801949E0: [D2] libgpu; helpers de primitivas; SEM referencia estatica, SEM execucao observada
+0x801949E0
+#   0x80194A1C: [D2] libgpu; helpers de primitivas; SEM referencia estatica, SEM execucao observada
+0x80194A1C
+#   0x80194A30: [D2] libgpu; helpers de primitivas; SEM referencia estatica, SEM execucao observada
+0x80194A30
+#   0x80194AA0: [D2] libgpu; helper (padrao 0x55555555); SEM referencia estatica, SEM execucao observada
+0x80194AA0
+#   0x80194AE0: [D2] libgpu; helper (padrao 0x55555555); SEM referencia estatica, SEM execucao observada
+0x80194AE0
+#   0x80195068: [D2] libgpu API; SetGraphReverse/SetGraphDebug/SetGrapQue (vtable GPU 0x801B85E0 offs 0x28/0x10); jalr via slots 0x10/0x28 da tabela [0x801B85E0]=0x801B85A0 (=0x80197334/0x8019735C); SEM referencia estatica, SEM execucao observada
+0x80195068
+# Fechamento medido por seed_preview.py contra a base F2-L19 (170.789 palavras,
+# 1.518 funcoes, 24.231 entradas): +830 palavras unicas, +25 funcoes e +147 entradas,
+# 0 perdas, 0 quarentena, 0 SMC; orcamento 830 <= 1.200 palavras e 25 <= 25 funcoes
+# (exigiu --allow-over-budget; reprovado apenas pelo limite padrao de 10 funcoes).
+# Metrica prevista: 171.619 de 174.246 palavras (98,4924%) e 24.378 entradas.
