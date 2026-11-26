@@ -43,13 +43,17 @@ if exist "%PROJECT_ROOT%\buildLauncher\libgcc_s_seh-1.dll" copy /Y "%PROJECT_ROO
 if exist "%PROJECT_ROOT%\buildLauncher\libwinpthread-1.dll" copy /Y "%PROJECT_ROOT%\buildLauncher\libwinpthread-1.dll" "%OUT_DIR%\" >nul
 if exist "%PROJECT_ROOT%\buildLauncher\libstdc++-6.dll" copy /Y "%PROJECT_ROOT%\buildLauncher\libstdc++-6.dll" "%OUT_DIR%\" >nul
 
+rem Toolchain: PLUSALPHA_MSYS2_ROOT -> <repo>\tools\msys64 -> C:\msys64 (mesmo criterio de toolchain_paths.ps1)
+set "STRIP_EXE=C:\msys64\ucrt64\bin\strip.exe"
+if exist "%PROJECT_ROOT%\..\tools\msys64\ucrt64\bin\strip.exe" set "STRIP_EXE=%PROJECT_ROOT%\..\tools\msys64\ucrt64\bin\strip.exe"
+if defined PLUSALPHA_MSYS2_ROOT if exist "%PLUSALPHA_MSYS2_ROOT%\ucrt64\bin\strip.exe" set "STRIP_EXE=%PLUSALPHA_MSYS2_ROOT%\ucrt64\bin\strip.exe"
 where strip >nul 2>&1
 if %ERRORLEVEL% EQU 0 (
     echo [RELEASE] Stripping debug symbols from release executable...
     strip "%OUT_DIR%\exPlusAlpha.exe"
-) else if exist "C:\msys64\ucrt64\bin\strip.exe" (
+) else if exist "%STRIP_EXE%" (
     echo [RELEASE] Stripping debug symbols from release executable...
-    "C:\msys64\ucrt64\bin\strip.exe" "%OUT_DIR%\exPlusAlpha.exe"
+    "%STRIP_EXE%" "%OUT_DIR%\exPlusAlpha.exe"
 )
 
 echo [RELEASE] Copying config files and launcher UI assets...

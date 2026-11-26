@@ -8,6 +8,8 @@ param(
     [string]$GameDir = '',
     [switch]$Launch
 )
+# Toolchain: tools\msys64 / tools\python do repo quando existirem (ver toolchain_paths.ps1).
+. (Join-Path $PSScriptRoot 'toolchain_paths.ps1')
 $ErrorActionPreference = 'Stop'
 if (-not $Output) {
     $Output = Join-Path $PSScriptRoot ('..\captures\versus-mode-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
@@ -47,5 +49,5 @@ if ($Launch) {
 $CaptureArgs = @('-B', '-u', (Join-Path $PSScriptRoot 'observe_versus_mode.py'), 'capture',
     '--label', $Label, '--port', $Port, '--seconds', $Seconds, '--output', $Output)
 if ($Executable) { $CaptureArgs += @('--exe', $Executable) }
-& (Get-Command python -ErrorAction Stop).Source @CaptureArgs
+& (Resolve-PlusAlphaPython) @CaptureArgs
 if ($LASTEXITCODE -ne 0) { throw "Captura incompleta: codigo $LASTEXITCODE. Dados preservados em $Output" }

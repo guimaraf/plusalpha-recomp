@@ -11,6 +11,8 @@ param(
     [switch]$CollectOnly,
     [switch]$Timing
 )
+# Toolchain: tools\msys64 / tools\python do repo quando existirem (ver toolchain_paths.ps1).
+. (Join-Path $PSScriptRoot 'toolchain_paths.ps1')
 $ErrorActionPreference = 'Stop'
 if ($Mode -eq 'measure' -and -not $Profile) {
     $Profile = Join-Path $PSScriptRoot 'input_response_ryu_p1_square.json'
@@ -24,5 +26,5 @@ $CaptureArgs = @('-B', '-u', (Join-Path $PSScriptRoot 'capture_input_response.py
 if ($CollectOnly) { $CaptureArgs += '--collect-only' }
 if ($Timing) { $CaptureArgs += '--timing' }
 if ($Profile) { $CaptureArgs += @('--profile', $Profile) }
-& (Get-Command python -ErrorAction Stop).Source @CaptureArgs
+& (Resolve-PlusAlphaPython) @CaptureArgs
 if ($LASTEXITCODE -ne 0) { throw "Captura incompleta ou invalida: codigo $LASTEXITCODE" }

@@ -11,6 +11,8 @@ param(
     [string]$Output = '',
     [switch]$Quiet
 )
+# Toolchain: tools\msys64 / tools\python do repo quando existirem (ver toolchain_paths.ps1).
+. (Join-Path $PSScriptRoot 'toolchain_paths.ps1')
 $ErrorActionPreference = 'Stop'
 if ($FirstPort -eq $SecondPort) { throw 'Use duas portas diferentes.' }
 if (-not $Output) {
@@ -25,5 +27,5 @@ $CaptureArgs = @('-B', '-u', (Join-Path $PSScriptRoot 'capture_net_sync.py'),
 if (-not $Quiet) { $CaptureArgs += '--beep' }
 Write-Host 'Deixe o versus online por IP direto pronto e as janelas lado a lado.'
 Write-Host 'As duas instancias serao lidas; somente voce movimenta a janela indicada.'
-& (Get-Command python -ErrorAction Stop).Source @CaptureArgs
+& (Resolve-PlusAlphaPython) @CaptureArgs
 if ($LASTEXITCODE -ne 0) { throw "Teste incompleto. Preserve os arquivos em $Output" }

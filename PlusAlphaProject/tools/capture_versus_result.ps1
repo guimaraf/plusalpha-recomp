@@ -6,6 +6,8 @@ param(
     [ValidateSet('match','round')][string]$Kind = 'match',
     [string]$Output = ''
 )
+# Toolchain: tools\msys64 / tools\python do repo quando existirem (ver toolchain_paths.ps1).
+. (Join-Path $PSScriptRoot 'toolchain_paths.ps1')
 $ErrorActionPreference = 'Stop'
 if (-not $Output) {
     $Output = Join-Path $PSScriptRoot ('..\captures\versus-result-' + $Winner + '-' + (Get-Date -Format 'yyyyMMdd-HHmmss-fff'))
@@ -14,7 +16,7 @@ if (Test-Path -LiteralPath $Output) { throw "Captura existente preservada: $Outp
 $Output = [System.IO.Path]::GetFullPath($Output)
 $CaptureArgs = @('-B', '-u', (Join-Path $PSScriptRoot 'capture_versus_result.py'),
     '--port', $Port, '--winner', $Winner, '--kind', $Kind, '--output', $Output)
-& (Get-Command python -ErrorAction Stop).Source @CaptureArgs
+& (Resolve-PlusAlphaPython) @CaptureArgs
 $CaptureExitCode = $LASTEXITCODE
 $StatusPath = Join-Path $Output 'status.json'
 if (Test-Path -LiteralPath $StatusPath) {

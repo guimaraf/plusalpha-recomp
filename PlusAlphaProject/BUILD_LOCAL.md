@@ -5,6 +5,16 @@ Nenhuma BIOS ou imagem do jogo acompanha o repositório.
 
 Os exemplos abaixo partem da raiz de `plusalpha-recomp` no Windows.
 
+## 0. Toolchain portátil (opcional, recomendado)
+
+Para compilar com as mesmas versões de MSYS2, Python e clang usadas para gerar o jogo, instale o toolchain portátil em `tools/` (não versionado):
+
+```powershell
+.\PlusAlphaProject\tools\setup_portable_toolchain.bat
+```
+
+Detalhes, modo offline, ativação do ambiente e solução de problemas em [docs/TOOLCHAIN.md](docs/TOOLCHAIN.md). A instalação do zero ainda está a validar.
+
 ## 1. Inicializar os submódulos
 
 Se a clonagem não usou `--recurse-submodules`:

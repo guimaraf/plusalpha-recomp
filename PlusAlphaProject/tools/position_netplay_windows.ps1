@@ -8,6 +8,8 @@ param(
     [switch]$Fit,
     [switch]$DryRun
 )
+# Toolchain: tools\msys64 / tools\python do repo quando existirem (ver toolchain_paths.ps1).
+. (Join-Path $PSScriptRoot 'toolchain_paths.ps1')
 $ErrorActionPreference = 'Stop'
 $LayoutArgs = @('-B', (Join-Path $PSScriptRoot 'position_netplay_windows.py'),
     '--first-exe', (Join-Path (Resolve-Path -LiteralPath $FirstDir).Path 'exPlusAlpha.exe'),
@@ -16,5 +18,5 @@ $LayoutArgs = @('-B', (Join-Path $PSScriptRoot 'position_netplay_windows.py'),
 if ($Swap) { $LayoutArgs += '--swap' }
 if ($Fit) { $LayoutArgs += '--fit' }
 if ($DryRun) { $LayoutArgs += '--dry-run' }
-& (Get-Command python -ErrorAction Stop).Source @LayoutArgs
+& (Resolve-PlusAlphaPython) @LayoutArgs
 if ($LASTEXITCODE -ne 0) { throw 'Nao foi possivel posicionar as duas janelas. Consulte a mensagem acima.' }

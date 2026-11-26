@@ -6,11 +6,15 @@ param(
     [ValidatePattern('^build-online-diagnostics(?:-[A-Za-z0-9_-]+)?$')]
     [string]$BuildDirName = '',
     [ValidateRange(1, 64)][int]$Jobs = 2,
-    [string]$Msys2Root = 'C:\msys64',
+    [string]$Msys2Root = '',
     [ValidateSet('SDL3', 'SDL2')][string]$SdlBackend = 'SDL3',
     [string]$BiosPath = '',
     [string]$RetainedOverlayDir = ''
 )
+# Toolchain: tools\msys64 / tools\python do repo quando existirem (ver toolchain_paths.ps1).
+. (Join-Path $PSScriptRoot 'toolchain_paths.ps1')
+if (-not $Msys2Root) { $Msys2Root = Resolve-PlusAlphaMsys2Root }
+Add-PlusAlphaMsys2ToPath $Msys2Root
 $ErrorActionPreference = 'Stop'
 $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 if (-not $BuildDirName) {
@@ -44,7 +48,7 @@ if (-not (Test-Path -LiteralPath $Executable -PathType Leaf)) {
     throw "Executavel nao encontrado: $Executable"
 }
 if ($RunRegressionTests) {
-    $Python = (Get-Command python -ErrorAction Stop).Source
+    $Python = (Resolve-PlusAlphaPython)
     $Compiler = Join-Path $Msys2Root 'ucrt64\bin\gcc.exe'
     $Test = Join-Path $ProjectRoot '..\psxrecomp\runtime\tests\test_netplay_fmv_media_detection.py'
     & $Python -B $Test --compiler $Compiler

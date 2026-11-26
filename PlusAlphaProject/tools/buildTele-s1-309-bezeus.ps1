@@ -1,10 +1,14 @@
 # Build local de telemetria S1-309 para validar o bezel em tela cheia 16:9.
 [CmdletBinding()]
 param(
-    [string]$Msys2Root = 'C:\msys64',
+    [string]$Msys2Root = '',
     [ValidateRange(1, 64)]
     [int]$Jobs = 4
 )
+# Toolchain: tools\msys64 / tools\python do repo quando existirem (ver toolchain_paths.ps1).
+. (Join-Path $PSScriptRoot 'toolchain_paths.ps1')
+if (-not $Msys2Root) { $Msys2Root = Resolve-PlusAlphaMsys2Root }
+Add-PlusAlphaMsys2ToPath $Msys2Root
 
 $ErrorActionPreference = 'Stop'
 $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
@@ -63,7 +67,7 @@ if (-not (Test-Path -LiteralPath (Join-Path $StaticDir 'sources.cmake') -PathTyp
         if (-not (Test-Path -LiteralPath $SourceCache -PathType Container)) {
             throw "Cache S1-309 necessario para preparar os fontes estaticos: $SourceCache"
         }
-        $PythonBin = (Get-Command python -ErrorAction Stop).Source
+        $PythonBin = (Resolve-PlusAlphaPython)
         Write-Host '[1/4] Preparando fontes estaticos a partir do cache S1-309...' -ForegroundColor Green
         & $PythonBin $PrepareStatic --cache $SourceCache --output $StaticDir --framework $Framework
         if ($LASTEXITCODE -ne 0) {

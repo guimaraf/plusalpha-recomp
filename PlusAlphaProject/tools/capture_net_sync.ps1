@@ -12,10 +12,12 @@ param(
     [ValidateRange(10,3600)][int]$Seconds = 300,
     [string]$Output = ''
 )
+# Toolchain: tools\msys64 / tools\python do repo quando existirem (ver toolchain_paths.ps1).
+. (Join-Path $PSScriptRoot 'toolchain_paths.ps1')
 $ErrorActionPreference = 'Stop'
 if ($FirstPort -eq $SecondPort) { throw 'As portas devem ser diferentes.' }
 if ($LaunchOnly -and -not $Launch) { throw '-LaunchOnly requer -Launch.' }
-$Python = (Get-Command python -ErrorAction Stop).Source
+$Python = (Resolve-PlusAlphaPython)
 if (-not $Output) {
     $Output = Join-Path $PSScriptRoot ('..\captures\net-sync-' + $Label + '-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
 }

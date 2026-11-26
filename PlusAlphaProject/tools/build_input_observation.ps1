@@ -3,12 +3,16 @@
 param(
     [ValidatePattern('^build-input-observation(?:-[A-Za-z0-9_-]+)?$')]
     [string]$BuildDirName = 'build-input-observation',
-    [string]$Msys2Root = 'C:\msys64',
+    [string]$Msys2Root = '',
     [ValidateSet('SDL3', 'SDL2')][string]$SdlBackend = 'SDL3',
     [ValidateRange(1, 64)][int]$Jobs = 2,
     [string]$BiosPath = '',
     [string]$RetainedOverlayDir = ''
 )
+# Toolchain: tools\msys64 / tools\python do repo quando existirem (ver toolchain_paths.ps1).
+. (Join-Path $PSScriptRoot 'toolchain_paths.ps1')
+if (-not $Msys2Root) { $Msys2Root = Resolve-PlusAlphaMsys2Root }
+Add-PlusAlphaMsys2ToPath $Msys2Root
 $ErrorActionPreference = 'Stop'
 $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $BuildDir = Join-Path $ProjectRoot $BuildDirName

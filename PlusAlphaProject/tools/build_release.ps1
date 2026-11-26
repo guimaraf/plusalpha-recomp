@@ -8,12 +8,16 @@ param(
     [ValidatePattern('^build-release-online(?:-[A-Za-z0-9_-]+)?$')]
     [string]$BuildDirName = '',
     [ValidateRange(1, 64)][int]$Jobs = 2,
-    [string]$Msys2Root = 'C:\msys64',
+    [string]$Msys2Root = '',
     [ValidateSet('SDL3', 'SDL2')][string]$SdlBackend = 'SDL3',
     [string]$BiosPath = '',
     [string]$RetainedOverlayDir = '',
     [string]$OutputDir = ''
 )
+# Toolchain: tools\msys64 / tools\python do repo quando existirem (ver toolchain_paths.ps1).
+. (Join-Path $PSScriptRoot 'toolchain_paths.ps1')
+if (-not $Msys2Root) { $Msys2Root = Resolve-PlusAlphaMsys2Root }
+Add-PlusAlphaMsys2ToPath $Msys2Root
 $ErrorActionPreference = 'Stop'
 $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 if ($Generate -and $PackageOnly) { throw '-Generate nao pode ser usado com -PackageOnly.' }
@@ -63,7 +67,7 @@ if (-not $PackageOnly) {
     Write-Host "Release: $BuildDir" -ForegroundColor Cyan
     & (Join-Path $PSScriptRoot 'build_online.ps1') @BuildArgs
 }
-$Python = (Get-Command python -ErrorAction Stop).Source
+$Python = (Resolve-PlusAlphaPython)
 $PackageArgs = @('-B', (Join-Path $PSScriptRoot 'package_release.py'),
     '--build', $BuildDir, '--output', $OutputDir,
     '--ucrt-bin', (Join-Path $Msys2Root 'ucrt64\bin'))

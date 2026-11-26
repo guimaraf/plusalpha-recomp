@@ -73,3 +73,6 @@ Thumbs.db
 
 # Saidas temporarias dos testes locais
 /.codex-test-tmp/
+
+# Toolchain portátil local (PlusAlphaProject/tools/setup_portable_toolchain.ps1)
+/tools/

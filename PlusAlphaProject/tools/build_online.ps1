@@ -5,7 +5,7 @@ param(
     [switch]$Generate,
     [switch]$SetupHost,
     [switch]$Release,
-    [string]$Msys2Root = 'C:\msys64',
+    [string]$Msys2Root = '',
     [ValidateSet('SDL3', 'SDL2')]
     [string]$SdlBackend = 'SDL3',
     [ValidateRange(1, 64)]
@@ -29,6 +29,10 @@ param(
     [switch]$ForceEmitters,
     [switch]$ForceBios
 )
+# Toolchain: tools\msys64 / tools\python do repo quando existirem (ver toolchain_paths.ps1).
+. (Join-Path $PSScriptRoot 'toolchain_paths.ps1')
+if (-not $Msys2Root) { $Msys2Root = Resolve-PlusAlphaMsys2Root }
+Add-PlusAlphaMsys2ToPath $Msys2Root
 
 $ErrorActionPreference = 'Stop'
 if (-not $PSBoundParameters.ContainsKey('OverlaySource') -and ($Release -or $RetainedOverlayDir)) {
@@ -57,7 +61,7 @@ $BuildName = if ($SetupHost) { 'build-online-setup' } else { $BuildDirName }
 $BuildDir = Join-Path $ProjectRoot $BuildName
 $UcrtBin = Join-Path $Msys2Root 'ucrt64\bin'
 $CMake = Join-Path $UcrtBin 'cmake.exe'
-$Python = (Get-Command python -ErrorAction Stop).Source
+$Python = (Resolve-PlusAlphaPython)
 if ($Release -and $SetupHost) { throw '-Release requer o runtime completo.' }
 if ($Release -and $BuildDirName -notmatch '^build-release-online(?:-[A-Za-z0-9_-]+)?$') {
     throw '-Release requer uma pasta build-release-online ou build-release-online-N para preservar as builds de diagnostico.'

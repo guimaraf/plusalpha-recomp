@@ -1,6 +1,10 @@
 # Local build only. Never copies binaries back into the validated installation.
 [CmdletBinding()]
-param([string]$Msys2Root = 'C:\msys64')
+param([string]$Msys2Root = '')
+# Toolchain: tools\msys64 / tools\python do repo quando existirem (ver toolchain_paths.ps1).
+. (Join-Path $PSScriptRoot 'toolchain_paths.ps1')
+if (-not $Msys2Root) { $Msys2Root = Resolve-PlusAlphaMsys2Root }
+Add-PlusAlphaMsys2ToPath $Msys2Root
 $ErrorActionPreference = 'Stop'
 $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $Framework = Join-Path (Split-Path $ProjectRoot -Parent) 'psxrecomp'
@@ -19,7 +23,7 @@ foreach ($name in @('settings.toml', 'input.ini', 'keybinds.ini', 'game.toml')) 
         throw "Missing baseline file: $Baseline\$name"
     }
 }
-$PythonBin = (Get-Command python -ErrorAction Stop).Source
+$PythonBin = (Resolve-PlusAlphaPython)
 & $PythonBin (Join-Path $PSScriptRoot 'prepare_s1_309_static.py') `
     --cache (Join-Path $Baseline 'cache') --output $StaticDir --framework $Framework
 if ($LASTEXITCODE -ne 0) { throw 'Static coverage preparation failed; build aborted.' }

@@ -12,9 +12,11 @@ param(
     [int]$Repetition = 1,
     [string]$BuildDir = (Join-Path $PSScriptRoot '..\buildTele-s1-309-bezeus')
 )
+# Toolchain: tools\msys64 / tools\python do repo quando existirem (ver toolchain_paths.ps1).
+. (Join-Path $PSScriptRoot 'toolchain_paths.ps1')
 
 $ErrorActionPreference = 'Stop'
-$Python = (Get-Command python -ErrorAction Stop).Source
+$Python = (Resolve-PlusAlphaPython)
 $Collector = Join-Path $PSScriptRoot 'test_vsync_latency.py'
 & $Python -u $Collector --mode $Mode.ToLowerInvariant() --build-dir $BuildDir `
     --seconds $Seconds --warmup $Warmup --repetition $Repetition

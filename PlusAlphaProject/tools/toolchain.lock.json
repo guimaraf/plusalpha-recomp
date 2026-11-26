@@ -1,0 +1,801 @@
+﻿{
+    "schema":  1,
+    "generated":  "2026-11-26",
+    "note":  "Gerado a partir do estado real de tools\\. Versoes antigas podem sair do repo.msys2.org (use o cache _dl / -CacheDir).",
+    "msys2":  {
+                  "base":  {
+                               "name":  "msys2-base-x86_64-20261120.tar.zst",
+                               "url":  "https://repo.msys2.org/distrib/x86_64/msys2-base-x86_64-20261120.tar.zst",
+                               "sha256":  "adde59fcb53760bd0fd2aa3c3e8da516f03159b771dc62b77c340e4ac187fcdd",
+                               "may_be_removed_upstream":  true
+                           },
+                  "package_repo_base":  "https://repo.msys2.org/mingw",
+                  "packages_note":  "Pacotes pinados; o MSYS2 mantem so a versao mais recente no repo: URLs de versoes antigas podem nao existir mais (may_be_removed_upstream). Mantenha o cache _dl.",
+                  "packages":  [
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-binutils",
+                                       "version":  "2.46.1-2",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-binutils-2.46.1-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-binutils-2.46.1-2-any.pkg.tar.zst",
+                                       "sha256":  "631ff3c6d043a4eeca151415c313bda713537d4a7c6807eb7a2d4e7a026df89b"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-brotli",
+                                       "version":  "1.2.0-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-brotli-1.2.0-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-brotli-1.2.0-1-any.pkg.tar.zst",
+                                       "sha256":  "9cc89665496ea504751476eafba15c71c554aaf3004babc2004f7c07ffd60514"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-bzip2",
+                                       "version":  "1.0.8-3",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-bzip2-1.0.8-3-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-bzip2-1.0.8-3-any.pkg.tar.zst",
+                                       "sha256":  "932da2c63b23e6a4448757eb36fb198a9e51121874408270afe2c91bada513c7"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-ca-certificates",
+                                       "version":  "20250419-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-ca-certificates-20250419-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-ca-certificates-20250419-1-any.pkg.tar.zst",
+                                       "sha256":  "9abb53d5d8fdc4f4fb6ff34a36fb62e1c9f52a714da1a1234fa0ebc7b575a5f1"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-c-ares",
+                                       "version":  "1.34.8-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-c-ares-1.34.8-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-c-ares-1.34.8-1-any.pkg.tar.zst",
+                                       "sha256":  "2313d531bc9dc7aae6be3ce0f8ace516bb04191c4f3f62c78c7dfd246d2a9ba6"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-ccache",
+                                       "version":  "4.13.6-2",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-ccache-4.13.6-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-ccache-4.13.6-2-any.pkg.tar.zst",
+                                       "sha256":  "371ea3166996b03ca64965bdc623c3882b15ff20d64da97068cd620c3406ef39"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-cmake",
+                                       "version":  "4.4.0-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-cmake-4.4.0-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-cmake-4.4.0-1-any.pkg.tar.zst",
+                                       "sha256":  "81228042e8e02d02cf555f0e695bba9dc93c7ba2842718b5a675a7f799fde274"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-cppdap",
+                                       "version":  "1.65-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-cppdap-1.65-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-cppdap-1.65-1-any.pkg.tar.zst",
+                                       "sha256":  "8824b4c5b0e35a514df34b5e5b447d49b2a052d9e3e9584fdff704ea3ce04b0b"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-crt",
+                                       "version":  "14.0.0.r179.g24aaa6147-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-crt-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-crt-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "sha256":  "7eafeffc3d814d68199a4110d252c0b34bdb30a40d5fe1f776528957e0a8324e"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-curl",
+                                       "version":  "8.21.0-2",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-curl-8.21.0-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-curl-8.21.0-2-any.pkg.tar.zst",
+                                       "sha256":  "6ac1695089a5937a5081ad4cf092d7eb063006b48af2cc5540ffd8b8a5a3586a"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-expat",
+                                       "version":  "2.8.2-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-expat-2.8.2-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-expat-2.8.2-1-any.pkg.tar.zst",
+                                       "sha256":  "58ee0e345894a81024cbe8c67665c47f0f9c4a3b82c66e45741b6db9dd55bb75"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-fmt",
+                                       "version":  "12.2.0-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-fmt-12.2.0-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-fmt-12.2.0-1-any.pkg.tar.zst",
+                                       "sha256":  "7b368e76d231f44c968c6b2a0780ac122e48fac80b35aa9ec353a3bcb440b00f"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-gcc",
+                                       "version":  "16.1.0-5",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-gcc-16.1.0-5-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gcc-16.1.0-5-any.pkg.tar.zst",
+                                       "sha256":  "2b5be791133f5fafac2537ad9d1579c9a421b791d7bf57fba6fb54484ec59622"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-gcc-libs",
+                                       "version":  "16.1.0-5",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-gcc-libs-16.1.0-5-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gcc-libs-16.1.0-5-any.pkg.tar.zst",
+                                       "sha256":  "4dab54c95756da3e18ca375ae4c7fdeb709fc04bf209eb131c120e27704fb5b3"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-gettext-runtime",
+                                       "version":  "1.0-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-gettext-runtime-1.0-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gettext-runtime-1.0-1-any.pkg.tar.zst",
+                                       "sha256":  "ba693dda4ac375af76ce481ff3a6e7481286546cc7dc6d56c7021dae34084157"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-gmp",
+                                       "version":  "6.3.0-2",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-gmp-6.3.0-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gmp-6.3.0-2-any.pkg.tar.zst",
+                                       "sha256":  "e82a75968a556484a50084578238a84eb60fb93e34986fd6695c537975bd39ea"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-gnutls",
+                                       "version":  "3.8.13-3",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-gnutls-3.8.13-3-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gnutls-3.8.13-3-any.pkg.tar.zst",
+                                       "sha256":  "303da3babd11f545fcac647439298e8559951ce6a1086666faf8ad2a1f708be6"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-headers",
+                                       "version":  "14.0.0.r179.g24aaa6147-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-headers-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-headers-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "sha256":  "616b3cc893c0190b73eb0e560dae1ae4c592d0630dbaf35746922ee5e25a9ff0"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-hiredis",
+                                       "version":  "1.3.0-2",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-hiredis-1.3.0-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-hiredis-1.3.0-2-any.pkg.tar.zst",
+                                       "sha256":  "e53e5320c4a375f1c7591fe70a698ca00118a09e0850b6ffb8e577fccb938da4"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-hwloc",
+                                       "version":  "2.14.0-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-hwloc-2.14.0-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-hwloc-2.14.0-1-any.pkg.tar.zst",
+                                       "sha256":  "e4c78603907dee6f61d2ec80132c88d7760fa5d49af293a9f847f21a6d17643d"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-isl",
+                                       "version":  "0.28-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-isl-0.28-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-isl-0.28-1-any.pkg.tar.zst",
+                                       "sha256":  "8594e01a253d5a72646c586cf5a1626c1b1c2be7c30060fe67abd9bebe3fe223"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-jsoncpp",
+                                       "version":  "1.9.6-3",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-jsoncpp-1.9.6-3-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-jsoncpp-1.9.6-3-any.pkg.tar.zst",
+                                       "sha256":  "e9184189ff2d81f1947a3d890213e5eb27fc6ac71f0661a3debaf374838101c8"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libarchive",
+                                       "version":  "3.8.8-2",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libarchive-3.8.8-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libarchive-3.8.8-2-any.pkg.tar.zst",
+                                       "sha256":  "ee591ba67166aa665253572ec5bed07b00fc52f307e1820b49b1288fc464c39e"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libb2",
+                                       "version":  "0.98.1-3",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libb2-0.98.1-3-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libb2-0.98.1-3-any.pkg.tar.zst",
+                                       "sha256":  "dfb554635119d3c46adb00c9d0c589bb38d1cb0781b10ecf31de07ce388bd0c0"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libblake3",
+                                       "version":  "1.8.5-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libblake3-1.8.5-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libblake3-1.8.5-1-any.pkg.tar.zst",
+                                       "sha256":  "60ed1966255e9e3a29297a98a14111360b85276133e9069ad2e3e7030befa4ab"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libffi",
+                                       "version":  "3.7.1-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libffi-3.7.1-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libffi-3.7.1-1-any.pkg.tar.zst",
+                                       "sha256":  "a2db3d8bb97d483c2c6ce12397c4c221f14a4c6870df7a9511aa599c701143f6"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libiconv",
+                                       "version":  "1.19-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libiconv-1.19-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libiconv-1.19-1-any.pkg.tar.zst",
+                                       "sha256":  "9a500f38c2b91808741c62fae746b3e9110b33a1ecf5c30fa0c66dbedddf7e16"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libidn2",
+                                       "version":  "2.3.8-4",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libidn2-2.3.8-4-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libidn2-2.3.8-4-any.pkg.tar.zst",
+                                       "sha256":  "d5f4b5e9d99ff7b2a986d1dc0c73da2bcd93ba68462be7b1debbd6ef76371f57"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libltdl",
+                                       "version":  "2.5.4-4",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libltdl-2.5.4-4-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libltdl-2.5.4-4-any.pkg.tar.zst",
+                                       "sha256":  "be34be419ef58d179d92ba2848a9d99ee6a87e1d8dd272e84b0aa3df0d56eea2"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libmangle",
+                                       "version":  "14.0.0.r179.g24aaa6147-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libmangle-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libmangle-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "sha256":  "500502857ea46a26eaa8635d27beea18c7bcc3a44a24dc36a92fa8d8c28422b3"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libpsl",
+                                       "version":  "0.21.5-3",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libpsl-0.21.5-3-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libpsl-0.21.5-3-any.pkg.tar.zst",
+                                       "sha256":  "d96e0bb50ac3f8b6e44a39ea8de8d186f7b08f6938b0676eb69a7ba1f127bcf4"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libssh2",
+                                       "version":  "1.11.1-2",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libssh2-1.11.1-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libssh2-1.11.1-2-any.pkg.tar.zst",
+                                       "sha256":  "0e91316dfa4979dcabbfa9e71528ec9882ece619ce549cb25312089b4754fa65"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libsystre",
+                                       "version":  "1.0.2-2",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libsystre-1.0.2-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libsystre-1.0.2-2-any.pkg.tar.zst",
+                                       "sha256":  "f5fe38a77c3a0bccdfd33191746702894bf36391bf0eb55ba7a8cf0b781693a7"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libtasn1",
+                                       "version":  "4.21.0-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libtasn1-4.21.0-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libtasn1-4.21.0-1-any.pkg.tar.zst",
+                                       "sha256":  "d098b27834c3b25142b6f5aa9a0ca5731a8e4334c232786406cb149dd8bde2ba"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libtre",
+                                       "version":  "0.9.0-2",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libtre-0.9.0-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libtre-0.9.0-2-any.pkg.tar.zst",
+                                       "sha256":  "d50f22545c50d7c0cd584474bba83f0c7a2cd8aab1aed1ad6c1f9c6452f3c4fc"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libunistring",
+                                       "version":  "1.4.2-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libunistring-1.4.2-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libunistring-1.4.2-1-any.pkg.tar.zst",
+                                       "sha256":  "e784273da19bbdcc91cbb510b5e27c3ac021b026140734eefcce5ccbd878bd97"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libuv",
+                                       "version":  "1.52.1-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libuv-1.52.1-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libuv-1.52.1-1-any.pkg.tar.zst",
+                                       "sha256":  "6ffe9b7223dfb78d9a116e39369d131b4937e1948d8560d73ad682d1b3255f9d"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-libwinpthread",
+                                       "version":  "14.0.0.r179.g24aaa6147-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-libwinpthread-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-libwinpthread-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "sha256":  "82efabdb3405705bcd53b8b5b0abd48b3f6b0dd45a02becfb52ef7697a14100e"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-lz4",
+                                       "version":  "1.10.0-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-lz4-1.10.0-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-lz4-1.10.0-1-any.pkg.tar.zst",
+                                       "sha256":  "00a807df81a4b7e82445178b8625962ed592cf1f0a08a8e04c8b9338c4362638"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-make",
+                                       "version":  "4.4.1-5",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-make-4.4.1-5-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-make-4.4.1-5-any.pkg.tar.zst",
+                                       "sha256":  "871f760657a360279f29b945a7fd7d9655fe46a3e1e06dd783c9e74514aa0b27"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-mpc",
+                                       "version":  "1.4.1-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-mpc-1.4.1-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-mpc-1.4.1-1-any.pkg.tar.zst",
+                                       "sha256":  "f06556e811c711ce91609484e31d358e4f495811ba29813bf2284a3b236d82ce"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-mpdecimal",
+                                       "version":  "4.0.1-3",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-mpdecimal-4.0.1-3-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-mpdecimal-4.0.1-3-any.pkg.tar.zst",
+                                       "sha256":  "abf25c3869ba5e5bc3b69fdeb6cd49b060fc1a64d0d2de10918adeae9630a68d"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-mpfr",
+                                       "version":  "4.2.2-3",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-mpfr-4.2.2-3-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-mpfr-4.2.2-3-any.pkg.tar.zst",
+                                       "sha256":  "6b70a275d2ec75c70aa50a236c218e6b7ee9a5ab4c6d52cb0b580267b7d200fe"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-ncurses",
+                                       "version":  "6.6-4",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-ncurses-6.6-4-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-ncurses-6.6-4-any.pkg.tar.zst",
+                                       "sha256":  "88331fe78470ef2c5e0280652fee5e10b6dcaa35f8037725c359407f2702309c"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-nettle",
+                                       "version":  "4.0-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-nettle-4.0-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-nettle-4.0-1-any.pkg.tar.zst",
+                                       "sha256":  "47b49f1723ef2c75ff3042b6e463910c47cdffa3342e175b6409fb9d630e64ed"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-nghttp2",
+                                       "version":  "1.69.0-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-nghttp2-1.69.0-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-nghttp2-1.69.0-1-any.pkg.tar.zst",
+                                       "sha256":  "3fb5d68dcf0eeb5d51b3131b45b0f6a9642734f0f21a511fe16354571ac74743"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-nghttp3",
+                                       "version":  "1.17.0-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-nghttp3-1.17.0-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-nghttp3-1.17.0-1-any.pkg.tar.zst",
+                                       "sha256":  "97296b148181d0efa6e2d5ea2217357e9a4f887e691458aaf1673ec320c0e6ae"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-ngtcp2",
+                                       "version":  "1.24.0-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-ngtcp2-1.24.0-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-ngtcp2-1.24.0-1-any.pkg.tar.zst",
+                                       "sha256":  "7f62636087489a2d99e94a31f11be793833aae06aa95bbb6941e9b97ebcc2111"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-ninja",
+                                       "version":  "1.13.2-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-ninja-1.13.2-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-ninja-1.13.2-1-any.pkg.tar.zst",
+                                       "sha256":  "514685563a84a6ebddbbeee7bbafae5f3994e363c49364fc4507fabcaa049f2b"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-openssl",
+                                       "version":  "3.6.3-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-openssl-3.6.3-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-openssl-3.6.3-1-any.pkg.tar.zst",
+                                       "sha256":  "6cab3e35b2b05da3a34126f3fdb7a4d0c942842c8cde355f53a07a717684313a"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-p11-kit",
+                                       "version":  "0.26.4-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-p11-kit-0.26.4-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-p11-kit-0.26.4-1-any.pkg.tar.zst",
+                                       "sha256":  "d54c6d1c2babdf24301ce7ec7926d84f0da652c4e07b6c7d33a571046c31be85"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-pcre2",
+                                       "version":  "10.47-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-pcre2-10.47-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-pcre2-10.47-1-any.pkg.tar.zst",
+                                       "sha256":  "839bc4642f94c44e94e331c9092c6d186b1edc54dfdf6a81cb2062f638417023"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-pkgconf",
+                                       "version":  "1~2.5.1-2",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-pkgconf-1~2.5.1-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-pkgconf-1~2.5.1-2-any.pkg.tar.zst",
+                                       "sha256":  "8b99a0fb51d13cb9d86cefcd1b130142b9a198a86e9786cd56ab59e452e0e4ba"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-readline",
+                                       "version":  "8.3.003-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-readline-8.3.003-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-readline-8.3.003-1-any.pkg.tar.zst",
+                                       "sha256":  "de2423c2e10fcd88272a0ab2f833f6a082cfe613d4c17c2f548cc50a5d2190c4"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-rhash",
+                                       "version":  "1.4.6-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-rhash-1.4.6-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-rhash-1.4.6-1-any.pkg.tar.zst",
+                                       "sha256":  "56f4a05b85f066795f2c8d6a4d822bf4b25a8dbf9f4c5b1bb2f7e10f812ad73e"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-SDL2",
+                                       "version":  "2.32.10-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-SDL2-2.32.10-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-SDL2-2.32.10-1-any.pkg.tar.zst",
+                                       "sha256":  "9e77124b14bedaafbfb44ac26e5fb43890184db23292cebf2251b2178fad6693"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-sqlite3",
+                                       "version":  "3.53.3-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-sqlite3-3.53.3-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-sqlite3-3.53.3-1-any.pkg.tar.zst",
+                                       "sha256":  "af32c26f771fde0b6e6b56fcfc9c614a23de4263fb94215c58793b7dcc370ce5"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-tbb",
+                                       "version":  "2023.0.0-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-tbb-2023.0.0-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-tbb-2023.0.0-1-any.pkg.tar.zst",
+                                       "sha256":  "5812189d18b0ef01ac0faf7e1f6e43d8156bc4e4c13c1fb8653f09087ed00782"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-tcl",
+                                       "version":  "8.6.18-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-tcl-8.6.18-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-tcl-8.6.18-1-any.pkg.tar.zst",
+                                       "sha256":  "0c3a50ea5be8c5190e58a1fdc46c09f8113ad1b855745875646b7a78a02215df"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-termcap",
+                                       "version":  "1.3.1-7",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-termcap-1.3.1-7-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-termcap-1.3.1-7-any.pkg.tar.zst",
+                                       "sha256":  "17b78eb63e89458a6ae4d56aa1dc357e1decb2f845b29fded79bccdd628d9d41"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-tools",
+                                       "version":  "14.0.0.r179.g24aaa6147-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-tools-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-tools-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "sha256":  "c6c741d57c69aa4066147a247b1f76a36944cbd04ea5a509557092ef6cb0d4aa"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-tzdata",
+                                       "version":  "2026c-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-tzdata-2026c-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-tzdata-2026c-1-any.pkg.tar.zst",
+                                       "sha256":  "b6af6fd6acb676b9bb0761b75b1d8330b89abd4c8d467fda35cee8925b170db9"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-vulkan-loader",
+                                       "version":  "1~1.4.350.1-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-vulkan-loader-1~1.4.350.1-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-vulkan-loader-1~1.4.350.1-1-any.pkg.tar.zst",
+                                       "sha256":  "48f2b2857c553cf564fdb0eba709ae00879cd7193195e0f17c29ca9beb424863"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-windows-default-manifest",
+                                       "version":  "6.4-4",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-windows-default-manifest-6.4-4-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-windows-default-manifest-6.4-4-any.pkg.tar.zst",
+                                       "sha256":  "6d1c9e2ab75aace04d30fb43974b24d5505bfd7872ca23fea773fc9ae70bd248"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-wineditline",
+                                       "version":  "2.208-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-wineditline-2.208-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-wineditline-2.208-1-any.pkg.tar.zst",
+                                       "sha256":  "b07b34de1669e16cfd6743691914f5a66ad4013500bbf0e4c7a7644046ae7b1c"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-winpthreads",
+                                       "version":  "14.0.0.r179.g24aaa6147-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-winpthreads-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-winpthreads-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "sha256":  "e0e10f422903146231218d9ed59aa078cd05db460ce45251d3ece97eda297b74"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-winstorecompat",
+                                       "version":  "14.0.0.r179.g24aaa6147-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-winstorecompat-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-winstorecompat-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "sha256":  "05e1f7888f250756ba5588e93ab8bd0086a7e05038c15877074aa39d26209e51"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-xxhash",
+                                       "version":  "0.8.3-2",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-xxhash-0.8.3-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-xxhash-0.8.3-2-any.pkg.tar.zst",
+                                       "sha256":  "6f83ace0e28614f31cbf0f2efaee7fb4dde9054186352914c5cac0a23e1f0c3a"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-xz",
+                                       "version":  "5.8.3-1",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-xz-5.8.3-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-xz-5.8.3-1-any.pkg.tar.zst",
+                                       "sha256":  "840af0192f4b67be09238e783249c78cc1672981e7d0acc5c67a6bd0b4bca0cb"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-zlib",
+                                       "version":  "1.3.2-2",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-zlib-1.3.2-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-zlib-1.3.2-2-any.pkg.tar.zst",
+                                       "sha256":  "841401182976d2f9e17e5c0ebaac51f2a8014140ea53d67625e91c8fb3c85ea0"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-ucrt-x86_64-zstd",
+                                       "version":  "1.5.7-2",
+                                       "repo":  "ucrt64",
+                                       "file":  "mingw-w64-ucrt-x86_64-zstd-1.5.7-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-zstd-1.5.7-2-any.pkg.tar.zst",
+                                       "sha256":  "dbdb8427280046a2b41697780aa4c52983b708082b0da4755951dc3bea96ca89"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-binutils",
+                                       "version":  "2.46.1-2",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-binutils-2.46.1-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-binutils-2.46.1-2-any.pkg.tar.zst",
+                                       "sha256":  "ab56a4bc6b77dc27707ab770d834a60623d4919274dcf75e5c293fbb47f80f9a"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-crt",
+                                       "version":  "14.0.0.r179.g24aaa6147-1",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-crt-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-crt-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "sha256":  "9d0470849856b2cad05caf25ef71bf200690ed7fba3d30ff681468db408b3d73"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-gcc",
+                                       "version":  "16.1.0-5",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-gcc-16.1.0-5-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-gcc-16.1.0-5-any.pkg.tar.zst",
+                                       "sha256":  "10f7c55275f7fbe7924209d61c368a1a6fcf775cffbdeac2eef1f5ccacdd35cd"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-gcc-libs",
+                                       "version":  "16.1.0-5",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-gcc-libs-16.1.0-5-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-gcc-libs-16.1.0-5-any.pkg.tar.zst",
+                                       "sha256":  "aa560f5438c35b71c3e7b24fd5becbca028f70c5b4d1f1697a86ff80fec947da"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-gettext-runtime",
+                                       "version":  "1.0-1",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-gettext-runtime-1.0-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-gettext-runtime-1.0-1-any.pkg.tar.zst",
+                                       "sha256":  "be68d7f260633284b910c588c6d82ee304a81c8817a686d2cd9df83f872c27af"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-gmp",
+                                       "version":  "6.3.0-2",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-gmp-6.3.0-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-gmp-6.3.0-2-any.pkg.tar.zst",
+                                       "sha256":  "8924433974c4add46cb46ea4f6ef283b5c5139d3f552375115b5580f855015cc"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-headers",
+                                       "version":  "14.0.0.r179.g24aaa6147-1",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-headers-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-headers-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "sha256":  "f901f0260264646042b0316bba21e77f1bce824441e89a66f889ead595e7e17f"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-isl",
+                                       "version":  "0.28-1",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-isl-0.28-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-isl-0.28-1-any.pkg.tar.zst",
+                                       "sha256":  "03ed191718a89edc46e783deed46b8fd20ec47a09fcdefb37c6c4169b6188b08"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-libiconv",
+                                       "version":  "1.19-1",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-libiconv-1.19-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libiconv-1.19-1-any.pkg.tar.zst",
+                                       "sha256":  "21e334d0911f25de75d3e18e0697648bcecfa9658256d600cad0827d719c2f35"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-libsystre",
+                                       "version":  "1.0.2-2",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-libsystre-1.0.2-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libsystre-1.0.2-2-any.pkg.tar.zst",
+                                       "sha256":  "f351bde32637e87516dbad61a5c77c63aae0709273693c5aee6e0a8533d68f14"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-libtre",
+                                       "version":  "0.9.0-2",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-libtre-0.9.0-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libtre-0.9.0-2-any.pkg.tar.zst",
+                                       "sha256":  "c4051508d063258e1e02dd29615edb7d73c5c5f582ae42795fdd92e7ddce506b"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-libunistring",
+                                       "version":  "1.4.2-1",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-libunistring-1.4.2-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libunistring-1.4.2-1-any.pkg.tar.zst",
+                                       "sha256":  "c940cf52fb2b579baa596d3c1d911f7544cbf90f8bd19c260377aa115c65b059"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-libwinpthread",
+                                       "version":  "14.0.0.r179.g24aaa6147-1",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-libwinpthread-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libwinpthread-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "sha256":  "8f12dc1be987165faab6363a159921553b4a2ac64e443cd0e7c501c343c2a92a"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-mpc",
+                                       "version":  "1.4.1-1",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-mpc-1.4.1-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-mpc-1.4.1-1-any.pkg.tar.zst",
+                                       "sha256":  "ce024a90d59c8a591d2c88ef94a386c6367750bf9edc6a944e80815ec5d93344"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-mpfr",
+                                       "version":  "4.2.2-3",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-mpfr-4.2.2-3-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-mpfr-4.2.2-3-any.pkg.tar.zst",
+                                       "sha256":  "9ecbc05f1f855bc656a8f111d367f61fbd90dbbfcf469ba74d6d5dd1ec07a542"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-tzdata",
+                                       "version":  "2026c-1",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-tzdata-2026c-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-tzdata-2026c-1-any.pkg.tar.zst",
+                                       "sha256":  "502e6f8e65c554e717f6c749dcbb70cc9b85ed94b01c151c26a0c25235e63df2"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-windows-default-manifest",
+                                       "version":  "6.4-4",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-windows-default-manifest-6.4-4-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-windows-default-manifest-6.4-4-any.pkg.tar.zst",
+                                       "sha256":  "716b48ad9fe4a9c88c3a323279224943b79a04152bce66797debc83491bb91fa"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-winpthreads",
+                                       "version":  "14.0.0.r179.g24aaa6147-1",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-winpthreads-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-winpthreads-14.0.0.r179.g24aaa6147-1-any.pkg.tar.zst",
+                                       "sha256":  "f097f13dc6b23959d8c0dc3bda318f5010a90109076599d0ad83f0119f038b46"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-xz",
+                                       "version":  "5.8.3-1",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-xz-5.8.3-1-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-xz-5.8.3-1-any.pkg.tar.zst",
+                                       "sha256":  "075bfaf1c7527f2fdd02ad5b973378e1e8d426ba7b614f122cebd81a8fe5d1c1"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-zlib",
+                                       "version":  "1.3.2-2",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-zlib-1.3.2-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-zlib-1.3.2-2-any.pkg.tar.zst",
+                                       "sha256":  "9e75842a070ba648e986e12424e1c92c9d7d77200e85f6a34eeb600819f2e694"
+                                   },
+                                   {
+                                       "name":  "mingw-w64-x86_64-zstd",
+                                       "version":  "1.5.7-2",
+                                       "repo":  "mingw64",
+                                       "file":  "mingw-w64-x86_64-zstd-1.5.7-2-any.pkg.tar.zst",
+                                       "url":  "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-zstd-1.5.7-2-any.pkg.tar.zst",
+                                       "sha256":  "1add6705b344664f6aca108c85f79ab5bdd9e1162662bb06a4cf40a34f6e0907"
+                                   }
+                               ]
+              },
+    "python":  {
+                   "version":  "3.13.11",
+                   "url":  "https://www.nuget.org/api/v2/package/python/3.13.11",
+                   "file":  "python.nupkg",
+                   "sha256":  "56060654f7a552992cf27f64ac427001446f2c3f15b6acb41b1b8f38a75b5403",
+                   "extract_subdir":  "tools",
+                   "pip_requirements":  [
+                                            "numpy==2.4.2",
+                                            "pillow==12.1.1",
+                                            "PyYAML==6.0.3",
+                                            "pytest==9.2.0"
+                                        ],
+                   "pip_resolved":  [
+                                        "colorama==0.4.6",
+                                        "iniconfig==2.3.1",
+                                        "numpy==2.4.2",
+                                        "packaging==26.4",
+                                        "pillow==12.1.1",
+                                        "pluggy==1.7.0",
+                                        "Pygments==2.21.0",
+                                        "pytest==9.2.0",
+                                        "PyYAML==6.0.3"
+                                    ]
+               },
+    "retcomm":  {
+                    "id":  "cmake-clang-v1",
+                    "version":  "1.0.14",
+                    "target_dir":  "retcomm/cmake-clang-v1/1.0.14",
+                    "asset":  "cmake-clang-v1-windows-x64.zip",
+                    "url":  "https://github.com/RetroPortingToolKit/RetroPorting-Toolchains/releases/download/v1.0.14/cmake-clang-v1-windows-x64.zip",
+                    "sha256":  "28da9742385e7ff875b3d9311e8ed89dbdc84f27b6ecba2bc0d0acc11f6d2b4d",
+                    "size":  209497009,
+                    "sha256_source":  "API do GitHub (campo digest do asset v1.0.14)",
+                    "key_binaries":  {
+                                         "bin/clang.exe":  "a8b7a614eeadd9105f814be3701a7f312cda4cea51751b75b408c16100c94e85",
+                                         "bin/clang++.exe":  "a8b7a614eeadd9105f814be3701a7f312cda4cea51751b75b408c16100c94e85",
+                                         "bin/cmake.exe":  "f3a124ad60459b56b2a5b4e312b0cd5de56d5b1fcf2921f8f602fb531b0da10d",
+                                         "bin/ninja.exe":  "e52a7ad9538d9618c67a0bd777964e2eec8a30f68b810a2f6adce1f2daf847b8",
+                                         "bin/llvm-ar.exe":  "9aa88ccb0a10c4d6c6f922e73cb9445ea83be29c52614726aea92b25f2c86093"
+                                     },
+                    "pins":  {
+                                 "cmake":  "3.31.12",
+                                 "ninja":  "1.13.2",
+                                 "ccache":  "4.13.6",
+                                 "llvm":  "22.1.8",
+                                 "llvm_mingw":  "20260616"
+                             }
+                }
+}

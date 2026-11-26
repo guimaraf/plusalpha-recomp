@@ -1,10 +1,14 @@
 [CmdletBinding()]
 param(
-    [string]$Msys2Root = "C:\msys64",
+    [string]$Msys2Root = '',
     [string]$BuildDir,
     [ValidateSet("Debug", "RelWithDebInfo", "Release", "MinSizeRel")]
     [string]$BuildType = "RelWithDebInfo"
 )
+# Toolchain: tools\msys64 / tools\python do repo quando existirem (ver toolchain_paths.ps1).
+. (Join-Path $PSScriptRoot 'toolchain_paths.ps1')
+if (-not $Msys2Root) { $Msys2Root = Resolve-PlusAlphaMsys2Root }
+Add-PlusAlphaMsys2ToPath $Msys2Root
 
 $ErrorActionPreference = "Stop"
 

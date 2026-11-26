@@ -273,6 +273,21 @@ Se aparecer PC do EXE fora da quarentena, vira candidato a seed com execução o
 - **Execução observada das órfãs:** as 144 raízes P01–P08 têm só cobertura estática. Uma rota com fntrace armado nesses alvos daria evidência, se você quiser.
 - **Índices de modo sem rota:** os índices 2, 4, 5, 12 e 22–24 da tabela de modos ainda não são alcançados por nenhuma rota automática. O Expert Mode foi exercitado manualmente no pente fino (sem rota automática); as notas não dizem a qual índice da tabela ele corresponde.
 - **`jr` indiretos:** a F2-R2 resolveu 13 (forma `sltiu; beq; D; sll`, §1.4). Restavam 41 de formas que o resolvedor de jump table não reconhece. Eles funcionam pelo dispatch e por fallback e não afetam a métrica.
+- **Testes de guarda desatualizados no `psxrecomp` (2026-11-26).** Eles não bloqueiam a Fase 2 e não foram causados pela F2-R2.
+  - **Contexto:** o toolchain portátil em `tools\` resolveu as falhas de ferramenta (Python sem `tomllib`, gcc fora do PATH); ver `PlusAlphaProject/docs/TOOLCHAIN.md`.
+  - **Falhas que restam:** testes que leem o código do runtime e não batem mais com ele:
+    - `native_wide_line_batching`;
+    - `gl_internal_scale_guards`;
+    - `mod_load_acceleration`;
+    - `mod_owned_display_controls`;
+    - `bundled_release_layout`;
+    - `test_gpu_gp0_history_guard` (aviso em `pgxp_load_projection`);
+    - `test_memory_debug_trace_guard` (`undefined reference render_pass_mmio_read_allowed`).
+  - **Conferir primeiro:** `netplay_start_failure_wiring`. O teste afirma que uma falha do launcher ao iniciar o online cairia no jogo offline em vez de voltar ao lobby. Pode ser um defeito real (skill `plusalpha-netplay`).
+  - **Outras pendências do mesmo grupo:**
+    - `optional_netplay_auth` não acha `recomp_net/sched.h`;
+    - os alvos `ws_cull_edge_interp_test` e `draw_distance_interp_test` falham no link;
+    - `cli_retail_bios_profile` precisa da BIOS SCPH5552.
 - **`0x801937DC` (PadStop):** salta pelo ponteiro `[0x801BFD20]`, cujo valor depende da imagem de BIOS (SCPH1001 contra OpenBIOS). O fallback cobre os dois casos, mas isso não foi testado em execução.
 
 ## 3. Fora da Fase 2 (Fase 3)
