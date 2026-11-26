@@ -1,8 +1,8 @@
 {
   "exe": {
-    "covered_words": 154639,
-    "dispatch_entries": 21908,
-    "functions": 1359
+    "covered_words": 174051,
+    "dispatch_entries": 24708,
+    "functions": 1628
   },
   "overlays": {
     "OVL/PL00_1.OVL": {

@@ -1,9 +1,10 @@
 # Pendências — Fase 2 (cobertura do EXE)
 
-Estado em 2026-11-26, após o lote F2-L26 (commit `2a1e651`, em `origin/main`).
+Estado em 2026-11-26: **Fase 2 fechada** (F2-L26 e F2-R2; `generated-online` promovido de `build-auto-f2r2` e baseline atualizado). Próxima: Fase 3 (overlays).
 
 ## Onde estamos
 
+- **Fase 2 fechada em 2026-11-26.** Sensação de jogo aprovada pelo usuário; nada mais bloqueia. Os itens abaixo ficam como histórico e como pendências de etapas futuras.
 - EXE (`SLUS_005.48`): **174.051 de 174.246 palavras de código cobertas (99,8881%)**, 1.628 funções, 24.708 entradas de dispatch.
 - Faltam **195 palavras**. A quarentena SIO/SMC (29 palavras) já fica fora da métrica e continua interpretada de propósito.
 - A fila de órfãs (lotes P01–P08, política 2a) está **esgotada**: 144 raízes aplicadas entre F2-L18 e F2-L26.
@@ -11,11 +12,11 @@ Estado em 2026-11-26, após o lote F2-L26 (commit `2a1e651`, em `origin/main`).
 - Histórico detalhado: `docs/PLANO_100.md` (Fase 2, "Andamento" e "Pendências") e `docs/newWords.md` (§1 governança e §6 lotes).
 - Evidências e relatórios (fora do repositório): `F:\GitRevised\alphaplus\relatorios\fase2\`, começando por `sessao-2026-11-26.html`.
 
-## 1. Bloqueia o fechamento da Fase 2
+## 1. Itens do fechamento da Fase 2 (todos resolvidos; nada mais bloqueia)
 
-### 1.1 Validação de sensação de jogo (usuário)
+### 1.1 Validação de sensação de jogo (usuário) — APROVADA em 2026-11-26
 
-`generated-online/` e `coverage/baseline.json` só podem ser promovidos depois que o usuário testar uma build nova e aprovar. Essa promoção é o último passo formal da Fase 2.
+Regra registrada aqui: `generated-online/` e `coverage/baseline.json` só seriam promovidos com a aprovação do usuário depois de testar uma build nova. **Cumprida em 2026-11-26:** sensação aprovada e promoção feita a partir de `build-auto-f2r2`.
 
 **Build para testar (99,8881%): `release\Jogar.bat`, na raiz do repositório**
 
@@ -145,18 +146,18 @@ Estado em 2026-11-26, após o lote F2-L26 (commit `2a1e651`, em `origin/main`).
   - o final do Arcade depois de vencer o chefe, com créditos ou staff roll se existirem nesta versão. É preciso zerar sem perfects, para não cair no Akuma especial. O overlay `OVL3/END.OVL` já está compilado (224 palavras); a End Collection (sessão 6) não trouxe PCs novos.
 - Evidências: `pente-fino\sessao-7\` (`marks.jsonl`, `pcs_novos.jsonl`, `quedas\`, `hitches\hitch_102276.json`, `resumo.json`) e `sessao-7-console.log`.
 
-**O que falta para fechar a Fase 2 (estado após a sessão 7):**
+**O que faltava para fechar a Fase 2 (estado após a sessão 7; todos os itens feitos ou movidos em 2026-11-26):**
 
-1. **Aprovação da sensação pelo usuário.** O pente fino não achou nada de cobertura do EXE. Os engasgos de especial, KO e Expert são do original (A/B com o MiSTer). O caso do Dhalsim fica só como observação (§2) e não bloqueia.
-2. **§1.2 (195 palavras): decidido.** Ficam em espera sem exclusão; a métrica segue em 99,8881%. Revisitar depois dos overlays.
-3. **Achado da sessão 7 (§1.4):** caso 1 da jump table da tela final do Team Battle (`0x80184994`) roda interpretado; corrigir num micro-lote.
-3b. **Exercícios complementares de telas (§1.3):** pausa em cada contexto, configurações, Treinamento e, se possível, o fim de um desafio do Expert.
-4. **Só com aprovação explícita:** promover `generated-online/`, atualizar o baseline (depois de qualquer mudança de exclusões) e registrar o fechamento em `docs/PLANO_100.md`.
-5. **Commit dos registros** (`pendencia.md`, `docs/PLANO_100.md`), quando o usuário pedir.
+1. **[FEITO 2026-11-26]** **Aprovação da sensação pelo usuário.** O pente fino não achou nada de cobertura do EXE. Os engasgos de especial, KO e Expert são do original (A/B com o MiSTer). O caso do Dhalsim fica só como observação (§2) e não bloqueia.
+2. **[FEITO]** **§1.2 (195 palavras): decidido.** Ficam em espera sem exclusão; a métrica segue em 99,8881%. Revisitar depois dos overlays.
+3. **[FEITO, F2-R2 + validação no Team Battle]** **Achado da sessão 7 (§1.4):** caso 1 da jump table da tela final do Team Battle (`0x80184994`) roda interpretado; corrigir num micro-lote.
+3b. **[MOVIDO para etapa futura, não bloqueia]** **Exercícios complementares de telas (§1.3):** pausa em cada contexto, configurações, Treinamento e, se possível, o fim de um desafio do Expert.
+4. **[FEITO 2026-11-26]** **Com aprovação explícita:** promover `generated-online/`, atualizar o baseline (depois de qualquer mudança de exclusões) e registrar o fechamento em `docs/PLANO_100.md`.
+5. **[A cargo do coordenador]** **Commit dos registros** (`pendencia.md`, `docs/PLANO_100.md`), quando o usuário pedir.
 
-**Se a sensação for aprovada (depois do pente fino):** promover `generated-online/` a partir de `build-auto-p2infra/generated`, atualizar a linha de base com `python PlusAlphaProject/tools/coverage_metric.py ... --update-baseline` e registrar o fechamento da Fase 2 em `docs/PLANO_100.md`.
+**[Executado em 2026-11-26, a partir de `build-auto-f2r2/generated`.]** Roteiro original: promover `generated-online/` a partir de `build-auto-p2infra/generated`, atualizar a linha de base com `python PlusAlphaProject/tools/coverage_metric.py ... --update-baseline` e registrar o fechamento da Fase 2 em `docs/PLANO_100.md`.
 
-### 1.2 Decisão sobre as 195 palavras restantes (usuário)
+### 1.2 Decisão sobre as 195 palavras restantes (usuário) — DECIDIDA: em espera, sem exclusão
 
 Nenhum destes grupos é caso de micro-lote de seeds:
 
@@ -191,7 +192,7 @@ Leitura: **66 palavras** (36 + 12 + 4 + 14) não são código executável neste 
 
 Lista completa com desmontagem: `relatorios\fase2\F2-Rx\nao_cobertas_l26.txt`.
 
-### 1.4 Achado da sessão 7: caso de jump table não compilado (`0x80184994`) — Fase 2
+### 1.4 Achado da sessão 7: caso de jump table não compilado (`0x80184994`) — CONCLUÍDO (F2-R2 + validação manual)
 
 Primeiro PC do EXE fora da quarentena com execução observada desde o F2-L26.
 
@@ -234,12 +235,28 @@ Primeiro PC do EXE fora da quarentena com execução observada desde o F2-L26.
   - **Quatro rotas:** rc 0, todos os passos ok, miss 0, nenhum PC do EXE fora da quarentena. Resultado igual ao L26.
   - **`verificador`:** aprovou os 9 critérios. As 13 falhas do `ctest` completo são de ambiente e já existiam antes: gcc `-shared` quebrado, `tomllib` ausente, BIOS SCPH5552 indisponível, alvos não compilados e guardas de texto de runtime/UI.
   - **Evidências:** `F:\GitRevised\alphaplus\relatorios\fase2\F2-R2\`.
-  - **Pendente:** o usuário joga o Team Battle até a tela final com `build-auto-f2r2\exPlusAlpha.exe`, e o agente confere 0 PCs do EXE fora da quarentena. Depois disso, decidir se promove para `generated-online` e baseline (só com aprovação do usuário).
+  - **Validação manual feita (2026-11-26, 18:52–19:10, `build-auto-f2r2`, coletor só leitura).**
+    - **Sessão:** duas partidas completas do Team Battle 5x5, ambas vencidas, passando pela tela final e saindo. A última luta foi contra o Garuda.
+    - **Resultado:** 64.188 frames, miss 0 e **nenhum PC do EXE fora da quarentena**; o `0x80184994` não voltou ao interpretador.
+    - **PCs interpretados (22):** 12 do kernel (linha de base), 6 da quarentena e 4 de overlay, todos da Fase 3:
+      - par `0x80090168` / `0x800900E4`;
+      - par `0x800466E4` / `0x80046768`.
+    - **Frame time:** mediana 16,68 ms, p99 16,74 ms; 84 quedas de 1 frame em especiais e impactos; nenhum engasgo severo.
+    - **Ressalvas:**
+      - Não houve derrota seguida de "sair", o caminho exato da sessão 7. Mas a tela é a mesma máquina de estados `func_8018491C`, e os 5 casos do `jr` agora são `switch` compilado.
+      - Cancelamento de especial de level 2 da Skullomania (18:57:20–27): cerca de 1 s com o jogo desenhando a cada 2–3 vblanks. Nesses vblanks a CPU estava nos laços de espera (`0x801953E0`/`0x801953FC`, `0x801015B8` → `0x801013B0`), ou seja, é o ritmo do próprio jogo (efeito do golpe), sem sobrecarga. Falta só um A/B com o MiSTer desse golpe.
+      - Telas paradas de cerca de 6 s em carregamentos: o jogo continuou rodando.
+    - **Evidências:** `relatorios\fase2\F2-R2\manual-teambattle\`.
+  - **F2-R2 concluída.** O código foi promovido para `generated-online` e o baseline foi atualizado no fechamento da Fase 2 (2026-11-26).
+- **Proposta para a Fase 3 (pergunta do usuário, 2026-11-26): rota de golpes por personagem.** Nenhum teste até agora executou todos os golpes de todos os personagens. A lógica de golpes fica sobretudo nos overlays (`PL##`).
+  - **Ideia:** montar a lista de golpes de cada personagem (especiais, supers de level 1/2/3, cancelamentos, Guard Break, arremessos) a partir de listas públicas e convertê-la em input pela porta de debug, no modo Treinamento, com o coletor ligado.
+  - **Resultado esperado:** execução observada das rotinas de overlay por personagem.
+  - **Primeiro passo:** piloto com 1 ou 2 personagens.
 - **Proposta original (substituída pela F2-R2):** registrar `0x80184994` como entrada (seed/alias, conforme a governança de `docs/newWords.md` para jump tables) ou ensinar essa forma ao resolvedor (F2-Rx, que pode resolver outros `jr` do mesmo padrão).
   - Validação: rota ou sessão manual até a tela final do Team Battle, conferindo 0 PCs do EXE fora da quarentena.
   - A métrica não muda: as palavras já estão cobertas; muda só a entrada no dispatch.
 
-### 1.3 Exercícios complementares de telas (proposta do usuário, 2026-11-26)
+### 1.3 Exercícios complementares de telas (proposta do usuário, 2026-11-26) — MOVIDO para etapa futura
 
 Sessões manuais guiadas, no mesmo formato do pente fino: build de telemetria, coletor só leitura e marcas por trecho. O objetivo é pegar código que o Arcade e o Versus não exercitaram, em especial as 129 palavras do §1.2 e PCs de overlay para a Fase 3. Telas a exercitar:
 
