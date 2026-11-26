@@ -5709,3 +5709,12 @@
 0x8019F4F8  # F2-L25: orfa politica 2a (P08), SEM referencia estatica, SEM execucao observada, jalr via vtable em RAM ([0x801BEEB0]=0x801BEE90, slots +0x10/+0x14/+0x18; +0x10=0x8019F9E4 ja seed do F2-L17), thunk de 12 palavras
 0x8019F528  # F2-L25: orfa politica 2a (P08), SEM referencia estatica, SEM execucao observada, jalr via vtable em RAM ([0x801BEEB0]=0x801BEE90, slots +0x10/+0x14/+0x18; +0x10=0x8019F9E4 ja seed do F2-L17), thunk de 12 palavras
 0x8019F558  # F2-L25: orfa politica 2a (P08), SEM referencia estatica, SEM execucao observada, jalr via vtable em RAM ([0x801BEEB0]=0x801BEE90, slots +0x10/+0x14/+0x18; +0x10=0x8019F9E4 ja seed do F2-L17), thunk de 12 palavras
+# Fechamento medido por seed_preview.py contra a base F2-L25 (174.031 palavras,
+# 1.625 funcoes, 24.702 entradas): +20 palavras unicas, +3 funcoes e +6 entradas,
+# 0 perdas, 0 quarentena, 0 SMC, 0 jalr, 2 jr nao-ra (0x80193770 stub BIOS B0:14, jr $t2=0xB0;
+# 0x801937DC trampolim 0x801937D0 -> jr [0x801BFD20], gravado por 0x801937E4 no PadInit 0x80193474 a partir da tabela B0,
+# mesmo padrao de 0x801937BC; codegen CPS + fallback); nenhum jr de tabela;
+# orcamento 20 <= 1.200 palavras e 3 <= 25 funcoes (politica 2a; aprovado tambem sem --allow-over-budget).
+# Sucede a exclusao do F2-L25: 0x801935BC desbloqueado pelo diagnostico F2-Rx (relatorios/fase2/F2-Rx).
+# Metrica prevista: 174.051 de 174.246 palavras (99,8881%) e 24.708 entradas.
+0x801935BC  # F2-L26: orfa politica 2a (P08, resto), SEM referencia estatica, SEM execucao observada, PadStop (B0:14 + jr [0x801BFD20] via trampolim, padrao de 0x801937BC; diagnostico F2-Rx em relatorios/fase2/F2-Rx)
