@@ -5440,6 +5440,8 @@
 # 25 funcoes autorizado pelo usuario em 2026-11-25). Todas as seeds: SEM referencia
 # estatica, SEM execucao observada (promocao por analise estatica; classes de
 # relatorios/fase2/orfas/classificacao.json). Bordas: prologo ou jr ra + delay.
+# 24 raizes, 25 funcoes no fechamento. Rotulos de biblioteca (PadInit, LoadImage-like etc.):
+# palpites nao confirmados (ressalva acrescentada na revisao do checkpoint F2-L22).
 # Indiretos do fechamento: 3 jr nao-ra (jump tables 0x801ADD48/0x801ADD68 de 0x8018D974 em
 # 0x8018DCAC/0x8018DE44; thunk BIOS B0:15 em 0x80193780) e 7 jalr de libgpu (leem
 # [0x801B85E4] =0x80197F88 e os slots 0x10/0x28 da tabela [0x801B85E0]=0x801B85A0, que
@@ -5502,7 +5504,8 @@
 # estatica (chamadores.json vazio), SEM execucao observada (promocao por analise estatica;
 # classe/modulo de relatorios/fase2/orfas/classificacao.json: D2 libgpu API, D2 libc,
 # D3 jogo/SDK, D2 libgpu, D2 libgs? e D2 libgte; o rotulo libgs? e incerto). Bordas:
-# prologo ou jr ra + delay.
+# prologo ou jr ra + delay. Rotulos de biblioteca (ClearImage, DrawOTagEnv etc.): palpites
+# nao confirmados (ressalva acrescentada na revisao do checkpoint F2-L22).
 # Indiretos do fechamento: 11 jalr, 0 jr nao-ra, 0 stores em texto (SMC), 0 quarentena.
 # 5 jalr leem [0x801B85E4] =0x80197F88 (GPU_printf) e 6 leem slots da tabela
 # [0x801B85E0]=0x801B85A0 (+0x34 =0x80197A2C, +8 =0x80197460, +0x3C =0x80197B88,
@@ -5562,3 +5565,66 @@
 # 0 perdas, 0 quarentena, 0 SMC; orcamento 1.032 <= 1.200 palavras e 25 <= 25 funcoes
 # (exigiu --allow-over-budget; reprovado apenas pelo limite padrao de 10 funcoes).
 # Metrica prevista: 172.651 de 174.246 palavras (99,0846%) e 24.490 entradas.
+# Micro-lote F2-L22 (Fase 2, EXE; politica 2a de raizes orfas, lote P05; orcamento de
+# 25 funcoes autorizado pelo usuario em 2026-11-25). Todas as 25 seeds: SEM referencia
+# estatica (relatorios/fase2/L22/pre/chamadores.json vazio: varredura do binario por jal/j,
+# lui+addiu/ori e palavras de dados), SEM execucao observada (promocao por analise estatica;
+# classe/modulo de relatorios/fase2/orfas/classificacao.json: D2 libgs/libgte, libgs dump e
+# libgte; os rotulos de biblioteca sao palpites incertos, nao confirmados). Bordas:
+# prologo ou jr ra + delay.
+# Indiretos do fechamento: 0 jalr, 0 jr nao-ra, 0 stores em texto (SMC), 0 quarentena.
+#   0x8019AD94: [D2] libgs/libgte (rotulo incerto); transformacoes com estrutura 0x801ECAA0 (chama 0x8019AC90/0x8019B168/0x8019B724/0x8019D3A0); SEM referencia estatica, SEM execucao observada
+0x8019AD94
+#   0x8019B33C: [D2] libgs/libgte (rotulo incerto); funcoes de matriz/vetor (0x801D4B60 e 0x801D7988..); SEM referencia estatica, SEM execucao observada
+0x8019B33C
+#   0x8019B3B8: [D2] libgs/libgte (rotulo incerto); funcoes de matriz/vetor (0x801D4B60 e 0x801D7988..); SEM referencia estatica, SEM execucao observada
+0x8019B3B8
+#   0x8019B3E4: [D2] libgs/libgte (rotulo incerto); funcoes de matriz/vetor (0x801D4B60 e 0x801D7988..); SEM referencia estatica, SEM execucao observada
+0x8019B3E4
+#   0x8019B414: [D2] libgs/libgte (rotulo incerto); funcoes de matriz/vetor (0x801D4B60 e 0x801D7988..); SEM referencia estatica, SEM execucao observada
+0x8019B414
+#   0x8019B4B0: [D2] libgs/libgte (rotulo incerto); funcoes de matriz/vetor (0x801D4B60 e 0x801D7988..); SEM referencia estatica, SEM execucao observada
+0x8019B4B0
+#   0x8019B4E4: [D2] libgs/libgte (rotulo incerto); funcoes de matriz/vetor (0x801D4B60 e 0x801D7988..); SEM referencia estatica, SEM execucao observada
+0x8019B4E4
+#   0x8019B680: [D2] libgs dump (rotulo incerto); Dump de matriz (formato "(%d %d %d) (%d %d %d) (%d %d %d)" 0x801AF1B0 via 0x80197F88); SEM referencia estatica, SEM execucao observada
+0x8019B680
+#   0x8019B6F0: [D2] libgs dump (rotulo incerto); Dump de matriz (formato "(%d %d %d) (%d %d %d) (%d %d %d)" 0x801AF1B0 via 0x80197F88); SEM referencia estatica, SEM execucao observada
+0x8019B6F0
+#   0x8019C5D8: [D2] libgte (rotulo incerto); rsin/rcos (limites 0x400/0x7FF); SEM referencia estatica, SEM execucao observada
+0x8019C5D8
+#   0x8019CAB4: [D2] libgte (rotulo incerto); operacoes GTE (cop2) sobre matriz; SEM referencia estatica, SEM execucao observada
+0x8019CAB4
+#   0x8019CC78: [D2] libgte (rotulo incerto); MulMatrix (29 ops cop2) usando 0x8019CBBC; SEM referencia estatica, SEM execucao observada
+0x8019CC78
+#   0x8019DB68: [D2] libgte (rotulo incerto); wrappers cop2 (OuterProduct/ApplyMatrix etc); SEM referencia estatica, SEM execucao observada
+0x8019DB68
+#   0x8019DB90: [D2] libgte (rotulo incerto); wrappers cop2 (OuterProduct/ApplyMatrix etc); SEM referencia estatica, SEM execucao observada
+0x8019DB90
+#   0x8019DBA8: [D2] libgte (rotulo incerto); wrappers cop2 (OuterProduct/ApplyMatrix etc); SEM referencia estatica, SEM execucao observada
+0x8019DBA8
+#   0x8019DC18: [D2] libgte (rotulo incerto); wrapper cop2; SEM referencia estatica, SEM execucao observada
+0x8019DC18
+#   0x8019DC7C: [D2] libgte (rotulo incerto); 8 wrappers cop2; SEM referencia estatica, SEM execucao observada
+0x8019DC7C
+#   0x8019DCAC: [D2] libgte (rotulo incerto); 8 wrappers cop2; SEM referencia estatica, SEM execucao observada
+0x8019DCAC
+#   0x8019DD14: [D2] libgte (rotulo incerto); 8 wrappers cop2; SEM referencia estatica, SEM execucao observada
+0x8019DD14
+#   0x8019DD84: [D2] libgte (rotulo incerto); 8 wrappers cop2; SEM referencia estatica, SEM execucao observada
+0x8019DD84
+#   0x8019DDF4: [D2] libgte (rotulo incerto); 8 wrappers cop2; SEM referencia estatica, SEM execucao observada
+0x8019DDF4
+#   0x8019DE0C: [D2] libgte (rotulo incerto); 8 wrappers cop2; SEM referencia estatica, SEM execucao observada
+0x8019DE0C
+#   0x8019DE34: [D2] libgte (rotulo incerto); 8 wrappers cop2; SEM referencia estatica, SEM execucao observada
+0x8019DE34
+#   0x8019DE54: [D2] libgte (rotulo incerto); 8 wrappers cop2; SEM referencia estatica, SEM execucao observada
+0x8019DE54
+#   0x8019DEA0: [D2] libgte (rotulo incerto); wrapper cop2; SEM referencia estatica, SEM execucao observada
+0x8019DEA0
+# Fechamento medido por seed_preview.py contra a base F2-L21 (172.651 palavras,
+# 1.568 funcoes, 24.490 entradas): +749 palavras unicas, +25 funcoes e +99 entradas,
+# 0 perdas, 0 quarentena, 0 SMC; orcamento 749 <= 1.200 palavras e 25 <= 25 funcoes
+# (exigiu --allow-over-budget; reprovado apenas pelo limite padrao de 10 funcoes).
+# Metrica prevista: 173.400 de 174.246 palavras (99,5145%) e 24.589 entradas.
