@@ -216,6 +216,25 @@ Primeiro PC do EXE fora da quarentena com execução observada desde o F2-L26.
   - **Paridade:** manter a paridade com `compile_overlays.py` e o verificador Python.
   - **Validação:** rebuild do recompilador, regeneração, auditoria de codegen (os 13 `jr` viram `switch` com `goto`, preservando o delay slot e o `psx_check_interrupts_at`), métrica (palavras iguais; entradas do dispatch podem mudar), as quatro rotas e, por fim, sessão manual até a tela final do Team Battle.
   - **Agentes:** `investigador` → `executor` → `operador-rotas` ‖ `revisor` (esforço alto) → `verificador`.
+- **F2-R2 aplicada (2026-11-26); falta só a validação manual.**
+  - **Regra implementada:** a variante `delay_scale_free_d` em `resolve_exact_bounded_jump_table` e em `_find_jump_table_targets` (`tools/` e `overlay_toolchain/compile_overlays.py`, idênticos). Ela só vale quando a palavra antes do `sll` não é `beq`, então as formas antigas não mudam.
+  - **Allowlist de D:** `nop`, ALU sem trap (`sll/srl/sra[v]`, `addu/subu`, `and/or/xor/nor`, `slt[u]`, `addiu/slti[u]`, `andi/ori/xori`, `lui`) e `sb/sh/sw` só com base `$sp`. Seis dos 13 casos têm D = `sw ..(sp)`.
+  - **D é rejeitado** se escreve o índice, o `scaled`, a base, o guard ou o `rt` do LUI.
+  - **Conferência dos 13 `jr`:** todos aceitos, todos com os alvos dentro da função, e nenhum outro `jr` de `jr_nao_resolvidos.txt` tem essa forma. O `0x801A29D4` tem a forma `delay_scale` antiga e continua não resolvido; fica para investigação própria.
+  - **Testes:** `reachable_discovery_test` (C++) e `check_delay_scale_free_d_jump_table_discovery` (Python), com 5 casos positivos e mais de 20 negativos (D desvio, load, store fora de `$sp`, COP2, trap, escrita em índice, base, guard ou `rt` do LUI, alvo na região protegida e outros).
+  - **Carimbos:**
+    - hash do codegen: `0xe13692f6` → `0x3ac8904a`;
+    - `overlay_toolchain` ressincronizado;
+    - `OpenBIOS.emitter.sha` regerado, com o `.c` do OpenBIOS idêntico.
+  - **BIOS local SCPH1001** (não rastreada): regerada, com `.c` byte-igual; só o fingerprint mudou.
+  - **Build isolado `PlusAlphaProject/build-auto-f2r2`** (não promovido; `build-auto-p2infra`, `generated-online` e baseline ficaram intocados):
+    - 56 `switch (_jt_` contra 43 antes (+13). O `0x80184970` tem 5 casos com `goto`, inclusive `block_80184994`.
+    - Audit CLEAN.
+    - Métrica: **174.051 palavras (99,8881%), 24.708 entradas (+0)**, `.ranges` idêntico.
+  - **Quatro rotas:** rc 0, todos os passos ok, miss 0, nenhum PC do EXE fora da quarentena. Resultado igual ao L26.
+  - **`verificador`:** aprovou os 9 critérios. As 13 falhas do `ctest` completo são de ambiente e já existiam antes: gcc `-shared` quebrado, `tomllib` ausente, BIOS SCPH5552 indisponível, alvos não compilados e guardas de texto de runtime/UI.
+  - **Evidências:** `F:\GitRevised\alphaplus\relatorios\fase2\F2-R2\`.
+  - **Pendente:** o usuário joga o Team Battle até a tela final com `build-auto-f2r2\exPlusAlpha.exe`, e o agente confere 0 PCs do EXE fora da quarentena. Depois disso, decidir se promove para `generated-online` e baseline (só com aprovação do usuário).
 - **Proposta original (substituída pela F2-R2):** registrar `0x80184994` como entrada (seed/alias, conforme a governança de `docs/newWords.md` para jump tables) ou ensinar essa forma ao resolvedor (F2-Rx, que pode resolver outros `jr` do mesmo padrão).
   - Validação: rota ou sessão manual até a tela final do Team Battle, conferindo 0 PCs do EXE fora da quarentena.
   - A métrica não muda: as palavras já estão cobertas; muda só a entrada no dispatch.
@@ -253,7 +272,7 @@ Se aparecer PC do EXE fora da quarentena, vira candidato a seed com execução o
 - **Agregado do `boot_to_fight`:** às vezes vem com `exe_pcs_interpretados` vazio (L21, L26), enquanto `telemetry_luta_final.json` mostra os 6 PCs da quarentena. Provavelmente é o momento da amostragem; não está confirmado.
 - **Execução observada das órfãs:** as 144 raízes P01–P08 têm só cobertura estática. Uma rota com fntrace armado nesses alvos daria evidência, se você quiser.
 - **Índices de modo sem rota:** os índices 2, 4, 5, 12 e 22–24 da tabela de modos ainda não são alcançados por nenhuma rota automática. O Expert Mode foi exercitado manualmente no pente fino (sem rota automática); as notas não dizem a qual índice da tabela ele corresponde.
-- **`jr` indiretos:** restam 41 de formas que o resolvedor de jump table não reconhece. Eles funcionam pelo dispatch e por fallback e não afetam a métrica.
+- **`jr` indiretos:** a F2-R2 resolveu 13 (forma `sltiu; beq; D; sll`, §1.4). Restavam 41 de formas que o resolvedor de jump table não reconhece. Eles funcionam pelo dispatch e por fallback e não afetam a métrica.
 - **`0x801937DC` (PadStop):** salta pelo ponteiro `[0x801BFD20]`, cujo valor depende da imagem de BIOS (SCPH1001 contra OpenBIOS). O fallback cobre os dois casos, mas isso não foi testado em execução.
 
 ## 3. Fora da Fase 2 (Fase 3)
