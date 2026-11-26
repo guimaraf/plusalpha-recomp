@@ -5338,3 +5338,57 @@
 # Metrica prevista: 168.720 de 174.246 palavras (96,8286%) e 23.948 entradas.
 0x8019F9E4
 0x801A15A8
+
+# Micro-lote F2-L18 (Fase 2, EXE; politica 2a de raizes orfas, lote P01; orcamento de
+# 25 funcoes autorizado pelo usuario em 2026-11-25). Todas as seeds: SEM referencia
+# estatica, SEM execucao observada (promocao por analise estatica; classes do mapa
+# relatorios/fase2/orfas/mapa_orfas.json). Bordas: prologo ou jr ra + delay.
+# Unico jr nao-ra do fechamento: 0x8010F2E8 (jump table de 0x8010F290, tabela 0x801AB72C,
+# 17 casos); sem jalr, sem stores em texto (SMC), sem quarentena.
+#   0x8010169C: [D3] lib de threads do jogo; thread kill/free (CloseThread B0:0F + ChangeThread B0:10; TCB 0x801F2000 stride 0x80); SEM referencia estatica, SEM execucao observada
+0x8010169C
+#   0x801016EC: [D3] lib de threads do jogo; thread kill/free (CloseThread B0:0F + ChangeThread B0:10; TCB 0x801F2000 stride 0x80); SEM referencia estatica, SEM execucao observada
+0x801016EC
+#   0x801017A8: [D3] lib de threads do jogo; set/clear do bit 0x10 do flag do TCB; SEM referencia estatica, SEM execucao observada
+0x801017A8
+#   0x801017CC: [D3] lib de threads do jogo; set/clear do bit 0x10 do flag do TCB; SEM referencia estatica, SEM execucao observada
+0x801017CC
+#   0x80101B9C: [D3] loop de quadro; variante de troca de buffer com loop de pausa ([0x801D3C7C]==1): DrawOTag/DrawSync/VSync; SEM referencia estatica, SEM execucao observada
+0x80101B9C
+#   0x80108218: [I] jogo: cenas 22-24/26; 2 funcoes de setup de luta/palco entre os handlers de cena 24 (0x8010809C) e 26 (0x801085E0): escrevem a estrutura de jogadores 0x801D4EA0, [0x801D39B9]=3, [0x801D39C0]=tabela 0x801B64D0, chamam 0x801043B8 e 0x80187E7C; SEM referencia estatica, SEM execucao observada
+0x80108218
+#   0x801083C0: [I] jogo: cenas 22-24/26; 2 funcoes de setup de luta/palco entre os handlers de cena 24 (0x8010809C) e 26 (0x801085E0): escrevem a estrutura de jogadores 0x801D4EA0, [0x801D39B9]=3, [0x801D39C0]=tabela 0x801B64D0, chamam 0x801043B8 e 0x80187E7C; SEM referencia estatica, SEM execucao observada
+0x801083C0
+#   0x8010F290: [I] jogo: palco; ajuste de brilho/paleta por palco (100 entradas x 0x70 em 0x80037CD0), JT 0x801AB72C indexada por [0x801D39C0]-1 (17 casos); SEM referencia estatica, SEM execucao observada
+0x8010F290
+#   0x80110150: [I] jogo: palco; laco de 100 objetos x 0x70 (0x80037CD0): monta pacotes e chama 0x8010C72C; variante do render de palco; SEM referencia estatica, SEM execucao observada
+0x80110150
+#   0x801113E8: [D3] jogo: utilitario grafico; leitura/escala de buffer 0x800F4790..0x800F6010 + DrawSync (2 funcoes; divisao por 10 via 0x66666667); SEM referencia estatica, SEM execucao observada
+0x801113E8
+#   0x801114D8: [D3] jogo: utilitario grafico; leitura/escala de buffer 0x800F4790..0x800F6010 + DrawSync (2 funcoes; divisao por 10 via 0x66666667); SEM referencia estatica, SEM execucao observada
+0x801114D8
+#   0x80111804: [D1] jogo; stub jr ra/nop; SEM referencia estatica, SEM execucao observada
+0x80111804
+#   0x801160D0: [D3] jogo: dados de movimento; busca em tabela 0x801AFC68 por jogador (procura terminador 0x08000000); SEM referencia estatica, SEM execucao observada
+0x801160D0
+#   0x80123D20: [D3] jogo: utilitario; zera celula de matriz 0x801DF158[a0*..+a1*..]; SEM referencia estatica, SEM execucao observada
+0x80123D20
+#   0x80123E54: [D3] jogo: pool; free de no de pool (lista em 0x801E346C, contador 0x801FBC38); SEM referencia estatica, SEM execucao observada
+0x80123E54
+#   0x801241A8: [D4] dev: SIM/ROMFILE; carregador de ROM por arquivo no dispositivo dev "sim:ROMFILE/SFEX%04X.ROM/.SUM" (+2 stubs); SEM referencia estatica, SEM execucao observada
+0x801241A8
+#   0x8012420C: [D4] dev: SIM/ROMFILE; carregador de ROM por arquivo no dispositivo dev "sim:ROMFILE/SFEX%04X.ROM/.SUM" (+2 stubs); SEM referencia estatica, SEM execucao observada
+0x8012420C
+#   0x801242BC: [D4] dev: SIM/ROMFILE; carregador de ROM por arquivo no dispositivo dev "sim:ROMFILE/SFEX%04X.ROM/.SUM" (+2 stubs); SEM referencia estatica, SEM execucao observada
+0x801242BC
+#   0x80124370: [D4] dev: SIM/ROMFILE; carregador de ROM por arquivo no dispositivo dev "sim:ROMFILE/SFEX%04X.ROM/.SUM" (+2 stubs); SEM referencia estatica, SEM execucao observada
+0x80124370
+#   0x80124378: [D4] dev: SIM/ROMFILE; carregador de ROM por arquivo no dispositivo dev "sim:ROMFILE/SFEX%04X.ROM/.SUM" (+2 stubs); SEM referencia estatica, SEM execucao observada
+0x80124378
+#   0x80124394: [D4] dev: SIM/ROMFILE; carregador de ROM por arquivo no dispositivo dev "sim:ROMFILE/SFEX%04X.ROM/.SUM" (+2 stubs); SEM referencia estatica, SEM execucao observada
+0x80124394
+# Fechamento medido por seed_preview.py contra a base F2-L17 (168.720 palavras,
+# 1.479 funcoes, 23.948 entradas): +928 palavras unicas, +21 funcoes e +112 entradas,
+# 0 perdas, 0 quarentena, 0 SMC; orcamento 928 <= 1.200 palavras e 21 <= 25 funcoes
+# (exigiu --allow-over-budget; reprovado apenas pelo limite padrao de 10 funcoes).
+# Metrica prevista: 169.648 de 174.246 palavras (97,3612%) e 24.060 entradas.

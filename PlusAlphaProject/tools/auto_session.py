@@ -140,6 +140,24 @@ def buttons_word(names):
     return IDLE_WORD & ~button_mask(names)
 
 
+def step_port(step):
+    """Porta do pad (1 ou 2) de um passo press; 1 quando ausente. ValueError se invalida."""
+    port = step.get("port", 1)
+    if not isinstance(port, int) or isinstance(port, bool) or port not in (1, 2):
+        raise ValueError(f"port deve ser 1 ou 2, recebido {port!r}")
+    return port
+
+
+def press_kwargs(step, word, frames):
+    """Parametros do comando press do runtime; 'port' so e enviado quando != 1
+    (handle_press trata ausente como porta 1, preservando o comportamento anterior)."""
+    kw = {"buttons": word, "frames": frames}
+    port = step_port(step)
+    if port != 1:
+        kw["port"] = port
+    return kw
+
+
 def validate_route(route):
     """Levanta ValueError se a rota for invalida; devolve a rota."""
     if not isinstance(route, dict):
@@ -162,6 +180,10 @@ def validate_route(route):
             if not isinstance(buttons, list) or not buttons:
                 raise ValueError(f"{where}: buttons deve ser lista nao vazia")
             button_mask(buttons)
+            try:
+                step_port(step)
+            except ValueError as exc:
+                raise ValueError(f"{where}: {exc}")
             if not isinstance(step.get("frames", 4), int) or step.get("frames", 4) <= 0:
                 raise ValueError(f"{where}: frames deve ser inteiro positivo")
             if step.get("wait_after", 0) < 0:
@@ -839,8 +861,10 @@ class Session:
         elif kind == "press":
             word = buttons_word(step["buttons"])
             frames = step.get("frames", 4)
-            r = self.cmd("press", buttons=word, frames=frames)
+            r = self.cmd("press", **press_kwargs(step, word, frames))
             rec.update(buttons=step["buttons"], word=f"0x{word:04X}", frames=frames, ok=r.get("ok"))
+            if step_port(step) != 1:
+                rec["port"] = step_port(step)
             if not r.get("ok"):
                 raise RuntimeError(f"press recusado: {r}")
             self.wait_frames(frames + step.get("wait_after", 30))

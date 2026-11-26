@@ -86,6 +86,38 @@ class RouteTest(unittest.TestCase):
         self.assertTrue(route['steps'])
 
 
+class PressPortTest(unittest.TestCase):
+    def route(self, **extra):
+        step = {'type': 'press', 'buttons': ['start'], 'frames': 2}
+        step.update(extra)
+        return {'steps': [step]}
+
+    def test_valid_ports(self):
+        for extra in ({}, {'port': 1}, {'port': 2}):
+            with self.subTest(extra=extra):
+                self.assertTrue(au.validate_route(self.route(**extra)))
+
+    def test_invalid_ports(self):
+        for port in (0, 3, -1, '2', None, 1.0, True):
+            with self.subTest(port=port), self.assertRaisesRegex(ValueError, 'port'):
+                au.validate_route(self.route(port=port))
+
+    def test_press_kwargs_only_sends_non_default_port(self):
+        word = au.buttons_word(['start'])
+        self.assertEqual(au.press_kwargs({}, word, 2), {'buttons': word, 'frames': 2})
+        self.assertEqual(au.press_kwargs({'port': 1}, word, 2), {'buttons': word, 'frames': 2})
+        self.assertEqual(au.press_kwargs({'port': 2}, word, 2),
+                         {'buttons': word, 'frames': 2, 'port': 2})
+
+    def test_pl0c_pl12_route_valid(self):
+        route = au.load_route('versus_pl0c_pl12')
+        self.assertTrue(any(s.get('port') == 2 for s in route['steps']))
+        for s in route['steps']:
+            self.assertNotIn('requires_tool_change', s)
+            if s['type'] == 'wait_ram':
+                self.assertTrue(s.get('optional'), s)
+
+
 class CommandTest(unittest.TestCase):
     def test_game_command(self):
         cmd = au.build_game_command('g/exPlusAlpha.exe', 'g/game.toml', 'ev/memcard', 4631)

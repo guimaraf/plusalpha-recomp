@@ -1,0 +1,789 @@
+{
+ "name": "versus_pl0c_pl12",
+ "description": "Luta Versus Ryu (PL0C, id 0x0C) x CP (na pratica Ken, id 0x0D: o cursor do lado CP nao respondeu ao pad 2) para tentar observar a execucao de 0x8015547C (handler de estado de jogador, slot 16 da tabela de acoes instalada so pelos overlays PL0C/PL12). Parte do mode select como survey_modes (savestate slot 4), entra em Versus, escolhe Ryu no P1 (botoes com >=12 frames na selecao) e confirma o CP e, na luta pronta (savestate slot 3), tenta tres variantes (A: P1; B: P2; C: P1 com Start+right+circle). Hipotese: sequencia tipo Konami (cima cima baixo baixo esquerda direita esquerda direita Select Start) dentro de 99 frames, nao confirmada (F2-L18: 0 hits de fntrace na luta, rota_versus_5). Os wait_ram de confirmacao sao opcionais (nao abortam a rota); fntrace armado em 0x8015547C, dispatch_misses e screenshots em cada etapa, e leituras de RAM: ids [0x801D4EA2]/[0x801D63CA], cena [0x801D39B8], palco [0x801D39C0], estado 0x10 em [0x801D63B7]/[0x801D78DF]. PL12 (id 0x12) exige trocar a selecao; habilitacao nao determinada. Saves do usuario nao sao tocados: auto_session usa --memcard-dir isolado na pasta de evidencia.",
+ "steps": [
+  {
+   "type": "fntrace",
+   "op": "arm",
+   "pcs": [
+    "0x8015547C"
+   ],
+   "clear": true,
+   "note": "alvo unico: handler da classe 16 (slot 16 da tabela de PL0C/PL12)"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 3500,
+   "note": "logos/FMV ate o titulo (igual survey_modes)"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "sai do titulo"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "tela de modo"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_mode_select",
+   "note": "esperado 7"
+  },
+  {
+   "type": "screenshot",
+   "name": "00_mode_select"
+  },
+  {
+   "type": "savestate",
+   "op": "save",
+   "slot": 4,
+   "note": "marco: mode select (igual survey_modes)"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20,
+   "note": "cursor em Versus (igual survey_modes passo 196)"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 400,
+   "note": "entra em Versus; esperado cena 0 = selecao"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_01_selecao"
+  },
+  {
+   "type": "screenshot",
+   "name": "01_selecao"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_01_selecao",
+   "tail": 64
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D4EA2",
+   "size": 1,
+   "name": "p1_char_antes",
+   "note": "byte +2 da struct do jogador 0 (id do personagem)"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63CA",
+   "size": 1,
+   "name": "p2_char_antes",
+   "note": "jogador 1 = 0x801D4EA0+0x1528"
+  },
+  {
+   "type": "screenshot",
+   "name": "01b_cursor_padrao",
+   "note": "o 1P comeca em RYU (visto em 04_player_select.png)"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 12,
+   "wait_after": 90,
+   "note": "P1 confirma Ryu (12 frames)"
+  },
+  {
+   "type": "screenshot",
+   "name": "c1_p1_cross"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D4EA2",
+   "size": 1,
+   "name": "p1_char_depois"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 12,
+   "wait_after": 30,
+   "note": "p1 right (tentativa de mover o cursor do CP; sem efeito em rota_versus_5)"
+  },
+  {
+   "type": "screenshot",
+   "name": "c2_right"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 12,
+   "wait_after": 90,
+   "note": "cross 2"
+  },
+  {
+   "type": "screenshot",
+   "name": "c3_cross2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 12,
+   "wait_after": 200,
+   "note": "cross 3"
+  },
+  {
+   "type": "screenshot",
+   "name": "c4_cross3"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_c4"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63CA",
+   "size": 1,
+   "name": "p2_char_depois"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 12,
+   "wait_after": 300,
+   "note": "cross 4"
+  },
+  {
+   "type": "screenshot",
+   "name": "c5_cross4"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_c5"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 12,
+   "wait_after": 400,
+   "note": "cross 5"
+  },
+  {
+   "type": "screenshot",
+   "name": "c6_cross5"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_c6"
+  },
+  {
+   "type": "wait_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "values": [
+    1
+   ],
+   "timeout_frames": 1500,
+   "optional": true,
+   "name": "espera_cena1"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_02_apos_selecao"
+  },
+  {
+   "type": "screenshot",
+   "name": "02_apos_selecao"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300,
+   "note": "intro/round start"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_03_luta_pronta"
+  },
+  {
+   "type": "screenshot",
+   "name": "03_luta_pronta"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_03_luta_pronta",
+   "tail": 64
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B9",
+   "size": 1,
+   "name": "modo_9b9",
+   "note": "sub-cena/modo; o matcher 0x8015830C exige [0x801D39B9]-4 <3 em alguns caminhos"
+  },
+  {
+   "type": "savestate",
+   "op": "save",
+   "slot": 3,
+   "note": "marco: luta Ryu x CP (Ken em rota_versus_5) pronta (antes do codigo)"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo A passo U"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo A passo U"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo A passo D"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo A passo D"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo A passo L"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo A passo R"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo A passo L"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo A passo R"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "select"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo A passo SELECT"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 4,
+   "wait_after": 6,
+   "note": "codigo A passo START (pode abrir a pausa; ver cena/pausa e despausar)"
+  },
+  {
+   "type": "wait_ram",
+   "addr": "0x801D63B7",
+   "size": 1,
+   "values": [
+    16
+   ],
+   "timeout_frames": 90,
+   "optional": true,
+   "name": "p1_classe_1517_A",
+   "note": "[jogador0+0x1517]==0x10 confirma classe 16"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D4EA2",
+   "size": 1,
+   "name": "p1_id_A"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63CA",
+   "size": 1,
+   "name": "p2_id_A"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39C0",
+   "size": 1,
+   "name": "palco_A"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63B7",
+   "size": 1,
+   "name": "p1_estado_A"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D78DF",
+   "size": 1,
+   "name": "p2_estado_A"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_04_codigo_A_p1"
+  },
+  {
+   "type": "screenshot",
+   "name": "04_codigo_A_p1"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_04_codigo_A_p1",
+   "tail": 64
+  },
+  {
+   "type": "fntrace",
+   "op": "dump",
+   "name": "classe16_A"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 4,
+   "wait_after": 60,
+   "note": "despausa se a pausa abriu (inocuo caso contrario)"
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 3,
+   "note": "volta a luta pronta"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "port": 2,
+   "note": "codigo B (P2) passo U"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "port": 2,
+   "note": "codigo B (P2) passo U"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "port": 2,
+   "note": "codigo B (P2) passo D"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "port": 2,
+   "note": "codigo B (P2) passo D"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "port": 2,
+   "note": "codigo B (P2) passo L"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "port": 2,
+   "note": "codigo B (P2) passo R"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "port": 2,
+   "note": "codigo B (P2) passo L"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "port": 2,
+   "note": "codigo B (P2) passo R"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "select"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "port": 2,
+   "note": "codigo B (P2) passo SELECT"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "port": 2,
+   "note": "codigo B (P2) passo START"
+  },
+  {
+   "type": "wait_ram",
+   "addr": "0x801D78DF",
+   "size": 1,
+   "values": [
+    16
+   ],
+   "timeout_frames": 90,
+   "optional": true,
+   "name": "p2_classe_1517_B",
+   "note": "jogador1+0x1517"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D4EA2",
+   "size": 1,
+   "name": "p1_id_B"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63CA",
+   "size": 1,
+   "name": "p2_id_B"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39C0",
+   "size": 1,
+   "name": "palco_B"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63B7",
+   "size": 1,
+   "name": "p1_estado_B"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D78DF",
+   "size": 1,
+   "name": "p2_estado_B"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_05_codigo_B_p2"
+  },
+  {
+   "type": "screenshot",
+   "name": "05_codigo_B_p2"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_05_codigo_B_p2",
+   "tail": 64
+  },
+  {
+   "type": "fntrace",
+   "op": "dump",
+   "name": "classe16_B"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 4,
+   "wait_after": 60,
+   "port": 2,
+   "note": "despausa"
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 3,
+   "note": "volta a luta pronta"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo C passo U"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo C passo U"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo C passo D"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo C passo D"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo C passo L"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo C passo R"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo C passo L"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo C passo R"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "select"
+   ],
+   "frames": 4,
+   "wait_after": 4,
+   "note": "codigo C passo SELECT"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start",
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6,
+   "note": "codigo C: START com right+circle"
+  },
+  {
+   "type": "wait_ram",
+   "addr": "0x801D63B7",
+   "size": 1,
+   "values": [
+    16
+   ],
+   "timeout_frames": 90,
+   "optional": true,
+   "name": "p1_classe_1517_C"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D4EA2",
+   "size": 1,
+   "name": "p1_id_C"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63CA",
+   "size": 1,
+   "name": "p2_id_C"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39C0",
+   "size": 1,
+   "name": "palco_C"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63B7",
+   "size": 1,
+   "name": "p1_estado_C"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D78DF",
+   "size": 1,
+   "name": "p2_estado_C"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_06_codigo_C"
+  },
+  {
+   "type": "screenshot",
+   "name": "06_codigo_C"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "m_06_codigo_C",
+   "tail": 64
+  },
+  {
+   "type": "fntrace",
+   "op": "dump",
+   "name": "classe16_C"
+  },
+  {
+   "type": "telemetry",
+   "name": "final",
+   "which": [
+    "dispatch_stats",
+    "overlay_interp_hot",
+    "overlay_loader_status",
+    "dispatch_misses"
+   ]
+  }
+ ]
+}
