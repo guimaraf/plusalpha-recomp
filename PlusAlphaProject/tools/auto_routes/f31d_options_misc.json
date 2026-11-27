@@ -1,0 +1,1000 @@
+{
+ "name": "f31d_options_misc",
+ "description": "Ending Collection (3 filmes, card AllUnlock via Data Load), Ranking (modos/scroll) e Button Config.",
+ "steps": [
+  {
+   "type": "fntrace",
+   "op": "arm",
+   "pcs": [
+    "0x80129E0C"
+   ],
+   "clear": true
+  },
+  {
+   "type": "wait_frames",
+   "frames": 3500,
+   "note": "logos/FMV ate o titulo"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_mode_select"
+  },
+  {
+   "type": "screenshot",
+   "name": "00_mode_select"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 400
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_option"
+  },
+  {
+   "type": "screenshot",
+   "name": "01_option_menu"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20,
+   "note": "Memory Card"
+  },
+  {
+   "type": "screenshot",
+   "name": "m_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200,
+   "note": "Data Load"
+  },
+  {
+   "type": "screenshot",
+   "name": "m_load_slot"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 150,
+   "note": "slot 1"
+  },
+  {
+   "type": "screenshot",
+   "name": "m_load_conf"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60,
+   "note": "confirma"
+  },
+  {
+   "type": "screenshot",
+   "name": "m_load_60"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 100
+  },
+  {
+   "type": "screenshot",
+   "name": "m_load_160"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 240
+  },
+  {
+   "type": "screenshot",
+   "name": "m_load_400"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300,
+   "note": "volta ao Option"
+  },
+  {
+   "type": "savestate",
+   "op": "save",
+   "slot": 5,
+   "note": "option menu pos load"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "base",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "base",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "e_entra"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "e0",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "e0",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "screenshot",
+   "name": "e1_ryu_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "wait_frames",
+   "frames": 500
+  },
+  {
+   "type": "screenshot",
+   "name": "e1_ryu_movie500"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 500
+  },
+  {
+   "type": "screenshot",
+   "name": "e1_ryu_movie1000"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 200
+  },
+  {
+   "type": "screenshot",
+   "name": "e1_ryu_apos_start"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "e1_ryu",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "e1_ryu",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "e2_col5_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "wait_frames",
+   "frames": 500
+  },
+  {
+   "type": "screenshot",
+   "name": "e2_col5_movie500"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 500
+  },
+  {
+   "type": "screenshot",
+   "name": "e2_col5_movie1000"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 200
+  },
+  {
+   "type": "screenshot",
+   "name": "e2_col5_apos_start"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "e2_col5",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "e2_col5",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "e3_row2_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "wait_frames",
+   "frames": 500
+  },
+  {
+   "type": "screenshot",
+   "name": "e3_row2_movie500"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 500
+  },
+  {
+   "type": "screenshot",
+   "name": "e3_row2_movie1000"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 200
+  },
+  {
+   "type": "screenshot",
+   "name": "e3_row2_apos_start"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "e3_row2",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "e3_row2",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "e_sai"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_apos_ending"
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 5,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 60
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "r_entra"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "wait_frames",
+   "frames": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "r_modo1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "wait_frames",
+   "frames": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "r_modo2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "wait_frames",
+   "frames": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "r_modo3"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "wait_frames",
+   "frames": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "r_modo4"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "wait_frames",
+   "frames": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "r_modo5"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "wait_frames",
+   "frames": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "r_modo6"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "r_scroll"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "r0",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "r0",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "r_sai"
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 5,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 60
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "b_entra"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "b_row1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "b_row2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "b_row3"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "b_row4"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 30
+  },
+  {
+   "type": "screenshot",
+   "name": "b_assign_square"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 6,
+   "wait_after": 30
+  },
+  {
+   "type": "screenshot",
+   "name": "b_assign_tri"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 30
+  },
+  {
+   "type": "screenshot",
+   "name": "b_right"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "b_default_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "b_default_cross"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "b0",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "b0",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "b_sai"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_apos_button"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "bfim",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "bfim",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "telemetry",
+   "name": "final",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  }
+ ],
+ "meta": {
+  "segs": [
+   {
+    "tag": "base",
+    "tela": "Option menu pos Data Load (card AllUnlock)"
+   },
+   {
+    "tag": "e0",
+    "tela": "Ending Collection (entrada)"
+   },
+   {
+    "tag": "e1_ryu",
+    "tela": "Ending movie e1_ryu"
+   },
+   {
+    "tag": "e2_col5",
+    "tela": "Ending movie e2_col5"
+   },
+   {
+    "tag": "e3_row2",
+    "tela": "Ending movie e3_row2"
+   },
+   {
+    "tag": "r0",
+    "tela": "Ranking (modos e scroll)"
+   },
+   {
+    "tag": "b0",
+    "tela": "Button Config (mover, atribuir, Default)"
+   },
+   {
+    "tag": "bfim",
+    "tela": "apos sair do Button Config"
+   }
+  ],
+  "card": "card1AllUnlock copiado para memcard da sessao"
+ }
+}

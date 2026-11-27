@@ -1,0 +1,868 @@
+{
+ "name": "f31d_memcard_a",
+ "description": "Memory Card com card1AllUnlock copiado para a sessao: Load, Game Option 8, Save, Game Option 1, Load e verificacao.",
+ "steps": [
+  {
+   "type": "fntrace",
+   "op": "arm",
+   "pcs": [
+    "0x80129E0C"
+   ],
+   "clear": true
+  },
+  {
+   "type": "wait_frames",
+   "frames": 3500,
+   "note": "logos/FMV ate o titulo"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_mode_select"
+  },
+  {
+   "type": "screenshot",
+   "name": "00_mode_select"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 400
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_option"
+  },
+  {
+   "type": "screenshot",
+   "name": "01_option_menu"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "base",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "base",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200
+  },
+  {
+   "type": "screenshot",
+   "name": "a_mcmenu"
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load1_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load1_slot"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load1_a40"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load1_a100"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load1_b50"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load1_b100"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load1_b150"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load1_b200"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 100
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load1_c300"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load1_d600"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "a_load1",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "a_load1",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "a_volta1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200
+  },
+  {
+   "type": "screenshot",
+   "name": "a1_game_option"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "a1_game_option_depois"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "a_gopt8",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "a_gopt8",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200
+  },
+  {
+   "type": "screenshot",
+   "name": "a_mcmenu2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "a_save_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "screenshot",
+   "name": "a_save_slot"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40
+  },
+  {
+   "type": "screenshot",
+   "name": "a_save_a40"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "a_save_a100"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 150
+  },
+  {
+   "type": "screenshot",
+   "name": "a_save_ow"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "a_save_ow_yes"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40
+  },
+  {
+   "type": "screenshot",
+   "name": "a_save_ow_cross"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "a_save_b50"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "a_save_b100"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "a_save_b150"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "a_save_b200"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 100
+  },
+  {
+   "type": "screenshot",
+   "name": "a_save_c300"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "a_save_d600"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "a_save",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "a_save",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "a_volta2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200
+  },
+  {
+   "type": "screenshot",
+   "name": "a2_game_option"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "a2_game_option_depois"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "a_gopt1",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "a_gopt1",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load2_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load2_slot"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load2_a40"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load2_a100"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load2_b50"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load2_b100"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load2_b150"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load2_b200"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 100
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load2_c300"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "a_load2_d600"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "a_load2",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "a_load2",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200
+  },
+  {
+   "type": "screenshot",
+   "name": "a_verifica_difficulty"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_verifica"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "a_verif",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "a_verif",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "a_mode_select"
+  },
+  {
+   "type": "telemetry",
+   "name": "final",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  }
+ ],
+ "meta": {
+  "segs": [
+   {
+    "tag": "base",
+    "tela": "Option menu (card AllUnlock copiado)"
+   },
+   {
+    "tag": "a_load1",
+    "tela": "Data Load #1 (AllUnlock)"
+   },
+   {
+    "tag": "a_gopt8",
+    "tela": "Game Option: difficulty 8 antes do save"
+   },
+   {
+    "tag": "a_save",
+    "tela": "Data Save (card AllUnlock)"
+   },
+   {
+    "tag": "a_gopt1",
+    "tela": "Game Option: difficulty 1 depois do save"
+   },
+   {
+    "tag": "a_load2",
+    "tela": "Data Load #2 (do card salvo)"
+   },
+   {
+    "tag": "a_verif",
+    "tela": "Game Option apos Load #2 (difficulty restaurada?)"
+   }
+  ]
+ }
+}

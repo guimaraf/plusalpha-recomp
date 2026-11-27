@@ -1,0 +1,2447 @@
+{
+ "name": "f31d_survival",
+ "description": "Survival: difficulty 1, rounds CPU 1, mash de golpes simples ate o fluxo pos-luta.",
+ "steps": [
+  {
+   "type": "fntrace",
+   "op": "arm",
+   "pcs": [
+    "0x80129E0C"
+   ],
+   "clear": true
+  },
+  {
+   "type": "wait_frames",
+   "frames": 3500,
+   "note": "logos/FMV ate o titulo"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_mode_select"
+  },
+  {
+   "type": "screenshot",
+   "name": "00_mode_select"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 400
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_option"
+  },
+  {
+   "type": "screenshot",
+   "name": "01_option_menu"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200,
+   "note": "Game Option"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_diff1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_rounds1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_mode_select"
+  },
+  {
+   "type": "savestate",
+   "op": "save",
+   "slot": 4,
+   "note": "mode select diff1 rounds1"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "base",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "base",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_b"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_c"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_luta"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_luta0"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_ini",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_ini",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_m0"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_m0"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_m0",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_m0",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_m1"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_m1"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_m1",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_m1",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 30,
+   "wait_after": 2
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down",
+    "triangle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right",
+    "circle"
+   ],
+   "frames": 4,
+   "wait_after": 6
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 4
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 20,
+   "wait_after": 2
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_m2"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_m2"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_m2",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_m2",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "wait_ram",
+   "addr": "0x801D39B8",
+   "values": [
+    "0x3"
+   ],
+   "timeout_frames": 4000,
+   "optional": true,
+   "name": "sv_wait_continue",
+   "note": "espera a tela de continue (cena 3), ocioso"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_continue"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_continue_tela"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_continue",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_continue",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "wait_frames",
+   "frames": 250
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_continue_estavel"
+  },
+  {
+   "type": "savestate",
+   "op": "save",
+   "slot": 6,
+   "note": "tela de continue"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 30
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_continue_no_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200,
+   "note": "NO"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_no"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_no"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_no",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_no",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "wait_frames",
+   "frames": 360
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_p0a"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_p0_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_p0b"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_p0_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_p0",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_p0",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "wait_frames",
+   "frames": 360
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_p1a"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_p1_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_p1b"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_p1_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_p1",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_p1",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "wait_frames",
+   "frames": 360
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_p2a"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_p2_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_p2b"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_p2_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_p2",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_p2",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "wait_frames",
+   "frames": 360
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_p3a"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_p3_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_p3b"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_p3_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_p3",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_p3",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "wait_frames",
+   "frames": 360
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_p4a"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_p4_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_p4b"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_p4_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_p4",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_p4",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "wait_frames",
+   "frames": 360
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_p5a"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_p5_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_p5b"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_p5_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_p5",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_p5",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_timeout_0"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 900
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_to1"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_timeout_900"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 900
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_to2"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_timeout_1800"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_timeout",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_timeout",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "wait_frames",
+   "frames": 360
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_t0a"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_t0_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_t0b"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_t0_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_t0",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_t0",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "wait_frames",
+   "frames": 360
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_t1a"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_t1_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_t1b"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_t1_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_t1",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_t1",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "wait_frames",
+   "frames": 360
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_t2a"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_t2_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_t2b"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_t2_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_t2",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_t2",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "wait_frames",
+   "frames": 360
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_t3a"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_t3_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_sv_t3b"
+  },
+  {
+   "type": "screenshot",
+   "name": "sv_t3_b"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "sv_t3",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "sv_t3",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "telemetry",
+   "name": "final",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  }
+ ],
+ "meta": {
+  "segs": [
+   {
+    "tag": "base",
+    "tela": "Mode Select, difficulty 1, rounds CPU 1"
+   },
+   {
+    "tag": "sv_ini",
+    "tela": "Survival (inicio da luta)"
+   },
+   {
+    "tag": "sv_m0",
+    "tela": "Survival mash bloco 0"
+   },
+   {
+    "tag": "sv_m1",
+    "tela": "Survival mash bloco 1"
+   },
+   {
+    "tag": "sv_m2",
+    "tela": "Survival mash bloco 2"
+   },
+   {
+    "tag": "sv_continue",
+    "tela": "Survival continue (apos mash)"
+   },
+   {
+    "tag": "sv_no",
+    "tela": "Survival continue NO"
+   },
+   {
+    "tag": "sv_p0",
+    "tela": "Survival pos-luta (NO) passo 0"
+   },
+   {
+    "tag": "sv_p1",
+    "tela": "Survival pos-luta (NO) passo 1"
+   },
+   {
+    "tag": "sv_p2",
+    "tela": "Survival pos-luta (NO) passo 2"
+   },
+   {
+    "tag": "sv_p3",
+    "tela": "Survival pos-luta (NO) passo 3"
+   },
+   {
+    "tag": "sv_p4",
+    "tela": "Survival pos-luta (NO) passo 4"
+   },
+   {
+    "tag": "sv_p5",
+    "tela": "Survival pos-luta (NO) passo 5"
+   },
+   {
+    "tag": "sv_timeout",
+    "tela": "Survival continue: contagem esgotada"
+   },
+   {
+    "tag": "sv_t0",
+    "tela": "Survival pos-luta (timeout) passo 0"
+   },
+   {
+    "tag": "sv_t1",
+    "tela": "Survival pos-luta (timeout) passo 1"
+   },
+   {
+    "tag": "sv_t2",
+    "tela": "Survival pos-luta (timeout) passo 2"
+   },
+   {
+    "tag": "sv_t3",
+    "tela": "Survival pos-luta (timeout) passo 3"
+   }
+  ]
+ }
+}

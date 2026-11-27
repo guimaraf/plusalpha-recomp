@@ -1,0 +1,2207 @@
+{
+ "name": "f31d_pause",
+ "description": "Menu de pausa: Arcade (vs CPU), Practice Training e Expert; cada item aberto a partir de savestate da pausa.",
+ "steps": [
+  {
+   "type": "fntrace",
+   "op": "arm",
+   "pcs": [
+    "0x80129E0C"
+   ],
+   "clear": true
+  },
+  {
+   "type": "wait_frames",
+   "frames": 3500
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_mode_select"
+  },
+  {
+   "type": "savestate",
+   "op": "save",
+   "slot": 4,
+   "note": "mode select"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "base",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "base",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_arc"
+  },
+  {
+   "type": "screenshot",
+   "name": "arc_luta"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "arc_luta",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "arc_luta",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 30
+  },
+  {
+   "type": "screenshot",
+   "name": "arc_pause0"
+  },
+  {
+   "type": "savestate",
+   "op": "save",
+   "slot": 6,
+   "note": "arcade pausado"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "arc_pause0",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "arc_pause0",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_cmdlist_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_cmdlist_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "x1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 100
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_cmdlist_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_ap_cmdlist"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "ap_cmdlist",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "ap_cmdlist",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_btncfg_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_btncfg_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "square"
+   ],
+   "frames": 6,
+   "wait_after": 30
+  },
+  {
+   "type": "screenshot",
+   "name": "btn_assign"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "triangle"
+   ],
+   "frames": 6,
+   "wait_after": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "btn_default_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 100
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_btncfg_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_ap_btncfg"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "ap_btncfg",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "ap_btncfg",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_reset_no_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_reset_no_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 100
+  },
+  {
+   "type": "wait_frames",
+   "frames": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_reset_no_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_ap_reset_no"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "ap_reset_no",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "ap_reset_no",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_reset_yes_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_reset_yes_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "yes_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 100
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "yes_300"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 600
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_reset_yes_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_ap_reset_yes"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "ap_reset_yes",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "ap_reset_yes",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_exit_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_exit_a"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 60
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 30
+  },
+  {
+   "type": "screenshot",
+   "name": "repausa"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "ap_exit_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_ap_exit"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "ap_exit",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "ap_exit",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 4,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 40
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_pr"
+  },
+  {
+   "type": "screenshot",
+   "name": "pr_luta"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "pr_luta",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "pr_luta",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 30
+  },
+  {
+   "type": "screenshot",
+   "name": "pr_pause0"
+  },
+  {
+   "type": "savestate",
+   "op": "save",
+   "slot": 6,
+   "note": "training pausado"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "pr_pause0",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "pr_pause0",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_cmdlist_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_cmdlist_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "up"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 100
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_cmdlist_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_tp_cmdlist"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "tp_cmdlist",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "tp_cmdlist",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_btncfg_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_btncfg_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "circle"
+   ],
+   "frames": 6,
+   "wait_after": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 100
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_btncfg_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_tp_btncfg"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "tp_btncfg",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "tp_btncfg",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_trainopt_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_trainopt_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "to_0"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "to_d1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "to_d2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "to_d3"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "to_d4"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "to_d5"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "to_d6"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "to_d7"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 100
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_trainopt_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_tp_trainopt"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "tp_trainopt",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "tp_trainopt",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_charchange_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_charchange_a"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 200
+  },
+  {
+   "type": "screenshot",
+   "name": "cc_b"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "cc_c"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_charchange_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_tp_charchange"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "tp_charchange",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "tp_charchange",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_reset_no_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_reset_no_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 100
+  },
+  {
+   "type": "wait_frames",
+   "frames": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_reset_no_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_tp_reset_no"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "tp_reset_no",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "tp_reset_no",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_reset_yes_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_reset_yes_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "yes_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 100
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "yes_300"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 600
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_reset_yes_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_tp_reset_yes"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "tp_reset_yes",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "tp_reset_yes",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_exit_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_exit_a"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 60
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 30
+  },
+  {
+   "type": "screenshot",
+   "name": "repausa"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "tp_exit_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_tp_exit"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "tp_exit",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "tp_exit",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 4,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 40
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "ex_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_ex"
+  },
+  {
+   "type": "screenshot",
+   "name": "ex_luta"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "ex_luta",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "ex_luta",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 30
+  },
+  {
+   "type": "screenshot",
+   "name": "ex_pause0"
+  },
+  {
+   "type": "savestate",
+   "op": "save",
+   "slot": 6,
+   "note": "expert pausado"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "ex_pause0",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "ex_pause0",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "xp_cmdlist_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "xp_cmdlist_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 100
+  },
+  {
+   "type": "screenshot",
+   "name": "xp_cmdlist_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_xp_cmdlist"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "xp_cmdlist",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "xp_cmdlist",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "xp_trainopt_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "xp_trainopt_a"
+  },
+  {
+   "type": "screenshot",
+   "name": "to_0"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "to_d1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 100
+  },
+  {
+   "type": "screenshot",
+   "name": "xp_trainopt_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_xp_trainopt"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "xp_trainopt",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "xp_trainopt",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 6,
+   "note": ""
+  },
+  {
+   "type": "wait_frames",
+   "frames": 30
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "xp_reset_yes_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "xp_reset_yes_a"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 100
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "yes_300"
+  },
+  {
+   "type": "screenshot",
+   "name": "xp_reset_yes_z"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_xp_reset_yes"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "xp_reset_yes",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "xp_reset_yes",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "telemetry",
+   "name": "final",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  }
+ ],
+ "meta": {
+  "segs": [
+   {
+    "tag": "base",
+    "tela": "Mode Select"
+   },
+   {
+    "tag": "arc_luta",
+    "tela": "Arcade (luta vs CPU)"
+   },
+   {
+    "tag": "arc_pause0",
+    "tela": "Arcade pausa aberta"
+   },
+   {
+    "tag": "ap_cmdlist",
+    "tela": "ap > cmdlist"
+   },
+   {
+    "tag": "ap_btncfg",
+    "tela": "ap > btncfg"
+   },
+   {
+    "tag": "ap_reset_no",
+    "tela": "ap > reset_no"
+   },
+   {
+    "tag": "ap_reset_yes",
+    "tela": "ap > reset_yes"
+   },
+   {
+    "tag": "ap_exit",
+    "tela": "ap > exit"
+   },
+   {
+    "tag": "pr_luta",
+    "tela": "Practice > Training (luta)"
+   },
+   {
+    "tag": "pr_pause0",
+    "tela": "Training pausa aberta"
+   },
+   {
+    "tag": "tp_cmdlist",
+    "tela": "tp > cmdlist"
+   },
+   {
+    "tag": "tp_btncfg",
+    "tela": "tp > btncfg"
+   },
+   {
+    "tag": "tp_trainopt",
+    "tela": "tp > trainopt"
+   },
+   {
+    "tag": "tp_charchange",
+    "tela": "tp > charchange"
+   },
+   {
+    "tag": "tp_reset_no",
+    "tela": "tp > reset_no"
+   },
+   {
+    "tag": "tp_reset_yes",
+    "tela": "tp > reset_yes"
+   },
+   {
+    "tag": "tp_exit",
+    "tela": "tp > exit"
+   },
+   {
+    "tag": "ex_luta",
+    "tela": "Practice > Expert (luta)"
+   },
+   {
+    "tag": "ex_pause0",
+    "tela": "Expert pausa aberta"
+   },
+   {
+    "tag": "xp_cmdlist",
+    "tela": "xp > cmdlist"
+   },
+   {
+    "tag": "xp_trainopt",
+    "tela": "xp > trainopt"
+   },
+   {
+    "tag": "xp_reset_yes",
+    "tela": "xp > reset_yes"
+   }
+  ]
+ }
+}

@@ -1,0 +1,528 @@
+{
+ "name": "f31d_memcard_b",
+ "description": "Memory Card em branco: Load (erro), Save, Load.",
+ "steps": [
+  {
+   "type": "fntrace",
+   "op": "arm",
+   "pcs": [
+    "0x80129E0C"
+   ],
+   "clear": true
+  },
+  {
+   "type": "wait_frames",
+   "frames": 3500,
+   "note": "logos/FMV ate o titulo"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_mode_select"
+  },
+  {
+   "type": "screenshot",
+   "name": "00_mode_select"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 400
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_option"
+  },
+  {
+   "type": "screenshot",
+   "name": "01_option_menu"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "base",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "base",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200
+  },
+  {
+   "type": "screenshot",
+   "name": "b_mcmenu"
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_vazio_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_vazio_slot"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_vazio_a40"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_vazio_a100"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_vazio_b50"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_vazio_b100"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_vazio_b150"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_vazio_b200"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 100
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_vazio_c300"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_vazio_d600"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "b_load_vazio",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "b_load_vazio",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "screenshot",
+   "name": "b_apos_erro"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "b_volta0"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "screenshot",
+   "name": "b_save_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "screenshot",
+   "name": "b_save_slot"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40
+  },
+  {
+   "type": "screenshot",
+   "name": "b_save_a40"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "b_save_a100"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "b_save_b50"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "b_save_b100"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "b_save_b150"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "b_save_b200"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 100
+  },
+  {
+   "type": "screenshot",
+   "name": "b_save_c300"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "b_save_d600"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "b_save",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "b_save",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "b_volta1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_cursor"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 120
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_slot"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_a40"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 60
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_a100"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_b50"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_b100"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_b150"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 50
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_b200"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 100
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_c300"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 300
+  },
+  {
+   "type": "screenshot",
+   "name": "b_load_d600"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "b_load",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "b_load",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 300
+  },
+  {
+   "type": "telemetry",
+   "name": "final",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  }
+ ],
+ "meta": {
+  "segs": [
+   {
+    "tag": "base",
+    "tela": "Option menu (card em branco)"
+   },
+   {
+    "tag": "b_load_vazio",
+    "tela": "Data Load em card vazio (No data found)"
+   },
+   {
+    "tag": "b_save",
+    "tela": "Data Save em card em branco"
+   },
+   {
+    "tag": "b_load",
+    "tela": "Data Load do card recem-salvo"
+   }
+  ]
+ }
+}

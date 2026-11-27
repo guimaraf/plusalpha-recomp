@@ -471,8 +471,30 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
       - Evidência: `F:\GitRevised\alphaplus\relatorios\fase3\f3.1a-secretos\`.
       - **Com isso, todos os 26 ids de personagem foram executados nos dois lados.**
   - F3.1d: rotas de Options, pausa, Survival e, se for viável, save/load em memory card de teste.
+    - **Executada em 2026-11-27** no monitor 1, com a janela oculta, sobre `build-auto-f30b` (sem build nova). São 8 rotas `tools/auto_routes/f31d_*.json`, todas sem falha.
+      - **Option:** `f31d_options_game` (os 7 itens do Game Option com valores mudados, mais Default), `f31d_options_sound` (volumes e BGM Test), `f31d_options_misc` (Ending Collection com 3 filmes, Ranking Arcade/Time Attack, Button Config) e `f31d_options_plus` (OPTION PLUS, que só aparece depois do load do card AllUnlock; só o item Enemy respondeu).
+      - **Pausa** (`f31d_pause`): Arcade, Practice/Training e Practice/Expert. Cada item foi aberto (Command List, Button Config, Training Option, Character Change, gravação/replay) e a luta foi retomada; Reset YES leva ao Mode Select.
+      - **Survival** (`f31d_survival`, parcial): luta, YOU LOSE, CONTINUE (YES volta à luta; NO vai direto ao Mode Select; a tela não expira em 1800 frames). Ranking e entrada de nome exigem vencer lutas, o que vira M3 manual.
+      - **Memory card de teste** (`f31d_memcard_a`/`_b`): o arquivo ativo é `memcard\card1.mcd` da sessão. Foram feitos Data Save com sobrescrita e Data Load de volta, num card AllUnlock (sha256 `11B1DAB5…` → `C309AFA9…`; a dificuldade 8 salva voltou depois do load) e num card em branco (`7706C7D4…` → `EC7E599E…`). O `saves\card1AllUnlock.mcd` original ficou intacto.
+      - **Resultado:** `miss_total` 0 em todas as rotas e nenhum PC de overlay (OPTS, BONUS, MODES, PLxx) nem de EXE fora da quarentena interpretado, então nenhum candidato F3-L. Interpretados só os PCs de BIOS baixa e, nas rotas de memory card, os 6 da quarentena SIO/SMC (`0x801AB2DC` com cerca de 556 mil hits no save). Isso prova "não interpretado", não execução nativa.
+      - `static_variant_misses` só sobe ao entrar em luta (212 na pausa, 357 no Survival), como na F3.1a.
+      - Evidência: `F:\GitRevised\alphaplus\relatorios\fase3\f3.1d\` (`agregado.json`, `runs/`, geradores, `runroute.py`).
   - F3-L (primeira leva): micro-lotes com a evidência autônoma, em pipeline com checkpoint a cada 3 lotes. Ordem: PCs já observados, `OPTS`/`BONUS`, depois personagens do menor para o maior percentual.
+    - Depois da F3.1a e da F3.1d, as rotas autônomas não produziram nenhum PC de overlay interpretado, então a primeira leva não tem lote a fazer.
   - F3.4 (parte BONUS) e F3.5 (195 palavras do EXE à luz dos overlays).
+    - **Análise estática feita em 2026-11-27** (só leitura; nada aplicado).
+    - **F3.4, BONUS:** as 4 variantes retidas que divergem do disco (`0x8001AA3C`, `0x8001B740`, `0x8001B7B0`, `0x8001B7C0`) são capturas de RAM com outro conteúdo no endereço (dados de GPU num caso, zeros até `0x8001B800` nos outros). As 4 são continuações depois de `jal` para libgte, cobertas também por variante igual ao disco. No AOT, o BONUS tem 0 divergências. Não há entrada faltante nem risco de codegen, então nada a fazer. Hipótese não confirmada: captura no meio do carregamento do setor. Evidência: `relatorios\fase3\f3.4-bonus\`.
+    - **F3.5, as 195 palavras do EXE**, em 23 faixas:
+      - 75 alcançáveis por overlay: `0x8015547C` é o slot 16 da tabela de handlers de PL0C/PL12 (`0x800433C4` no P1, `0x8008CDC4` no P2). Pela leitura do código, o handler só é escolhido com três condições, entre elas o bit `0x2000` de `0x801D636C`; isso explicaria os 0 hits da rota `versus_pl0c_pl12`. `seed_preview`: +75 palavras, 0 perdas.
+      - 36 mortas por prova estática (5 epílogos depois de laço sem saída).
+      - 37 de padding ou dados (14 + 23), entre elas `0x8019F1B8..0x8019F1F0` e `0x801AB1E0..0x801AB1F4`, que o jogo copia para a RAM do kernel.
+      - 47 indeterminadas (cluster `0x801AB180`, sem nenhuma referência).
+    - **Proposta, pendente de decisão do usuário:**
+      - 21 exclusões (73 palavras), que levariam o EXE a 99,9300%.
+      - Lote F3-A com a seed `0x8015547C`, depois de tentar uma rota que cumpra as três condições.
+      - Lote F3-B opcional com o cluster `0x801AB180`, pela política 2a.
+      - Com as três medidas, o EXE chegaria a 100% (174.173 / 174.173).
+      - Evidência: `relatorios\fase3\f3.5\` (`faixas.json`, `proposta.json`, `resumo.md`).
 - **Bloco B — manual (usuário, no fim; o agente observa com o coletor só leitura, com marcas por personagem):**
   - M1: golpes de todos os personagens no Treinamento (especiais, supers 1/2/3, cancelamentos, Guard Break, arremessos, combos).
   - M2: Expert até o fim.
