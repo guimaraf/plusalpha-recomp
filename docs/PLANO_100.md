@@ -398,6 +398,39 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
 - Pendente (não executado): rota `watch_sweep` (Watch/CPU x CPU) cobrindo todos os ids de personagem nos dois lados (overlays `PLxx_1` e `PLxx_2`), coletando misses de overlay, como base de evidência de execução para a Fase 3.
 - Pendente: teste manual do usuário de CPU/temperatura com a máquina ociosa; sem resultado registrado.
 
+**Microetapas e ordem (decisão do usuário, 2026-11-26).** Relatório: `F:\GitRevised\alphaplus\relatorios\fase3\plano-fase3-microetapas.html`.
+
+- **Medição de partida:** overlays em 80,45% (328.019 / 407.741 palavras, `coverage_metric.py` sobre `build-auto-tc`). O denominador é o arquivo inteiro, com dados, então não é o teto real.
+  - Os slots P1 e P2 têm cobertura idêntica.
+  - Imagens compartilhadas: PL10=PL11, PL0C=PL12, PL0A=PL14, PL0B=PL15.
+- **Regra de ordem:** tudo o que depende de executar golpes, especiais, supers, cancelamentos ou combos fica com o usuário, de forma manual, **no fim da fase**. As rotas automáticas de golpes (antigas F3.1b/F3.1c) foram descartadas. O agente faz antes tudo o que for autônomo, inclusive em sessões noturnas com o PC ligado, como na madrugada da F2.
+- **Execução no segundo monitor (pedido do usuário, 2026-11-27):** toda execução do jogo na Fase 3 (rotas `watch_sweep`, F3.1d, F3-L, F3.6 e coleta do Bloco B) segue a regra da F2. Ela usa `auto_session.py` no monitor 1 (`x=1920..3840`), com a janela oculta e posicionada sem ativação, sem tocar no teclado, no mouse ou no foco do usuário. Sem o monitor 1, nada roda e o usuário é avisado. `--show-window` só com pedido explícito.
+- **Estimativa:** cerca de 2 a 3 dias de calendário, sem garantia; cada correção no recompilador (F3-R) acrescenta algumas horas.
+- **Bloco A — autônomo (agente, PC ligado; serve para a noite):**
+  - F3.0a: separar código de dados em cada overlay (métrica com denominador de código; o baseline só muda com aprovação).
+  - F3.0b: entradas extras por arquivo no perfil AOT (`aot/overlays.json`) e `seed_preview` para overlays. Fluxo: investigador → executor → revisor → verificador.
+  - F3.2: tabelas de ponteiros nos overlays e classificação dos PCs já observados (`0x8004744C`/`0x80090E4C`, `0x80090168`/`0x800900E4`, `0x800466E4`/`0x80046768`, `0x800E6F4C`, `0x800222D4`, `0x80024E8C`). Gera a fila inicial.
+  - F3.1a: rota `watch_sweep` (CPU x CPU, cada id nos dois lados). A CPU executa especiais e supers por conta própria, então essa rota é a principal fonte autônoma de evidência de golpes.
+    - **Dificuldade no level 8, o máximo (pedido do usuário, 2026-11-26).** No level 8, as duas CPUs usam mais especiais, supers, cancelamentos e combos.
+    - A rota ajusta a dificuldade em Options antes do Watch, e a evidência registra o valor (screenshot ou `read_ram`).
+    - A configuração vale só para a sessão de teste (`memcard_dir` próprio), sem tocar nos saves do usuário.
+    - Toda outra rota CPU x CPU da Fase 3 segue a mesma regra.
+  - F3.1d: rotas de Options, pausa, Survival e, se for viável, save/load em memory card de teste.
+  - F3-L (primeira leva): micro-lotes com a evidência autônoma, em pipeline com checkpoint a cada 3 lotes. Ordem: PCs já observados, `OPTS`/`BONUS`, depois personagens do menor para o maior percentual.
+  - F3.4 (parte BONUS) e F3.5 (195 palavras do EXE à luz dos overlays).
+- **Bloco B — manual (usuário, no fim; o agente observa com o coletor só leitura, com marcas por personagem):**
+  - M1: golpes de todos os personagens no Treinamento (especiais, supers 1/2/3, cancelamentos, Guard Break, arremessos, combos).
+  - M2: Expert até o fim.
+  - M3: telas que a F3.1d não alcançar.
+  - M4: memory card e Arcade até o ending (variantes MC/END).
+  - M5: comparação com o MiSTer do cancelamento da Skullomania.
+- **Bloco C — autônomo, depois do manual:**
+  - F3-L finais: lotes com os PCs novos da M1 a M4.
+  - F3.4: variantes MC/END.
+  - F3.6: rodada final de rotas.
+  - M6: sensação de jogo (usuário).
+  - F3.7: promoção, baseline, documentação e verificador. Promoção e baseline só com a aprovação explícita do usuário.
+
 ### Fase 4 — Validação dos modos pendentes (autônoma, pela Fase A)
 
 - **Cenários:**
