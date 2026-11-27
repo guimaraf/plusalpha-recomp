@@ -45,6 +45,11 @@
     {"lo": "0x801A743C", "hi": "0x801A7440", "category": "padding", "reason": "zero de alinhamento apos delay slot de jr/j, antes de inicio de funcao (F2, revisao padding 2026-11-25)"},
     {"lo": "0x801AB1BC", "hi": "0x801AB1C0", "category": "padding", "reason": "zero de alinhamento apos delay slot de jr/j, antes de inicio de funcao (F2, revisao padding 2026-11-25)"},
     {"lo": "0x801AB1F4", "hi": "0x801AB238", "category": "quarentena", "reason": "SIO/joypad busy-wait, interpretada por contrato; ver docs/newWords.md"},
-    {"lo": "0x801AB2C0", "hi": "0x801AB2F0", "category": "quarentena", "reason": "SMC, troca 5 instrucoes em runtime"}
+    {"lo": "0x801AB2C0", "hi": "0x801AB2F0", "category": "quarentena", "reason": "SMC, troca 5 instrucoes em runtime"},
+    {"lo": "0x801014C8", "hi": "0x801014DC", "category": "morto_provado", "reason": "F3.5: epilogo apos jal 0x80101668 + j <laco>, fallthrough impossivel, 0 referencias no EXE e nos 59 overlays; aprovado pelo usuario em 2026-11-27; relatorios/fase3/f3.5/faixas.json"},
+    {"lo": "0x80103370", "hi": "0x80103384", "category": "morto_provado", "reason": "F3.5: epilogo apos jal 0x80101668 + j <laco>, fallthrough impossivel, 0 referencias no EXE e nos 59 overlays; aprovado pelo usuario em 2026-11-27; relatorios/fase3/f3.5/faixas.json"},
+    {"lo": "0x8016ADE4", "hi": "0x8016AE18", "category": "morto_provado", "reason": "F3.5: epilogo apos jal 0x80101668 + j <laco>, fallthrough impossivel, 0 referencias no EXE e nos 59 overlays; aprovado pelo usuario em 2026-11-27; relatorios/fase3/f3.5/faixas.json"},
+    {"lo": "0x8018CE00", "hi": "0x8018CE20", "category": "morto_provado", "reason": "F3.5: epilogo apos jal 0x80101668 + j <laco>, fallthrough impossivel, 0 referencias no EXE e nos 59 overlays; aprovado pelo usuario em 2026-11-27; relatorios/fase3/f3.5/faixas.json"},
+    {"lo": "0x8018CF34", "hi": "0x8018CF48", "category": "morto_provado", "reason": "F3.5: epilogo apos jal 0x80101668 + j <laco>, fallthrough impossivel, 0 referencias no EXE e nos 59 overlays; aprovado pelo usuario em 2026-11-27; relatorios/fase3/f3.5/faixas.json"}
   ]
 }

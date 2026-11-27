@@ -495,6 +495,10 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
       - Lote F3-B opcional com o cluster `0x801AB180`, pela política 2a.
       - Com as três medidas, o EXE chegaria a 100% (174.173 / 174.173).
       - Evidência: `relatorios\fase3\f3.5\` (`faixas.json`, `proposta.json`, `resumo.md`).
+    - **Decisão do usuário (2026-11-27):**
+      - Aplicadas só as 5 exclusões `morto_provado` (36 palavras: `0x801014C8`, `0x80103370`, `0x8016ADE4`, `0x8018CE00`, `0x8018CF34`) em `coverage/exclusions.json`. A métrica do EXE passou a **174.051 / 174.210 (99,9087%)**, com `coverage_metric --check` OK. O baseline não mudou.
+      - Ficam em espera, sem seed e sem exclusão: `0x8015547C` (75), o cluster `0x801AB180` (47) e as 37 palavras de padding e dados. Restam 159 palavras.
+      - Critério: exercitar no manual a última tela que falta, o final do Expert com os 16 desafios cumpridos (M2), com o coletor ligado. Se nada dessas faixas aparecer, o usuário decide o corte.
 - **Bloco B — manual (usuário, no fim; o agente observa com o coletor só leitura, com marcas por personagem):**
   - M1: golpes de todos os personagens no Treinamento (especiais, supers 1/2/3, cancelamentos, Guard Break, arremessos, combos).
   - M2: Expert até o fim.
