@@ -458,6 +458,18 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
       - Esses três só aparecem no **Versus de 2 jogadores**: segure Select sobre o personagem na seleção. Contra a CPU não ficam acessíveis.
       - Para testar, copie `PlusAlphaProject\saves\card1AllUnlock.mcd` (tudo liberado) para o `memcard_dir` da sessão e faça só o load. O original não pode ser alterado.
       - Próxima rota: Versus 2P carregando esse card, cobrindo os ids 0x0A, 0x0B, 0x11, 0x12, 0x13, 0x16 e 0x17 nos dois lados.
+    - **Secretos executados em 2026-11-27** (rotas `tools/auto_routes/secret_sweep_watch.json` e `secret_sweep_versus.json`, monitor 1, `build-auto-f30b`):
+      - **Load do card:** copia `card1AllUnlock.mcd` para `memcard/card1.mcd` da sessão e faz Option > Memory Card > Data Load > slot 1, até o "OK!". O load volta a DIFFICULTY para 3, então ela é reajustada para 8 depois.
+      - **Watch, level 8, CPU x CPU:** cobriu os 4 liberados por código, 0x12, 0x13, 0x16 (Cycloid-γ) e 0x17 (Cycloid-β), como P1 e como P2.
+      - **Versus 2P:** cobriu os 3 extras como P1 e como P2.
+        - Acesso: `press ["select","cross"]` na confirmação.
+        - Ids: Akuma 0x10→0x11, Bison 0x14→0x0A e Garuda 0x15→0x0B. Os nomes oficiais de 0x0A e 0x0B não foram confirmados por texto.
+        - O pad 2 precisa ser "plugado" com um `press` na porta 2 no Mode Select. O savestate tem de ser feito antes disso; um savestate posterior deixa o cursor do P2 sem resposta.
+      - **Resultado:** 0 misses em todas as lutas e nenhum PC de overlay ou de EXE interpretado (só 3 de BIOS baixa), então nenhum candidato F3-L.
+      - **Limite:** no Versus 2P só foram injetados andar, pulo e golpes normais. Os golpes especiais ficam para a M1 manual.
+      - O card original ficou intacto (sha256 `11B1DAB5…`).
+      - Evidência: `F:\GitRevised\alphaplus\relatorios\fase3\f3.1a-secretos\`.
+      - **Com isso, todos os 26 ids de personagem foram executados nos dois lados.**
   - F3.1d: rotas de Options, pausa, Survival e, se for viável, save/load em memory card de teste.
   - F3-L (primeira leva): micro-lotes com a evidência autônoma, em pipeline com checkpoint a cada 3 lotes. Ordem: PCs já observados, `OPTS`/`BONUS`, depois personagens do menor para o maior percentual.
   - F3.4 (parte BONUS) e F3.5 (195 palavras do EXE à luz dos overlays).
