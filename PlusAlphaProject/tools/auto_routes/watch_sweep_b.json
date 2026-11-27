@@ -1,0 +1,1969 @@
+{
+ "name": "watch_sweep_b",
+ "description": "Watch (CPU x CPU) no level 8 (Game Option: DIFFICULTY 8 HARD), cada id nos dois lados: luta i = (P1=celula i, P2=celula i+1 mod 19) da grade de 19 personagens selecionaveis; volta a selecao por savestate (slot 5) a cada luta; telemetria por luta. Lutas 10..18.",
+ "steps": [
+  {
+   "type": "fntrace",
+   "op": "arm",
+   "pcs": [
+    "0x80129E0C"
+   ],
+   "clear": true,
+   "note": "alvo do modo Watch (F2-L5), contagem de entradas"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 3500,
+   "note": "logos/FMV ate o titulo (igual survey_*)"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "sai do titulo"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 120,
+   "note": "tela de modo"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_mode_select",
+   "note": "esperado 7"
+  },
+  {
+   "type": "screenshot",
+   "name": "00_mode_select"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 20
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20,
+   "note": "cursor em Option"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 400,
+   "note": "entra em Option"
+  },
+  {
+   "type": "screenshot",
+   "name": "01_option_menu"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200,
+   "note": "Game Option"
+  },
+  {
+   "type": "screenshot",
+   "name": "02_game_option_antes"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20,
+   "note": "dificuldade +1 (3 -> 8)"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20,
+   "note": "dificuldade +1 (3 -> 8)"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20,
+   "note": "dificuldade +1 (3 -> 8)"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20,
+   "note": "dificuldade +1 (3 -> 8)"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 20,
+   "note": "dificuldade +1 (3 -> 8)"
+  },
+  {
+   "type": "screenshot",
+   "name": "03_game_option_level8"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 200,
+   "note": "volta ao Option Menu"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 200,
+   "note": "reentra: confirma persistencia"
+  },
+  {
+   "type": "screenshot",
+   "name": "04_game_option_reentrada"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 200
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "start"
+   ],
+   "frames": 6,
+   "wait_after": 200,
+   "note": "volta ao Mode Select"
+  },
+  {
+   "type": "screenshot",
+   "name": "05_mode_select_apos_option"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 20,
+   "note": "cursor em Watch"
+  },
+  {
+   "type": "screenshot",
+   "name": "06_cursor_watch"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 400,
+   "note": "entra em Watch (selecao de personagens)"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "cena_watch_select"
+  },
+  {
+   "type": "screenshot",
+   "name": "07_watch_select"
+  },
+  {
+   "type": "savestate",
+   "op": "save",
+   "slot": 5,
+   "note": "marco: selecao do Watch, level 8"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "base",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "base",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 5,
+   "note": "f10: volta a selecao do Watch"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 40
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f10_sel_p1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f10_sel_p2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P2 e inicia a luta"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 400,
+   "note": "carga (NOW LOADING) + intro do round"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f10_cena",
+   "note": "esperado 1 (luta)"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D4EA2",
+   "size": 1,
+   "name": "f10_p1_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63CA",
+   "size": 1,
+   "name": "f10_p2_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x80043000",
+   "size": 32,
+   "name": "f10_ov1_head",
+   "note": "cabecalho do overlay residente em OVL/PLxx_1"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x8008CA00",
+   "size": 32,
+   "name": "f10_ov2_head",
+   "note": "cabecalho do overlay residente em OVL2/PLxx_2"
+  },
+  {
+   "type": "screenshot",
+   "name": "f10_luta_inicio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f10_luta_meio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f10_luta_fim"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f10_cena_fim"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "f10",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "f10",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 5,
+   "note": "f11: volta a selecao do Watch"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 40
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f11_sel_p1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f11_sel_p2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P2 e inicia a luta"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 400,
+   "note": "carga (NOW LOADING) + intro do round"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f11_cena",
+   "note": "esperado 1 (luta)"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D4EA2",
+   "size": 1,
+   "name": "f11_p1_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63CA",
+   "size": 1,
+   "name": "f11_p2_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x80043000",
+   "size": 32,
+   "name": "f11_ov1_head",
+   "note": "cabecalho do overlay residente em OVL/PLxx_1"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x8008CA00",
+   "size": 32,
+   "name": "f11_ov2_head",
+   "note": "cabecalho do overlay residente em OVL2/PLxx_2"
+  },
+  {
+   "type": "screenshot",
+   "name": "f11_luta_inicio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f11_luta_meio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f11_luta_fim"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f11_cena_fim"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "f11",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "f11",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 5,
+   "note": "f12: volta a selecao do Watch"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 40
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f12_sel_p1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f12_sel_p2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P2 e inicia a luta"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 400,
+   "note": "carga (NOW LOADING) + intro do round"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f12_cena",
+   "note": "esperado 1 (luta)"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D4EA2",
+   "size": 1,
+   "name": "f12_p1_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63CA",
+   "size": 1,
+   "name": "f12_p2_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x80043000",
+   "size": 32,
+   "name": "f12_ov1_head",
+   "note": "cabecalho do overlay residente em OVL/PLxx_1"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x8008CA00",
+   "size": 32,
+   "name": "f12_ov2_head",
+   "note": "cabecalho do overlay residente em OVL2/PLxx_2"
+  },
+  {
+   "type": "screenshot",
+   "name": "f12_luta_inicio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f12_luta_meio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f12_luta_fim"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f12_cena_fim"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "f12",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "f12",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 5,
+   "note": "f13: volta a selecao do Watch"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 40
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f13_sel_p1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f13_sel_p2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P2 e inicia a luta"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 400,
+   "note": "carga (NOW LOADING) + intro do round"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f13_cena",
+   "note": "esperado 1 (luta)"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D4EA2",
+   "size": 1,
+   "name": "f13_p1_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63CA",
+   "size": 1,
+   "name": "f13_p2_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x80043000",
+   "size": 32,
+   "name": "f13_ov1_head",
+   "note": "cabecalho do overlay residente em OVL/PLxx_1"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x8008CA00",
+   "size": 32,
+   "name": "f13_ov2_head",
+   "note": "cabecalho do overlay residente em OVL2/PLxx_2"
+  },
+  {
+   "type": "screenshot",
+   "name": "f13_luta_inicio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f13_luta_meio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f13_luta_fim"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f13_cena_fim"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "f13",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "f13",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 5,
+   "note": "f14: volta a selecao do Watch"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 40
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f14_sel_p1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f14_sel_p2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P2 e inicia a luta"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 400,
+   "note": "carga (NOW LOADING) + intro do round"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f14_cena",
+   "note": "esperado 1 (luta)"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D4EA2",
+   "size": 1,
+   "name": "f14_p1_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63CA",
+   "size": 1,
+   "name": "f14_p2_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x80043000",
+   "size": 32,
+   "name": "f14_ov1_head",
+   "note": "cabecalho do overlay residente em OVL/PLxx_1"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x8008CA00",
+   "size": 32,
+   "name": "f14_ov2_head",
+   "note": "cabecalho do overlay residente em OVL2/PLxx_2"
+  },
+  {
+   "type": "screenshot",
+   "name": "f14_luta_inicio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f14_luta_meio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f14_luta_fim"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f14_cena_fim"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "f14",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "f14",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 5,
+   "note": "f15: volta a selecao do Watch"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 40
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f15_sel_p1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f15_sel_p2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P2 e inicia a luta"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 400,
+   "note": "carga (NOW LOADING) + intro do round"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f15_cena",
+   "note": "esperado 1 (luta)"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D4EA2",
+   "size": 1,
+   "name": "f15_p1_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63CA",
+   "size": 1,
+   "name": "f15_p2_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x80043000",
+   "size": 32,
+   "name": "f15_ov1_head",
+   "note": "cabecalho do overlay residente em OVL/PLxx_1"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x8008CA00",
+   "size": 32,
+   "name": "f15_ov2_head",
+   "note": "cabecalho do overlay residente em OVL2/PLxx_2"
+  },
+  {
+   "type": "screenshot",
+   "name": "f15_luta_inicio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f15_luta_meio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f15_luta_fim"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f15_cena_fim"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "f15",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "f15",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 5,
+   "note": "f16: volta a selecao do Watch"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 40
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f16_sel_p1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f16_sel_p2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P2 e inicia a luta"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 400,
+   "note": "carga (NOW LOADING) + intro do round"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f16_cena",
+   "note": "esperado 1 (luta)"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D4EA2",
+   "size": 1,
+   "name": "f16_p1_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63CA",
+   "size": 1,
+   "name": "f16_p2_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x80043000",
+   "size": 32,
+   "name": "f16_ov1_head",
+   "note": "cabecalho do overlay residente em OVL/PLxx_1"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x8008CA00",
+   "size": 32,
+   "name": "f16_ov2_head",
+   "note": "cabecalho do overlay residente em OVL2/PLxx_2"
+  },
+  {
+   "type": "screenshot",
+   "name": "f16_luta_inicio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f16_luta_meio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f16_luta_fim"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f16_cena_fim"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "f16",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "f16",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 5,
+   "note": "f17: volta a selecao do Watch"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 40
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f17_sel_p1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f17_sel_p2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P2 e inicia a luta"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 400,
+   "note": "carga (NOW LOADING) + intro do round"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f17_cena",
+   "note": "esperado 1 (luta)"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D4EA2",
+   "size": 1,
+   "name": "f17_p1_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63CA",
+   "size": 1,
+   "name": "f17_p2_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x80043000",
+   "size": 32,
+   "name": "f17_ov1_head",
+   "note": "cabecalho do overlay residente em OVL/PLxx_1"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x8008CA00",
+   "size": 32,
+   "name": "f17_ov2_head",
+   "note": "cabecalho do overlay residente em OVL2/PLxx_2"
+  },
+  {
+   "type": "screenshot",
+   "name": "f17_luta_inicio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f17_luta_meio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f17_luta_fim"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f17_cena_fim"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "f17",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "f17",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "savestate",
+   "op": "load",
+   "slot": 5,
+   "note": "f18: volta a selecao do Watch"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 40
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "left"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "down"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f18_sel_p1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P1"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "right"
+   ],
+   "frames": 6,
+   "wait_after": 12
+  },
+  {
+   "type": "screenshot",
+   "name": "f18_sel_p2"
+  },
+  {
+   "type": "press",
+   "buttons": [
+    "cross"
+   ],
+   "frames": 6,
+   "wait_after": 40,
+   "note": "confirma P2 e inicia a luta"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 400,
+   "note": "carga (NOW LOADING) + intro do round"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f18_cena",
+   "note": "esperado 1 (luta)"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D4EA2",
+   "size": 1,
+   "name": "f18_p1_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D63CA",
+   "size": 1,
+   "name": "f18_p2_id"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x80043000",
+   "size": 32,
+   "name": "f18_ov1_head",
+   "note": "cabecalho do overlay residente em OVL/PLxx_1"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x8008CA00",
+   "size": 32,
+   "name": "f18_ov2_head",
+   "note": "cabecalho do overlay residente em OVL2/PLxx_2"
+  },
+  {
+   "type": "screenshot",
+   "name": "f18_luta_inicio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f18_luta_meio"
+  },
+  {
+   "type": "wait_frames",
+   "frames": 750
+  },
+  {
+   "type": "screenshot",
+   "name": "f18_luta_fim"
+  },
+  {
+   "type": "read_ram",
+   "addr": "0x801D39B8",
+   "size": 1,
+   "name": "f18_cena_fim"
+  },
+  {
+   "type": "dispatch_misses",
+   "name": "f18",
+   "tail": 64
+  },
+  {
+   "type": "telemetry",
+   "name": "f18",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  },
+  {
+   "type": "telemetry",
+   "name": "final",
+   "which": [
+    "dispatch_stats",
+    "overlay_loader_status",
+    "dirty_ram_stats"
+   ]
+  }
+ ],
+ "meta": {
+  "cells": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    3
+   ],
+   [
+    1,
+    4
+   ],
+   [
+    1,
+    5
+   ],
+   [
+    1,
+    6
+   ],
+   [
+    1,
+    7
+   ],
+   [
+    1,
+    8
+   ],
+   [
+    2,
+    1
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    3
+   ],
+   [
+    2,
+    4
+   ],
+   [
+    2,
+    5
+   ],
+   [
+    2,
+    6
+   ],
+   [
+    2,
+    7
+   ],
+   [
+    2,
+    8
+   ],
+   [
+    3,
+    1
+   ],
+   [
+    3,
+    2
+   ],
+   [
+    3,
+    3
+   ]
+  ],
+  "names": [
+   "Zangief",
+   "C.Jack",
+   "Hokuto",
+   "Ryu",
+   "Ken",
+   "Chun-Li",
+   "D.Dark",
+   "Guile",
+   "Pullum",
+   "Darun",
+   "Kairi",
+   "Sakura",
+   "Dhalsim",
+   "Allen",
+   "Blair",
+   "Skullomania",
+   "Akuma",
+   "M.Bison",
+   "Garuda"
+  ],
+  "fights": [
+   {
+    "i": 10,
+    "p1": [
+     2,
+     3
+    ],
+    "p2": [
+     2,
+     4
+    ]
+   },
+   {
+    "i": 11,
+    "p1": [
+     2,
+     4
+    ],
+    "p2": [
+     2,
+     5
+    ]
+   },
+   {
+    "i": 12,
+    "p1": [
+     2,
+     5
+    ],
+    "p2": [
+     2,
+     6
+    ]
+   },
+   {
+    "i": 13,
+    "p1": [
+     2,
+     6
+    ],
+    "p2": [
+     2,
+     7
+    ]
+   },
+   {
+    "i": 14,
+    "p1": [
+     2,
+     7
+    ],
+    "p2": [
+     2,
+     8
+    ]
+   },
+   {
+    "i": 15,
+    "p1": [
+     2,
+     8
+    ],
+    "p2": [
+     3,
+     1
+    ]
+   },
+   {
+    "i": 16,
+    "p1": [
+     3,
+     1
+    ],
+    "p2": [
+     3,
+     2
+    ]
+   },
+   {
+    "i": 17,
+    "p1": [
+     3,
+     2
+    ],
+    "p2": [
+     3,
+     3
+    ]
+   },
+   {
+    "i": 18,
+    "p1": [
+     3,
+     3
+    ],
+    "p2": [
+     1,
+     1
+    ]
+   }
+  ]
+ }
+}

@@ -408,13 +408,56 @@ Micro-lotes conforme a governança de `docs/newWords.md`: pré-auditoria do fech
 - **Estimativa:** cerca de 2 a 3 dias de calendário, sem garantia; cada correção no recompilador (F3-R) acrescenta algumas horas.
 - **Bloco A — autônomo (agente, PC ligado; serve para a noite):**
   - F3.0a: separar código de dados em cada overlay (métrica com denominador de código; o baseline só muda com aprovação).
+    - **Concluída em 2026-11-27 (só análise).** Os 59 arquivos têm o formato `[cabeçalho de dados | código | cauda de tabelas]`, com fronteira igual em P1 e P2. Fora da faixa coberta não há nenhum `addiu sp,sp,-N` nem `jr ra`, exceto no MOV.
+    - Métrica com denominador de código: **328.019 / 328.027 = 99,9976%** (antes, 80,4479% contra o arquivo inteiro). Só faltam 8 palavras do MOV.OVL (folha em 0xE8994..0xE89B4).
+    - Consequência: o que falta na Fase 3 é entrada no despachante para PCs no meio de funções já cobertas (F3.2), não palavras de código.
+    - Evidência e script determinístico: `F:\GitRevised\alphaplus\relatorios\fase3\f3.0a\` (`f3_0a_code_map.py`, `code_map.json`, `metric-code-denominator.json`).
+    - Proposta, não aplicada: `coverage/overlay_code_map.json` lido por `coverage_metric.py`, com a métrica antiga mantida ao lado.
   - F3.0b: entradas extras por arquivo no perfil AOT (`aot/overlays.json`) e `seed_preview` para overlays. Fluxo: investigador → executor → revisor → verificador.
+    - **Concluída em 2026-11-27, com a F3.2 estática; verificador APROVADO nos 8 critérios.**
+    - Diagnóstico:
+      - Todo líder de bloco já era entrada no despachante.
+      - Restavam 4 lacunas, todas de perfil:
+        - PL0E: `j` para o epílogo de outra função, em P1 e P2;
+        - QUES.PAC: o extent não alcançava as jump tables em `0x800E954C`;
+        - MOV: uma folha não descoberta e um epílogo.
+      - Os PCs de OPTS e PL06 do pente fino já tinham sido resolvidos pelo F2-R2.
+    - Mudanças:
+      - `psxrecomp/tools/aot_overlay_pipeline.py`: campo `interior_entries_by_file`, que gera entrada só no despachante e só no arquivo nomeado, sem virar seed.
+      - `aot/gen_profile.py` e `overlays.json`:
+        - PL0E P1 `0x800466E4`/`0x80046768` e P2 `+0x49A00`;
+        - MOV `+0x800E8994`/`0x800E8140`;
+        - QUES extent `0x3134`.
+      - `tools/seed_preview_overlay.py`: pré-auditoria e guarda `--check-profile`.
+    - Build `build-auto-f30b`:
+      - audit CLEAN e `coverage_metric --check` OK;
+      - nenhuma entrada perdida e +5 entradas;
+      - +1 variante do PL0E em cada uma das 4 entradas;
+      - overlays por código: **328.027 / 328.027**.
+    - Rotas no monitor 1: `boot_to_fight` e `survey_options` com 0 misses.
+    - A execução nativa das entradas do PL0E e do QUES ainda não foi observada; fica para a F3.1a.
+    - Fila estática: `F:\GitRevised\alphaplus\relatorios\fase3\f3.0b\fila_inicial.json`.
   - F3.2: tabelas de ponteiros nos overlays e classificação dos PCs já observados (`0x8004744C`/`0x80090E4C`, `0x80090168`/`0x800900E4`, `0x800466E4`/`0x80046768`, `0x800E6F4C`, `0x800222D4`, `0x80024E8C`). Gera a fila inicial.
   - F3.1a: rota `watch_sweep` (CPU x CPU, cada id nos dois lados). A CPU executa especiais e supers por conta própria, então essa rota é a principal fonte autônoma de evidência de golpes.
     - **Dificuldade no level 8, o máximo (pedido do usuário, 2026-11-26).** No level 8, as duas CPUs usam mais especiais, supers, cancelamentos e combos.
     - A rota ajusta a dificuldade em Options antes do Watch, e a evidência registra o valor (screenshot ou `read_ram`).
     - A configuração vale só para a sessão de teste (`memcard_dir` próprio), sem tocar nos saves do usuário.
     - Toda outra rota CPU x CPU da Fase 3 segue a mesma regra.
+    - **Executada em 2026-11-27** no monitor 1, com a janela oculta, sobre `build-auto-f30b`.
+      - Rotas `tools/auto_routes/watch_sweep_a.json` e `watch_sweep_b.json`: 19 lutas de ~25 s, pares (i, i+1).
+      - Os 19 ids da grade aparecem como P1 e como P2.
+      - Level 8 ("8 (HARD)") confirmado por screenshot, também na reentrada. O byte de dificuldade não foi localizado.
+      - Nenhuma luta teve miss nem PC de overlay interpretado. Só os 6 PCs da quarentena do EXE e 3 de BIOS baixa. Nenhum candidato novo de F3-L.
+      - Chun-Li (PL0E) lutou nos dois lados sem interpretar 0x800466E4/0x80046768. Isso prova "não interpretado", não execução nativa, porque não há contador por entrada.
+      - Sem cobertura: os ids secretos 0x0A, 0x0B, 0x11, 0x12, 0x13, 0x16 e 0x17. Eles ficam bloqueados com memory card novo.
+      - Ponto a observar: `static_variant_misses` sobe de 256 a 729 por luta, sem PC interpretado correspondente.
+      - Evidência: `F:\GitRevised\alphaplus\relatorios\fase3\f3.1a\` (`agregado.json`, `run_a`, `run_b`).
+    - **Personagens secretos (informação do usuário, 2026-11-27):**
+      - Quatro secretos são desbloqueados por um código simples.
+      - Outros três dependem de terminar o Expert e acumular pontos: Shin-Akuma, Shin-Bison e, provavelmente, Garuda X. Eles têm diferenças próprias: golpe exclusivo do Garuda, acesso mais rápido ao super do Akuma, dano maior e entrada de comandos mais difícil.
+      - Esses três só aparecem no **Versus de 2 jogadores**: segure Select sobre o personagem na seleção. Contra a CPU não ficam acessíveis.
+      - Para testar, copie `PlusAlphaProject\saves\card1AllUnlock.mcd` (tudo liberado) para o `memcard_dir` da sessão e faça só o load. O original não pode ser alterado.
+      - Próxima rota: Versus 2P carregando esse card, cobrindo os ids 0x0A, 0x0B, 0x11, 0x12, 0x13, 0x16 e 0x17 nos dois lados.
   - F3.1d: rotas de Options, pausa, Survival e, se for viável, save/load em memory card de teste.
   - F3-L (primeira leva): micro-lotes com a evidência autônoma, em pipeline com checkpoint a cada 3 lotes. Ordem: PCs já observados, `OPTS`/`BONUS`, depois personagens do menor para o maior percentual.
   - F3.4 (parte BONUS) e F3.5 (195 palavras do EXE à luz dos overlays).

@@ -46,7 +46,13 @@
         "0x8",
         "0xc",
         "0x10"
-      ]
+      ],
+      "interior_entries_by_file": {
+        "OVL/PL0E_1.OVL": [
+          "0x800466e4",
+          "0x80046768"
+        ]
+      }
     },
     {
       "method": "fixed_address_files",
@@ -86,7 +92,13 @@
         "0x8",
         "0xc",
         "0x10"
-      ]
+      ],
+      "interior_entries_by_file": {
+        "OVL2/PL0E_2.OVL": [
+          "0x800900e4",
+          "0x80090168"
+        ]
+      }
     },
     {
       "method": "fixed_address_files",
@@ -159,16 +171,18 @@
             "0x800e8b9c",
             "0x800e8ba8",
             "0x800e8bf8",
-            "0x800e8c60"
+            "0x800e8c60",
+            "0x800e8994",
+            "0x800e8140"
           ]
         },
         {
           "file": "OVL3/QUES.PAC",
           "base": "0x800d6400",
           "address": "0x800e64d8",
-          "size": 12196,
+          "size": 12596,
           "load_addr": "0x800e64d8",
-          "sha256": "8de276660a9bdb5d802eed3bcb997a2a239d09cc0794631717de7539527f3bb2"
+          "sha256": "d66482601b93b72e8983c47f7be569d1b6546c80e10cf447a797d3e533108d86"
         }
       ]
     }
